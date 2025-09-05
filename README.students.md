@@ -1,4 +1,4 @@
-# Projet 2A 2024 
+# Projet 2A 2025
 
 ## Development environment
 
@@ -126,4 +126,4 @@ To help with developping, some settings are shared in `.vscode/settings.json` (e
 
 Additionally, VSCode features a large pool of extensions to help directly as you code. 
 
-The recommended extensions for this project are listed in `extensions.txt`. It is highly advised to install them, as well as deactivate, for this workspace, other extensions that may interfere (pylance, flake8...)
+The recommended extensions for this project are listed in `.vscode/extensions.json`. VSCode should prompt you to install the suggested extensions if not already done. It is highly advised to install them, as well as deactivate, for this workspace, other extensions that may interfere (pylance, flake8...)
