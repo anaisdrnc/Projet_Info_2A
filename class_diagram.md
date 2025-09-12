@@ -1,37 +1,66 @@
 ```mermaid
+---
+title: Class Diagram
+---
 
 classDiagram
     class User {
-        -name: String
-        -surname: String
-        -password : String
+        +id_user: int
+        +nom : string
+        +prenom : string
+        +pseudo: string
+        +mdp: string
+        +mail: string
+        +se_connecter()
     }
-    class Customer(User) {
-        -adresse: String
-        +passerCommande()
-        +login(name, password)
+    
+    class Customer {
+        +adresse:string
+        +code_postal:int
+        +ville:string 
+        #+lister_commandes():list[Order]
+        +consulter_menu()
+        +historique_commande():list[Order]
     }
-    class Driver(User){
-        -mean_of_transport
-        +login(name, password)
+    
+    class Livreur {
+        +moyen_transport : string
     }
-    class Admin(User){
-        +login(name, password)
+
+    class Administrateur {
+        +AddItem()
+        +DeleteItem()
+        +ModifierItem()
     }
+    
     class Order {
-        -id: int
-        -dateTime: DateTime
-        -dishes: Dish[]
-        +addDish()
-        +calculateTotal()
+        +id : int
+        +statut : string
+        +Client : Customer
+        +total_prix:float 
+        +consulter_commande()
+        +supprimer_commande()
+        +ajouter_panier(Item)
+        +enlever_panier(Item)
     }
-    class Dish {
-        -name: String
-        -price: float
-        +getDescription()
+
+    class Item {
+        +id:int
+        +nom : string
+        +description:string
+        +prix:float
+        +quantite : int
     }
+
+    class Menu{
+      +id : int
+      +nom : string
+      +description: List[Item]
+      +afficher()
+    }
+
+    User <|-- Livreur
+    User <|-- Customer
+    User <|-- Administrateur
 ```
 
-    Client "1" --> "*" Commande : passe
-    Commande "1" --> "*" Plat : contient
-```
