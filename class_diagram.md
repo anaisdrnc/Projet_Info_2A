@@ -12,15 +12,17 @@ classDiagram
         +mdp: string
         +mail: string
         +se_connecter() bool
+        +quitter_appli()
+        +creer_compte()
     }
     
     class Customer {
         +adresse: string
         +code_postal: int
         +ville: string 
-        +lister_commandes(): list[Order]
-        +consulter_menu(): Menu
-        +historique_commande() list[Order]
+        +lister_commandes() Order
+        +consulter_menu() Menu
+        +historique_commande() Order
     }
     
     class Livreur {
@@ -33,20 +35,23 @@ classDiagram
         +deleteItem(item: Item)
         +modifierItem(item: Item)
         +rapportDuJour() html
+        +addMenu(menu: Menu)
+        +deleteMenu(menu: Menu)
+        +modifierMenu(menu: Menu)
     }
     
     class Order {
         +id: int
         +statut: string
         +total_prix: float 
-        +adresse_livraison : string
-        +moyen_paiement : string
+        +adresse_livraison: string
+        +moyen_paiement: string
         +consulter_commande()
         +supprimer_commande()
         +ajouter_panier(item: Item)
         +enlever_panier(item: Item)
         +payer() bool
-        
+        +finaliser_commande() bool
     }
 
     class Item {
@@ -76,10 +81,10 @@ classDiagram
 
     %% Relations
     Customer "1" --> "0..*" Order : passe
-    Order "1" *-- "1..*" Item : contient
-    Menu "1" o-- "1..*" Item : propose
     Order "1" o-- "1..*" LigneCommande : contient
     LigneCommande "1" --> "1" Item : référence
+    Menu "1" o-- "1..*" Item : propose
     Administrateur --> Menu : gère
     Administrateur --> Item : gère
+
 ```
