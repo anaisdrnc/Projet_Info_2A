@@ -1,22 +1,36 @@
+# State Diagram for Authentication System
+
+## Flow Description
+This state diagram illustrates the authentication and menu management flow of an application.
+
+## Mermaid Diagram Code
+
 ```mermaid
 stateDiagram-v2
     [*] --> Connexion
 
-    Connexion --> Accueil : identifiants corrects
-    Connexion --> Connexion : Identifiants incorrects
+    state Connexion {
+        [*] --> SaisieIdentifiants
+        SaisieIdentifiants --> Validation
+        Validation --> Accueil : Identifiants corrects
+        Validation --> SaisieIdentifiants : Identifiants incorrects
+    }
 
     Accueil --> "Nouveau compte livreur"
-    "Nouveau compte livreur" --> Accueil
+    "Nouveau compte livreur" --> Accueil : Compte créé
 
     Accueil --> Menu
 
-    Menu --> "Ajouter un menu"
-    "Ajouter un menu" --> Menu
-
-    Menu --> "Supprimer un menu"
-    "Supprimer un menu" --> Menu
+    state Menu {
+        [*] --> GestionMenu
+        GestionMenu --> "Ajouter un menu"
+        "Ajouter un menu" --> GestionMenu : Menu ajouté
+        GestionMenu --> "Supprimer un menu"
+        "Supprimer un menu" --> GestionMenu : Menu supprimé
+    }
 
     Menu --> Deconnexion
-    Deconnexion --> [*]
+    Deconnexion --> [*] : Déconnexion réussie
 
-    "Ajouter un menu" --> Accueil : Retour à l’accueil
+    "Ajouter un menu" --> Accueil : Retour à l'accueil
+    "Supprimer un menu" --> Accueil : Retour à l'accueil
