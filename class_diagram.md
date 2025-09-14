@@ -1,90 +1,100 @@
+
 ```mermaid
+
 ---
-title: EJR'Eats - Class Diagram
+title: Ub'EJR Eats Class Diagram
 ---
 
 classDiagram
     class User {
-        +id_user: int
-        +nom: string
-        +prenom: string
-        +pseudo: string
-        +mdp: string
-        +mail: string
-        +se_connecter() bool
-        +quitter_appli()
-        +creer_compte()
+        +id: int
+        +firstName: string
+        +lastName: string
+        +username: string
+        +password: string
+        +email: string
+        +logIn() bool
+        +logOut()
+        +createAccount()
     }
     
     class Customer {
-        +adresse: string
-        +code_postal: int
-        +ville: string 
-        +lister_commandes() Order
-        +consulter_menu() Menu
-        +historique_commande() Order
+        +address: string
+        +postalCode: string
+        +city: string 
+        +placeOrder() Order
+        +viewMenu() Menu
+        +getOrderHistory() List<Order>
     }
     
-    class Livreur {
-        +moyen_transport: string
-        +commande_suivante()
+    class DeliveryDriver {
+        +transportation: string
+        +viewItinerary()
+        +takeDelivery()
+        +markAsDelivered()
     }
 
-    class Administrateur {
-        +addItem(item: Item)
-        +deleteItem(item: Item)
-        +modifierItem(item: Item)
-        +rapportDuJour() html
-        +addMenu(menu: Menu)
-        +deleteMenu(menu: Menu)
-        +modifierMenu(menu: Menu)
+    class Administrator {
+        +addItemToMenu(item: MenuItem)
+        +deleteItemFromMenu(itemId: int)
+        +updateMenuItem(itemId: int, newValues: object)
+        +generateDailyReport() object
     }
     
     class Order {
         +id: int
-        +statut: string
-        +total_prix: float 
-        +adresse_livraison: string
-        +moyen_paiement: string
-        +consulter_commande()
-        +supprimer_commande()
-        +ajouter_panier(item: Item)
-        +enlever_panier(item: Item)
-        +payer() bool
-        +finaliser_commande() bool
+        +date: Date
+        +status: string
+        +deliveryAddress: string
+        +totalAmount: float
+        +paymentMethod: string
+        +addItem(item: MenuItem, quantity: int)
+        +removeItem(item: MenuItem)
+        +calculateTotal()
+        +finalize() bool
+        +pay() bool
     }
 
-    class Item {
-        +id: int
-        +nom: string
-        +description: string
-        +prix: float
-        +quantite_en_stock: int
-    }
 
     class Menu {
         +id: int
-        +nom: string
-        +afficher()
+        +name: string
     }
 
-    class LigneCommande {
-        +quantite: int
-        +prix_unitaire: float
-        +calculerSousTotal() float
+    class MenuItem {
+        +id: int
+        +name: string
+        +price: float
+        +stockQuantity: int
     }
 
-    %% Héritages
-    User <|-- Livreur
+    class OrderLine {
+        +id:int
+        +quantity: int
+    }
+
+    User <|-- Administrator
     User <|-- Customer
-    User <|-- Administrateur
+    User <|-- DeliveryDriver
+    
+    Administrator "*" -- "*" Menu
+    
+    Menu "1" *-- "*" MenuItem
+    
+    Customer "1" -- "*" Order
+    
+    Order "1" *-- "*" OrderLine
+    
+    OrderLine "1" -- "1" MenuItem
+    
+    DeliveryDriver "1" -- "*" Order : delivers
 
-    %% Relations
-    Customer "1" --> "0..*" Order : passe
-    Order "1" o-- "1..*" LigneCommande : contient
-    LigneCommande "1" --> "1" Item : référence
-    Menu "1" o-- "1..*" Item : propose
-    Administrateur --> Menu : gère
-    Administrateur --> Item : gère
-
+    style User fill:#87ceeb,stroke:#333,stroke-width:2px
+    style Customer fill:#87ceeb,stroke:#333,stroke-width:2px
+    style DeliveryDriver fill:#87ceeb,stroke:#333,stroke-width:2px
+    style Administrator fill:#87ceeb,stroke:#333,stroke-width:2px
+    style Order fill:#87ceeb,stroke:#333,stroke-width:2px
+    style Menu fill:#87ceeb,stroke:#333,stroke-width:2px
+    style MenuItem fill:#87ceeb,stroke:#333,stroke-width:2px
+    style OrderLine fill:#87ceeb,stroke:#333,stroke-width:2px
 ```
