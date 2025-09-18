@@ -1,56 +1,28 @@
 ```mermaid
 ---
-title: Quick Architecture overview
+title: Architecture de l'application de livraison
 ---
-graph TD
+graph LR
+    %% Acteurs / Interfaces
+    CLI((fa:fa-terminal Utilisateur \n CLI))
+    API_Livreur((fa:fa-cloud API Livreur))
+    API_Admin((fa:fa-cloud API Admin))
 
-%% Couche Présentation
-subgraph Presentation[Couche Présentation / Interfaces]
-    CLI[CLI Utilisateur]
-    API_Livreur[API Livreur]
-    API_Admin[API Admin]
-end
+    %% Back-end Python app
+    subgraph Python App
+        SVC(fa:fa-cogs Services / \n Logique Métier)
+        DAO(fa:fa-database DAO)
+    end
 
-%% Couche Application / Services
-subgraph ServiceLayer[Couche Application / Services]
-    OrderService[OrderService]
-    UserService[UserService]
-    DeliveryService[DeliveryService]
-end
+    %% Base de données
+    DB[(fa:fa-database Base de Données)]
 
-%% Domaine Métier
-subgraph Domain[Couche Domaine Métier]
-    User[User]
-    Order[Order]
-    Delivery[Delivery]
-end
+    %% Relations
+    CLI<--->SVC
+    API_Livreur<--->SVC
+    API_Admin<--->SVC
+    SVC<-->DAO
+    DAO<-->DB
 
-%% DAO / Persistance
-subgraph DAO[Couche DAO / Persistance]
-    UserDAO[UserDAO]
-    OrderDAO[OrderDAO]
-    DeliveryDAO[DeliveryDAO]
-end
-
-%% Base de données
-DB[(Base de Données)]
-
-%% Liaisons
-CLI --> OrderService
-API_Livreur --> DeliveryService
-API_Admin --> UserService
-API_Admin --> OrderService
-
-OrderService --> Order
-UserService --> User
-DeliveryService --> Delivery
-
-Order --> OrderDAO
-User --> UserDAO
-Delivery --> DeliveryDAO
-
-UserDAO --> DB
-OrderDAO --> DB
-DeliveryDAO --> DB
 
 ```
