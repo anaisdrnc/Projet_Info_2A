@@ -4,13 +4,13 @@ title: Architecture de l'application de livraison
 ---
 graph LR
     %% Acteurs / Interfaces
-    CLI((fa:fa-terminal Utilisateur \n CLI))
+    CLI((fa:fa-terminal Utilisateur CLI))
     API_Livreur((fa:fa-cloud API Livreur))
     API_Admin((fa:fa-cloud API Admin))
 
     %% Back-end Python app
     subgraph Python App
-        SVC(fa:fa-cogs Services / \n Logique Métier)
+        SVC(fa:fa-cogs Services / Logique Métier)
         DAO(fa:fa-database DAO)
     end
 
