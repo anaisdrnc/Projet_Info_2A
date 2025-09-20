@@ -6,10 +6,10 @@ title: Quick Architecture overview
     USR1((User))
     USR2((Deliverer))
     USR3((Admin))
-    DB[("fa:fa-database App Database \n (PostgreSQL)" )]
-    API(fa:fa-python API / \n WebService)
+    DB[("fa:fa-database App Database (PostgreSQL)" )]
+    API(fa:fa-python API / WebService)
     DAO(fa:fa-python DAO)
-    SVC(fa:fa-python Service / \n Controllers )
+    SVC(fa:fa-python Service / Controllers )
     MDB[(fa:fa-database Google Maps DB)]
     MDBAPI(Google Maps API)
 
