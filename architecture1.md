@@ -1,29 +1,29 @@
 ```mermaid
 
 ---
-title: Delivery Application Architecture
+title: Quick Architecture overview
 ---
-graph LR
-    %% Actors / Interfaces
-    CLI((fa:fa-terminal User \n CLI))
-    API_Driver((fa:fa-cloud Driver API))
-    API_Admin((fa:fa-cloud Admin API))
+    graph LR
+    USR1((User))
+    USR2((Deliverer))
+    USR3((Admin))
+    DB[("fa:fa-database App Database (PostgreSQL)" )]
+    API(fa:fa-python API / WebService)
+    DAO(fa:fa-python DAO)
+    SVC(fa:fa-python Service / Controllers )
+    MDB[(fa:fa-database Google Maps DB)]
+    MDBAPI(Google Maps API)
 
-    %% Back-end Python app
-    subgraph Python App
-        SVC(fa:fa-cogs Services / \n Business Logic)
-        DAO(fa:fa-database DAO)
-    end
+    USR1<--->API
+        subgraph Python app 
+            API<-->SVC<-->DAO
+        end
+    USR2<--->API
+    USR3<--->API
 
-    %% Database
-    DB[(fa:fa-database Database)]
-
-    %% Relationships
-    CLI<--->SVC
-    API_Driver<--->SVC
-    API_Admin<--->SVC
-    SVC<-->DAO
-    DAO<-->DB
+    DAO<--->DB
+    MDBAPI <--> MDB
+    SVC <--> MDBAPI
 
 
 ```
