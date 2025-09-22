@@ -1,25 +1,26 @@
 ```mermaid
+
 ---
-title: Architecture de l'application de livraison
+title: Delivery Application Architecture
 ---
 graph LR
-    %% Acteurs / Interfaces
-    CLI((fa:fa-terminal Utilisateur \n CLI))
-    API_Livreur((fa:fa-cloud API Livreur))
-    API_Admin((fa:fa-cloud API Admin))
+    %% Actors / Interfaces
+    CLI((fa:fa-terminal User \n CLI))
+    API_Driver((fa:fa-cloud Driver API))
+    API_Admin((fa:fa-cloud Admin API))
 
     %% Back-end Python app
     subgraph Python App
-        SVC(fa:fa-cogs Services / \n Logique Métier)
+        SVC(fa:fa-cogs Services / \n Business Logic)
         DAO(fa:fa-database DAO)
     end
 
-    %% Base de données
-    DB[(fa:fa-database Base de Données)]
+    %% Database
+    DB[(fa:fa-database Database)]
 
-    %% Relations
+    %% Relationships
     CLI<--->SVC
-    API_Livreur<--->SVC
+    API_Driver<--->SVC
     API_Admin<--->SVC
     SVC<-->DAO
     DAO<-->DB
