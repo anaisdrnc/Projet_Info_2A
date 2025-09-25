@@ -1,41 +1,44 @@
-
+---
+title: Ub'EJR Eats Class Diagram
+---
 ```mermaid
 
 ---
 title: Ub'EJR Eats Class Diagram
 ---
-
 classDiagram
+
     class User {
         +id: int
         +firstName: string
         +lastName: string
         +username: string
-        +password: string
+        -password: string
         +email: string
         +logIn() bool
-        +logOut()
-        +createAccount()
+        +logOut() 
+        +CreateAccount()
     }
     
     class Customer {
         +address: string
         +postalCode: string
         +city: string 
-        +placeOrder() Order
+        +placeOrder(cart: Cart) Order
         +viewMenu() Menu
-        +getOrderHistory() List<Order>
     }
     
-    class DeliveryDriver {
+    class Driver {
         +transportation: string
+        +isAvailable : bool
         +viewItinerary()
-        +takeDelivery()
-        +markAsDelivered()
+        +takeDelivery(orderId: int) bool
+        +cancelOrder(orderId:int)
+        +markAsDelivered(orderId: int) bool
     }
 
     class Administrator {
-        +addItemToMenu(item: MenuItem)
+        +addItemToMenu(item: Item)
         +deleteItemFromMenu(itemId: int)
         +updateMenuItem(itemId: int, newValues: object)
         +generateDailyReport() object
@@ -48,53 +51,69 @@ classDiagram
         +deliveryAddress: string
         +totalAmount: float
         +paymentMethod: string
-        +addItem(item: MenuItem, quantity: int)
-        +removeItem(item: MenuItem)
-        +calculateTotal()
-        +finalize() bool
-        +pay() bool
+        +calculateTotal() float
+        +pay(): bool
     }
-
 
     class Menu {
-        +id: int
+        -id: int
         +name: string
+        +description: string
     }
 
-    class MenuItem {
-        +id: int
+    class Item {
+        -id: int
         +name: string
-        +price: float
-        +stockQuantity: int
+        +sellingPrice: float
+        -purchasePrice : float
+        +type : string
+        -stockQuantity: int
     }
 
     class OrderLine {
         +id:int
         +quantity: int
+        +subTotal: float
     }
 
-    User <|-- Administrator
-    User <|-- Customer
-    User <|-- DeliveryDriver
-    
-    Administrator "*" -- "*" Menu
-    
-    Menu "1" *-- "*" MenuItem
-    
-    Customer "1" -- "*" Order
-    
-    Order "1" *-- "*" OrderLine
-    
-    OrderLine "1" -- "1" MenuItem
-    
-    DeliveryDriver "1" -- "*" Order : delivers
+    class Cart {
+        +addItem(item: Item, quantity: int)
+        +removeItem(item:Item, quantity:int)
+        +clearCart()
+    }
 
-    style User fill:#87ceeb,stroke:#333,stroke-width:2px
-    style Customer fill:#87ceeb,stroke:#333,stroke-width:2px
-    style DeliveryDriver fill:#87ceeb,stroke:#333,stroke-width:2px
-    style Administrator fill:#87ceeb,stroke:#333,stroke-width:2px
-    style Order fill:#87ceeb,stroke:#333,stroke-width:2px
-    style Menu fill:#87ceeb,stroke:#333,stroke-width:2px
-    style MenuItem fill:#87ceeb,stroke:#333,stroke-width:2px
-    style OrderLine fill:#87ceeb,stroke:#333,stroke-width:2px
+    %% Relations 
+    User <|-- Customer : Héritage
+    User <|-- Driver : Héritage
+    User <|-- Administrator : Héritage
+    
+    Customer "1" -- "0..*" Order : passe
+
+    Order "1" *-- "1..*" OrderLine : composition
+
+    OrderLine "0..*" -- "1" Item : référence
+
+    Driver "1" -- "0..*" Order : livre
+
+    Administrator "1" -- "1" Menu : gère
+
+    Menu "1" *-- "0..*" Item : composition
+
+    Customer "1" -- "1" Cart : possède
+
+    Order <.. Cart : crée à partir de
+    
+    %% Styles pour la lisibilité
+    style User fill:#D6EAF8,stroke:#1A5276,stroke-width:2px
+    style Customer fill:#D6EAF8,stroke:#1A5276
+    style DeliveryDriver fill:#D6EAF8,stroke:#1A5276
+    style Administrator fill:#D6EAF8,stroke:#1A5276
+    
+    style Order fill:#FDEBD0,stroke:#E67E22,stroke-width:2px
+    style OrderLine fill:#FDEBD0,stroke:#E67E22
+
+    style Menu fill:#E8F8F5,stroke:#27AE60,stroke-width:2px
+    style MenuItem fill:#E8F8F5,stroke:#27AE60
+    style Cart fill:#F5EEF8,stroke:#8E44AD
+
 ```
