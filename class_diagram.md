@@ -7,7 +7,7 @@ title: Ub'EJR Eats Class Diagram
 title: Ub'EJR Eats Class Diagram
 ---
 classDiagram
-
+%% direction LR  
     class User {
         +id: int
         +firstName: string
@@ -38,9 +38,9 @@ classDiagram
     }
 
     class Administrator {
-        +addItemToMenu(item: Item)
-        +deleteItemFromMenu(itemId: int)
-        +updateMenuItem(itemId: int, newValues: object)
+        +addItemToMenu(product: Product)
+        +deleteItemFromMenu(productId: int)
+        +updateMenuItem(productId: int, newValues: object)
         +generateDailyReport() object
     }
     
@@ -52,7 +52,7 @@ classDiagram
         +totalAmount: float
         +paymentMethod: string
         +calculateTotal() float
-        +pay(): bool
+        +pay() bool
     }
 
     class Menu {
@@ -61,7 +61,7 @@ classDiagram
         +description: string
     }
 
-    class Item {
+    class Product {
         -id: int
         +name: string
         +sellingPrice: float
@@ -77,43 +77,43 @@ classDiagram
     }
 
     class Cart {
-        +addItem(item: Item, quantity: int)
-        +removeItem(item:Item, quantity:int)
+        +addItem(product: Product, quantity: int)
+        +removeItem(product: Product, quantity:int)
         +clearCart()
     }
 
     %% Relations 
-    User <|-- Customer : Héritage
-    User <|-- Driver : Héritage
-    User <|-- Administrator : Héritage
+    User <|-- Customer : Heritage
+    User <|-- Driver : Heritage
+    User <|-- Administrator : Heritage
     
-    Customer "1" -- "0..*" Order : passe
+    Customer "1" -- "0..*" Order : place 
 
     Order "1" *-- "1..*" OrderLine : composition
 
-    OrderLine "0..*" -- "1" Item : référence
+    OrderLine "0..*" -- "1" Product : reference
 
-    Driver "1" -- "0..*" Order : livre
+    Driver "1" -- "0..*" Order : delivers 
 
-    Administrator "1" -- "1" Menu : gère
+    Administrator "1" -- "1" Menu : changes
 
-    Menu "1" *-- "0..*" Item : composition
+    Menu "1" *-- "0..*" Product : composition
 
-    Customer "1" -- "1" Cart : possède
+    Customer "1" -- "1" Cart : has 
 
-    Order <.. Cart : crée à partir de
+    Order <.. Cart : create from
     
     %% Styles pour la lisibilité
     style User fill:#D6EAF8,stroke:#1A5276,stroke-width:2px
-    style Customer fill:#D6EAF8,stroke:#1A5276
-    style DeliveryDriver fill:#D6EAF8,stroke:#1A5276
-    style Administrator fill:#D6EAF8,stroke:#1A5276
+    style Customer fill:#E8F8F5,stroke:#27AE60,stroke-width:2px
+    style Driver fill:#D6EAF8,stroke:#1A5276
+    style Administrator fill:#FFB6B6,stroke:#E67E22
     
-    style Order fill:#FDEBD0,stroke:#E67E22,stroke-width:2px
-    style OrderLine fill:#FDEBD0,stroke:#E67E22
+    style Order fill:#E0E0E0,stroke=#808080,stroke-width:2px
+    style OrderLine fill:#E0E0E0,stroke=#808080
 
-    style Menu fill:#E8F8F5,stroke:#27AE60,stroke-width:2px
-    style MenuItem fill:#E8F8F5,stroke:#27AE60
-    style Cart fill:#F5EEF8,stroke:#8E44AD
+    style Menu fill:#E0E0E0,stroke=#808080,stroke-width:2px
+    style Product fill:#E0E0E0,stroke=#808080
+    style Cart fill:#E0E0E0,stroke=#808080
 
 ```
