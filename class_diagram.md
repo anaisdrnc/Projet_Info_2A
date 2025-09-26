@@ -15,33 +15,19 @@ classDiagram
         +username: string
         -password: string
         +email: string
-        +logIn() bool
-        +logOut() 
-        +CreateAccount()
     }
     
     class Customer {
         +address: string
         +postalCode: string
         +city: string 
-        +placeOrder(cart: Cart) Order
-        +viewMenu() Menu
     }
     
     class Driver {
         +transportation: string
-        +isAvailable : bool
-        +viewItinerary()
-        +takeDelivery(orderId: int) bool
-        +cancelOrder(orderId:int)
-        +markAsDelivered(orderId: int) bool
     }
 
     class Administrator {
-        +addItemToMenu(product: Product)
-        +deleteItemFromMenu(productId: int)
-        +updateMenuItem(productId: int, newValues: object)
-        +generateDailyReport() object
     }
     
     class Order {
@@ -50,6 +36,7 @@ classDiagram
         +status: string
         +deliveryAddress: string
         +totalAmount: float
+        +transportMethod : string
         +paymentMethod: string
         +calculateTotal() float
         +pay() bool
@@ -76,11 +63,6 @@ classDiagram
         +subTotal: float
     }
 
-    class Cart {
-        +addItem(product: Product, quantity: int)
-        +removeItem(product: Product, quantity:int)
-        +clearCart()
-    }
 
     %% Relations 
     User <|-- Customer : Heritage
@@ -93,15 +75,11 @@ classDiagram
 
     OrderLine "0..*" -- "1" Product : reference
 
-    Driver "1" -- "0..*" Order : delivers 
+    Driver "1" -- "0..*" Order : deliver 
 
     Administrator "1" -- "1" Menu : changes
 
     Menu "1" *-- "0..*" Product : composition
-
-    Customer "1" -- "1" Cart : has 
-
-    Order <.. Cart : create from
     
     %% Styles pour la lisibilité
     style User fill:#D6EAF8,stroke:#1A5276,stroke-width:2px
