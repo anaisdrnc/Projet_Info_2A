@@ -3,11 +3,8 @@ title: Ub'EJR Eats Class Diagram
 ---
 ```mermaid
 
----
-title: Ub'EJR Eats Class Diagram
----
 classDiagram
-%% direction LR  
+direction LR 
     class User {
         +id: int
         +firstName: string
