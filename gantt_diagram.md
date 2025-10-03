@@ -18,6 +18,7 @@ gantt
 
     %% --- Phase 3: Développement ---
     section Development
+    Database Creation              :2025-09-27, 7d
     Core Classes Implementation    :2025-09-27, 21d
     Business Logic Implementation  :2025-09-27, 21d
     CLI Customer Interface         :2025-10-08, 14d
