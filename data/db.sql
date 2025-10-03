@@ -46,22 +46,33 @@ INSERT INTO order_products (id_order, id_product, quantity) VALUES
 -----------------------
 -- INSERT INTO PRODUCT
 -----------------------
-INSERT INTO product (name, price, description, stock) VALUES
-('Italian Panini', 3.00, 'Chicken, fresh tomatoes, mozzarella', 20),
-('Indian Panini', 3.00, 'Chicken, curry, mozzarella', 20),
-('Goat Cheese & Honey Panini', 3.00, 'Onions, cream, goat cheese, honey', 20),
-('Pesto Panini', 3.00, 'Pesto, mozzarella, fresh or sun-dried tomatoes', 20),
-('Classic Kebab', 3.00, 'Chicken, sauce of choice, endive, lettuce, onions', 20),
-('Veggie Kebab', 3.00, 'Falafels, rösti, herb sauce, white cabbage, lettuce, tomatoes', 20),
-('Classic Fajitas', 3.00, 'Chicken, onion, tomatoes, guacamole, grated cheese, lemon', 20),
-('Veggie Fajitas', 3.00, 'Lettuce, zucchini, carrots, mozzarella, red beans', 20),
-('Ham Croque', 3.00, 'Sliced bread, ham, cheese', 20),
-('Veggie Croque', 3.00, 'Sliced bread, tomato sauce, mushrooms, bell peppers', 20),
-('Classic Hot Dog', 3.00, 'Sausage, mustard, grated cheese, onions, sauce of choice', 20),
-('Veggie Hot Dog', 3.00, 'Carrot, olive oil, arugula, sauce of choice', 20),
-('Classic Burger', 3.00, 'Beef patty, mustard, tomatoes, emmental or cheddar, pickles', 20),
-('Veggie Burger', 3.00, 'Rösti, avocado, chickpeas, radish, sauce of choice', 20),
-('Chicken Curry Rice', 3.00, 'Chicken, rice, curry sauce, coconut milk', 20),
-('Veggie Curry Rice', 3.00, 'Tofu, rice, curry sauce, coconut milk', 20),
-('Chicken Wrap', 3.00, 'Chicken, guacamole, cheese, raw vegetables, salsa sauce', 20),
-('Veggie Wrap', 3.00, 'Mozza sticks, raw vegetables, salsa sauce', 20);
+INSERT INTO product (name, price, production_cost, description, type, stock) VALUES
+-- Lunch
+('Italian Panini', 3.00, 2.00, 'Chicken, fresh tomatoes, mozzarella', 'lunch', 20),
+('Indian Panini', 3.00, 2.00, 'Chicken, curry, mozzarella', 'lunch', 20),
+('Goat Cheese & Honey Panini', 3.00, 2.00, 'Onions, cream, goat cheese, honey', 'lunch', 20),
+('Pesto Panini', 3.00, 2.00, 'Pesto, mozzarella, fresh or sun-dried tomatoes', 'lunch', 20),
+('Classic Kebab', 3.00, 2.00, 'Chicken, sauce of choice, endive, lettuce, onions', 'lunch', 20),
+('Veggie Kebab', 3.00, 2.00, 'Falafels, rösti, herb sauce, white cabbage, lettuce, tomatoes', 'lunch', 20),
+('Classic Fajitas', 3.00, 2.00, 'Chicken, onion, tomatoes, guacamole, grated cheese, lemon', 'lunch', 20),
+('Veggie Fajitas', 3.00, 2.00, 'Lettuce, zucchini, carrots, mozzarella, red beans', 'lunch', 20),
+('Ham Croque', 3.00, 2.00, 'Sliced bread, ham, cheese', 'lunch', 20),
+('Veggie Croque', 3.00, 2.00, 'Sliced bread, tomato sauce, mushrooms, bell peppers', 'lunch', 20),
+('Classic Hot Dog', 3.00, 2.00, 'Sausage, mustard, grated cheese, onions, sauce of choice', 'lunch', 20),
+('Veggie Hot Dog', 3.00, 2.00, 'Carrot, olive oil, arugula, sauce of choice', 'lunch', 20),
+('Classic Burger', 5.00, 3.50, 'Beef patty, mustard, tomatoes, emmental or cheddar, pickles', 'lunch', 20),
+('Veggie Burger', 5.00, 3.00, 'Rösti, avocado, chickpeas, radish, sauce of choice', 'lunch', 20),
+('Chicken Curry Rice', 6.00, 4.00, 'Chicken, rice, curry sauce, coconut milk', 'lunch', 20),
+('Veggie Curry Rice', 6.00, 3.50, 'Tofu, rice, curry sauce, coconut milk', 'lunch', 20),
+('Chicken Wrap', 4.50, 3.00, 'Chicken, guacamole, cheese, raw vegetables, salsa sauce', 'lunch', 20),
+('Veggie Wrap', 4.50, 2.80, 'Mozza sticks, raw vegetables, salsa sauce', 'lunch', 20),
+
+-- Dessert
+('Chocolate Cake', 2.50, 1.50, 'Rich chocolate sponge cake', 'dessert', 15),
+('Fruit Salad', 3.00, 1.80, 'Mix of fresh seasonal fruits', 'dessert', 15),
+('Ice Cream Sundae', 3.50, 2.00, 'Vanilla ice cream with chocolate syrup', 'dessert', 15),
+
+-- Drinks
+('Coca Cola', 1.50, 0.50, 'Classic soda 33cl', 'drink', 30),
+('Orange Juice', 2.00, 0.80, 'Freshly squeezed orange juice', 'drink', 25),
+('Water Bottle', 1.00, 0.30, 'Still mineral water 50cl', 'drink', 50);

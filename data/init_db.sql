@@ -53,11 +53,13 @@ CREATE TABLE administrator (
 -- PRODUCT
 -----------------------
 CREATE TABLE product (
-    id_product     SERIAL PRIMARY KEY,
-    name           VARCHAR(100) NOT NULL,
-    price          DECIMAL(10,2) NOT NULL CHECK (price >= 0),
-    description    TEXT,
-    stock          INT NOT NULL CHECK (stock >= 0)
+    id_product       SERIAL PRIMARY KEY,
+    name             VARCHAR(100) NOT NULL,
+    price            DECIMAL(10,2) NOT NULL CHECK (price >= 0),
+    production_cost  DECIMAL(10,2) NOT NULL CHECK (production_cost >= 0),
+    type             VARCHAR(20) NOT NULL, 
+    description      TEXT,
+    stock            INT NOT NULL CHECK (stock >= 0)
 );
 
 -----------------------
