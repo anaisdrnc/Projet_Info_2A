@@ -5,4 +5,6 @@ class User(BaseModel):
     id: int
     username: str
     password: str
-    salt: str
+    firstname: str
+    lastname: str
+    email: str
