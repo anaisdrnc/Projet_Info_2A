@@ -6,4 +6,4 @@ class Address(BaseModel):
 
     address: str
     postalcode: int
-    town: str
+    city: str
