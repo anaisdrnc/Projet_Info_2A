@@ -1,6 +1,5 @@
 import pytest
 from pydantic_core import ValidationError
-
 from src.Model.Movie import Movie
 
 
