@@ -16,6 +16,13 @@ INSERT INTO customer (id_user, address, city, postal_code) VALUES
 (3, '1 Rohan Street', 'Rennes', '35000');
 
 -----------------------
+-- INSERT INTO ADDRESS
+-----------------------
+INSERT INTO address (address, city, postal_code) VALUES
+('12 Yvonne Jean-Haffen Street', 'Rennes', '35000')
+('1 Rohan Street', 'Rennes', '35000')
+
+-----------------------
 -- INSERT INTO DRIVER
 -----------------------
 INSERT INTO driver (id_user, mean_of_transport) VALUES
@@ -31,9 +38,9 @@ INSERT INTO administrator (id_user) VALUES
 -----------------------
 -- INSERT INTO ORDERS
 -----------------------
-INSERT INTO orders (id_customer, id_driver, status, delivery_address, delivery_postal_code, nb_items, total_amount, payment_method) VALUES
-(1, 1, 'Preparing', '12 Yvonne Jean-Haffen Street', '35000', 2, 6.00, 'Credit Card'),
-(2, 2, 'Delivered', '1 Rohan Street', '44000', 1, 3.00, 'Cash');
+INSERT INTO orders (id_customer, id_driver, id_address, status, nb_items, total_amount, payment_method) VALUES
+(1, 1, 1, 'Preparing', 2, 6.00, 'Credit Card'),
+(2, 2, 2, 'Delivered', 1, 3.00, 'Cash');
 
 -----------------------
 -- INSERT INTO ORDER_PRODUCTS
@@ -60,17 +67,17 @@ INSERT INTO product (name, price, production_cost, description, type, stock) VAL
 ('Veggie Croque', 3.00, 2.00, 'Sliced bread, tomato sauce, mushrooms, bell peppers', 'lunch', 20),
 ('Classic Hot Dog', 3.00, 2.00, 'Sausage, mustard, grated cheese, onions, sauce of choice', 'lunch', 20),
 ('Veggie Hot Dog', 3.00, 2.00, 'Carrot, olive oil, arugula, sauce of choice', 'lunch', 20),
-('Classic Burger', 5.00, 3.50, 'Beef patty, mustard, tomatoes, emmental or cheddar, pickles', 'lunch', 20),
-('Veggie Burger', 5.00, 3.00, 'Rösti, avocado, chickpeas, radish, sauce of choice', 'lunch', 20),
-('Chicken Curry Rice', 6.00, 4.00, 'Chicken, rice, curry sauce, coconut milk', 'lunch', 20),
-('Veggie Curry Rice', 6.00, 3.50, 'Tofu, rice, curry sauce, coconut milk', 'lunch', 20),
-('Chicken Wrap', 4.50, 3.00, 'Chicken, guacamole, cheese, raw vegetables, salsa sauce', 'lunch', 20),
-('Veggie Wrap', 4.50, 2.80, 'Mozza sticks, raw vegetables, salsa sauce', 'lunch', 20),
+('Classic Burger', 3.00, 2.00, 'Beef patty, mustard, tomatoes, emmental or cheddar, pickles', 'lunch', 20),
+('Veggie Burger', 3.00, 2.00, 'Rösti, avocado, chickpeas, radish, sauce of choice', 'lunch', 20),
+('Chicken Curry Rice', 3.00, 2.00, 'Chicken, rice, curry sauce, coconut milk', 'lunch', 20),
+('Veggie Curry Rice', 3.00, 2.00, 'Tofu, rice, curry sauce, coconut milk', 'lunch', 20),
+('Chicken Wrap', 3.00, 2.00, 'Chicken, guacamole, cheese, raw vegetables, salsa sauce', 'lunch', 20),
+('Veggie Wrap', 3.00, 2.00, 'Mozza sticks, raw vegetables, salsa sauce', 'lunch', 20),
 
 -- Dessert
-('Chocolate Cake', 2.50, 1.50, 'Rich chocolate sponge cake', 'dessert', 15),
-('Fruit Salad', 3.00, 1.80, 'Mix of fresh seasonal fruits', 'dessert', 15),
-('Ice Cream Sundae', 3.50, 2.00, 'Vanilla ice cream with chocolate syrup', 'dessert', 15),
+('Chocolate Cake', 1.00, 0.50, 'Rich chocolate sponge cake', 'dessert', 15),
+('Fruit Salad', 1.00, 0.50, 'Mix of fresh seasonal fruits', 'dessert', 15),
+('Ice Cream Sundae', 1.00, 0.50, 'Vanilla ice cream with chocolate syrup', 'dessert', 15),
 
 -- Drinks
 ('Coca Cola', 1.50, 0.50, 'Classic soda 33cl', 'drink', 30),

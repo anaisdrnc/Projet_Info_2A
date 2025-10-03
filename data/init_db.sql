@@ -31,6 +31,16 @@ CREATE TABLE customer (
 );
 
 -----------------------
+-- ADDRESS
+-----------------------
+CREATE TABLE address (
+    id_address   SERIAL PRIMARY KEY,
+    address      VARCHAR(100),
+    city         VARCHAR(50),
+    postal_code  VARCHAR(5) CHECK (char_length(postal_code) = 5)
+);
+
+-----------------------
 -- DRIVER
 -----------------------
 CREATE TABLE driver (
@@ -69,15 +79,15 @@ CREATE TABLE orders (
     id_order            SERIAL PRIMARY KEY,
     id_customer         INT NOT NULL,
     id_driver           INT NOT NULL,
+    id_address          INT NOT NULL,
     date                TIMESTAMP NOT NULL DEFAULT NOW(),
     status              VARCHAR(30) NOT NULL,
-    delivery_address    VARCHAR(100) NOT NULL,
-    delivery_postal_code VARCHAR(5) CHECK (char_length(delivery_postal_code) = 5),
     nb_items            INT CHECK (nb_items >= 0),
     total_amount        DECIMAL(10,2) CHECK (total_amount >= 0),
     payment_method      VARCHAR(50),
     CONSTRAINT fk_order_customer FOREIGN KEY (id_customer) REFERENCES customer(id_customer) ON DELETE CASCADE,
-    CONSTRAINT fk_order_driver FOREIGN KEY (id_driver) REFERENCES driver(id_driver) ON DELETE CASCADE
+    CONSTRAINT fk_order_driver FOREIGN KEY (id_driver) REFERENCES driver(id_driver) ON DELETE CASCADE,
+    CONSTRAINT fk_address FOREIGN KEY (id_address) REFERENCES address(id_address) ON DELETE CASCADE
 );
 
 -----------------------
@@ -91,3 +101,5 @@ CREATE TABLE order_products (
     CONSTRAINT fk_op_order FOREIGN KEY (id_order) REFERENCES orders(id_order) ON DELETE CASCADE,
     CONSTRAINT fk_op_product FOREIGN KEY (id_product) REFERENCES product(id_product) ON DELETE CASCADE
 );
+
+
