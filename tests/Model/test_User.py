@@ -1,8 +1,10 @@
 import pytest
 from pydantic_core import ValidationError
 
-
-from src.Model.User import User
+import sys
+sys.path.insert(0, '~work/Projet_Info_2A/src/Model')
+import unittest
+from User import User
 
 
 def test_user_constructor_ok():
