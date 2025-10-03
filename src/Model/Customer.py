@@ -1,6 +1,6 @@
 from User import User
-from Adress import Adress
+from Address import Address
 
 
 class Customer(User):
-    adress: Adress = None
+    address: Address = None
