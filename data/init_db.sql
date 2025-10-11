@@ -87,7 +87,7 @@ CREATE TABLE orders (
     payment_method      VARCHAR(50),
     CONSTRAINT fk_order_customer FOREIGN KEY (id_customer) REFERENCES customer(id_customer) ON DELETE CASCADE,
     CONSTRAINT fk_order_driver FOREIGN KEY (id_driver) REFERENCES driver(id_driver) ON DELETE CASCADE,
-    CONSTRAINT fk_address FOREIGN KEY (id_address) REFERENCES address(id_address) ON DELETE CASCADE
+    CONSTRAINT fk_order_address FOREIGN KEY (id_address) REFERENCES address(id_address) ON DELETE CASCADE
 );
 
 -----------------------
