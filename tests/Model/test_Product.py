@@ -1,11 +1,7 @@
-import os
-import sys
-
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../src")))
-
 import pytest
-from Model.product import Product
 from pydantic import ValidationError
+
+from src.Model.Product import Product
 
 
 def test_product_constructor_ok():
@@ -17,7 +13,7 @@ def test_product_constructor_ok():
     assert Product1.name == "Italian Panini"
     assert Product1.selling_price == 3.0
     assert Product1.purchase_price == 2.5
-    assert Product1.type == "lunch"
+    assert Product1.product_type == "lunch"
     assert Product1.stock_quantity == 3
 
 
@@ -75,7 +71,9 @@ def test_product_constructor_on_product_type():
     """Test : product type must be a string"""
     with pytest.raises(ValidationError) as exception_info:
         Product(id=3, name="Italian Panini", selling_price=4, purchase_price=2.5, product_type=123, stock_quantity=3)
-    assert "type" in str(exception_info.value) and "Input should be a valid string" in str(exception_info.value)
+    assert "product_type" in str(exception_info.value) and "Input should be 'drink', 'lunch' or 'dessert'" in str(
+        exception_info.value
+    )
 
 
 def test_product_constructor_on_stock_quantity():
