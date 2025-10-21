@@ -90,3 +90,4 @@ def test_product_constructor_on_stock_quantity():
     assert "stock_quantity" in str(
         exception_info.value
     ) and "Input should be a valid integer, unable to parse string as an integer" in str(exception_info.value)
+

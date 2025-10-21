@@ -79,13 +79,13 @@ def test_order_constructor_on_incorrect_status():
 
 
 def test_order_constructor_on_incorrect_delivery_address():
-    """Test : delivery address must be a address"""
+    """Test : delivery address must be an address"""
     with pytest.raises(ValidationError) as exception_info:
         Order(
             id=3,
             date="2025-10-23",
             status="waiting",
-            delivery_address=Address(address= "4 rue de Dinan", postalcode=35000, city=12345),
+            delivery_address=Address(address="4 rue de Dinan", postalcode=35000, city=12345),
             total_amount=45.3,
             transport_method="car",
             payment_method="cash",
@@ -94,3 +94,51 @@ def test_order_constructor_on_incorrect_delivery_address():
     assert "city" in str(exception_info.value)
     assert "Input should be a valid string" in str(exception_info.value)
 
+
+def test_order_constructor_on_incorrect_total_amount():
+    """Test : total amount must be a float"""
+    with pytest.raises(ValidationError) as exception_info:
+        Order(
+            id=3,
+            date="2025-10-23",
+            status="waiting",
+            delivery_address=Address(address="4 rue de Dinan", postalcode=35000, city="Rennes"),
+            total_amount="quarante",
+            transport_method="car",
+            payment_method="cash",
+        )
+    assert "total_amount" in str(exception_info.value) and "Input should be a valid number" in str(exception_info.value)
+
+
+def test_order_constructor_on_incorrect_transport_method():
+    """Test : transport method must be one of the allowed literals ('car' or 'bicycle')"""
+    with pytest.raises(ValidationError) as exception_info:
+        Order(
+            id=3,
+            date="2025-10-23",
+            status="waiting",
+            delivery_address=Address(address="4 rue de Dinan", postalcode=35000, city="Rennes"),
+            total_amount=43.5,
+            transport_method="voiture",
+            payment_method="cash",
+        )
+    assert "transport_method" in str(exception_info.value)
+    assert "Input should be 'bicycle' or 'car'" in str(exception_info.value)
+    assert "literal_error" in str(exception_info.value)
+
+
+def test_order_constructor_on_incorrect_payment_method():
+    """Test : payment method must be one of the allowed literals ('cash' or 'card')"""
+    with pytest.raises(ValidationError) as exception_info:
+        Order(
+            id=3,
+            date="2025-10-23",
+            status="waiting",
+            delivery_address=Address(address="4 rue de Dinan", postalcode=35000, city="Rennes"),
+            total_amount=43.5,
+            transport_method="car",
+            payment_method="change",
+        )
+    assert "payment_method" in str(exception_info.value)
+    assert "Input should be 'card' or 'cash'" in str(exception_info.value)
+    assert "literal_error" in str(exception_info.value)
