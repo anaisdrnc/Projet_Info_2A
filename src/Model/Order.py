@@ -1,7 +1,10 @@
-from typing import Literal
-from Address import Address
 from datetime import date
+from typing import Literal
+
 from pydantic import BaseModel, Field
+
+from .Address import Address
+
 
 class Order(BaseModel):
     id: int
