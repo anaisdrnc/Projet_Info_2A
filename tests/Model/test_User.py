@@ -1,9 +1,11 @@
+import sys
+
 import pytest
 from pydantic_core import ValidationError
 
-import sys
-sys.path.insert(0, '~work/Projet_Info_2A/src/Model')
+sys.path.insert(0, "~work/Projet_Info_2A/src/Model")
 import unittest
+
 from User import User
 
 
@@ -22,7 +24,7 @@ def test_user_constructor_ok():
 def test_user_constructor_throws_on_incorrect_input():
     with pytest.raises(ValidationError) as exception_info:
         User(
-            id='one',
+            id="one",
             username="Lil",
             password="1234password",
             firstname="Lilas",
