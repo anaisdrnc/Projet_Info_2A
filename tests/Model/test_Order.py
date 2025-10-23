@@ -110,6 +110,38 @@ def test_order_constructor_on_incorrect_total_amount():
     assert "total_amount" in str(exception_info.value) and "Input should be a valid number" in str(exception_info.value)
 
 
+def test_order_constructor_on_negative_total_amount():
+    """Test : total_amount must be strictly greater than 0."""
+    with pytest.raises(ValidationError) as exception_info:
+        Order(
+            id=3,
+            date="2025-10-23",
+            status="waiting",
+            delivery_address=Address(address="4 rue de Dinan", postalcode=35000, city="Rennes"),
+            total_amount=-14.67,
+            transport_method="car",
+            payment_method="cash",
+        )
+    assert "greater_than" in str(exception_info.value)
+    assert "total_amount" in str(exception_info.value)
+
+
+def test_order_constructor_on_total_amount_equal_to_zero():
+    """Test : total_amount must be strictly greater than 0."""
+    with pytest.raises(ValidationError) as exception_info:
+        Order(
+            id=3,
+            date="2025-10-23",
+            status="waiting",
+            delivery_address=Address(address="4 rue de Dinan", postalcode=35000, city="Rennes"),
+            total_amount=0.00,
+            transport_method="car",
+            payment_method="cash",
+        )
+    assert "greater_than" in str(exception_info.value)
+    assert "total_amount" in str(exception_info.value)
+
+
 def test_order_constructor_on_incorrect_transport_method():
     """Test : transport method must be one of the allowed literals ('car' or 'bicycle')"""
     with pytest.raises(ValidationError) as exception_info:
