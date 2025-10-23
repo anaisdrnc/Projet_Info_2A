@@ -56,6 +56,36 @@ def test_product_constructor_on_selling_price():
     )
 
 
+def test_product_constructor_on_zero_selling_price():
+    """Test: selling_price must be strictly greater than 0."""
+    with pytest.raises(ValidationError) as exception_info:
+        Product(
+            id=3,
+            name="Italian Panini",
+            selling_price=0.0,
+            purchase_price=2.5,
+            product_type="lunch",
+            stock_quantity=3,
+        )
+    assert "selling_price" in str(exception_info.value)
+    assert "greater_than" in str(exception_info.value)
+
+
+def test_product_constructor_on_negative_selling_price():
+    """Test: selling_price must be strictly greater than 0 and fails when price is negative."""
+    with pytest.raises(ValidationError) as exception_info:
+        Product(
+            id=3,
+            name="Italian Panini",
+            selling_price=-1.0,
+            purchase_price=2.5,
+            product_type="lunch",
+            stock_quantity=3,
+        )
+    assert "selling_price" in str(exception_info.value)
+    assert "greater_than" in str(exception_info.value)
+
+
 def test_product_constructor_on_purchase_price():
     """Test : purchase price must be a float"""
     with pytest.raises(ValidationError) as exception_info:
@@ -65,6 +95,36 @@ def test_product_constructor_on_purchase_price():
     assert "purchase_price" in str(exception_info.value) and "Input should be a valid number" in str(
         exception_info.value
     )
+
+
+def test_product_constructor_on_zero_purchase_price():
+    """Test: purchase_price must be strictly greater than 0."""
+    with pytest.raises(ValidationError) as exception_info:
+        Product(
+            id=3,
+            name="Italian Panini",
+            selling_price=3.0,
+            purchase_price=0.0,
+            product_type="lunch",
+            stock_quantity=3,
+        )
+    assert "purchase_price" in str(exception_info.value)
+    assert "greater_than" in str(exception_info.value)
+
+
+def test_product_constructor_on_negative_purchase_price():
+    """Test: purchase_price must be strictly greater than 0."""
+    with pytest.raises(ValidationError) as exception_info:
+        Product(
+            id=3,
+            name="Italian Panini",
+            selling_price=3.0,
+            purchase_price=-0.5,
+            product_type="lunch",
+            stock_quantity=3,
+        )
+    assert "purchase_price" in str(exception_info.value)
+    assert "greater_than" in str(exception_info.value)
 
 
 def test_product_constructor_on_product_type():
@@ -90,3 +150,18 @@ def test_product_constructor_on_stock_quantity():
     assert "stock_quantity" in str(
         exception_info.value
     ) and "Input should be a valid integer, unable to parse string as an integer" in str(exception_info.value)
+
+
+def test_product_constructor_on_negative_stock_quantity_fail():
+    """Test: stock_quantity must be greater than or equal to 0."""
+    with pytest.raises(ValidationError) as exception_info:
+        Product(
+            id=3,
+            name="Italian Panini",
+            selling_price=3.0,
+            purchase_price=2.5,
+            product_type="lunch",
+            stock_quantity=-5,
+        )
+    assert "stock_quantity" in str(exception_info.value)
+    assert "greater_than_equal" in str(exception_info.value)
