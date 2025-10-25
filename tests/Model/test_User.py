@@ -6,7 +6,7 @@ from pydantic_core import ValidationError
 sys.path.insert(0, "~work/Projet_Info_2A/src/Model")
 import unittest
 
-from User import User
+from src.Model.User import User
 
 
 def test_user_constructor_ok():
