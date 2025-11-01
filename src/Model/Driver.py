@@ -1,5 +1,6 @@
 from typing import Literal
-from User import User
+
+from src.Model.User import User
 
 
 class Driver(User):

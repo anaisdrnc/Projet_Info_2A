@@ -1,6 +1,8 @@
-from User import User
-from Address import Address
+from typing import Optional
+
+from src.Model.Address import Address
+from src.Model.User import User
 
 
 class Customer(User):
-    address: Address = None
+    address: Optional[Address] = None
