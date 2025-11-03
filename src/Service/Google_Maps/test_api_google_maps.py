@@ -48,7 +48,6 @@ folium.Marker(
     icon=folium.Icon(color='red')
 ).add_to(m)
 
-# === 7️⃣ Tracer le chemin sur la carte ===
 # Extraire les points du polyligne
 steps = leg['steps']
 path = []
@@ -61,7 +60,6 @@ path.append((end_location['lat'], end_location['lng']))
 # Ajouter la ligne sur la carte
 folium.PolyLine(path, color="blue", weight=5, opacity=0.7).add_to(m)
 
-# === 8️⃣ Enregistrer la carte ===
 m.save("itineraire.html")
 print("\n🗺️ Carte enregistrée dans 'itineraire.html' — ouvre-la dans ton navigateur !")
 
