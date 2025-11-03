@@ -21,5 +21,5 @@ class CustomerDAO:
                     },
                 )
                 res = cursor.fetchone()
-                
+
         print(res)
