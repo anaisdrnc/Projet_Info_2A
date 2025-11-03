@@ -2,11 +2,11 @@
 -- USERS
 -----------------------
 INSERT INTO users (id_user, first_name, last_name, user_name, password, email) VALUES
-(999, 'Admin', 'System', 'admin', '0000', 'admin@project.com'),
-(998, 'Alice', 'Martin', 'AliceM', 'alice', 'alice@test.com'),
-(997, 'Bob', 'Durand', 'BobD', 'bob', 'bob@test.com'),
-(996, 'Charlie', 'Dupont', 'CharlieD', 'charlie', 'charlie@test.com'),
-(995, 'Diane', 'Lemoine', 'DianeL', 'diane', 'diane@test.com');
+(999, 'Admin', 'System', 'admin', '69371091eb0f9aec7e61b7421cf3044529167e979cd975201909eb8ae33887ba', 'admin@project.com'),
+(998, 'Alice', 'Martin', 'AliceM', 'eb03c057f2207cc124b4cda1e0959b72d220a33916b5e638705e3d6525a01dbf', 'alice@test.com'), 
+(997, 'Bob', 'Durand', 'BobD', '0cfae64be65ba050f9ec04146962114f3a550bf7b7ebad28179e543b47068132', 'bob@test.com'), 
+(996, 'Charlie', 'Dupont', '99fec17631ab7e59aa90b8f23aa63006e77339bc88b521624b4abd6ea72ad94e', 'charlie', 'charlie@test.com'),
+(995, 'Diane', 'Lemoine', '9cdb1f793cc1d63f67e49dd36e47cb3f4f0f62822a9d182fd70528ef8f6c6563', 'diane', 'diane@test.com');
 
 -----------------------
 -- CUSTOMER

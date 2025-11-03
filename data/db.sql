@@ -2,11 +2,11 @@
 -- INSERT INTO USERS
 -----------------------
 INSERT INTO users (first_name, last_name, user_name, password, email) VALUES
-('Admin', 'System', 'admin', '0000', 'admin@project.com'),
-('Neo', 'Gandhaye', 'SecretNeo', '123abc', 'secretneo@project.com'),
-('Emma', 'Boisse', 'EmmaMache', 'ensalade', 'emmamache@project.com'),
-('Emma', 'Glorieux', 'EmmaDriver', 'aaabbb', 'emmadriver@project.com'),
-('JF', 'Lapitre', 'PresidentEnsai', 'bde<ensalade', 'jf@project.com');
+('Admin', 'System', 'admin', '69371091eb0f9aec7e61b7421cf3044529167e979cd975201909eb8ae33887ba', 'admin@project.com'),
+('Neo', 'Gandhaye', 'SecretNeo', '671ac9d528b52b5d47f8ab43c74d4584fba7af774cd8f376d96bf6c45b01b796', 'secretneo@project.com'),
+('Emma', 'Boisse', 'EmmaMache', '8d3a5fcc03ea32df25e905dc47b27c4d8a5fabf9f77bbec1a305a59af5ab9143', 'emmamache@project.com'),
+('Emma', 'Glorieux', 'EmmaDriver', 'f11b5649b0e3b97afae7b6db66b48f66407096f4771d599159ea7d0d7cd1d8de', 'emmadriver@project.com'),
+('JF', 'Lapitre', 'PresidentEnsai', '118adf271202feab0f44fb1a53285c72ab1857e8d49ca2c930cfee09da4555bf', 'jf@project.com');
 
 -----------------------
 -- INSERT INTO CUSTOMER
