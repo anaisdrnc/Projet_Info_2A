@@ -4,15 +4,47 @@ import folium
 import os
 import config
 import sys
-
+"""
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from Google_Maps.check_address import (
     validate_and_get_routable_address, 
     is_address_sufficient_for_routing,
     display_suggestions
-)
+)"""
 
+# ==================== CONFIGURATION DES IMPORTS ====================
+# Solution pour fonctionner depuis __main__.py ET directement
+current_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Ajouter le dossier parent au path pour les imports
+parent_dir = os.path.dirname(current_dir)
+sys.path.insert(0, parent_dir)  # Pour src.Service.Google_Maps
+sys.path.insert(0, current_dir)  # Pour le dossier actuel
+
+try:
+    # Essayer d'abord l'import relatif
+    from . import config
+    from .check_address import (
+        validate_and_get_routable_address, 
+        is_address_sufficient_for_routing,
+        display_suggestions,
+        check_adress
+    )
+except ImportError:
+    # Fallback: import absolu
+    try:
+        import config
+        from check_address import (
+            validate_and_get_routable_address, 
+            is_address_sufficient_for_routing,
+            display_suggestions,
+            check_adress
+        )
+    except ImportError as e:
+        print(f"❌ Erreur d'import: {e}")
+        print("Assurez-vous que config.py et check_address.py sont dans le même dossier")
+        exit(1)
 
 API_KEY = config.API_KEY_GOOGLE_MAPS
 
