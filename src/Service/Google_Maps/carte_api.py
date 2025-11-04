@@ -127,6 +127,10 @@ def main():
     if directions:
         # Affichage de la carte
         create_map(origin_complete, destination, "driving")
+        # driving
+        # bicycling
+        # walking
+        # transit
 
 if __name__ == "__main__":
     main()
