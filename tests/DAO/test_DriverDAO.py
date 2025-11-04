@@ -13,11 +13,7 @@ from dotenv import load_dotenv
 @pytest.fixture(scope="session", autouse=True)
 def setup_test_environment():
     """Initialize the test database environment"""
-    load_dotenv()
-    ResetDatabase().lancer(test_dao=True)
-
-    yield
-
+    ResetDatabase(test=True).lancer()
 
 def test_create_driver_ok():
     driver = Driver(
