@@ -8,7 +8,7 @@ from .DBConnector import DBConnector
 class UserRepo():
     """DAO User"""
 
-    def __init__(self):
+    def __init__(self, db_connector):
         """Initialize a new UserDAO instance with a database connector."""
         self.db_connector = DBConnector()
 
