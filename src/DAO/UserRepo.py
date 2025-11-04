@@ -23,9 +23,9 @@ class UserRepo():
                 "(%(first_name)s, %(last_name)s, %(user_name)s, %(password)s, %(email)s)"
                 "RETURNING id_user;",
                 {
-                    "last_name": user.lastname,
-                    "first_name": user.firstname,
-                    "user_name": user.username,
+                    "last_name": user.last_name,
+                    "first_name": user.first_name,
+                    "user_name": user.user_name,
                     "password": user.password,
                     "email": user.email,
                 },
@@ -44,8 +44,8 @@ class UserRepo():
         # pyrefly: ignore
         return User(**raw_user)
 
-    def get_by_username(self, username: str) -> Optional[User]:
-        raw_user = self.db_connector.sql_query("SELECT * from users WHERE username=%s", [username], "one")
+    def get_by_username(self, user_name: str) -> Optional[User]:
+        raw_user = self.db_connector.sql_query("SELECT * from users WHERE user_name=%s", [user_name], "one")
         if raw_user is None:
             return None
         # pyrefly: ignore
@@ -65,9 +65,9 @@ class UserRepo():
 
             user = User(
                 id=int(line[0]),  # assure l'entier
-                firstname=str(line[1]),
-                lastname=str(line[2]),
-                username=str(line[3]),
+                first_name=str(line[1]),
+                last_name=str(line[2]),
+                user_name=str(line[3]),
                 password=str(line[4]) if include_password else None,
                 email=str(line[5])
             )
