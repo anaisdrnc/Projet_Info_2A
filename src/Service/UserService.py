@@ -9,7 +9,7 @@ class UserService:
     def __init__(self, user_repo: UserRepo):
         self.user_repo = user_repo
 
-    def create_user(self, username: str, password: str) -> User:
+    def create_user(self, username: str, password: str, firstname: str, lastname: str, email:str) -> User:
         """
         Crée un nouvel utilisateur :
         - Vérifie la force du mot de passe
@@ -20,10 +20,10 @@ class UserService:
         check_password_strength(password)
         salt = create_salt()
         hashed_password = hash_password(password, sel=salt)
-        user = User(username=username, password=hashed_password, salt=salt)
-        created_user = self.user_repo.create(user)
-
-        return created_user
+        new_user = User(username=username, password=hashed_password, firstname=firstname, lastname=lastname, email=email)
+        if UserRepo.add_user(new_user) is not None:
+            return new_user
+        return None
 
     def get_user(self, user_id: int) -> User | None:
         return self.user_repo.get_by_id(user_id)

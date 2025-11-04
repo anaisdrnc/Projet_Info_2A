@@ -11,8 +11,8 @@ def test_user_constructor_ok():
     assert User1.id == 1
     assert User1.username == "Lil"
     assert User1.password == "1234password"
-    assert User1.password == "Lilas"
-    assert User1.password == "Dupont"
+    assert User1.firstname == "Lilas"
+    assert User1.lastname == "Dupont"
     assert User1.email == "lilas.dpt@gmail.com"
 
 
