@@ -1,16 +1,17 @@
-from datetime import date
-from typing import Literal
-
+from datetime import datetime
+from typing import List, Optional, Literal
 from pydantic import BaseModel, Field
-
 from .Address import Address
 
-
 class Order(BaseModel):
-    id: int
-    date: date
-    status: Literal["delivered", "waiting"]
+
+    id: Optional[int] = None
+    id_customer: int
+    id_driver: int
     delivery_address: Address
-    total_amount: float = Field(..., gt=0, description="The total amount must be strictly positive")
-    transport_method: Literal["bicycle", "car"]
+    date: datetime = Field(default_factory=datetime.now)
+    status: Literal["delivered", "waiting"] = "waiting"
+    total_amount: float = Field(..., gt=0)
     payment_method: Literal["card", "cash"]
+    nb_items: int = Field(..., ge=0)
+    products: Optional[List[dict]] = None
