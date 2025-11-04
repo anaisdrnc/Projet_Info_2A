@@ -4,4 +4,4 @@ from src.Model.User import User
 
 
 class Driver(User):
-    transport_mean: Literal["bicycling", "driving"]
+    mean_of_transport: Literal["Bike", "Car"]

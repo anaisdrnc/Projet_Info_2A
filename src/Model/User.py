@@ -3,8 +3,8 @@ from pydantic import BaseModel
 
 class User(BaseModel):
     id: int
-    username: str
+    user_name: str
     password: str
-    firstname: str
-    lastname: str
+    first_name: str
+    last_name: str
     email: str

@@ -22,14 +22,14 @@ def test_create_driver_ok():
 
     # GIVEN
     driver = Driver(
-        id=0,
         username="testdriver",
         password=hash_password("secret", "testdriver"),
         firstname="Test",
         lastname="Driver",
         email="testdriver@test.com",
-        transport_mean="driving"
+        transport_mean="Car"
     )
+
 
     # WHEN
     created = DriverDAO().create(driver)
@@ -44,13 +44,12 @@ def test_create_driver_ko():
 
     # GIVEN
     driver = Driver(
-        id=0,
-        username="",  # invalid username
-        password=123,  # invalid type
-        firstname="",
-        lastname="",
-        email="notanemail",
-        transport_mean="flying"  # invalid transport
+        username="testdriver",
+        password=hash_password("secret", "testdriver"),
+        firstname="Test",
+        lastname="Driver",
+        email="testdriver@test.com",
+        transport_mean="Car"
     )
 
     # WHEN
@@ -65,13 +64,12 @@ def test_get_by_id_ok():
 
     # GIVEN
     driver = Driver(
-        id=0,
-        username="driver2",
-        password=hash_password("secret", "driver2"),
-        firstname="Second",
+        username="testdriver",
+        password=hash_password("secret", "testdriver"),
+        firstname="Test",
         lastname="Driver",
-        email="driver2@test.com",
-        transport_mean="bicycling"
+        email="testdriver@test.com",
+        transport_mean="Car"
     )
     DriverDAO().create(driver)
     driver_id = driver.id
@@ -102,22 +100,20 @@ def test_list_all_drivers():
 
     # GIVEN
     driver1 = Driver(
-        id=0,
         username="list_driver1",
         password=hash_password("secret1", "list_driver1"),
         firstname="List",
         lastname="Driver1",
         email="list1@test.com",
-        transport_mean="driving"
+        transport_mean="Car"
     )
     driver2 = Driver(
-        id=0,
         username="list_driver2",
         password=hash_password("secret2", "list_driver2"),
         firstname="List",
         lastname="Driver2",
         email="list2@test.com",
-        transport_mean="bicycling"
+        transport_mean="Car"
     )
     DriverDAO().create(driver1)
     DriverDAO().create(driver2)
@@ -138,17 +134,16 @@ def test_update_driver_ok():
 
     # GIVEN
     driver = Driver(
-        id=0,
         username="update_driver",
         password=hash_password("secret", "update_driver"),
         firstname="Update",
         lastname="Driver",
         email="update@test.com",
-        transport_mean="driving"
+        transport_mean="Car"
     )
     DriverDAO().create(driver)
 
-    driver.transport_mean = "bicycling"
+    driver.transport_mean = "Bike"
 
     # WHEN
     updated = DriverDAO().update(driver)
@@ -156,7 +151,7 @@ def test_update_driver_ok():
 
     # THEN
     assert updated
-    assert updated_driver.transport_mean == "bicycling"
+    assert updated_driver.transport_mean == "Bike"
 
 
 def test_update_driver_ko():
@@ -164,13 +159,12 @@ def test_update_driver_ko():
 
     # GIVEN
     driver = Driver(
-        id=999999,
         username="nonexist",
         password=hash_password("secret", "nonexist"),
         firstname="No",
         lastname="Exist",
         email="noexist@test.com",
-        transport_mean="driving"
+        transport_mean="Car"
     )
 
     # WHEN
@@ -187,13 +181,12 @@ def test_login_driver_ok():
     username = "login_driver"
     password = "secret"
     driver = Driver(
-        id=0,
         username=username,
         password=hash_password(password, username),
         firstname="Login",
         lastname="Driver",
         email="login@test.com",
-        transport_mean="driving"
+        transport_mean="Car"
     )
     DriverDAO().create(driver)
 
@@ -224,13 +217,12 @@ def test_delete_driver_ok():
 
     # GIVEN
     driver = Driver(
-        id=0,
         username="delete_driver",
         password=hash_password("secret", "delete_driver"),
         firstname="Delete",
         lastname="Driver",
         email="delete@test.com",
-        transport_mean="driving"
+        transport_mean="Car"
     )
     DriverDAO().create(driver)
 

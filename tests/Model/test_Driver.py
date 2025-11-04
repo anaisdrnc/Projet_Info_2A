@@ -7,16 +7,16 @@ def test_create_valid_driver():
     """Test : création d’un Driver valide"""
     driver = Driver(
         id=1,
-        username="emma_driver",
+        user_name="emma_driver",
         password="secret",
-        firstname="Emma",
-        lastname="Glorieux",
+        first_name="Emma",
+        last_name="Glorieux",
         email="emma@test.com",
-        transport_mean="driving"
+        mean_of_transport="Car"
     )
 
-    assert driver.username == "emma_driver"
-    assert driver.transport_mean == "driving"
+    assert driver.user_name == "emma_driver"
+    assert driver.mean_of_transport == "Car"
     assert isinstance(driver, Driver)
 
 
@@ -24,26 +24,26 @@ def test_create_driver_with_bicycle():
     """Test : création d’un Driver avec transport_mean = bicycling"""
     driver = Driver(
         id=2,
-        username="paul_bike",
+        user_name="paul_bike",
         password="velo",
-        firstname="Paul",
-        lastname="Martin",
+        first_name="Paul",
+        last_name="Martin",
         email="paul@test.com",
-        transport_mean="bicycling"
+        mean_of_transport="Bike"
     )
 
-    assert driver.transport_mean == "bicycling"
+    assert driver.mean_of_transport == "Bike"
 
 
 def test_create_driver_with_invalid_transport_mean():
-    """Test : transport_mean invalide"""
+    """Test : mean_of_transport invalide"""
     with pytest.raises(ValueError):
         Driver(
             id=3,
-            username="bob_invalid",
+            user_name="bob_invalid",
             password="fail",
-            firstname="Bob",
-            lastname="Error",
+            first_name="Bob",
+            last_name="Error",
             email="bob@test.com",
-            transport_mean="walking"
+            mean_of_transport="walking"
         )
