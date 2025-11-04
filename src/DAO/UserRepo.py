@@ -2,7 +2,6 @@ from typing import Optional
 import logging
 from typing import List, Optional
 from utils.log_decorator import log
-from utils.singleton import Singleton
 from src.Model.User import User
 from .DBConnector import DBConnector
 
