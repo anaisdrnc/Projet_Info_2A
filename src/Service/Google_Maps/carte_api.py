@@ -2,31 +2,35 @@ import googlemaps
 from datetime import datetime
 import folium
 import os
-#from src.Service.Google_Maps.check_adress import check_adress
+import config
+
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from Google_Maps.check_adress import check_adress
 
 
-API_KEY = "AIzaSyAkDMMJJmp_xAwa_eBGB9VTCZrf-bCSyy0"
+API_KEY = config.API_KEY_GOOGLE_MAPS
 
 
 # Initialiser le client Google Maps
 gmaps = googlemaps.Client(key=API_KEY)
 
 origin = "Rue Foch, Rennes, France"
-destination = "Rennes, France"
+destination = str(input("Enter your adress: "))
 
 
 #Vérification des adresses rentrées
-"""
-if verifier_adresse(destination):
-    print("Valid adress")
-else:
-    print("Invalid destination adress, please verify your input.")
 
-if verifier_adresse(origin):
+if check_adress(destination):
     print("Valid adress")
 else:
-    print("Invalid origin adress, please verify your input.")
-"""
+    raiseError("Invalid destination adress, please verify your input.")
+
+if check_adress(origin):
+    print("Valid adress")
+else:
+    raiseError("Invalid origin adress, please verify your input.")
+
 # Récupérer les directions
 now = datetime.now()
 directions = gmaps.directions(
