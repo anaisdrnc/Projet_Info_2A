@@ -1,10 +1,9 @@
 import logging
 
-from src.utils.log_decorator import log
-from src.utils.singleton import Singleton
-
 from src.DAO.DBConnector import DBConnector
 from src.Model.Product import Product
+from utils.log_decorator import log
+from utils.singleton import Singleton
 
 
 class ProductDAO(metaclass=Singleton):
