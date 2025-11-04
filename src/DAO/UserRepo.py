@@ -59,14 +59,19 @@ class UserRepo():
 
         list_users = []
         for line in raw_list:
+            # line doit être un tuple : (id_user, first_name, last_name, user_name, password, email)
+            if not isinstance(line, tuple) or len(line) < 6:
+                continue  # ignore invalid rows
+
             user = User(
-                id=line["id_user"],
-                firstname=line["first_name"],
-                lastname=line["last_name"],
-                username=line["user_name"],
-                password=line["password"] if include_password else None,
-                email=line["email"],
+                id=int(line[0]),  # assure l'entier
+                firstname=str(line[1]),
+                lastname=str(line[2]),
+                username=str(line[3]),
+                password=str(line[4]) if include_password else None,
+                email=str(line[5])
             )
             list_users.append(user)
+
         return list_users
 
