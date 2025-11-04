@@ -38,7 +38,7 @@ INSERT INTO administrator (id_administrator, id_user) VALUES
 -----------------------
 -- PRODUCT
 -----------------------
-INSERT INTO product (id_product, name, price, production_cost, description, type, stock) VALUES
+INSERT INTO product (id_product, name, price, production_cost, description, product_type, stock) VALUES
 (999, 'Test Panini', 3.00, 2.00, 'Simple panini for test', 'lunch', 10),
 (998, 'Test Cake', 1.00, 0.50, 'Chocolate test cake', 'dessert', 5),
 (997, 'Test Drink', 1.50, 0.50, 'Small soda can', 'drink', 20);
