@@ -62,17 +62,3 @@ class UserRepo(metaclass = Singleton):
             user = User(id = line['id_user'],firstname = line['firstname'],lastname = line['lastname'],username = line['username'], password = line['password'], email = line['email'])
             list_users.append(user)
         return list_users
-
-"""    def insert_into_db(self, username: str, salt: str, hashed_password: str) -> User:
-        raw_created_user = self.db_connector.sql_query(
-            """
-       " INSERT INTO users (id, username, salt, password) "
-       " VALUES (DEFAULT, %(username)s, %(salt)s, %(password)s)"
-    " RETURNING *; " 
-        """,
-            {"username": username, "salt": salt, "password": hashed_password},
-            "one",
-        )
-        # pyrefly: ignore
-        return User(**raw_created_user)"""
-    
