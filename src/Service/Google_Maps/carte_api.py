@@ -1,0 +1,82 @@
+import googlemaps
+from datetime import datetime
+import folium
+import os
+#from src.Service.Google_Maps.check_adress import check_adress
+
+
+API_KEY = "AIzaSyAkDMMJJmp_xAwa_eBGB9VTCZrf-bCSyy0"
+
+
+# Initialiser le client Google Maps
+gmaps = googlemaps.Client(key=API_KEY)
+
+origin = "Rue Foch, Rennes, France"
+destination = "Rennes, France"
+
+
+#Vérification des adresses rentrées
+"""
+if verifier_adresse(destination):
+    print("Valid adress")
+else:
+    print("Invalid destination adress, please verify your input.")
+
+if verifier_adresse(origin):
+    print("Valid adress")
+else:
+    print("Invalid origin adress, please verify your input.")
+"""
+# Récupérer les directions
+now = datetime.now()
+directions = gmaps.directions(
+    origin,
+    destination,
+    mode="driving",
+    departure_time=now
+)
+
+leg = directions[0]['legs'][0]
+distance = leg['distance']['text']
+duration = leg['duration']['text']
+start_location = leg['start_location']
+end_location = leg['end_location']
+
+print(f" Itinéraire de {origin} à {destination}")
+print(f" Distance : {distance}")
+print(f" Durée estimée : {duration}")
+
+# Carte créée avec Folium
+m = folium.Map(location=[start_location['lat'], start_location['lng']], zoom_start=6)
+
+# Ajouter un marqueur pour le point de départ et d’arrivée
+folium.Marker(
+    [start_location['lat'], start_location['lng']],
+    popup=f"Départ : {origin}",
+    icon=folium.Icon(color='green')
+).add_to(m)
+
+folium.Marker(
+    [end_location['lat'], end_location['lng']],
+    popup=f"Arrivée : {destination}",
+    icon=folium.Icon(color='red')
+).add_to(m)
+
+# Extraire les points du polyligne
+path = []
+
+for step in leg['steps']:
+    # Chaque step contient une polyline encodée
+    polyline = step['polyline']['points']
+    decoded_points = googlemaps.convert.decode_polyline(polyline)
+    # Ajoute tous les points décodés à la liste globale
+    for point in decoded_points:
+        path.append((point['lat'], point['lng']))
+
+# Tracer une ligne détaillée sur la carte
+folium.PolyLine(path, color="blue", weight=5, opacity=0.7).add_to(m)
+
+#Enregistre la carte dans le même dossier que les scripts python
+script_dir = os.path.dirname(os.path.abspath(__file__))
+output_path = os.path.join(script_dir, "itineraire.html")
+m.save(output_path)
