@@ -67,7 +67,7 @@ CREATE TABLE product (
     name             VARCHAR(100) NOT NULL,
     price            DECIMAL(10,2) NOT NULL CHECK (price >= 0),
     production_cost  DECIMAL(10,2) NOT NULL CHECK (production_cost >= 0),
-    type             VARCHAR(20) NOT NULL, 
+    product_type             VARCHAR(20) NOT NULL, 
     description      TEXT,
     stock            INT NOT NULL CHECK (stock >= 0)
 );

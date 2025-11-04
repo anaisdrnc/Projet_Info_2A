@@ -2,14 +2,13 @@ import logging
 from typing import List, Optional
 
 from utils.log_decorator import log
-from utils.singleton import Singleton
 
 from src.DAO.DBConnector import DBConnector
 
 from src.Model.Driver import Driver
 
 
-class DriverDAO(metaclass=Singleton):
+class DriverDAO():
     """
     DAO for managing drivers in the database.
 

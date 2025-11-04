@@ -6,14 +6,13 @@ import psycopg2
 from unittest import mock
 
 from utils.log_decorator import log
-from utils.singleton import Singleton
 from src.DAO.DBConnector import DBConnector
 
-from src.Service.UserService import UserService  
-from src.DAO.UserRepo import UserRepo 
+from src.Service.UserService import UserService
+from src.DAO.UserRepo import UserRepo
 
 
-class ResetDatabase(metaclass=Singleton):
+class ResetDatabase():
     """
     Réinitialisation de la base de données du projet
     """
@@ -45,14 +44,14 @@ class ResetDatabase(metaclass=Singleton):
         db.close()
 
         try:
-            db = DBConnector()
+            db_connector = DBConnector()
             with psycopg2.connect(
-                host=db.host,
-                port=db.port,
-                database=db.database,
-                user=db.user,
-                password=db.password,
-                options=f"-c search_path={db.schema}",
+                host=db_connector.host,
+                port=db_connector.port,
+                database=db_connector.database,
+                user=db_connector.user,
+                password=db_connector.password,
+                options=f"-c search_path={db_connector.schema}",
             ) as connection:
                 with connection.cursor() as cursor:
                     cursor.execute(create_schema)
@@ -64,10 +63,15 @@ class ResetDatabase(metaclass=Singleton):
 
         # Applique le hashage des mots de passe aux users
         user_service = UserService(UserRepo())
-        all_users = user_service.user_repo.list_all_with_passwords()  # à créer si besoin
-
+        all_users = user_service.user_repo.get_all_users(include_password=True)
         for user in all_users:
-            user_service.create_user(user.username, user.password)
+            user_service.create_user(
+                username=user.username,
+                password=user.password,
+                firstname=user.firstname,
+                lastname=user.lastname,
+                email=user.email
+            )
 
         logging.info("Base de données réinitialisée avec succès.")
         return True

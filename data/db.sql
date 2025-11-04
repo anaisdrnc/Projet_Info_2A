@@ -38,7 +38,7 @@ INSERT INTO administrator (id_user) VALUES
 -----------------------
 -- INSERT INTO PRODUCT
 -----------------------
-INSERT INTO product (name, price, production_cost, description, type, stock) VALUES
+INSERT INTO product (name, price, production_cost, description, product_type, stock) VALUES
 -- Lunch
 ('Italian Panini', 3.00, 2.00, 'Chicken, fresh tomatoes, mozzarella', 'lunch', 20),
 ('Indian Panini', 3.00, 2.00, 'Chicken, curry, mozzarella', 'lunch', 20),
