@@ -52,16 +52,16 @@ class UserRepo(metaclass = Singleton):
         # pyrefly: ignore
         return User(**raw_user)
 
-"""    def insert_into_db(self, username: str, salt: str, hashed_password: str) -> User:
-        raw_created_user = self.db_connector.sql_query(
-            """
-       " INSERT INTO users (id, username, salt, password) "
-       " VALUES (DEFAULT, %(username)s, %(salt)s, %(password)s)"
-    " RETURNING *; " 
-        """,
-            {"username": username, "salt": salt, "password": hashed_password},
-            "one",
-        )
+#def insert_into_db(self, username: str, salt: str, hashed_password: str) -> User:
+#raw_created_user = self.db_connector.sql_query(
+
+# INSERT INTO users (id, username, salt, password) "
+# VALUES (DEFAULT, %(username)s, %(salt)s, %(password)s)"
+# RETURNING *; "
+# """,
+#  {"username": username, "salt": salt, "password": hashed_password},
+# "one",
+#  )
         # pyrefly: ignore
-        return User(**raw_created_user)"""
+        # return User(**raw_created_user)"""
     
