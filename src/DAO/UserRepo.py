@@ -52,6 +52,17 @@ class UserRepo(metaclass = Singleton):
         # pyrefly: ignore
         return User(**raw_user)
 
+    def get_all_users(self):
+        "list all the users (used in the reset_database)"
+        raw_list = self.db_connector.sqd_query("SELECT * FROM users")
+        if raw_list is None:
+            return None
+        list_users = []
+        for line in raw_list:
+            user = User(id = line['id_user'],firstname = line['firstname'],lastname = line['lastname'],username = line['username'], password = line['password'], email = line['email'])
+            list_users.append(user)
+        return list_users
+
 """    def insert_into_db(self, username: str, salt: str, hashed_password: str) -> User:
         raw_created_user = self.db_connector.sql_query(
             """
