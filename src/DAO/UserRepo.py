@@ -1,8 +1,6 @@
 from typing import Optional
 import logging
-from typing import List, Optional
 from utils.log_decorator import log
-from utils.singleton import Singleton
 from src.Model.User import User
 from .DBConnector import DBConnector
 
@@ -53,20 +51,22 @@ class UserRepo():
         # pyrefly: ignore
         return User(**raw_user)
 
-    def get_all_users(self):
-        "list all the users (used in the reset_database)"
-        raw_list = self.db_connector.sqd_query("SELECT * FROM users")
+    def get_all_users(self, include_password=False) -> list[User]:
+        """List all the users, optionally including the password."""
+        raw_list = self.db_connector.sql_query("SELECT * FROM users")
         if raw_list is None:
-            return None
+            return []
+
         list_users = []
         for line in raw_list:
             user = User(
                 id=line["id_user"],
-                firstname=line["firstname"],
-                lastname=line["lastname"],
-                username=line["username"],
-                password=line["password"],
+                firstname=line["first_name"],
+                lastname=line["last_name"],
+                username=line["user_name"],
+                password=line["password"] if include_password else None,
                 email=line["email"],
             )
             list_users.append(user)
         return list_users
+
