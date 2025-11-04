@@ -27,3 +27,10 @@ class UserService:
 
     def get_user(self, user_id: int) -> User | None:
         return self.user_repo.get_by_id(user_id)
+    
+    def get_all_users(self, include_password = False):
+        users = UserRepo.get_all_users()
+        if not include_password:
+            for user in users:
+                user.password = None
+        return users
