@@ -5,6 +5,7 @@ from src.Model.Movie import Movie
 movie_router = APIRouter(prefix="/movies", tags=["Movies"])
 
 
+
 @movie_router.get("/{tmdb_id}", status_code=status.HTTP_200_OK)
 def get_movie_by_id(tmdb_id: int):
     try:
