@@ -6,7 +6,8 @@ from utils.singleton import Singleton
 from src.Model.User import User
 from .DBConnector import DBConnector
 
-class UserRepo(metaclass = Singleton):
+
+class UserRepo():
     """DAO User"""
 
     def __init__(self):
@@ -14,23 +15,23 @@ class UserRepo(metaclass = Singleton):
         self.db_connector = DBConnector()
 
     def add_user(self, user):
-        """add user to the database and return id_user, in order to add the user to the 
+        """add user to the database and return id_user, in order to add the user to the
         proprer table (customer, driver or admin) with another method"""
         res = None
         try:
             res = self.db_connector.sql_query(
-                    "INSERT INTO users (first_name, last_name, user_name, password, email)"
-                    "VALUES "
-                    "(%(first_name)s, %(last_name)s, %(user_name)s, %(password)s, %(email)s)"
-                    "RETURNING id_user;",
-                    {
-                        "last_name": user.lastname,
-                        "first_name": user.firstname,
-                        "user_name": user.username,
-                        "password": user.password,
-                        "email": user.email,
-                    },
-                )
+                "INSERT INTO users (first_name, last_name, user_name, password, email)"
+                "VALUES "
+                "(%(first_name)s, %(last_name)s, %(user_name)s, %(password)s, %(email)s)"
+                "RETURNING id_user;",
+                {
+                    "last_name": user.lastname,
+                    "first_name": user.firstname,
+                    "user_name": user.username,
+                    "password": user.password,
+                    "email": user.email,
+                },
+            )
         except Exception as e:
             logging.info(e)
         if res:
@@ -52,15 +53,20 @@ class UserRepo(metaclass = Singleton):
         # pyrefly: ignore
         return User(**raw_user)
 
-# def insert_into_db(self, username: str, salt: str, hashed_password: str) -> User:
-#raw_created_user = self.db_connector.sql_query(
-# """
-# " INSERT INTO users (id, username, salt, password) "
-# " VALUES (DEFAULT, %(username)s, %(salt)s, %(password)s)"
-#" RETURNING *; "
-# """,
-#{"username": username, "salt": salt, "password": hashed_password},
-#"one",
-# )
-## pyrefly: ignore
-# return User(**raw_created_user)"""
+    def get_all_users(self):
+        "list all the users (used in the reset_database)"
+        raw_list = self.db_connector.sqd_query("SELECT * FROM users")
+        if raw_list is None:
+            return None
+        list_users = []
+        for line in raw_list:
+            user = User(
+                id=line["id_user"],
+                firstname=line["firstname"],
+                lastname=line["lastname"],
+                username=line["username"],
+                password=line["password"],
+                email=line["email"],
+            )
+            list_users.append(user)
+        return list_users
