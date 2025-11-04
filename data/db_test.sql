@@ -8,6 +8,7 @@ INSERT INTO users (id_user, first_name, last_name, user_name, password, email) V
 (996, 'Charlie', 'Dupont','ChaCha', 'fef0cbb48e4c82a6bdcd62b27bc4c73fef56ead5bc148cc210e5b87148c12009', 'charlie@test.com'),
 (995, 'Diane', 'Lemoine', 'DiDi','cc731e1c53078b48cc777353778b20df1fa479cf1aa991d5509ebaaffadba883', 'diane@test.com');
 
+
 -----------------------
 -- CUSTOMER
 -----------------------
