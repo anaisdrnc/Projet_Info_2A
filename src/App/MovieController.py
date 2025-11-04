@@ -9,7 +9,7 @@ movie_router = APIRouter(prefix="/movies", tags=["Movies"])
 def get_movie_by_id(tmdb_id: int):
     try:
         # my_movie = movie_service.get_by_id(tmdb_id)
-        my_movie = Movie(original_title="The Wild Robot", id=1)
+        my_movie = Movie(original_title="The Wild Rainbow", id=1)
         return my_movie
     except FileNotFoundError:
         raise HTTPException(

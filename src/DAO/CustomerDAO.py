@@ -1,6 +1,6 @@
 from DBConnector import DBConnector
-#from src.Model.User import User
-#from src.Model.Customer import Customer
+from src.Model.User import User
+from src.Model.Customer import Customer
 
 
 class CustomerDAO:
