@@ -1,13 +1,12 @@
 import logging
 
 from src.utils.log_decorator import log
-from src.utils.singleton import Singleton
 
 from src.DAO.DBConnector import DBConnector
 from src.Model.Product import Product
 
 
-class ProductDAO(metaclass=Singleton):
+class ProductDAO:
     """Class providing access to products in the database"""
 
     def __init__(self):
