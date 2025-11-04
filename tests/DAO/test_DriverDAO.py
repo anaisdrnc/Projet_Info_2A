@@ -1,250 +1,166 @@
 import os
 import pytest
-from unittest.mock import patch
-
 from utils.reset_database import ResetDatabase
 from utils.securite import hash_password
-
 from src.DAO.DriverDAO import DriverDAO
 from src.Model.Driver import Driver
 
 
+import pytest
+from utils.reset_database import ResetDatabase
+from dotenv import load_dotenv
+
 @pytest.fixture(scope="session", autouse=True)
 def setup_test_environment():
     """Initialize the test database environment"""
-    with patch.dict(os.environ, {"POSTGRES_SCHEMA": "projet_test_dao"}):
-        ResetDatabase().lancer(test_dao=True)
-        yield
+    load_dotenv()
+    ResetDatabase().lancer(test_dao=True)
+
+    yield
 
 
 def test_create_driver_ok():
-    """Successfully create a driver"""
-
-    # GIVEN
     driver = Driver(
-        username="testdriver",
+        user_name="testdriver",
         password=hash_password("secret", "testdriver"),
-        firstname="Test",
-        lastname="Driver",
+        first_name="Test",
+        last_name="Driver",
         email="testdriver@test.com",
-        transport_mean="Car"
+        mean_of_transport="Car"
     )
-
-
-    # WHEN
     created = DriverDAO().create(driver)
-
-    # THEN
     assert created
     assert driver.id > 0
 
 
 def test_create_driver_ko():
-    """Fail to create a driver with invalid data"""
-
-    # GIVEN
     driver = Driver(
-        username="testdriver",
+        user_name="testdriver",
         password=hash_password("secret", "testdriver"),
-        firstname="Test",
-        lastname="Driver",
+        first_name="Test",
+        last_name="Driver",
         email="testdriver@test.com",
-        transport_mean="Car"
+        mean_of_transport="Car"
     )
-
-    # WHEN
     created = DriverDAO().create(driver)
-
-    # THEN
     assert not created
 
 
 def test_get_by_id_ok():
-    """Retrieve an existing driver by ID"""
-
-    # GIVEN
     driver = Driver(
-        username="testdriver",
-        password=hash_password("secret", "testdriver"),
-        firstname="Test",
-        lastname="Driver",
-        email="testdriver@test.com",
-        transport_mean="Car"
+        user_name="get_driver",
+        password=hash_password("secret", "get_driver"),
+        first_name="Get",
+        last_name="Driver",
+        email="get@test.com",
+        mean_of_transport="Car"
     )
     DriverDAO().create(driver)
-    driver_id = driver.id
-
-    # WHEN
-    retrieved = DriverDAO().get_by_id(driver_id)
-
-    # THEN
+    retrieved = DriverDAO().get_by_id(driver.id)
     assert retrieved is not None
-    assert retrieved.username == driver.username
+    assert retrieved.user_name == driver.user_name
 
 
 def test_get_by_id_ko():
-    """Return None for non-existent driver ID"""
-
-    # GIVEN
-    driver_id = 999999
-
-    # WHEN
-    retrieved = DriverDAO().get_by_id(driver_id)
-
-    # THEN
+    retrieved = DriverDAO().get_by_id(999999)
     assert retrieved is None
 
 
 def test_list_all_drivers():
-    """Retrieve a list of all drivers"""
-
-    # GIVEN
     driver1 = Driver(
-        username="list_driver1",
+        user_name="list_driver1",
         password=hash_password("secret1", "list_driver1"),
-        firstname="List",
-        lastname="Driver1",
+        first_name="List",
+        last_name="Driver1",
         email="list1@test.com",
-        transport_mean="Car"
+        mean_of_transport="Car"
     )
     driver2 = Driver(
-        username="list_driver2",
+        user_name="list_driver2",
         password=hash_password("secret2", "list_driver2"),
-        firstname="List",
-        lastname="Driver2",
+        first_name="List",
+        last_name="Driver2",
         email="list2@test.com",
-        transport_mean="Car"
+        mean_of_transport="Car"
     )
     DriverDAO().create(driver1)
     DriverDAO().create(driver2)
-
-    # WHEN
     all_drivers = DriverDAO().list_all()
-
-    # THEN
-    assert isinstance(all_drivers, list)
-    assert len(all_drivers) >= 2
-    usernames = [d.username for d in all_drivers]
-    assert driver1.username in usernames
-    assert driver2.username in usernames
+    usernames = [d.user_name for d in all_drivers]
+    assert driver1.user_name in usernames
+    assert driver2.user_name in usernames
 
 
 def test_update_driver_ok():
-    """Successfully update a driver"""
-
-    # GIVEN
     driver = Driver(
-        username="update_driver",
+        user_name="update_driver",
         password=hash_password("secret", "update_driver"),
-        firstname="Update",
-        lastname="Driver",
+        first_name="Update",
+        last_name="Driver",
         email="update@test.com",
-        transport_mean="Car"
+        mean_of_transport="Car"
     )
     DriverDAO().create(driver)
-
-    driver.transport_mean = "Bike"
-
-    # WHEN
+    driver.mean_of_transport = "Bike"
     updated = DriverDAO().update(driver)
     updated_driver = DriverDAO().get_by_id(driver.id)
-
-    # THEN
     assert updated
-    assert updated_driver.transport_mean == "Bike"
+    assert updated_driver.mean_of_transport == "Bike"
 
 
 def test_update_driver_ko():
-    """Fail to update a non-existent driver"""
-
-    # GIVEN
     driver = Driver(
-        username="nonexist",
+        user_name="nonexist",
         password=hash_password("secret", "nonexist"),
-        firstname="No",
-        lastname="Exist",
+        first_name="No",
+        last_name="Exist",
         email="noexist@test.com",
-        transport_mean="Car"
+        mean_of_transport="Car"
     )
-
-    # WHEN
     updated = DriverDAO().update(driver)
-
-    # THEN
     assert not updated
 
 
 def test_login_driver_ok():
-    """Successfully login a driver"""
-
-    # GIVEN
     username = "login_driver"
     password = "secret"
     driver = Driver(
-        username=username,
+        user_name=username,
         password=hash_password(password, username),
-        firstname="Login",
-        lastname="Driver",
+        first_name="Login",
+        last_name="Driver",
         email="login@test.com",
-        transport_mean="Car"
+        mean_of_transport="Car"
     )
     DriverDAO().create(driver)
-
-    # WHEN
     logged_in = DriverDAO().login(username, hash_password(password, username))
-
-    # THEN
     assert logged_in is not None
-    assert logged_in.username == username
+    assert logged_in.user_name == username
 
 
 def test_login_driver_ko():
-    """Fail login with wrong credentials"""
-
-    # GIVEN
-    username = "wronguser"
-    password = "wrongpass"
-
-    # WHEN
-    logged_in = DriverDAO().login(username, hash_password(password, username))
-
-    # THEN
+    logged_in = DriverDAO().login("wronguser", hash_password("wrongpass", "wronguser"))
     assert logged_in is None
 
 
 def test_delete_driver_ok():
-    """Successfully delete a driver"""
-
-    # GIVEN
     driver = Driver(
-        username="delete_driver",
+        user_name="delete_driver",
         password=hash_password("secret", "delete_driver"),
-        firstname="Delete",
-        lastname="Driver",
+        first_name="Delete",
+        last_name="Driver",
         email="delete@test.com",
-        transport_mean="Car"
+        mean_of_transport="Car"
     )
     DriverDAO().create(driver)
-
-    # WHEN
     deleted = DriverDAO().delete(driver.id)
     driver_after = DriverDAO().get_by_id(driver.id)
-
-    # THEN
     assert deleted
     assert driver_after is None
 
 
 def test_delete_driver_ko():
-    """Fail to delete a non-existent driver"""
-
-    # GIVEN
-    driver_id = 999999
-
-    # WHEN
-    deleted = DriverDAO().delete(driver_id)
-
-    # THEN
+    deleted = DriverDAO().delete(999999)
     assert not deleted
 
 

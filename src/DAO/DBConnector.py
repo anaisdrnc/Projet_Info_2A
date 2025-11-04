@@ -1,13 +1,11 @@
 import os
 from typing import Literal, Optional, Union
-
 import psycopg2
 from psycopg2.extras import RealDictCursor
 
-
 class DBConnector:
-    def __init__(self, config=None):
-        if config is not None:
+    def __init__(self, config=None, test: bool = False):
+        if config:
             self.host = config["host"]
             self.port = config["post"]
             self.database = config["database"]
@@ -20,7 +18,8 @@ class DBConnector:
             self.database = os.environ["POSTGRES_DATABASE"]
             self.user = os.environ["POSTGRES_USER"]
             self.password = os.environ["POSTGRES_PASSWORD"]
-            self.schema = os.environ["POSTGRES_SCHEMA"]
+            # Choix du schema selon si c’est un test
+            self.schema = os.environ["POSTGRES_SCHEMA"] if not test else "test"
 
     def sql_query(
         self,
