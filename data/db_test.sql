@@ -13,7 +13,7 @@ CREATE TABLE test.users (
     id_user        SERIAL PRIMARY KEY,
     first_name     VARCHAR(50) NOT NULL,
     last_name      VARCHAR(50) NOT NULL,
-    user_name      VARCHAR(30) UNIQUE NOT NULL,
+    user_name      VARCHAR(100) UNIQUE NOT NULL,
     password       VARCHAR(256) NOT NULL,
     email          VARCHAR(100) UNIQUE NOT NULL
 );
