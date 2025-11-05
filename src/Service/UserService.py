@@ -45,4 +45,7 @@ class UserService:
                 user.password = None
         return users
 
+    def is_username_taken(self, username):
+        answer = UserRepo.is_username_taken(username)
+        return answer
 
