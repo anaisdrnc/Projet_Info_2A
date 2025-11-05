@@ -10,10 +10,12 @@ from src.DAO.DBConnector import DBConnector
 
 load_dotenv()
 
+
 @pytest.fixture(scope="session", autouse=True)
 def setup_test_environment():
     """Initialize the test database environment"""
     ResetDatabase(test=True).lancer()
+
 
 @pytest.fixture
 def dao():
@@ -22,9 +24,11 @@ def dao():
     driver_dao.db_connector = DBConnector(test=True)
     return driver_dao
 
+
 def unique_username(base="driver"):
     """Générer un username unique pour éviter les collisions entre tests"""
     return f"{base}_{datetime.utcnow().timestamp()}"
+
 
 def test_create_driver_ok(dao):
     username = unique_username("testdriver")
@@ -34,11 +38,12 @@ def test_create_driver_ok(dao):
         first_name="Test",
         last_name="Driver",
         email=f"{username}@test.com",
-        mean_of_transport="Car"
+        mean_of_transport="Car",
     )
     created = dao.create(driver)
     assert created
     assert driver.id > 0
+
 
 def test_create_driver_ko(dao):
     username = unique_username("dupdriver")
@@ -48,7 +53,7 @@ def test_create_driver_ko(dao):
         first_name="Dup",
         last_name="Driver",
         email=f"{username}@test.com",
-        mean_of_transport="Car"
+        mean_of_transport="Car",
     )
     dao.create(driver1)
 
@@ -59,10 +64,11 @@ def test_create_driver_ko(dao):
         first_name="Dup",
         last_name="Driver",
         email=f"{username}@test.com",
-        mean_of_transport="Car"
+        mean_of_transport="Car",
     )
     created = dao.create(driver2)
     assert not created
+
 
 def test_get_by_id_ok(dao):
     username = unique_username("get_driver")
@@ -72,16 +78,18 @@ def test_get_by_id_ok(dao):
         first_name="Get",
         last_name="Driver",
         email=f"{username}@test.com",
-        mean_of_transport="Car"
+        mean_of_transport="Car",
     )
     dao.create(driver)
     retrieved = dao.get_by_id(driver.id)
     assert retrieved is not None
     assert retrieved.user_name == driver.user_name
 
+
 def test_get_by_id_ko(dao):
     retrieved = dao.get_by_id(999999)
     assert retrieved is None
+
 
 def test_list_all_drivers(dao):
     username1 = unique_username("list_driver1")
@@ -92,7 +100,7 @@ def test_list_all_drivers(dao):
         first_name="List",
         last_name="Driver1",
         email=f"{username1}@test.com",
-        mean_of_transport="Car"
+        mean_of_transport="Car",
     )
     driver2 = Driver(
         user_name=username2,
@@ -100,7 +108,7 @@ def test_list_all_drivers(dao):
         first_name="List",
         last_name="Driver2",
         email=f"{username2}@test.com",
-        mean_of_transport="Car"
+        mean_of_transport="Car",
     )
     dao.create(driver1)
     dao.create(driver2)
@@ -110,6 +118,7 @@ def test_list_all_drivers(dao):
     assert username1 in usernames
     assert username2 in usernames
 
+
 def test_update_driver_ok(dao):
     username = unique_username("update_driver")
     driver = Driver(
@@ -118,7 +127,7 @@ def test_update_driver_ok(dao):
         first_name="Update",
         last_name="Driver",
         email=f"{username}@test.com",
-        mean_of_transport="Car"
+        mean_of_transport="Car",
     )
     dao.create(driver)
 
@@ -128,6 +137,7 @@ def test_update_driver_ok(dao):
     assert updated
     assert updated_driver.mean_of_transport == "Bike"
 
+
 def test_update_driver_ko(dao):
     driver = Driver(
         user_name="nonexist",
@@ -136,10 +146,11 @@ def test_update_driver_ko(dao):
         last_name="Exist",
         email="noexist@test.com",
         mean_of_transport="Car",
-        id=999999
+        id=999999,
     )
     updated = dao.update(driver)
     assert not updated
+
 
 def test_login_driver_ok(dao):
     username = unique_username("login_driver")
@@ -150,7 +161,7 @@ def test_login_driver_ok(dao):
         first_name="Login",
         last_name="Driver",
         email=f"{username}@test.com",
-        mean_of_transport="Car"
+        mean_of_transport="Car",
     )
     dao.create(driver)
 
@@ -158,9 +169,11 @@ def test_login_driver_ok(dao):
     assert logged_in is not None
     assert logged_in.user_name == username
 
+
 def test_login_driver_ko(dao):
     logged_in = dao.login("wronguser", hash_password("wrongpass", "wronguser"))
     assert logged_in is None
+
 
 def test_delete_driver_ok(dao):
     username = unique_username("delete_driver")
@@ -170,7 +183,7 @@ def test_delete_driver_ok(dao):
         first_name="Delete",
         last_name="Driver",
         email=f"{username}@test.com",
-        mean_of_transport="Car"
+        mean_of_transport="Car",
     )
     dao.create(driver)
 
@@ -179,9 +192,11 @@ def test_delete_driver_ok(dao):
     assert deleted
     assert driver_after is None
 
+
 def test_delete_driver_ko(dao):
     deleted = dao.delete(999999)
     assert not deleted
+
 
 if __name__ == "__main__":
     pytest.main([__file__])

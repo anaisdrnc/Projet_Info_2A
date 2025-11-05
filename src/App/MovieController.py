@@ -5,7 +5,6 @@ from src.Model.Movie import Movie
 movie_router = APIRouter(prefix="/movies", tags=["Movies"])
 
 
-
 @movie_router.get("/{tmdb_id}", status_code=status.HTTP_200_OK)
 def get_movie_by_id(tmdb_id: int):
     try:
@@ -17,6 +16,5 @@ def get_movie_by_id(tmdb_id: int):
             raise FileNotFoundError
     except FileNotFoundError:
         raise HTTPException(
-            status_code=404,
-            detail=f"Movie with id [{tmdb_id}] not found"
+            status_code=404, detail=f"Movie with id [{tmdb_id}] not found"
         )

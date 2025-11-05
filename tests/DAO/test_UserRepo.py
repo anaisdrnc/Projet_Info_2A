@@ -18,7 +18,12 @@ class MockDBConnector:
                 if not data:
                     raise Exception
                 id_user = data[0]
-                return {"id": id_user, "username": "janjak", "password": "myHashedPassword", "salt": "mySalt"}
+                return {
+                    "id": id_user,
+                    "username": "janjak",
+                    "password": "myHashedPassword",
+                    "salt": "mySalt",
+                }
 
 
 def test_get_user_by_id():
@@ -28,8 +33,9 @@ def test_get_user_by_id():
     assert user.id == 1
     assert user.username == "janjak"
 
+
 def test_integration_get_user_by_id():
-    user_repo = UserRepo(DBConnector(config = {host: testdb.com }))
+    user_repo = UserRepo(DBConnector(config={host: testdb.com}))
     user: User = user_repo.get_by_id(1)
     assert user is not None
     assert user.id == 1
