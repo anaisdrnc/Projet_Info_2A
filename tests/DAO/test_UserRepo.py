@@ -25,19 +25,49 @@ def dao():
     user_dao.db_connector = DBConnector(test=True)
     return user_dao
 
+def unique_username(base="admin"):
+    """Générer un username unique pour éviter les collisions entre tests"""
+    return f"{base}_{datetime.utcnow().timestamp()}"
+
 
 def test_add_user_ok(dao):
-    user = User(username = "user_test", firstname = "User", lastname = "Test", password = "1234password", "user.test@gmail.com")
+    username = unique_username('user_test')
+    user = User(user_name = username , first_name = "User", last_name = "Test", password = "1234password", email = "user.test@gmail.com")
     created = dao.add_user(user)
-    assert created != False 
+    assert created != None
     assert created > 0
 
 def test_add_user_ko(dao):
     "test if the user already exist"
-    user = User(username = "user_test", firstname = "User", lastname = "Test", password = "1234password", "user.test@gmail.com")
+    username = unique_username('user_test')
+    user = User(user_name = username , first_name = "User", last_name = "Test", password = "1234password", email = "user.test@gmail.com")
     created = dao.add_user(user)
-    assert created != False
+    assert created != None
     #create a second type
     created2 = dao.add_user(user)
-    assert created2 == False
+    assert created2 == None
+
+def test_get_by_id(dao):
+    username = unique_username('user_test')
+    user = User(user_name = username , first_name = "User", last_name = "Test", password = "1234password", email ="user.test@gmail.com")
+    created = UserRepo.add_user(user)
+    assert created != None
+    user2 = UserRepo.get_by_id(created)
+    assert user2 is not None
+    assert user2.user_name == username
+    assert user2.first_name == "User"
+    assert user2.last_name == "Test"
+
+def test_get_by_username(dao):
+    username = unique_username('user_test')
+    user = User(user_name = username , first_name = "User", last_name = "Test", password = "1234password", email ="user.test@gmail.com")
+    created = UserRepo.add_user(user)
+    assert created != None
+    user2 = UserRepo.get_by_username(username)
+    assert user2 is not None
+    assert user2.user_name == username
+    assert user2.first_name == "User"
+    assert user2.last_name == "Test"
+
+
 
