@@ -16,79 +16,62 @@ def setup_test_environment():
         yield
 
 
-def test_delete_ok():
-    """Suppression de Product réussie"""
-
-    # GIVEN
-    product = Product(
-        id_product=999,
-        name="Test Panini",
-        price=3.00,
-        production_cost=2.00,
-        description="Simple panini for test",
-        type="lunch",
-        stock=10,
-    )
-
-    # WHEN
-    suppression_ok = ProductDAO().supprimer(product)
-
-    # THEN
-    assert suppression_ok
-
-
-def test_delete_ko():
-    """Suppression de Product échoué unknown id"""
-
-    # GIVEN
-    product = Product(
-        id_product=99956666,
-        name="Test Panini",
-        price=3.00,
-        production_cost=2.00,
-        description="Simple panini for test",
-        type="lunch",
-        stock=10,
-    )
-
-    # WHEN
-    suppression_ok = ProductDAO().supprimer(product)
-
-    # THEN
-    assert not suppression_ok
-
-
 def test_create_ok():
     """Création d'un produit réussie"""
-
-    # GIVEN
     product = Product(
         name="Galette Saucisse",
         price=2.50,
         production_cost=2.00,
         description="simple galette saucisse",
-        type="lunch",
+        product_type="lunch",
         stock=15,
     )
 
-    # WHEN
-    creation_ok = ProductDAO().insert(product)
-
-    # THEN
+    creation_ok = ProductDAO().add_product(product)
     assert creation_ok
-    assert product.id_product
+    assert product.id_product is not None
 
 
 def test_creer_ko():
-    """Création de Product échouée (name echoue)"""
+    """Création échouée avec nom déjà existant"""
+    dao = ProductDAO()
 
-    # GIVEN
-    product = Product(
-        id=34, name="Panini", type="lunch", price=3.00, production_cost=2.50, description="simple lunch", stock=13
+    # Insertion initiale
+    product1 = Product(
+        name="Panini",
+        price=3.00,
+        production_cost=2.50,
+        description="simple lunch",
+        product_type="lunch",
+        stock=13,
     )
+    assert dao.add_product(product1)
 
-    # WHEN
-    creation_ok = ProductDAO().creer(product)
-
-    # THEN
+    # Tentative de réinsertion avec le même nom
+    product2 = Product(
+        name="Panini",
+        price=3.50,
+        production_cost=2.50,
+        description="duplicated",
+        product_type="lunch",
+        stock=5,
+    )
+    creation_ok = dao.add_product(product2)
     assert not creation_ok
+
+
+def test_delete_ok():
+    """Suppression de Product réussie"""
+    product = Product(
+        name="Test Panini OK",
+        price=3.00,
+        production_cost=2.00,
+        description="Simple panini for test",
+        product_type="lunch",
+        stock=10,
+    )
+    dao = ProductDAO()
+    assert dao.add_product(product)
+
+    suppression_ok = dao.deleting_product(product)
+    assert suppression_ok

@@ -1,5 +1,7 @@
 import logging
 
+from psycopg2 import IntegrityError
+
 from src.DAO.DBConnector import DBConnector
 from src.Model.Product import Product
 from utils.log_decorator import log
@@ -29,10 +31,11 @@ class ProductDAO:
         res = None
         try:
             res = self.db_connector.sql_query(
-                "DELETE FROM product WHERE id_product = %(id_product)s",
-                {"id_product": product.id},
-                "one",
+                "DELETE FROM product WHERE id_product = %(id_product)s RETURNING id_product",
+                {"id_product": product.id_product},
+                return_type="one",
             )
+            return res is not None
         except Exception as e:
             logging.info(e)
             raise
@@ -40,43 +43,32 @@ class ProductDAO:
         return res > 0
 
     @log
-    def add_product(self, product) -> bool:
-        """Adding a product to the database
-
-        Parameters
-        ----------
-        product : Product
-
-        Returns
-        -------
-        created : bool
-            True if the creation is a success
-        """
-        res = None
+    def add_product(self, product: Product) -> bool:
+        """Add a product to the database"""
         try:
             res = self.db_connector.sql_query(
                 """
-                INSERT INTO product (id_product, name, price,production_cost, description, type, stock)
-                VALUES (%(id_product)s, %(name)s, %(price)s, %(production_cost)s, %(description)s, %(type)s, %(stock)s)
+                INSERT INTO product (name, price, production_cost, description, product_type, stock)
+                VALUES (%(name)s, %(price)s, %(production_cost)s, %(description)s, %(product_type)s, %(stock)s)
                 RETURNING id_product;
                 """,
                 {
-                    "id_product": product.id,
                     "name": product.name,
                     "price": product.price,
                     "production_cost": product.production_cost,
                     "description": product.description,
-                    "type": product.type,
+                    "product_type": product.product_type,
                     "stock": product.stock,
                 },
-                "one",
+                return_type="one",
             )
+            if res:
+                product.id_product = res["id_product"]
+                return True
+            return False
+        except IntegrityError:
+            # Violation de contrainte, ex: nom déjà existant
+            return False
         except Exception as e:
-            logging.info(e)
-
-        created = False
-        if res:
-            product.id = res["id_product"]
-            created = True
-
-        return created
+            logging.error(f"Erreur ajout produit: {e}")
+            return False
