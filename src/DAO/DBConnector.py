@@ -53,6 +53,9 @@ class DBConnector:
             ) as connection:
                 with connection.cursor() as cursor:
                     cursor.execute(query, data)
+                    if return_type is None:
+                        connection.commit()
+                        return
                     if return_type == "one":
                         return cursor.fetchone()
                     if return_type == "all":
