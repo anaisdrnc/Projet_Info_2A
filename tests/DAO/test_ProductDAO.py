@@ -1,5 +1,5 @@
-import os
-from unittest.mock import patch
+# import os
+# from unittest.mock import patch
 
 import pytest
 from dotenv import load_dotenv
@@ -26,7 +26,7 @@ def dao():
     return product_dao
 
 
-def test_create_ok():
+def test_create_ok(dao):
     """Successful product creation"""
     product = Product(
         id_product=23,
@@ -107,3 +107,10 @@ def test_delete_ok(dao):
         return_type="one",
     )
     assert res is None, "Le produit ne doit plus exister dans la DB"
+
+
+def test_delete_ko(dao):
+    non_existent_id = 99999
+    delete_ok = dao.deleting_product(non_existent_id)
+
+    assert not delete_ok

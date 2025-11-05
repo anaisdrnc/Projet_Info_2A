@@ -1,9 +1,11 @@
 [project]
-name = "Projet2A_2024"
+name = "Projet_Info_2A"
 version = "0.1.0"
-description = "Teacher's version of the Projet2A 2024"
+description = "Default template for PDM package"
 authors = [
     {name = "ClémentValot", email = "clement.valot.pro@gmail.com"},
+    {name = "robingirard", email = "robin.girard003@gmail.com"},
+    {name = "robingirard003", email = "robin.girard003@gmail.com"},
 ]
 dependencies = [
     "fastapi>=0.116.1",
@@ -12,8 +14,10 @@ dependencies = [
     "PyJWT>=2.10.1",
     "psycopg2-binary>=2.9.10",
     "python-dotenv>=1.1.1",
+    "folium>=0.20.0",
+    "googlemaps>=4.10.0",
 ]
-requires-python = "==3.12.*"
+requires-python = "==3.13.*"
 readme = "README.md"
 license = {text = "MIT"}
 
@@ -63,3 +67,4 @@ typing = [
     "types-psycopg2>=2.9.21.20250809",
     "pyrefly>=0.30.0",
 ]
+
