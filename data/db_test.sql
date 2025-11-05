@@ -15,7 +15,8 @@ CREATE TABLE test.users (
     last_name      VARCHAR(50) NOT NULL,
     user_name      VARCHAR(100) UNIQUE NOT NULL,
     password       VARCHAR(256) NOT NULL,
-    email          VARCHAR(100) UNIQUE NOT NULL
+    email          VARCHAR(100) UNIQUE NOT NULL,
+    salt           VARCHAR(256) NOT NULL
 );
 
 -----------------------
