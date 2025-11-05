@@ -1,8 +1,8 @@
-from DBConnector import DBConnector
+from src.DAO.DBConnector import DBConnector
 import logging
 from src.Model.User import User
 from src.Model.Customer import Customer
-from UserRepo import UserRepo
+from src.DAO.UserRepo import UserRepo
 
 
 class CustomerDAO:
