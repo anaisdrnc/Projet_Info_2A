@@ -11,10 +11,12 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+
 @pytest.fixture(scope="session", autouse=True)
 def setup_test_environment():
     """Initialize the test database environment"""
     ResetDatabase(test=True).lancer()
+
 
 @pytest.fixture
 def dao():
@@ -23,17 +25,19 @@ def dao():
     admin_dao.db_connector = DBConnector(test=True)
     return admin_dao
 
+
 def test_create_admin_ok(dao):
     admin = Admin(
         user_name="testadmin",
         password=hash_password("secret", "testadmin"),
         first_name="Admin",
         last_name="Test",
-        email="testadmin@test.com"
+        email="testadmin@test.com",
     )
     created = AdminDAO().add_admin(admin)
     assert created
     assert admin.id > 0
+
 
 if __name__ == "__main__":
     pytest.main([__file__])
