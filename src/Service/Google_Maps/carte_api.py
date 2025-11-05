@@ -6,6 +6,11 @@ import config
 import folium
 import googlemaps
 
+# from src.DAO.DriverDAO import DriverDAO
+current_dir = os.path.dirname(os.path.abspath(__file__))
+project_root = os.path.dirname(os.path.dirname(os.path.dirname(current_dir)))
+sys.path.insert(0, project_root)
+
 from src.DAO.DriverDAO import DriverDAO
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -24,9 +29,7 @@ gmaps = googlemaps.Client(key=API_KEY)
 def calculer_itineraire(origin: str, destination: str):
     """Calcule l'itinéraire entre deux adresses."""
     try:
-        directions = gmaps.directions(
-            origin=origin, destination=destination, mode="driving", units="metric"
-        )
+        directions = gmaps.directions(origin=origin, destination=destination, mode="driving", units="metric")
 
         if directions:
             print("Itinéraire calculé avec succès!")
@@ -61,9 +64,7 @@ def create_map(origin, destination, transport_mode):
     print(f" Durée estimée : {duration}")
 
     # Carte créée avec Folium
-    m = folium.Map(
-        location=[start_location["lat"], start_location["lng"]], zoom_start=6
-    )
+    m = folium.Map(location=[start_location["lat"], start_location["lng"]], zoom_start=6)
 
     # Ajouter un marqueur pour le point de départ et d’arrivée
     folium.Marker(
@@ -103,7 +104,7 @@ def main():
     print("=== SYSTÈME DE NAVIGATION ===")
 
     driver_dao = DriverDAO()
-    driver_id = int(input("Enter oyur driver ID"))
+    driver_id = int(input("Enter your driver ID: "))
     driver = driver_dao.get_by_id(driver_id)
 
     if not driver:
@@ -124,16 +125,14 @@ def main():
     # Vérification que l'origine est utilisable
     is_origin_routable, origin_complete = is_address_sufficient_for_routing(origin)
     if not is_origin_routable:
-        print("Adresse d'origine non utilisable pour l'itinéraire!")
+        print("Adresse d'origine non utilisable pour l'itinéraire !")
         return
 
     print(f"Adresse d'origine: {origin_complete}")
 
     # Saisie de la destination avec validation
     print("\n" + "=" * 50)
-    destination = validate_and_get_routable_address(
-        "Entrez votre adresse de destination: "
-    )
+    destination = validate_and_get_routable_address("Entrez votre adresse de destination: ")
 
     if not destination:
         print("Impossible de continuer sans adresse de destination valide.")
