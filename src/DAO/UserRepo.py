@@ -35,7 +35,7 @@ class UserRepo:
         if res:
             user.id = res["id_user"]
             return user.id
-        return None
+        return False
 
     def get_by_id(self, user_id: int) -> Optional[User]:
         raw_user = self.db_connector.sql_query(

@@ -28,7 +28,16 @@ def dao():
 
 def test_add_user_ok(dao):
     user = User(username = "user_test", firstname = "User", lastname = "Test", password = "1234password", "user.test@gmail.com")
-    id_user = dao.add_user(user)
-    assert id_user > 0
+    created = dao.add_user(user)
+    assert created != False 
+    assert created > 0
 
-def test_
+def test_add_user_ko(dao):
+    "test if the user already exist"
+    user = User(username = "user_test", firstname = "User", lastname = "Test", password = "1234password", "user.test@gmail.com")
+    created = dao.add_user(user)
+    assert created != False
+    #create a second type
+    created2 = dao.add_user(user)
+    assert created2 == False
+
