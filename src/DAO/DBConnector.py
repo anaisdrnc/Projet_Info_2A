@@ -42,8 +42,10 @@ class DBConnector:
                     cursor.execute(query, data)
                     if return_type == "one":
                         return cursor.fetchone()
-                    if return_type == "all":
+                    elif return_type == "all":
                         return cursor.fetchall()
+                    elif return_type is None:
+                        return cursor.rowcount
         except Exception as e:
             print("ERROR")
             print(e)

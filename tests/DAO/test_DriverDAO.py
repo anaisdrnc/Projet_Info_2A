@@ -1,4 +1,3 @@
-import os
 import pytest
 from dotenv import load_dotenv
 from utils.reset_database import ResetDatabase

@@ -179,7 +179,7 @@ INSERT INTO product (name, price, production_cost, description, product_type, st
 -- INSERT INTO ORDERS
 -----------------------
 INSERT INTO orders (id_customer, id_driver, id_address, date, status, nb_items, total_amount, payment_method) VALUES
-(1, 1, 1, NOW(),'Preparing', 2, 6.00, 'Credit Card'),
+(1, 1, 1, NOW(),'Preparing', 2, 6.00, 'Card'),
 (2, 2, 2, NOW(),'Delivered', 1, 3.00, 'Cash');
 
 -----------------------

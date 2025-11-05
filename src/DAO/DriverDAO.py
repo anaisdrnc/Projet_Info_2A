@@ -1,6 +1,5 @@
 import logging
 from typing import List, Optional
-
 from utils.log_decorator import log
 from src.DAO.DBConnector import DBConnector
 from src.Model.Driver import Driver
