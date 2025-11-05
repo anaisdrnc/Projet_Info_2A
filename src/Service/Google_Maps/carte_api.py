@@ -24,9 +24,7 @@ gmaps = googlemaps.Client(key=API_KEY)
 def calculer_itineraire(origin: str, destination: str):
     """Calcule l'itinéraire entre deux adresses."""
     try:
-        directions = gmaps.directions(
-            origin=origin, destination=destination, mode="driving", units="metric"
-        )
+        directions = gmaps.directions(origin=origin, destination=destination, mode="driving", units="metric")
 
         if directions:
             print("Itinéraire calculé avec succès!")
@@ -61,9 +59,7 @@ def create_map(origin, destination, transport_mode):
     print(f" Durée estimée : {duration}")
 
     # Carte créée avec Folium
-    m = folium.Map(
-        location=[start_location["lat"], start_location["lng"]], zoom_start=6
-    )
+    m = folium.Map(location=[start_location["lat"], start_location["lng"]], zoom_start=6)
 
     # Ajouter un marqueur pour le point de départ et d’arrivée
     folium.Marker(
@@ -102,6 +98,22 @@ def main():
     """Fonction principale de votre application de navigation."""
     print("=== SYSTÈME DE NAVIGATION ===")
 
+    driver_dao = DriverDAO()
+    driver_id = int(input("Enter oyur driver ID"))
+    driver = driver_dao.get_by_id(driver_id)
+
+    if not driver:
+        print(f"Aucun conducteur trouvé avec l'ID {driver_id}.")
+        return
+
+    print(f"Conducteur trouvé : {driver.first_name} {driver.last_name}")
+    print(f"Moyen de transport : {driver.mean_of_transport}")
+
+    transport_mapping = {"Car": "driving", "Bike": "bicycling", "Walk": "walking"}
+    transport_mode = transport_mapping.get(driver.mean_of_transport, "driving")
+
+    print(f"Mode Google Maps sélectionné : {transport_mode}")
+
     # Adresse d'origine fixe
     origin = "ENSAI, Rennes, France"
 
@@ -115,9 +127,7 @@ def main():
 
     # Saisie de la destination avec validation
     print("\n" + "=" * 50)
-    destination = validate_and_get_routable_address(
-        "Entrez votre adresse de destination: "
-    )
+    destination = validate_and_get_routable_address("Entrez votre adresse de destination: ")
 
     if not destination:
         print("Impossible de continuer sans adresse de destination valide.")

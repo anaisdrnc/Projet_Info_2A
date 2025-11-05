@@ -37,9 +37,26 @@ class UserRepo:
             return user.id
         return None
 
+    def delete_user(self, user_id):
+        """delete user with their id from the user table"""
+        try:
+            res = self.db_connector.sql_query(
+                """
+                DELETE FROM users
+                WHERE id_user = %(user_id)s
+                RETURNING id_user;
+                """,
+                {"user_id": user_id},
+                "one",
+            )
+            return res is not None
+        except Exception as e:
+            logging.info(e)
+            return False
+
     def get_by_id(self, user_id: int) -> Optional[User]:
         raw_user = self.db_connector.sql_query(
-            "SELECT * from users WHERE id=%s", [user_id], "one"
+            "SELECT * from users WHERE id_user=%s", [user_id], "one"
         )
         if raw_user is None:
             return None
@@ -60,20 +77,21 @@ class UserRepo:
         raw_list = self.db_connector.sql_query("SELECT * FROM users")
         if raw_list is None:
             return []
+        print(raw_list)
 
         list_users = []
         for line in raw_list:
             # line doit être un tuple : (id_user, first_name, last_name, user_name, password, email)
-            if not isinstance(line, tuple) or len(line) < 6:
-                continue  # ignore invalid rows
+            #if not isinstance(line, tuple) or len(line) < 6:
+            #    continue  # ignore invalid rows
 
             user = User(
-                id=int(line[0]),  # assure l'entier
-                first_name=str(line[1]),
-                last_name=str(line[2]),
-                user_name=str(line[3]),
-                password=str(line[4]) if include_password else None,
-                email=str(line[5]),
+                id=int(line['id_user']),  # assure l'entier
+                first_name=str(line['first_name']),
+                last_name=str(line['last_name']),
+                user_name=str(line['user_name']),
+                password=str(line['password']) if include_password else None,
+                email=str(line['email']),
             )
             list_users.append(user)
 

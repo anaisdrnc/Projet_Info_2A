@@ -1,6 +1,7 @@
-import googlemaps
+from typing import Dict, List, Tuple
+
 import config
-from typing import List, Dict, Tuple
+import googlemaps
 
 API_KEY = config.API_KEY_GOOGLE_MAPS
 gmaps = googlemaps.Client(key=API_KEY)
@@ -32,14 +33,12 @@ def is_address_sufficient_for_routing(adresse: str) -> Tuple[bool, str]:
     best_result = results[0]
     formatted_address = best_result.get("formatted_address", "")
     address_components = best_result.get("address_components", [])
-    types = best_result.get("types", [])
+    best_result.get("types", [])
 
     # Vérifier si l'adresse contient au moins une ville ou une rue
     has_city = any("locality" in comp.get("types", []) for comp in address_components)
     has_street = any("route" in comp.get("types", []) for comp in address_components)
-    has_postal_code = any(
-        "postal_code" in comp.get("types", []) for comp in address_components
-    )
+    any("postal_code" in comp.get("types", []) for comp in address_components)
 
     # Pour le calcul d'itinéraire, on veut au minimum une ville ou une rue
     if has_city or has_street:
@@ -84,12 +83,8 @@ def get_address_suggestions(adresse: str, max_results: int = 5) -> List[Dict[str
                 components["postal_code"] = name
 
         # Déterminer si l'adresse est utilisable pour l'itinéraire
-        has_city = any(
-            "locality" in comp.get("types", []) for comp in address_components
-        )
-        has_street = any(
-            "route" in comp.get("types", []) for comp in address_components
-        )
+        has_city = any("locality" in comp.get("types", []) for comp in address_components)
+        has_street = any("route" in comp.get("types", []) for comp in address_components)
         components["is_routable"] = has_city or has_street
 
         suggestions.append(components)
@@ -109,7 +104,7 @@ def display_suggestions(adresse: str):
     print("=" * 60)
 
     for i, suggestion in enumerate(suggestions, 1):
-        routable_indicator = "✅" if suggestion["is_routable"] else "⚠️ "
+        routable_indicator = "VALID" if suggestion["is_routable"] else "INVALID "
         print(f"{routable_indicator} {i}. {suggestion['full_address']}")
 
         # Afficher les détails
@@ -134,7 +129,7 @@ def display_suggestions(adresse: str):
         print()
 
 
-def validate_and_get_routable_address(prompt: str, max_attempts: int = 3) -> str:
+def validate_and_get_routable_address(prompt: str, max_attempts: int = 3) -> str:  # noqa: C901
     """
     Valide une adresse et s'assure qu'elle est utilisable pour le calcul d'itinéraire.
 
@@ -160,9 +155,7 @@ def validate_and_get_routable_address(prompt: str, max_attempts: int = 3) -> str
             print(f"Adresse valide pour l'itinéraire: {complete_address}")
             return complete_address
         else:
-            print(
-                f"❌ Adresse trop imprécise pour calculer un itinéraire (tentative {attempt + 1}/{max_attempts})"
-            )
+            print(f"Adresse trop imprécise pour calculer un itinéraire (tentative {attempt + 1}/{max_attempts})")
 
             # Afficher les suggestions
             display_suggestions(address_input)
@@ -188,9 +181,7 @@ def validate_and_get_routable_address(prompt: str, max_attempts: int = 3) -> str
                     try:
                         selected = int(input("Numéro de l'adresse: ")) - 1
                         if 0 <= selected < len(routable_suggestions):
-                            selected_address = routable_suggestions[selected][
-                                "full_address"
-                            ]
+                            selected_address = routable_suggestions[selected]["full_address"]
                             print(f"Adresse sélectionnée: {selected_address}")
                             return selected_address
                         else:
