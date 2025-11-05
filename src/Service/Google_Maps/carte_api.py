@@ -6,7 +6,7 @@ import config
 import folium
 import googlemaps
 
-# from src.DAO.DriverDAO import DriverDAO
+from src.DAO.DriverDAO import DriverDAO
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -98,7 +98,7 @@ def main():
     """Fonction principale de votre application de navigation."""
     print("=== SYSTÈME DE NAVIGATION ===")
 
-    """driver_dao = DriverDAO()
+    driver_dao = DriverDAO()
     driver_id = int(input("Enter oyur driver ID"))
     driver = driver_dao.get_by_id(driver_id)
 
@@ -113,7 +113,7 @@ def main():
     transport_mode = transport_mapping.get(driver.mean_of_transport, "driving")
 
     print(f"Mode Google Maps sélectionné : {transport_mode}")
-"""
+
     # Adresse d'origine fixe
     origin = "ENSAI, Rennes, France"
 
