@@ -8,40 +8,37 @@ from src.Service.AddressService import validate_address
 
 
 class OrderDAO:
-    """DAO final pour la gestion des commandes"""
+    """DAO pour la gestion des commandes"""
 
     def __init__(self, test: bool = False):
         self.db_connector = DBConnector(test=test)
 
     def create_order(self, order: Order) -> Optional[int]:
-        """
-        Crée une commande finale après que le client a choisi les produits, l'adresse et le paiement.
-        Retourne l'id de la commande ou None si échec.
-        """
+        """Crée une commande avec une adresse fournie par le client"""
         try:
-            # Vérifier ou insérer l'adresse
-            if order.delivery_address.id is None:
-                if not validate_address(order.delivery_address):
-                    print("Adresse invalide")
-                    return None
-                # Insérer l'adresse et récupérer son id
-                res_addr = self.db_connector.sql_query(
-                    """
-                    INSERT INTO address (address, city, postal_code)
-                    VALUES (%(address)s, %(city)s, %(postalcode)s)
-                    RETURNING id_address;
-                    """,
-                    {
-                        "address": order.delivery_address.address,
-                        "city": order.delivery_address.city,
-                        "postalcode": order.delivery_address.postalcode
-                    },
-                    "one"
-                )
-                if not res_addr:
-                    print("Impossible de créer l'adresse")
-                    return None
-                order.delivery_address.id = res_addr["id_address"]
+            # Vérifier l'adresse
+            if not validate_address(order.delivery_address):
+                print("Adresse invalide")
+                return None
+
+            # Insérer l'adresse et récupérer son id
+            res_addr = self.db_connector.sql_query(
+                """
+                INSERT INTO address (address, city, postal_code)
+                VALUES (%(address)s, %(city)s, %(postalcode)s)
+                RETURNING id_address;
+                """,
+                {
+                    "address": order.delivery_address.address,
+                    "city": order.delivery_address.city,
+                    "postalcode": order.delivery_address.postalcode
+                },
+                "one"
+            )
+            if not res_addr:
+                print("Impossible de créer l'adresse")
+                return None
+            order.delivery_address.id = res_addr["id_address"]
 
             # Créer la commande
             res_order = self.db_connector.sql_query(
@@ -67,6 +64,7 @@ class OrderDAO:
             if res_order:
                 order.id = res_order["id_order"]
                 return order.id
+
             return None
 
         except Exception as e:
@@ -74,7 +72,7 @@ class OrderDAO:
             return None
 
     def add_product(self, order_id: int, product_id: int, quantity: int) -> bool:
-        """Ajouter un produit à une commande existante"""
+        """Ajouter un produit à une commande"""
         try:
             self.db_connector.sql_query(
                 """
