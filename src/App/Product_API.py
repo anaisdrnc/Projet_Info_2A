@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, status
 
 from src.Model.Product import Product
 
-movie_router = APIRouter(prefix="/Product", tags=["Menue"])
+product_router = APIRouter(prefix="/Product", tags=["Menue"])
 
 
 
