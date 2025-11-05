@@ -1,11 +1,12 @@
 from datetime import datetime
-from typing import List, Optional, Literal
+from typing import List, Literal, Optional
+
 from pydantic import BaseModel, Field
+
 from .Address import Address
 
 
 class Order(BaseModel):
-
     id: Optional[int] = None
     id_customer: int
     id_driver: int
