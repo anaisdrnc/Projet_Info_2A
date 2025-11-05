@@ -12,7 +12,7 @@ class InscriptionView(VueAbstraite):
         # Demande à l'utilisateur de saisir pseudo, mot de passe...
         pseudo = inquirer.text(message="Enter your username : ").execute()
 
-        if UserService().is_username_free(pseudo):
+        if not UserService().is_username_taken(pseudo):
             from src.CLI.opening.openingview import OpeningView
 
             return OpeningView(f"The username {pseudo} is already used.")

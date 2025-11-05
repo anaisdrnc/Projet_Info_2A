@@ -108,4 +108,11 @@ class UserRepo:
             password = raw_password["password"]
             return password
         
+    def is_username_taken(self, username):
+        raw_answer = self.db_connector.sql_query(
+            "SELECT * FROM users WHERE user_name = %s;", [username], "one"
+        )
+        if raw_answer is None:
+            return False
+        return True
 
