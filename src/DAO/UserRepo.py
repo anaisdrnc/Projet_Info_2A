@@ -5,7 +5,7 @@ from src.Model.User import User
 from .DBConnector import DBConnector
 
 
-class UserRepo():
+class UserRepo:
     """DAO User"""
 
     def __init__(self, db_connector):
@@ -38,14 +38,18 @@ class UserRepo():
         return None
 
     def get_by_id(self, user_id: int) -> Optional[User]:
-        raw_user = self.db_connector.sql_query("SELECT * from users WHERE id=%s", [user_id], "one")
+        raw_user = self.db_connector.sql_query(
+            "SELECT * from users WHERE id=%s", [user_id], "one"
+        )
         if raw_user is None:
             return None
         # pyrefly: ignore
         return User(**raw_user)
 
     def get_by_username(self, user_name: str) -> Optional[User]:
-        raw_user = self.db_connector.sql_query("SELECT * from users WHERE user_name=%s", [user_name], "one")
+        raw_user = self.db_connector.sql_query(
+            "SELECT * from users WHERE user_name=%s", [user_name], "one"
+        )
         if raw_user is None:
             return None
         # pyrefly: ignore
@@ -69,9 +73,8 @@ class UserRepo():
                 last_name=str(line[2]),
                 user_name=str(line[3]),
                 password=str(line[4]) if include_password else None,
-                email=str(line[5])
+                email=str(line[5]),
             )
             list_users.append(user)
 
         return list_users
-

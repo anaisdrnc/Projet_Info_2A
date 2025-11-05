@@ -12,7 +12,7 @@ def test_create_valid_driver():
         first_name="Emma",
         last_name="Glorieux",
         email="emma@test.com",
-        mean_of_transport="Car"
+        mean_of_transport="Car",
     )
 
     assert driver.user_name == "emma_driver"
@@ -29,7 +29,7 @@ def test_create_driver_with_bicycle():
         first_name="Paul",
         last_name="Martin",
         email="paul@test.com",
-        mean_of_transport="Bike"
+        mean_of_transport="Bike",
     )
 
     assert driver.mean_of_transport == "Bike"
@@ -45,5 +45,5 @@ def test_create_driver_with_invalid_transport_mean():
             first_name="Bob",
             last_name="Error",
             email="bob@test.com",
-            mean_of_transport="walking"
+            mean_of_transport="walking",
         )

@@ -14,4 +14,6 @@ def test_movie_constructor_throws_on_incorrect_input():
         Movie(id="Twelve", original_title="Dracula")
     assert "id" in str(
         exception_info.value
-    ) and "Input should be a valid integer, unable to parse string as an integer" in str(exception_info.value)
+    ) and "Input should be a valid integer, unable to parse string as an integer" in str(
+        exception_info.value
+    )

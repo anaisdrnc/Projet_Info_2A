@@ -3,6 +3,7 @@ from typing import List, Optional, Literal
 from pydantic import BaseModel, Field
 from .Address import Address
 
+
 class Order(BaseModel):
 
     id: Optional[int] = None

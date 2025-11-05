@@ -5,8 +5,9 @@ from UserRepo import UserRepo
 
 
 class AdminDAO:
-    """Connect with the customer table 
-    add customer, """
+    """Connect with the customer table
+    add customer,"""
+
     def __init__(self, db_connector):
         """Initialize a new AdminDAO instance with a database connector."""
         self.db_connector = DBConnector()
