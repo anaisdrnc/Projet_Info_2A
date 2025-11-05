@@ -12,7 +12,7 @@ class CustomerDAO:
         """Initialize a new CustomerDAO instance with a database connector."""
         self.db_connector = DBConnector()
     
-    
+
     def add_customer(self, user:User):
         """Add a customer to the database (from a user, creating the users in the user table 
         and then putting the customer in the customers database with the id_user)"""
@@ -29,3 +29,5 @@ class CustomerDAO:
             id_customer = res["id_customer"]
             return id_customer
         return None
+    
+    
