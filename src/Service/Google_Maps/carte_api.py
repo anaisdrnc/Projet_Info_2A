@@ -6,7 +6,7 @@ import config
 import folium
 import googlemaps
 
-from src.DAO.DriverDAO import DriverDAO
+#from src.DAO.DriverDAO import DriverDAO
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
