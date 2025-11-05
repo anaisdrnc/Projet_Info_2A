@@ -5,6 +5,8 @@ import os
 import config
 import sys
 
+from src.DAO.DriverDAO import DriverDAO
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from Google_Maps.check_address import (
