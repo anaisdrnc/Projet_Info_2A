@@ -15,35 +15,25 @@ class ProductDAO:
         self.db_connector = DBConnector()
 
     @log
-    def deleting_product(self, product) -> bool:
-        """Deleting a product from the database
-
-        Parameters
-        ----------
-        product: Product
-            product to be deleted from the database
-
-        Returns
-        -------
-            True if the product has been successfully deleted
-        """
-
-        res = None
+    def deleting_product(self, id_product: int) -> bool:
+        """Deleting a product from the database"""
         try:
             res = self.db_connector.sql_query(
-                "DELETE FROM product WHERE id_product = %(id_product)s RETURNING id_product",
-                {"id_product": product.id_product},
-                return_type="one",
+                """
+                DELETE FROM product
+                WHERE id_product = %(id_product)s
+                RETURNING id_product;
+                """,
+                {"id_product": id_product},
+                "one",
             )
             return res is not None
         except Exception as e:
             logging.info(e)
-            raise
-
-        return res > 0
+            return False
 
     @log
-    def add_product(self, product: Product) -> bool:
+    def create_product(self, product: Product) -> bool:
         """Add a product to the database"""
         try:
             res = self.db_connector.sql_query(
@@ -55,20 +45,18 @@ class ProductDAO:
                 {
                     "name": product.name,
                     "price": product.price,
-                    "production_cost": product.production_cost,
+                    "production_cost": product.production_cost,  # corrigé
                     "description": product.description,
                     "product_type": product.product_type,
                     "stock": product.stock,
                 },
                 return_type="one",
             )
-            if res:
+
+            if res and "id_product" in res:
                 product.id_product = res["id_product"]
                 return True
             return False
-        except IntegrityError:
-            # Violation de contrainte, ex: nom déjà existant
-            return False
         except Exception as e:
-            logging.error(f"Erreur ajout produit: {e}")
+            logging.info(f"Erreur lors de l'insertion : {e}")
             return False
