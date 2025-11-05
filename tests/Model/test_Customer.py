@@ -14,7 +14,7 @@ def test_create_customer_with_address():
         firstname="Alice",
         lastname="Martin",
         email="alice@test.com",
-        address=addr
+        address=addr,
     )
 
     assert cust.id == 1
@@ -32,7 +32,7 @@ def test_create_customer_without_address():
         firstname="Bob",
         lastname="Durand",
         email="bob@test.com",
-        address=None
+        address=None,
     )
 
     assert cust.address is None
@@ -49,5 +49,5 @@ def test_invalid_address_type():
             firstname="Charlie",
             lastname="Dupont",
             email="charlie@test.com",
-            address="This should not be a string"
+            address="This should not be a string",
         )
