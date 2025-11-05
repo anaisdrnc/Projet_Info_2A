@@ -11,14 +11,12 @@ from utils.reset_database import ResetDatabase
 @pytest.fixture(scope="session", autouse=True)
 def setup_test_environment():
     """Initialize the test database environment"""
-    with patch.dict(os.environ, {"POSTGRES_SCHEMA": "projet_test_dao"}):
-        ResetDatabase().lancer(test_dao=True)
-        yield
-
+    ResetDatabase(test=True).lancer()
 
 def test_create_ok():
     """Création d'un produit réussie"""
     product = Product(
+        id_product = 23,
         name="Galette Saucisse",
         price=2.50,
         production_cost=2.00,
@@ -38,6 +36,7 @@ def test_creer_ko():
 
     # Insertion initiale
     product1 = Product(
+        id_product = 
         name="Panini",
         price=3.00,
         production_cost=2.50,
