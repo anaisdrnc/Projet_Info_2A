@@ -4,10 +4,12 @@ from fastapi.responses import RedirectResponse
 
 from .MovieController import movie_router
 from .UserController import user_router
+from .Product_API import product_router
 
 app = FastAPI(title="Projet Info 2A", description="UB'EJR")
 app.include_router(user_router)
 app.include_router(movie_router)
+app.include_router(product_router)
 
 
 @app.get("/", include_in_schema=False)
