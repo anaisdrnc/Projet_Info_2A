@@ -151,9 +151,9 @@ INSERT INTO product (id_product, name, price, production_cost, description, prod
 -----------------------
 -- ORDERS
 -----------------------
-INSERT INTO orders (id_order, id_customer, id_driver, id_address, status, nb_items, total_amount, payment_method) VALUES
-(999, 999, 999, 999, 'Preparing', 2, 4.50, 'Credit Card'),
-(998, 998, 998, 998, 'Delivered', 1, 3.00, 'Cash');
+INSERT INTO orders (id_order, id_customer, id_driver, id_address, date, status, nb_items, total_amount, payment_method) VALUES
+(999, 999, 999, 999, NOW(),'Preparing', 2, 4.50, 'Credit Card'),
+(998, 998, 998, 998, NOW(), 'Delivered', 1, 3.00, 'Cash');
 
 -----------------------
 -- ORDER_PRODUCTS
