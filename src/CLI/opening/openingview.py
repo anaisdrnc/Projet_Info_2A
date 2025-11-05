@@ -2,8 +2,8 @@ from InquirerPy import inquirer
 
 from utils.reset_database import ResetDatabase
 
-from view.vue_abstraite import VueAbstraite
-from view.session import Session
+from src.CLI.view_abstract import VueAbstraite
+#from src.CLI.session import Session
 
 
 class OpeningView(VueAbstraite):
