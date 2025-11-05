@@ -6,7 +6,12 @@ from src.Model.User import User
 
 def test_user_constructor_ok():
     User1 = User(
-        id=1, user_name="Lil", password="1234password", first_name="Lilas", last_name="Dupont", email="lilas.dpt@gmail.com"
+        id=1,
+        user_name="Lil",
+        password="1234password",
+        first_name="Lilas",
+        last_name="Dupont",
+        email="lilas.dpt@gmail.com",
     )
     assert User1.id == 1
     assert User1.user_name == "Lil"
@@ -28,7 +33,10 @@ def test_user_constructor_throws_on_incorrect_id():
         )
     assert "id" in str(
         exception_info.value
-    ) and "Input should be a valid integer, unable to parse string as an integer" in str(exception_info.value)
+    ) and "Input should be a valid integer, unable to parse string as an integer" in str(
+        exception_info.value
+    )
+
 
 def test_user_constructor_throws_on_incorrect_username():
     with pytest.raises(ValidationError) as exception_info:
@@ -44,11 +52,12 @@ def test_user_constructor_throws_on_incorrect_username():
         exception_info.value
     ) and "Input should be a valid string" in str(exception_info.value)
 
+
 def test_user_constructor_throws_on_incorrect_firstname():
     with pytest.raises(ValidationError) as exception_info:
         User(
             id=1,
-            user_name='Lil',
+            user_name="Lil",
             password="1234password",
             first_name=123,
             last_name="Dupont",
@@ -58,13 +67,14 @@ def test_user_constructor_throws_on_incorrect_firstname():
         exception_info.value
     ) and "Input should be a valid string" in str(exception_info.value)
 
+
 def test_user_constructor_throws_on_incorrect_lastname():
     with pytest.raises(ValidationError) as exception_info:
         User(
             id=1,
-            user_name='Lil',
+            user_name="Lil",
             password="1234password",
-            first_name='Lilas',
+            first_name="Lilas",
             last_name=True,
             email="lilas.dpt@gmail.com",
         )
@@ -72,14 +82,15 @@ def test_user_constructor_throws_on_incorrect_lastname():
         exception_info.value
     ) and "Input should be a valid string" in str(exception_info.value)
 
+
 def test_user_constructor_throws_on_incorrect_email():
     with pytest.raises(ValidationError) as exception_info:
         User(
             id=1,
-            user_name='Lil',
+            user_name="Lil",
             password="1234password",
-            first_name='Lilas',
-            last_name='Dupont',
+            first_name="Lilas",
+            last_name="Dupont",
             email=[1, 2],
         )
     assert "email" in str(

@@ -13,7 +13,7 @@ CREATE TABLE test.users (
     id_user        SERIAL PRIMARY KEY,
     first_name     VARCHAR(50) NOT NULL,
     last_name      VARCHAR(50) NOT NULL,
-    user_name      VARCHAR(30) UNIQUE NOT NULL,
+    user_name      VARCHAR(100) UNIQUE NOT NULL,
     password       VARCHAR(256) NOT NULL,
     email          VARCHAR(100) UNIQUE NOT NULL
 );
@@ -64,7 +64,7 @@ CREATE TABLE test.administrator (
 -----------------------
 CREATE TABLE test.product (
     id_product       SERIAL PRIMARY KEY,
-    name             VARCHAR(100) NOT NULL,
+    name             VARCHAR(100) UNIQUE NOT NULL,
     price            DECIMAL(10,2) NOT NULL CHECK (price >= 0),
     production_cost  DECIMAL(10,2) NOT NULL CHECK (production_cost >= 0),
     product_type             VARCHAR(20) NOT NULL, 
@@ -151,9 +151,9 @@ INSERT INTO product (id_product, name, price, production_cost, description, prod
 -----------------------
 -- ORDERS
 -----------------------
-INSERT INTO orders (id_order, id_customer, id_driver, id_address, status, nb_items, total_amount, payment_method) VALUES
-(999, 999, 999, 999, 'Preparing', 2, 4.50, 'Credit Card'),
-(998, 998, 998, 998, 'Delivered', 1, 3.00, 'Cash');
+INSERT INTO orders (id_order, id_customer, id_driver, id_address, date, status, nb_items, total_amount, payment_method) VALUES
+(999, 999, 999, 999, NOW(),'Preparing', 2, 4.50, 'Credit Card'),
+(998, 998, 998, 998, NOW(), 'Delivered', 1, 3.00, 'Cash');
 
 -----------------------
 -- ORDER_PRODUCTS

@@ -1,49 +1,152 @@
 from typing import List, Optional
 from datetime import datetime
-from .DBConnector import DBConnector
 from src.Model.Order import Order
 from src.Model.Address import Address
+from src.Model.Product import Product
+from src.DAO.DBConnector import DBConnector
+from src.Service.AddressService import validate_address
+
 
 class OrderDAO:
-    """DAO for Orders"""
+    """DAO pour la gestion des commandes"""
 
-    def __init__(self):
-        """Initialize a new OrderDAO instance with a database connector."""
-        self.db_connector = DBConnector()
+    def __init__(self, test: bool = False):
+        self.db_connector = DBConnector(test=test)
 
-    def add_order(self, order: Order, customer_id: int, driver_id: int) -> Optional[int]:
-        """
-        Add an order to the database.
-        Returns the generated order ID.
-        """
+    def create_order(self, order: Order) -> Optional[int]:
+        """Crée une commande avec une adresse fournie par le client"""
         try:
-            # Insert order
-            res = self.db_connector.sql_query(
+            # Vérifier ou insérer l'adresse
+            if order.delivery_address.id is None:
+                if not validate_address(order.delivery_address):
+                    print("Adresse invalide")
+                    return None
+                # Insérer l'adresse et récupérer son id
+                res_addr = self.db_connector.sql_query(
+                    """
+                    INSERT INTO address (address, city, postal_code)
+                    VALUES (%(address)s, %(city)s, %(postalcode)s)
+                    RETURNING id_address;
+                    """,
+                    {
+                        "address": order.delivery_address.address,
+                        "city": order.delivery_address.city,
+                        "postalcode": order.delivery_address.postalcode,
+                    },
+                    "one",
+                )
+                if not res_addr:
+                    print("Impossible de créer l'adresse")
+                    return None
+                order.delivery_address.id = res_addr["id_address"]
+
+            # Créer la commande
+            res_order = self.db_connector.sql_query(
                 """
-                INSERT INTO orders (id_customer, id_driver, id_address, date, status, total_amount, payment_method)
-                VALUES (%(id_customer)s, %(id_driver)s, %(id_address)s, %(date)s, %(status)s, %(total_amount)s,
-                %(payment_method)s)
+                INSERT INTO orders (id_customer, id_driver, id_address, date, status,
+                                    total_amount, payment_method, nb_items)
+                VALUES (%(id_customer)s, %(id_driver)s, %(id_address)s, %(date)s, %(status)s,
+                        %(total_amount)s, %(payment_method)s, %(nb_items)s)
                 RETURNING id_order;
                 """,
                 {
-                    "id_customer": customer_id,
-                    "id_driver": driver_id,
+                    "id_customer": order.id_customer,
+                    "id_driver": order.id_driver,
                     "id_address": order.delivery_address.id,
                     "date": order.date,
                     "status": order.status,
                     "total_amount": order.total_amount,
-                    "payment_method": order.payment_method
-                }
+                    "payment_method": order.payment_method,
+                    "nb_items": order.nb_items,
+                },
+                "one",
             )
-            if res:
-                order.id = res["id_order"]
+            if res_order:
+                order.id = res_order["id_order"]
                 return order.id
+
+            return None
+
         except Exception as e:
-            print(f"Error adding order: {e}")
-        return None
+            print(f"Error creating order: {e}")
+            return None
+
+    def add_product(self, order_id: int, product_id: int, quantity: int) -> bool:
+        """Ajouter un produit à une commande"""
+        try:
+            self.db_connector.sql_query(
+                """
+                INSERT INTO order_products (id_order, id_product, quantity)
+                VALUES (%(order_id)s, %(product_id)s, %(quantity)s)
+                ON CONFLICT (id_order, id_product)
+                DO UPDATE SET quantity = EXCLUDED.quantity;
+                """,
+                {"order_id": order_id, "product_id": product_id, "quantity": quantity},
+            )
+            return True
+        except Exception as e:
+            print(f"Error adding product: {e}")
+            return False
+
+    def remove_product(self, order_id: int, product_id: int) -> bool:
+        """Retirer un produit du panier"""
+        try:
+            self.db_connector.sql_query(
+                "DELETE FROM order_products WHERE id_order = %s AND id_product = %s",
+                [order_id, product_id],
+            )
+            return True
+        except Exception as e:
+            print(f"Error removing product: {e}")
+            return False
+
+    def cancel_order(self, order_id: int) -> bool:
+        """Annuler une commande"""
+        try:
+            self.db_connector.sql_query(
+                "DELETE FROM orders WHERE id_order = %s", [order_id]
+            )
+            return True
+        except Exception as e:
+            print(f"Error cancelling order: {e}")
+            return False
+
+    def get_assigned_orders(self, driver_id: int) -> List[Order]:
+        """Récupérer les commandes en préparation pour un driver"""
+        try:
+            raw_orders = self.db_connector.sql_query(
+                "SELECT * FROM orders WHERE id_driver = %s AND status = 'Preparing'",
+                [driver_id],
+                "all",
+            )
+            return [self._build_order(o) for o in raw_orders]
+        except Exception as e:
+            print(f"Error fetching assigned orders: {e}")
+            return []
+
+    def mark_as_delivered(self, order_id: int) -> bool:
+        """Marquer une commande comme livrée"""
+        try:
+            self.db_connector.sql_query(
+                "UPDATE orders SET status = 'Delivered', date = %s WHERE id_order = %s",
+                [datetime.now(), order_id],
+            )
+            return True
+        except Exception as e:
+            print(f"Error marking order delivered: {e}")
+            return False
+
+    def list_all_orders(self) -> List[Order]:
+        """Lister toutes les commandes"""
+        try:
+            raw_orders = self.db_connector.sql_query("SELECT * FROM orders", [], "all")
+            return [self._build_order(o) for o in raw_orders]
+        except Exception as e:
+            print(f"Error listing orders: {e}")
+            return []
 
     def get_by_id(self, order_id: int) -> Optional[Order]:
-        """Retrieve an order by its ID"""
+        """Récupérer une commande par son id avec les produits"""
         try:
             raw_order = self.db_connector.sql_query(
                 "SELECT * FROM orders WHERE id_order = %s", [order_id], "one"
@@ -51,97 +154,68 @@ class OrderDAO:
             if not raw_order:
                 return None
 
-            # Fetch the address for the order
             raw_address = self.db_connector.sql_query(
                 "SELECT * FROM address WHERE id_address = %s",
                 [raw_order["id_address"]],
-                "one"
+                "one",
             )
             address = Address(**raw_address) if raw_address else None
 
+            raw_products = self.db_connector.sql_query(
+                """
+                SELECT p.id_product, p.name, p.price, p.production_cost, 
+                       p.product_type, p.description, p.stock, op.quantity
+                FROM order_products op
+                JOIN product p ON p.id_product = op.id_product
+                WHERE op.id_order = %s
+                """,
+                [order_id],
+                "all",
+            )
+
+            products = [
+                {"product": Product(**p), "quantity": p["quantity"]}
+                for p in raw_products
+            ]
+
+            total_amount = float(
+                sum(float(p["price"]) * p["quantity"] for p in raw_products)
+            )
+
             return Order(
                 id=raw_order["id_order"],
+                id_customer=raw_order["id_customer"],
+                id_driver=raw_order["id_driver"],
+                delivery_address=address,
                 date=raw_order["date"],
                 status=raw_order["status"],
-                delivery_address=address,
-                total_amount=float(raw_order["total_amount"]),
-                transport_method="car",  # This could be dynamic depending on driver
-                payment_method=raw_order["payment_method"]
+                total_amount=total_amount,
+                payment_method=raw_order["payment_method"],
+                nb_items=len(raw_products),
+                products=products,
             )
+
         except Exception as e:
             print(f"Error fetching order: {e}")
             return None
 
-    def list_all_orders(self) -> List[Order]:
-        """Retrieve all orders"""
-        orders = []
-        try:
-            raw_orders = self.db_connector.sql_query("SELECT * FROM orders", [], "all")
-            for ro in raw_orders:
-                raw_address = self.db_connector.sql_query(
-                    "SELECT * FROM address WHERE id_address = %s", [ro["id_address"]], "one"
-                )
-                address = Address(**raw_address) if raw_address else None
+    def _build_order(self, raw_order) -> Order:
+        """Construire un objet Order à partir des données brutes"""
+        raw_address = self.db_connector.sql_query(
+            "SELECT * FROM address WHERE id_address = %s",
+            [raw_order["id_address"]],
+            "one",
+        )
+        address = Address(**raw_address) if raw_address else None
 
-                orders.append(Order(
-                    id=ro["id_order"],
-                    date=ro["date"],
-                    status=ro["status"],
-                    delivery_address=address,
-                    total_amount=float(ro["total_amount"]),
-                    transport_method="car",
-                    payment_method=ro["payment_method"]
-                ))
-        except Exception as e:
-            print(f"Error listing orders: {e}")
-        return orders
-
-    def delete_order(self, order_id: int) -> bool:
-        """Delete an order by ID"""
-        try:
-            self.db_connector.sql_query("DELETE FROM orders WHERE id_order = %s", [order_id])
-            return True
-        except Exception as e:
-            print(f"Error deleting order: {e}")
-            return False
-
-    def update_status(self, order_id: int, new_status: str) -> bool:
-        """Update the status of an order"""
-        try:
-            self.db_connector.sql_query(
-                "UPDATE orders SET status = %s WHERE id_order = %s",
-                [new_status, order_id]
-            )
-            return True
-        except Exception as e:
-            print(f"Error updating order status: {e}")
-            return False
-
-    def add_product_to_order(self, order_id: int, product_id: int, quantity: int) -> bool:
-        """Add a product to an order"""
-        try:
-            self.db_connector.sql_query(
-                """
-                INSERT INTO order_products (id_order, id_product, quantity)
-                VALUES (%(order_id)s, %(product_id)s, %(quantity)s)
-                ON CONFLICT (id_order, id_product) DO UPDATE
-                SET quantity = EXCLUDED.quantity;
-                """,
-                {"order_id": order_id, "product_id": product_id, "quantity": quantity}
-            )
-            return True
-        except Exception as e:
-            print(f"Error adding product to order: {e}")
-            return False
-
-    def remove_product_from_order(self, order_id: int, product_id: int) -> bool:
-        """Remove a product from an order"""
-        try:
-            self.db_connector.sql_query(
-                "DELETE FROM order_products WHERE id_order = %s AND id_product = %s",
-                [order_id, product_id]
-            )
-            return True
-        except Exception as e:
-            print(f"Error removing product from order: {e}")
-            return False
+        return Order(
+            id=raw_order["id_order"],
+            id_customer=raw_order["id_customer"],
+            id_driver=raw_order.get("id_driver"),
+            delivery_address=address,
+            date=raw_order["date"],
+            status=raw_order["status"],
+            total_amount=float(raw_order["total_amount"]),
+            payment_method=raw_order["payment_method"],
+            nb_items=raw_order["nb_items"],
+        )

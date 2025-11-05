@@ -3,6 +3,7 @@ from typing import Literal, Optional, Union
 import psycopg2
 from psycopg2.extras import RealDictCursor
 
+
 class DBConnector:
     def __init__(self, config=None, test: bool = False):
         if config:

@@ -1,25 +1,32 @@
 from DBConnector import DBConnector
+import logging
 from src.Model.User import User
 from src.Model.Customer import Customer
+from UserRepo import UserRepo
 
 
 class CustomerDAO:
-    def add_customer(self):
-        with DBConnector().connection as connection:
-            with connection.cursor() as cursor:
-                cursor.execute(
-                    "INSERT INTO users (first_name, last_name, user_name, password, email)"
-                    "VALUES "
-                    "(%(first_name)s, %(last_name)s, %(user_name)s, %(password)s, %(email)s)"
-                    "RETURNING id_user;",
-                    {
-                        "last_name": self.lastname,
-                        "first_name": self.firstname,
-                        "user_name": self.username,
-                        "password": self.password,
-                        "email": self.email,
-                    },
-                )
-                res = cursor.fetchone()
+    """Connect with the customer table
+    add customer,"""
 
-        print(res)
+    def __init__(self, db_connector):
+        """Initialize a new CustomerDAO instance with a database connector."""
+        self.db_connector = DBConnector()
+
+    def add_customer(self, user: User):
+        """Add a customer to the database (from a user, creating the users in the user table
+        and then putting the customer in the customers database with the id_user)"""
+        id_user = UserRepo.add_user(user)
+        try:
+            res = self.db_connector.sql_query(
+                "INSERT INTO customer (id_user)"
+                "VALUES (%(id_user)s)"
+                "RETURNING id_customer;",
+                {"id_user": id_user},
+            )
+        except Exception as e:
+            logging.info(e)
+        if res is not None:
+            id_customer = res["id_customer"]
+            return id_customer
+        return None

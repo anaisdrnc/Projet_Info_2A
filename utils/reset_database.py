@@ -1,9 +1,12 @@
 import os
+
 import dotenv
 from psycopg2 import connect, sql
+
 from src.DAO.DBConnector import DBConnector
 
-dotenv.load_dotenv() 
+dotenv.load_dotenv()
+
 
 class ResetDatabase:
     def __init__(self, test: bool = False):
@@ -22,12 +25,18 @@ class ResetDatabase:
                 database=self.db.database,
                 user=self.db.user,
                 password=self.db.password,
-                options=f"-c search_path={self.schema}"
+                options=f"-c search_path={self.schema}",
             ) as conn:
                 conn.autocommit = True
                 with conn.cursor() as cursor:
-                    cursor.execute(sql.SQL("DROP SCHEMA IF EXISTS {} CASCADE").format(sql.Identifier(self.schema)))
-                    cursor.execute(sql.SQL("CREATE SCHEMA {}").format(sql.Identifier(self.schema)))
+                    cursor.execute(
+                        sql.SQL("DROP SCHEMA IF EXISTS {} CASCADE").format(
+                            sql.Identifier(self.schema)
+                        )
+                    )
+                    cursor.execute(
+                        sql.SQL("CREATE SCHEMA {}").format(sql.Identifier(self.schema))
+                    )
 
                     with open(self.sql_file, "r") as f:
                         sql_commands = f.read()

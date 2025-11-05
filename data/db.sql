@@ -13,7 +13,7 @@ CREATE TABLE default_schema.users (
     id_user        SERIAL PRIMARY KEY,
     first_name     VARCHAR(50) NOT NULL,
     last_name      VARCHAR(50) NOT NULL,
-    user_name      VARCHAR(30) UNIQUE NOT NULL,
+    user_name      VARCHAR(100) UNIQUE NOT NULL,
     password       VARCHAR(256) NOT NULL,
     email          VARCHAR(100) UNIQUE NOT NULL
 );
@@ -64,7 +64,7 @@ CREATE TABLE default_schema.administrator (
 -----------------------
 CREATE TABLE default_schema.product (
     id_product       SERIAL PRIMARY KEY,
-    name             VARCHAR(100) NOT NULL,
+    name             VARCHAR(100) UNIQUE NOT NULL,
     price            DECIMAL(10,2) NOT NULL CHECK (price >= 0),
     production_cost  DECIMAL(10,2) NOT NULL CHECK (production_cost >= 0),
     product_type             VARCHAR(20) NOT NULL, 
@@ -177,9 +177,9 @@ INSERT INTO product (name, price, production_cost, description, product_type, st
 -----------------------
 -- INSERT INTO ORDERS
 -----------------------
-INSERT INTO orders (id_customer, id_driver, id_address, status, nb_items, total_amount, payment_method) VALUES
-(1, 1, 1, 'Preparing', 2, 6.00, 'Credit Card'),
-(2, 2, 2, 'Delivered', 1, 3.00, 'Cash');
+INSERT INTO orders (id_customer, id_driver, id_address, date, status, nb_items, total_amount, payment_method) VALUES
+(1, 1, 1, NOW(),'Preparing', 2, 6.00, 'Credit Card'),
+(2, 2, 2, NOW(),'Delivered', 1, 3.00, 'Cash');
 
 -----------------------
 -- INSERT INTO ORDER_PRODUCTS
