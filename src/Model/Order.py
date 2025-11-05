@@ -6,7 +6,7 @@ from .Address import Address
 
 class Order(BaseModel):
 
-    id: Optional[int] = None
+    id_order: Optional[int] = None
     id_customer: int
     id_driver: int
     delivery_address: Address
