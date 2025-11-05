@@ -19,7 +19,7 @@ def setup_test_environment():
 @pytest.fixture
 def dao():
     """DAO configuré pour le schéma test"""
-    customer_dao = CustomerDAO()
+    customer_dao = CustomerDAO(db_connector = DBConnector(test=True))
     customer_dao.db_connector = DBConnector(test=True)
     return customer_dao
 
@@ -31,7 +31,7 @@ def test_create_customer_ok(dao):
         last_name="Test",
         email="testcustomer@test.com"
     )
-    created = dao.add_admin(customer)
+    created = dao.add_customer(customer)
     assert created
     assert customer.id > 0
 
