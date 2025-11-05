@@ -129,7 +129,9 @@ def display_suggestions(adresse: str):
         print()
 
 
-def validate_and_get_routable_address(prompt: str, max_attempts: int = 3) -> str:  # noqa: C901
+def validate_and_get_routable_address(  # noqa: C901
+    prompt: str, max_attempts: int = 3
+) -> str:
     """
     Valide une adresse et s'assure qu'elle est utilisable pour le calcul d'itinéraire.
 
