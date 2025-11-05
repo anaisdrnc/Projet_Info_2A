@@ -1,9 +1,12 @@
 import os
+
 import dotenv
 from psycopg2 import connect, sql
+
 from src.DAO.DBConnector import DBConnector
 
-dotenv.load_dotenv() 
+dotenv.load_dotenv()
+
 
 class ResetDatabase:
     def __init__(self, test: bool = False):
@@ -22,7 +25,7 @@ class ResetDatabase:
                 database=self.db.database,
                 user=self.db.user,
                 password=self.db.password,
-                options=f"-c search_path={self.schema}"
+                options=f"-c search_path={self.schema}",
             ) as conn:
                 conn.autocommit = True
                 with conn.cursor() as cursor:
@@ -40,6 +43,8 @@ class ResetDatabase:
 
 
 if __name__ == "__main__":
-    ResetDatabase(test=False).lancer()   # pour le schéma "default_schema"
+    # Exemples d’utilisation
+    ResetDatabase(test=False).lancer()  # pour le schéma "default_schema"
     ResetDatabase(test=True).lancer()  # pour le schéma "test"
+
 
