@@ -3,6 +3,7 @@ from typing import List, Optional, Literal
 from pydantic import BaseModel, Field
 from .Address import Address
 
+
 class Order(BaseModel):
 
     id: Optional[int] = None
@@ -10,7 +11,7 @@ class Order(BaseModel):
     id_driver: int
     delivery_address: Address
     date: datetime = Field(default_factory=datetime.now)
-    status: Literal["delivered", "waiting"] = "waiting"
+    status: Literal["Delivered", "Preparing"] = "Preparing"
     total_amount: float = Field(..., gt=0)
     payment_method: Literal["card", "cash"]
     nb_items: int = Field(..., ge=0)

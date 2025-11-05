@@ -13,7 +13,9 @@ def test_order_constructor_ok():
         id=3,
         id_customer=1,
         id_driver=2,
-        delivery_address=Address(address="4 rue de Dinan", postalcode=35000, city="Rennes"),
+        delivery_address=Address(
+            address="4 rue de Dinan", postalcode=35000, city="Rennes"
+        ),
         date="2025-10-23 12:30:00",
         status="waiting",
         total_amount=45.3,
@@ -24,7 +26,9 @@ def test_order_constructor_ok():
     assert order.id == 3
     assert order.id_customer == 1
     assert order.id_driver == 2
-    assert order.delivery_address == Address(address="4 rue de Dinan", postalcode=35000, city="Rennes")
+    assert order.delivery_address == Address(
+        address="4 rue de Dinan", postalcode=35000, city="Rennes"
+    )
     assert order.date == datetime(2025, 10, 23, 12, 30, 0)
     assert order.status == "waiting"
     assert order.total_amount == 45.3
@@ -40,7 +44,9 @@ def test_order_constructor_on_incorrect_id():
             id="three",
             id_customer=1,
             id_driver=2,
-            delivery_address=Address(address="4 rue de Dinan", postalcode=35000, city="Rennes"),
+            delivery_address=Address(
+                address="4 rue de Dinan", postalcode=35000, city="Rennes"
+            ),
             total_amount=45.3,
             payment_method="cash",
             nb_items=2,
@@ -55,7 +61,9 @@ def test_order_constructor_on_incorrect_date():
             id=3,
             id_customer=1,
             id_driver=2,
-            delivery_address=Address(address="4 rue de Dinan", postalcode=35000, city="Rennes"),
+            delivery_address=Address(
+                address="4 rue de Dinan", postalcode=35000, city="Rennes"
+            ),
             date=[2025, 10, 23],
             total_amount=45.3,
             payment_method="cash",
@@ -71,7 +79,9 @@ def test_order_constructor_on_incorrect_status():
             id=3,
             id_customer=1,
             id_driver=2,
-            delivery_address=Address(address="4 rue de Dinan", postalcode=35000, city="Rennes"),
+            delivery_address=Address(
+                address="4 rue de Dinan", postalcode=35000, city="Rennes"
+            ),
             status="ok",
             total_amount=45.3,
             payment_method="cash",
@@ -88,7 +98,9 @@ def test_order_constructor_on_incorrect_delivery_address():
             id=3,
             id_customer=1,
             id_driver=2,
-            delivery_address=Address(address="4 rue de Dinan", postalcode=35000, city=12345),
+            delivery_address=Address(
+                address="4 rue de Dinan", postalcode=35000, city=12345
+            ),
             total_amount=45.3,
             payment_method="cash",
             nb_items=2,
@@ -103,7 +115,9 @@ def test_order_constructor_on_incorrect_total_amount():
             id=3,
             id_customer=1,
             id_driver=2,
-            delivery_address=Address(address="4 rue de Dinan", postalcode=35000, city="Rennes"),
+            delivery_address=Address(
+                address="4 rue de Dinan", postalcode=35000, city="Rennes"
+            ),
             total_amount="quarante",
             payment_method="cash",
             nb_items=2,
@@ -118,7 +132,9 @@ def test_order_constructor_on_negative_total_amount():
             id=3,
             id_customer=1,
             id_driver=2,
-            delivery_address=Address(address="4 rue de Dinan", postalcode=35000, city="Rennes"),
+            delivery_address=Address(
+                address="4 rue de Dinan", postalcode=35000, city="Rennes"
+            ),
             total_amount=-14.67,
             payment_method="cash",
             nb_items=2,
@@ -133,7 +149,9 @@ def test_order_constructor_on_total_amount_equal_to_zero():
             id=3,
             id_customer=1,
             id_driver=2,
-            delivery_address=Address(address="4 rue de Dinan", postalcode=35000, city="Rennes"),
+            delivery_address=Address(
+                address="4 rue de Dinan", postalcode=35000, city="Rennes"
+            ),
             total_amount=0.00,
             payment_method="cash",
             nb_items=2,
@@ -148,7 +166,9 @@ def test_order_constructor_on_incorrect_payment_method():
             id=3,
             id_customer=1,
             id_driver=2,
-            delivery_address=Address(address="4 rue de Dinan", postalcode=35000, city="Rennes"),
+            delivery_address=Address(
+                address="4 rue de Dinan", postalcode=35000, city="Rennes"
+            ),
             total_amount=43.5,
             payment_method="change",
             nb_items=2,
@@ -163,10 +183,11 @@ def test_order_constructor_on_negative_nb_items():
             id=3,
             id_customer=1,
             id_driver=2,
-            delivery_address=Address(address="4 rue de Dinan", postalcode=35000, city="Rennes"),
+            delivery_address=Address(
+                address="4 rue de Dinan", postalcode=35000, city="Rennes"
+            ),
             total_amount=43.5,
             payment_method="cash",
             nb_items=-1,
         )
     assert "greater_than_equal" in str(exc.value)
-

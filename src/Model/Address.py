@@ -1,9 +1,10 @@
+from typing import Optional
+
 from pydantic import BaseModel
 
 
 class Address(BaseModel):
-    """PENSER A CONFIRMER LE FORMAT DES ADRESSES SUR L'API GOOGLE MAPS"""
-
+    id: Optional[int] = None
     address: str
     postalcode: int
     city: str

@@ -5,11 +5,14 @@ from src.Model.User import User
 from src.Service.PasswordService import check_password_strength, create_salt
 from utils.securite import hash_password
 
+
 class UserService:
     def __init__(self, user_repo: UserRepo):
         self.user_repo = user_repo
 
-    def create_user(self, username: str, password: str, firstname: str, lastname: str, email:str) -> User:
+    def create_user(
+        self, username: str, password: str, firstname: str, lastname: str, email: str
+    ) -> User:
         """
         Crée un nouvel utilisateur :
         - Vérifie la force du mot de passe
@@ -20,7 +23,13 @@ class UserService:
         check_password_strength(password)
         salt = create_salt()
         hashed_password = hash_password(password, sel=salt)
-        new_user = User(username=username, password=hashed_password, firstname=firstname, lastname=lastname, email=email)
+        new_user = User(
+            username=username,
+            password=hashed_password,
+            firstname=firstname,
+            lastname=lastname,
+            email=email,
+        )
         if UserRepo.add_user(new_user) is not None:
             return new_user
         return None
@@ -28,7 +37,7 @@ class UserService:
     def get_user(self, user_id: int) -> User | None:
         return self.user_repo.get_by_id(user_id)
 
-    def get_all_users(self, include_password = False):
+    def get_all_users(self, include_password=False):
         users = UserRepo.get_all_users()
         if not include_password:
             for user in users:
