@@ -48,6 +48,7 @@ def test_add_user_ko(dao):
     created2 = dao.add_user(user)
     assert created2 == None
 
+
 def test_get_by_id_ok(dao):
     username = unique_username('user_test')
     user = User(user_name = username , first_name = "User", last_name = "Test", password = "1234password", email ="user.test3@gmail.com")
@@ -73,6 +74,17 @@ def test_get_by_username_ok(dao):
     assert user2.user_name == username
     assert user2.first_name == "User"
     assert user2.last_name == "Test"
+
+def test_delete_user_ok(dao):
+    "test if we can delete user with their id"
+    username = unique_username('user_test')
+    user = User(user_name = username , first_name = "User", last_name = "Test", password = "1234password", email = "user.test5@gmail.com")
+    created = dao.add_user(user)
+    assert created != None
+    retrieved = dao.delete_user(created)
+    assert retrieved
+    retrieved = dao.get_by_id(created)
+    assert retrieved == None
 
 def test_get_all_users_ok(dao):
     username1 = unique_username('list_username1')

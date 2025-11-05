@@ -37,6 +37,23 @@ class UserRepo:
             return user.id
         return None
 
+    def delete_user(self, user_id):
+        """delete user with their id from the user table"""
+        try:
+            res = self.db_connector.sql_query(
+                """
+                DELETE FROM users
+                WHERE id_user = %(user_id)s
+                RETURNING id_user;
+                """,
+                {"user_id": user_id},
+                "one",
+            )
+            return res is not None
+        except Exception as e:
+            logging.info(e)
+            return False
+
     def get_by_id(self, user_id: int) -> Optional[User]:
         raw_user = self.db_connector.sql_query(
             "SELECT * from users WHERE id_user=%s", [user_id], "one"
