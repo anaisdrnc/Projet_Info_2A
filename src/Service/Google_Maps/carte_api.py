@@ -6,6 +6,8 @@ import config
 import folium
 import googlemaps
 
+from src.DAO.DriverDAO import DriverDAO
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from Google_Maps.check_address import (
@@ -14,7 +16,6 @@ from Google_Maps.check_address import (
 )
 
 API_KEY = config.API_KEY_GOOGLE_MAPS
-
 
 # Initialiser le client Google Maps
 gmaps = googlemaps.Client(key=API_KEY)
