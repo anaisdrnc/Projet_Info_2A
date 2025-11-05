@@ -23,10 +23,10 @@ class AdminDAO:
                 "VALUES (%(id_user)s)"
                 "RETURNING id_administrator;",
                 {"id_user":id_user})
+        except Exception as e:
+            logging.info(e)
+
         if res and "id_admin" in res:
                 admin.id = res["id_admin"]
                 return True
-
-        except Exception as e:
-            logging.info(e)
         return False

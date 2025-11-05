@@ -8,16 +8,13 @@ from src.Service.AddressService import validate_address
 
 
 class OrderDAO:
-    """DAO final pour la gestion des commandes"""
+    """DAO pour la gestion des commandes"""
 
     def __init__(self, test: bool = False):
         self.db_connector = DBConnector(test=test)
 
     def create_order(self, order: Order) -> Optional[int]:
-        """
-        Crée une commande finale après que le client a choisi les produits, l'adresse et le paiement.
-        Retourne l'id de la commande ou None si échec.
-        """
+        """Crée une commande avec une adresse fournie par le client"""
         try:
             # Vérifier ou insérer l'adresse
             if order.delivery_address.id is None:
@@ -34,9 +31,9 @@ class OrderDAO:
                     {
                         "address": order.delivery_address.address,
                         "city": order.delivery_address.city,
-                        "postalcode": order.delivery_address.postalcode
+                        "postalcode": order.delivery_address.postalcode,
                     },
-                    "one"
+                    "one",
                 )
                 if not res_addr:
                     print("Impossible de créer l'adresse")
@@ -60,13 +57,14 @@ class OrderDAO:
                     "status": order.status,
                     "total_amount": order.total_amount,
                     "payment_method": order.payment_method,
-                    "nb_items": order.nb_items
+                    "nb_items": order.nb_items,
                 },
-                "one"
+                "one",
             )
             if res_order:
                 order.id = res_order["id_order"]
                 return order.id
+
             return None
 
         except Exception as e:
@@ -74,7 +72,7 @@ class OrderDAO:
             return None
 
     def add_product(self, order_id: int, product_id: int, quantity: int) -> bool:
-        """Ajouter un produit à une commande existante"""
+        """Ajouter un produit à une commande"""
         try:
             self.db_connector.sql_query(
                 """
@@ -83,7 +81,7 @@ class OrderDAO:
                 ON CONFLICT (id_order, id_product)
                 DO UPDATE SET quantity = EXCLUDED.quantity;
                 """,
-                {"order_id": order_id, "product_id": product_id, "quantity": quantity}
+                {"order_id": order_id, "product_id": product_id, "quantity": quantity},
             )
             return True
         except Exception as e:
@@ -95,7 +93,7 @@ class OrderDAO:
         try:
             self.db_connector.sql_query(
                 "DELETE FROM order_products WHERE id_order = %s AND id_product = %s",
-                [order_id, product_id]
+                [order_id, product_id],
             )
             return True
         except Exception as e:
@@ -119,7 +117,7 @@ class OrderDAO:
             raw_orders = self.db_connector.sql_query(
                 "SELECT * FROM orders WHERE id_driver = %s AND status = 'Preparing'",
                 [driver_id],
-                "all"
+                "all",
             )
             return [self._build_order(o) for o in raw_orders]
         except Exception as e:
@@ -131,7 +129,7 @@ class OrderDAO:
         try:
             self.db_connector.sql_query(
                 "UPDATE orders SET status = 'Delivered', date = %s WHERE id_order = %s",
-                [datetime.now(), order_id]
+                [datetime.now(), order_id],
             )
             return True
         except Exception as e:
@@ -159,7 +157,7 @@ class OrderDAO:
             raw_address = self.db_connector.sql_query(
                 "SELECT * FROM address WHERE id_address = %s",
                 [raw_order["id_address"]],
-                "one"
+                "one",
             )
             address = Address(**raw_address) if raw_address else None
 
@@ -172,7 +170,7 @@ class OrderDAO:
                 WHERE op.id_order = %s
                 """,
                 [order_id],
-                "all"
+                "all",
             )
 
             products = [
@@ -180,7 +178,9 @@ class OrderDAO:
                 for p in raw_products
             ]
 
-            total_amount = float(sum(float(p["price"]) * p["quantity"] for p in raw_products))
+            total_amount = float(
+                sum(float(p["price"]) * p["quantity"] for p in raw_products)
+            )
 
             return Order(
                 id=raw_order["id_order"],
@@ -192,7 +192,7 @@ class OrderDAO:
                 total_amount=total_amount,
                 payment_method=raw_order["payment_method"],
                 nb_items=len(raw_products),
-                products=products
+                products=products,
             )
 
         except Exception as e:
@@ -204,7 +204,7 @@ class OrderDAO:
         raw_address = self.db_connector.sql_query(
             "SELECT * FROM address WHERE id_address = %s",
             [raw_order["id_address"]],
-            "one"
+            "one",
         )
         address = Address(**raw_address) if raw_address else None
 
@@ -217,5 +217,5 @@ class OrderDAO:
             status=raw_order["status"],
             total_amount=float(raw_order["total_amount"]),
             payment_method=raw_order["payment_method"],
-            nb_items=raw_order["nb_items"]
+            nb_items=raw_order["nb_items"],
         )
