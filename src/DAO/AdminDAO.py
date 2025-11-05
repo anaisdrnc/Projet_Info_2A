@@ -1,7 +1,10 @@
-from DBConnector import DBConnector
 import logging
-from src.Model.User import User
-from UserRepo import UserRepo
+
+from src.DAO.DBConnector import DBConnector
+from src.DAO.UserRepo import UserRepo
+from src.Model.Admin import Admin
+
+# from src.Model.User import User
 
 
 class AdminDAO:
@@ -11,22 +14,20 @@ class AdminDAO:
     def __init__(self, db_connector):
         """Initialize a new AdminDAO instance with a database connector."""
         self.db_connector = DBConnector()
-    
-    
-    def add_admin(self, admin:Admin):
-        """Add a admin to the database (from a user, creating the users in the user table 
+
+    def add_admin(self, admin: Admin):
+        """Add a admin to the database (from a user, creating the users in the user table
         and then putting the admin in the admins database with the id_user)"""
         id_user = UserRepo.add_user(admin)
         try:
             res = self.db_connector.sql_query(
-                "INSERT INTO administrator (id_user)"
-                "VALUES (%(id_user)s)"
-                "RETURNING id_administrator;",
-                {"id_user":id_user})
+                "INSERT INTO administrator (id_user)VALUES (%(id_user)s)RETURNING id_administrator;",
+                {"id_user": id_user},
+            )
         except Exception as e:
             logging.info(e)
 
         if res and "id_admin" in res:
-                admin.id = res["id_admin"]
-                return True
+            admin.id = res["id_admin"]
+            return True
         return False

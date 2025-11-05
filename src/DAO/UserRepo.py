@@ -18,9 +18,9 @@ class UserRepo:
         res = None
         try:
             res = self.db_connector.sql_query(
-                "INSERT INTO users (first_name, last_name, user_name, password, email)"
+                "INSERT INTO users (first_name, last_name, user_name, password, email, salt)"
                 "VALUES "
-                "(%(first_name)s, %(last_name)s, %(user_name)s, %(password)s, %(email)s)"
+                "(%(first_name)s, %(last_name)s, %(user_name)s, %(password)s, %(email)s, %(salt)s)"
                 "RETURNING id_user;",
                 {
                     "last_name": user.last_name,
@@ -28,6 +28,7 @@ class UserRepo:
                     "user_name": user.user_name,
                     "password": user.password,
                     "email": user.email,
+                    "salt": user.salt,
                 },
             )
         except Exception as e:
@@ -96,3 +97,22 @@ class UserRepo:
             list_users.append(user)
 
         return list_users
+
+    def get_password(self, username):
+        raw_password = self.db_connector.sql_query(
+            "SELECT password from users WHERE user_name=%s", [username], "one"
+        )
+        if raw_password is None:
+            return None
+        if raw_password:
+            password = raw_password["password"]
+            return password
+        
+    def is_username_taken(self, username):
+        raw_answer = self.db_connector.sql_query(
+            "SELECT * FROM users WHERE user_name = %s;", [username], "one"
+        )
+        if raw_answer is None:
+            return False
+        return True
+

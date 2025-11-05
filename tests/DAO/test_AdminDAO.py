@@ -1,13 +1,13 @@
 import os
+
 import pytest
+from dotenv import load_dotenv
+
+from src.DAO.AdminDAO import AdminDAO
+from src.DAO.DBConnector import DBConnector
+from src.Model.Admin import Admin
 from utils.reset_database import ResetDatabase
 from utils.securite import hash_password
-from src.DAO.AdminDAO import AdminDAO
-from src.Model.Admin import Admin
-from src.DAO.DBConnector import DBConnector
-import pytest
-from utils.reset_database import ResetDatabase
-from dotenv import load_dotenv
 
 load_dotenv()
 

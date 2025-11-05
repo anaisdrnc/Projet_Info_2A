@@ -29,6 +29,7 @@ class UserService:
             firstname=firstname,
             lastname=lastname,
             email=email,
+            salt = salt
         )
         if UserRepo.add_user(new_user) is not None:
             return new_user
@@ -43,3 +44,8 @@ class UserService:
             for user in users:
                 user.password = None
         return users
+
+    def is_username_taken(self, username):
+        answer = UserRepo.is_username_taken(username)
+        return answer
+
