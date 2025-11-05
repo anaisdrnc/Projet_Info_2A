@@ -2,6 +2,9 @@ from typing import List, Optional
 from datetime import datetime
 from src.Model.Order import Order
 from src.Model.Address import Address
+from src.Model.Product import Product
+from src.DAO.DBConnector import DBConnector
+
 
 class OrderDAO:
     """Data Access Object for managing orders"""
@@ -9,11 +12,8 @@ class OrderDAO:
     def __init__(self, test: bool = False):
         self.db_connector = DBConnector(test=test)
 
-    def add_order(self, order: Order, customer_id: int, driver_id: int) -> Optional[int]:
-        """
-        Add an order to the database.
-        Returns the generated order ID.
-        """
+    def create_order(self, order: Order) -> Optional[int]:
+        """Client crée une commande"""
         try:
             res = self.db_connector.sql_query(
                 """
@@ -30,8 +30,10 @@ class OrderDAO:
                     "date": order.date,
                     "status": order.status,
                     "total_amount": order.total_amount,
-                    "payment_method": order.payment_method
-                }
+                    "payment_method": order.payment_method,
+                    "nb_items": order.nb_items
+                },
+                "one"
             )
             if res:
                 order.id = res["id_order"]
@@ -127,14 +129,14 @@ class OrderDAO:
             raw_address = self.db_connector.sql_query(
                 "SELECT * FROM address WHERE id_address = %s",
                 [raw_order["id_address"]],
-                "one",
+                "one"
             )
             address = Address(**raw_address) if raw_address else None
 
             # Get products in the order
             raw_products = self.db_connector.sql_query(
                 """
-                SELECT p.id_product, p.name, p.price, p.production_cost,
+                SELECT p.id_product, p.name, p.price, p.production_cost, 
                        p.product_type, p.description, p.stock, op.quantity
                 FROM order_products op
                 JOIN product p ON p.id_product = op.id_product
@@ -159,86 +161,33 @@ class OrderDAO:
                 delivery_address=address,
                 date=raw_order["date"],
                 status=raw_order["status"],
-                delivery_address=address,
-                total_amount=float(raw_order["total_amount"]),
-                transport_method="car",  # This could be dynamic depending on driver
-                payment_method=raw_order["payment_method"]
+                total_amount=total_amount,
+                payment_method=raw_order["payment_method"],
+                nb_items=len(raw_products),
+                products=products
             )
 
         except Exception as e:
             print(f"Error fetching order: {e}")
             return None
 
-    def list_all_orders(self) -> List[Order]:
-        """Retrieve all orders"""
-        orders = []
-        try:
-            raw_orders = self.db_connector.sql_query("SELECT * FROM orders", [], "all")
-            for ro in raw_orders:
-                raw_address = self.db_connector.sql_query(
-                    "SELECT * FROM address WHERE id_address = %s", [ro["id_address"]], "one"
-                )
-                address = Address(**raw_address) if raw_address else None
+    def _build_order(self, raw_order) -> Order:
+        """Construit un objet Order complet à partir des données SQL"""
+        raw_address = self.db_connector.sql_query(
+            "SELECT * FROM address WHERE id_address = %s",
+            [raw_order["id_address"]],
+            "one"
+        )
+        address = Address(**raw_address) if raw_address else None
 
-                orders.append(Order(
-                    id=ro["id_order"],
-                    date=ro["date"],
-                    status=ro["status"],
-                    delivery_address=address,
-                    total_amount=float(ro["total_amount"]),
-                    transport_method="car",
-                    payment_method=ro["payment_method"]
-                ))
-        except Exception as e:
-            print(f"Error listing orders: {e}")
-        return orders
-
-    def delete_order(self, order_id: int) -> bool:
-        """Delete an order by ID"""
-        try:
-            self.db_connector.sql_query("DELETE FROM orders WHERE id_order = %s", [order_id])
-            return True
-        except Exception as e:
-            print(f"Error deleting order: {e}")
-            return False
-
-    def update_status(self, order_id: int, new_status: str) -> bool:
-        """Update the status of an order"""
-        try:
-            self.db_connector.sql_query(
-                "UPDATE orders SET status = %s WHERE id_order = %s",
-                [new_status, order_id]
-            )
-            return True
-        except Exception as e:
-            print(f"Error updating order status: {e}")
-            return False
-
-    def add_product_to_order(self, order_id: int, product_id: int, quantity: int) -> bool:
-        """Add a product to an order"""
-        try:
-            self.db_connector.sql_query(
-                """
-                INSERT INTO order_products (id_order, id_product, quantity)
-                VALUES (%(order_id)s, %(product_id)s, %(quantity)s)
-                ON CONFLICT (id_order, id_product) DO UPDATE
-                SET quantity = EXCLUDED.quantity;
-                """,
-                {"order_id": order_id, "product_id": product_id, "quantity": quantity}
-            )
-            return True
-        except Exception as e:
-            print(f"Error adding product to order: {e}")
-            return False
-
-    def remove_product_from_order(self, order_id: int, product_id: int) -> bool:
-        """Remove a product from an order"""
-        try:
-            self.db_connector.sql_query(
-                "DELETE FROM order_products WHERE id_order = %s AND id_product = %s",
-                [order_id, product_id]
-            )
-            return True
-        except Exception as e:
-            print(f"Error removing product from order: {e}")
-            return False
+        return Order(
+            id=raw_order["id_order"],
+            id_customer=raw_order["id_customer"],
+            id_driver=raw_order.get("id_driver"),
+            delivery_address=address,
+            date=raw_order["date"],
+            status=raw_order["status"],
+            total_amount=float(raw_order["total_amount"]),
+            payment_method=raw_order["payment_method"],
+            nb_items=raw_order["nb_items"]
+        )
