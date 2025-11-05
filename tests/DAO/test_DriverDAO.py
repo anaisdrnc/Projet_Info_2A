@@ -52,7 +52,6 @@ def test_create_driver_ko(dao):
     )
     dao.create(driver1)
 
-    # Essayer de recréer le même user_name
     driver2 = Driver(
         user_name=username,
         password=hash_password("secret", username),
