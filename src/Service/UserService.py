@@ -29,6 +29,7 @@ class UserService:
             firstname=firstname,
             lastname=lastname,
             email=email,
+            salt = salt
         )
         if UserRepo.add_user(new_user) is not None:
             return new_user
@@ -44,7 +45,4 @@ class UserService:
                 user.password = None
         return users
 
-    def connect_user(self, password, username):
-        """compare if the password entered corresponds to the password stocked in the db"""
-        stocked_password = UserRepo.get_password(username)
-        
+
