@@ -64,7 +64,7 @@ CREATE TABLE default_schema.administrator (
 -----------------------
 CREATE TABLE default_schema.product (
     id_product       SERIAL PRIMARY KEY,
-    name             VARCHAR(100) NOT NULL,
+    name             VARCHAR(100) UNIQUE NOT NULL,
     price            DECIMAL(10,2) NOT NULL CHECK (price >= 0),
     production_cost  DECIMAL(10,2) NOT NULL CHECK (production_cost >= 0),
     product_type             VARCHAR(20) NOT NULL, 

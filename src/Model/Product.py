@@ -1,10 +1,10 @@
-from typing import Literal
+from typing import Literal, Optional
 
 from pydantic import BaseModel, Field
 
 
 class Product(BaseModel):
-    id_product: int
+    id_product: Optional[int] = None
     name: str
     price: float = Field(..., gt=0, description="The selling price must be strictly positive")
     production_cost: float = Field(..., gt=0, description="The production cost must be strictly positive")
