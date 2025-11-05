@@ -5,16 +5,15 @@ from src.Model.Address import Address
 from src.Model.Product import Product
 from src.DAO.OrderDAO import OrderDAO
 from src.DAO.DBConnector import DBConnector
-from src.Service.AddressService import ALLOWED_ADDRESSES
+from dotenv import load_dotenv
 
-
+load_dotenv()
 
 @pytest.fixture(scope="session", autouse=True)
 def setup_test_environment():
     """Initialiser la base de test"""
     from utils.reset_database import ResetDatabase
     ResetDatabase(test=True).lancer()
-
 
 @pytest.fixture
 def dao():
@@ -23,17 +22,27 @@ def dao():
     order_dao.db_connector = DBConnector(test=True)
     return order_dao
 
-
-def create_test_address(postalcode=35000, city="Rennes") -> Address:
-    return Address(address="12 Yvonne Jean-Haffen Street", postalcode=postalcode, city=city)
-
+def create_test_address(address="15 Rue de Test", city="Rennes", postalcode=35000):
+    db = DBConnector(test=True)
+    res = db.sql_query(
+        "INSERT INTO address (address, city, postal_code) VALUES (%s, %s, %s) RETURNING id_address",
+        [address, city, postalcode],
+        "one"
+    )
+    # Mapping postal_code -> postalcode pour correspondre au modèle Address
+    return Address(
+        id=res["id_address"],
+        address=address,
+        city=city,
+        postalcode=postalcode
+    )
 
 # --- Tests ---
 
 def test_create_order_ok(dao):
     order = Order(
-        id_customer=1,
-        id_driver=1,
+        id_customer=999,
+        id_driver=999,
         delivery_address=create_test_address(),
         total_amount=20.0,
         payment_method="cash",
@@ -44,10 +53,10 @@ def test_create_order_ok(dao):
     assert order.id == order_id
 
 def test_create_order_invalid_address(dao):
-    # Adresse invalide (postal code non autorisé)
+    # Adresse invalide
     order = Order(
-        id_customer=1,
-        id_driver=1,
+        id_customer=999,
+        id_driver=998,
         delivery_address=create_test_address(postalcode=99999, city="Rennes"),
         total_amount=15.0,
         payment_method="cash",
@@ -58,8 +67,8 @@ def test_create_order_invalid_address(dao):
 
 def test_add_product_ok(dao):
     order = Order(
-        id_customer=1,
-        id_driver=1,
+        id_customer=998,
+        id_driver=999,
         delivery_address=create_test_address(),
         total_amount=10.0,
         payment_method="cash",
@@ -68,38 +77,36 @@ def test_add_product_ok(dao):
     order_id = dao.create_order(order)
     assert order_id is not None
 
-    added = dao.add_product(order_id, product_id=1, quantity=2)
+    added = dao.add_product(order_id, product_id=997, quantity=2)
     assert added is True
 
 def test_add_product_invalid(dao):
-    # Ajouter un produit sur un order_id inexistant
-    added = dao.add_product(999999, product_id=1, quantity=2)
+    added = dao.add_product(999999, product_id=998, quantity=2)
     assert added is False
 
 def test_remove_product_ok(dao):
     order = Order(
-        id_customer=1,
-        id_driver=1,
+        id_customer=998,
+        id_driver=998,
         delivery_address=create_test_address(),
         total_amount=10.0,
         payment_method="cash",
         nb_items=1
     )
     order_id = dao.create_order(order)
-    dao.add_product(order_id, product_id=1, quantity=1)
+    dao.add_product(order_id, product_id=999, quantity=1)
 
-    removed = dao.remove_product(order_id, product_id=1)
+    removed = dao.remove_product(order_id, product_id=999)
     assert removed is True
 
 def test_remove_product_invalid(dao):
-    # Retirer un produit qui n'existe pas dans la commande
-    removed = dao.remove_product(order_id=999999, product_id=1)
+    removed = dao.remove_product(order_id=997, product_id=1)
     assert removed is False
 
 def test_cancel_order_ok(dao):
     order = Order(
-        id_customer=1,
-        id_driver=1,
+        id_customer=999,
+        id_driver=999,
         delivery_address=create_test_address(),
         total_amount=10.0,
         payment_method="cash",
@@ -110,14 +117,13 @@ def test_cancel_order_ok(dao):
     assert cancelled is True
 
 def test_cancel_order_invalid(dao):
-    # Cancel order inexistant
     cancelled = dao.cancel_order(999999)
     assert cancelled is False
 
 def test_get_by_id_ok(dao):
     order = Order(
-        id_customer=1,
-        id_driver=1,
+        id_customer=999,
+        id_driver=998,
         delivery_address=create_test_address(),
         total_amount=15.0,
         payment_method="cash",
@@ -135,8 +141,8 @@ def test_get_by_id_invalid(dao):
 
 def test_mark_as_delivered_ok(dao):
     order = Order(
-        id_customer=1,
-        id_driver=1,
+        id_customer=998,
+        id_driver=999,
         delivery_address=create_test_address(),
         total_amount=10.0,
         payment_method="cash",
@@ -155,3 +161,4 @@ def test_list_all_orders(dao):
     assert isinstance(orders, list)
     for o in orders:
         assert isinstance(o, Order)
+        assert isinstance(o.delivery_address, Address)
