@@ -23,10 +23,10 @@ class ProductService:
             stock=stock,
         )
 
-        return new_product if ProductDAO().create(new_product) else None
+        return new_product if ProductDAO().create_product(new_product) else None
 
 
 @log
 def delete(self, product) -> bool:
     """Supprimer un produit"""
-    return ProductDAO().supprimer(product)
+    return ProductDAO().deleting_product(product)
