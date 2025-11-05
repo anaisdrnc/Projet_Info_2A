@@ -2,8 +2,8 @@ import os
 import pytest
 from utils.reset_database import ResetDatabase
 from utils.securite import hash_password
-from src.DAO.AdminDAO import AdminDAO
-from src.Model.Admin import Admin
+from src.DAO.CustomerDAO import CustomerDAO
+from src.Model.Customer import Customer
 from src.DAO.DBConnector import DBConnector
 import pytest
 from utils.reset_database import ResetDatabase
@@ -19,21 +19,21 @@ def setup_test_environment():
 @pytest.fixture
 def dao():
     """DAO configuré pour le schéma test"""
-    admin_dao = AdminDAO()
-    admin_dao.db_connector = DBConnector(test=True)
-    return admin_dao
+    customer_dao = CustomerDAO()
+    customer_dao.db_connector = DBConnector(test=True)
+    return customer_dao
 
-def test_create_admin_ok(dao):
-    admin = Admin(
-        user_name="testadmin",
-        password=hash_password("secret", "testadmin"),
-        first_name="Admin",
+def test_create_customer_ok(dao):
+    customer = Customer(
+        user_name="testcustomer",
+        password=hash_password("secret", "testcustomer"),
+        first_name="Customer",
         last_name="Test",
-        email="testadmin@test.com"
+        email="testcustomer@test.com"
     )
-    created = dao.add_admin(admin)
+    created = dao.add_admin(customer)
     assert created
-    assert admin.id > 0
+    assert customer.id > 0
 
 if __name__ == "__main__":
     pytest.main([__file__])
