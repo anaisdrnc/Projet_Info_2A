@@ -4,29 +4,58 @@ from src.Model.Order import Order
 from src.Model.Address import Address
 from src.Model.Product import Product
 from src.DAO.DBConnector import DBConnector
+from src.Service.AddressService import validate_address
 
 
 class OrderDAO:
-    """Data Access Object for managing orders"""
+    """DAO final pour la gestion des commandes"""
 
     def __init__(self, test: bool = False):
         self.db_connector = DBConnector(test=test)
 
     def create_order(self, order: Order) -> Optional[int]:
-        """Client crée une commande"""
+        """
+        Crée une commande finale après que le client a choisi les produits, l'adresse et le paiement.
+        Retourne l'id de la commande ou None si échec.
+        """
         try:
-            res = self.db_connector.sql_query(
+            # Vérifier ou insérer l'adresse
+            if order.delivery_address.id is None:
+                if not validate_address(order.delivery_address):
+                    print("Adresse invalide")
+                    return None
+                # Insérer l'adresse et récupérer son id
+                res_addr = self.db_connector.sql_query(
+                    """
+                    INSERT INTO address (address, city, postal_code)
+                    VALUES (%(address)s, %(city)s, %(postalcode)s)
+                    RETURNING id_address;
+                    """,
+                    {
+                        "address": order.delivery_address.address,
+                        "city": order.delivery_address.city,
+                        "postalcode": order.delivery_address.postalcode
+                    },
+                    "one"
+                )
+                if not res_addr:
+                    print("Impossible de créer l'adresse")
+                    return None
+                order.delivery_address.id = res_addr["id_address"]
+
+            # Créer la commande
+            res_order = self.db_connector.sql_query(
                 """
-                INSERT INTO orders (id_customer, id_driver, id_address, date, status, total_amount,
-                payment_method, nb_items)
-                VALUES (%(id_customer)s, %(id_driver)s, %(id_address)s, %(date)s, %(status)s, %(total_amount)s,
-                %(payment_method)s, %(nb_items)s)
+                INSERT INTO orders (id_customer, id_driver, id_address, date, status,
+                                    total_amount, payment_method, nb_items)
+                VALUES (%(id_customer)s, %(id_driver)s, %(id_address)s, %(date)s, %(status)s,
+                        %(total_amount)s, %(payment_method)s, %(nb_items)s)
                 RETURNING id_order;
                 """,
                 {
                     "id_customer": order.id_customer,
                     "id_driver": order.id_driver,
-                    "id_address": order.delivery_address.id_address,
+                    "id_address": order.delivery_address.id,
                     "date": order.date,
                     "status": order.status,
                     "total_amount": order.total_amount,
@@ -35,15 +64,17 @@ class OrderDAO:
                 },
                 "one"
             )
-            if res:
-                order.id = res["id_order"]
+            if res_order:
+                order.id = res_order["id_order"]
                 return order.id
+            return None
+
         except Exception as e:
             print(f"Error creating order: {e}")
-        return None
+            return None
 
     def add_product(self, order_id: int, product_id: int, quantity: int) -> bool:
-        """Ajouter un produit à une commande"""
+        """Ajouter un produit à une commande existante"""
         try:
             self.db_connector.sql_query(
                 """
@@ -83,7 +114,7 @@ class OrderDAO:
             return False
 
     def get_assigned_orders(self, driver_id: int) -> List[Order]:
-        """Obtenir les commandes assignées à un driver"""
+        """Récupérer les commandes en préparation pour un driver"""
         try:
             raw_orders = self.db_connector.sql_query(
                 "SELECT * FROM orders WHERE id_driver = %s AND status = 'Preparing'",
@@ -96,7 +127,7 @@ class OrderDAO:
             return []
 
     def mark_as_delivered(self, order_id: int) -> bool:
-        """Driver marque une commande comme livrée"""
+        """Marquer une commande comme livrée"""
         try:
             self.db_connector.sql_query(
                 "UPDATE orders SET status = 'Delivered', date = %s WHERE id_order = %s",
@@ -108,7 +139,7 @@ class OrderDAO:
             return False
 
     def list_all_orders(self) -> List[Order]:
-        """Lister toutes les commandes (admin)"""
+        """Lister toutes les commandes"""
         try:
             raw_orders = self.db_connector.sql_query("SELECT * FROM orders", [], "all")
             return [self._build_order(o) for o in raw_orders]
@@ -117,7 +148,7 @@ class OrderDAO:
             return []
 
     def get_by_id(self, order_id: int) -> Optional[Order]:
-        """Retrieve an order by its ID with product details"""
+        """Récupérer une commande par son id avec les produits"""
         try:
             raw_order = self.db_connector.sql_query(
                 "SELECT * FROM orders WHERE id_order = %s", [order_id], "one"
@@ -125,7 +156,6 @@ class OrderDAO:
             if not raw_order:
                 return None
 
-            # Get address info
             raw_address = self.db_connector.sql_query(
                 "SELECT * FROM address WHERE id_address = %s",
                 [raw_order["id_address"]],
@@ -133,7 +163,6 @@ class OrderDAO:
             )
             address = Address(**raw_address) if raw_address else None
 
-            # Get products in the order
             raw_products = self.db_connector.sql_query(
                 """
                 SELECT p.id_product, p.name, p.price, p.production_cost, 
@@ -151,7 +180,6 @@ class OrderDAO:
                 for p in raw_products
             ]
 
-            # Calculate total dynamically
             total_amount = float(sum(float(p["price"]) * p["quantity"] for p in raw_products))
 
             return Order(
@@ -172,7 +200,7 @@ class OrderDAO:
             return None
 
     def _build_order(self, raw_order) -> Order:
-        """Construit un objet Order complet à partir des données SQL"""
+        """Construire un objet Order à partir des données brutes"""
         raw_address = self.db_connector.sql_query(
             "SELECT * FROM address WHERE id_address = %s",
             [raw_order["id_address"]],
