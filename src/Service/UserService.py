@@ -45,4 +45,6 @@ class UserService:
                 user.password = None
         return users
 
+    def is_username_free(self, username):
+        pass
 
