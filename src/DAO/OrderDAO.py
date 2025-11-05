@@ -45,7 +45,7 @@ class OrderDAO:
 
     def add_product(self, order_id: int, product_id: int, quantity: int) -> bool:
         try:
-            rows_affected = self.db_connector.sql_query(
+            self.db_connector.sql_query(
                 """
                 INSERT INTO order_products (id_order, id_product, quantity)
                 VALUES (%s, %s, %s)
@@ -53,7 +53,7 @@ class OrderDAO:
                 [order_id, product_id, quantity],
                 return_type=None
             )
-            return rows_affected > 0
+            return True
         except Exception as e:
             print("Error adding product:", e)
             return False
@@ -61,12 +61,16 @@ class OrderDAO:
 
     def remove_product(self, order_id: int, product_id: int) -> bool:
         try:
-            rows_affected = self.db_connector.sql_query(
-                "DELETE FROM order_products WHERE id_order = %s AND id_product = %s",
+            res = self.db_connector.sql_query(
+                """
+                DELETE FROM order_products
+                WHERE id_order = %s AND id_product = %s
+                RETURNING id_order
+                """,
                 [order_id, product_id],
-                return_type=None
+                return_type="one"
             )
-            return rows_affected > 0
+            return res is not None
         except Exception as e:
             print(f"Error removing product: {e}")
             return False
@@ -74,30 +78,28 @@ class OrderDAO:
 
     def cancel_order(self, id_order: int) -> bool:
         try:
-            rows_affected = self.db_connector.sql_query(
-                "UPDATE orders SET status = 'Cancelled' WHERE id_order = %s",
+            res = self.db_connector.sql_query(
+                "UPDATE orders SET status='Cancelled' WHERE id_order=%s RETURNING id_order",
                 [id_order],
-                return_type=None
+                return_type="one"
             )
-            return rows_affected > 0
+            return res is not None
         except Exception as e:
-            print("Error cancelling order:", e)
+            print(f"Error cancelling order: {e}")
             return False
-
 
 
     def mark_as_delivered(self, id_order: int) -> bool:
         try:
-            rows_affected = self.db_connector.sql_query(
-                "UPDATE orders SET status = 'Delivered', date = %s WHERE id_order = %s",
+            res = self.db_connector.sql_query(
+                "UPDATE orders SET status='Delivered', date=%s WHERE id_order=%s RETURNING id_order",
                 [datetime.now(), id_order],
-                return_type=None
+                return_type="one"
             )
-            return rows_affected > 0
+            return res is not None
         except Exception as e:
             print(f"Error marking order delivered: {e}")
             return False
-
 
 
     def get_order_products(self, order_id: int) -> List[Dict[str, Any]]:

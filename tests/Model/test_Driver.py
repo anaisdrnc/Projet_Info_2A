@@ -12,6 +12,7 @@ def test_create_valid_driver():
         first_name="Emma",
         last_name="Glorieux",
         email="emma@test.com",
+        salt="t",
         mean_of_transport="Car",
     )
 
@@ -29,6 +30,7 @@ def test_create_driver_with_bicycle():
         first_name="Paul",
         last_name="Martin",
         email="paul@test.com",
+        salt="d",
         mean_of_transport="Bike",
     )
 
@@ -45,5 +47,6 @@ def test_create_driver_with_invalid_transport_mean():
             first_name="Bob",
             last_name="Error",
             email="bob@test.com",
+            salt="f",
             mean_of_transport="walking",
         )
