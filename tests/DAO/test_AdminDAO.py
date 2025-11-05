@@ -4,8 +4,7 @@ from utils.reset_database import ResetDatabase
 from utils.securite import hash_password
 from src.DAO.AdminDAO import AdminDAO
 from src.Model.Admin import Admin
-
-
+from src.DAO.DBConnector import DBConnector
 import pytest
 from utils.reset_database import ResetDatabase
 from dotenv import load_dotenv
@@ -20,11 +19,11 @@ def setup_test_environment():
 @pytest.fixture
 def dao():
     """DAO configuré pour le schéma test"""
-    driver_dao = DriverDAO()
-    driver_dao.db_connector = DBConnector(test=True)
-    return driver_dao
+    admin_dao = AdminDAO()
+    admin_dao.db_connector = DBConnector(test=True)
+    return admin_dao
 
-def test_create_admin_ok():
+def test_create_admin_ok(dao):
     admin = Admin(
         user_name="testadmin",
         password=hash_password("secret", "testadmin"),
