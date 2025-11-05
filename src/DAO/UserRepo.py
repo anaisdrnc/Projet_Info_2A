@@ -96,3 +96,15 @@ class UserRepo:
             list_users.append(user)
 
         return list_users
+
+    def get_password(self, username):
+        raw_password = self.db_connector.sql_query(
+            "SELECT password from users WHERE user_name=%s", [username], "one"
+        )
+        if raw_password is None:
+            return None
+        if raw_password:
+            password = raw_password["password"]
+            return password
+        
+
