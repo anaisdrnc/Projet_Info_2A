@@ -1,39 +1,50 @@
+from datetime import datetime
+
 import pytest
 from dotenv import load_dotenv
-from utils.reset_database import ResetDatabase
-from utils.securite import hash_password
+
+from src.DAO.DBConnector import DBConnector
 from src.DAO.DriverDAO import DriverDAO
 from src.Model.Driver import Driver
-from datetime import datetime
-from src.DAO.DBConnector import DBConnector
+from utils.reset_database import ResetDatabase
+from utils.securite import hash_password
 
 load_dotenv()
+
+# --- Fixtures ---
 
 
 @pytest.fixture(scope="session", autouse=True)
 def setup_test_environment():
-    """Initialize the test database environment"""
+    """Reset DB before tests"""
     ResetDatabase(test=True).lancer()
 
 
 @pytest.fixture
 def dao():
-    """DAO configuré pour le schéma test"""
     driver_dao = DriverDAO()
     driver_dao.db_connector = DBConnector(test=True)
+    driver_dao.user_repo = UserRepo(driver_dao.db_connector)
     return driver_dao
 
 
+# --- Utilitaire ---
+
+
 def unique_username(base="driver"):
-    """Générer un username unique pour éviter les collisions entre tests"""
     return f"{base}_{datetime.utcnow().timestamp()}"
 
 
-def test_create_driver_ok(dao):
-    username = unique_username("testdriver")
+# --- Tests ---
+
+
+def test_cre42c10735e4daa4860ee7ate_driver_ok(dao):
+    username = unique_username("create_ok")
+    salt = unique_username("salt")
     driver = Driver(
         user_name=username,
-        password=hash_password("secret", username),
+        password=hash_password("secret", salt),
+        salt=salt,
         first_name="Test",
         last_name="Driver",
         email=f"{username}@test.com",
@@ -44,11 +55,13 @@ def test_create_driver_ok(dao):
     assert driver.id > 0
 
 
-def test_create_driver_ko(dao):
-    username = unique_username("dupdriver")
+def test_create_driver_duplicate(dao):
+    username = unique_username("dup_driver")
+    salt = unique_username("saltdup")
     driver1 = Driver(
         user_name=username,
-        password=hash_password("secret", username),
+        password=hash_password("secret", salt),
+        salt=salt,
         first_name="Dup",
         last_name="Driver",
         email=f"{username}@test.com",
@@ -58,21 +71,24 @@ def test_create_driver_ko(dao):
 
     driver2 = Driver(
         user_name=username,
-        password=hash_password("secret", username),
+        password=hash_password("secret", salt),
+        salt=salt,
         first_name="Dup",
         last_name="Driver",
         email=f"{username}@test.com",
         mean_of_transport="Car",
     )
-    created = dao.create(driver2)
-    assert not created
+    created2 = dao.create(driver2)
+    assert not created2
 
 
 def test_get_by_id_ok(dao):
     username = unique_username("get_driver")
+    salt = unique_username("saltget")
     driver = Driver(
         user_name=username,
-        password=hash_password("secret", username),
+        password=hash_password("secret", salt),
+        salt=salt,
         first_name="Get",
         last_name="Driver",
         email=f"{username}@test.com",
@@ -81,7 +97,7 @@ def test_get_by_id_ok(dao):
     dao.create(driver)
     retrieved = dao.get_by_id(driver.id)
     assert retrieved is not None
-    assert retrieved.user_name == driver.user_name
+    assert retrieved.user_name == username
 
 
 def test_get_by_id_ko(dao):
@@ -90,11 +106,14 @@ def test_get_by_id_ko(dao):
 
 
 def test_list_all_drivers(dao):
-    username1 = unique_username("list_driver1")
-    username2 = unique_username("list_driver2")
+    username1 = unique_username("list1")
+    username2 = unique_username("list2")
+    salt1 = unique_username("salt1")
+    salt2 = unique_username("salt2")
     driver1 = Driver(
         user_name=username1,
-        password=hash_password("secret1", username1),
+        password=hash_password("p1", salt1),
+        salt=salt1,
         first_name="List",
         last_name="Driver1",
         email=f"{username1}@test.com",
@@ -102,11 +121,12 @@ def test_list_all_drivers(dao):
     )
     driver2 = Driver(
         user_name=username2,
-        password=hash_password("secret2", username2),
+        password=hash_password("p2", salt2),
+        salt=salt2,
         first_name="List",
         last_name="Driver2",
         email=f"{username2}@test.com",
-        mean_of_transport="Car",
+        mean_of_transport="Bike",
     )
     dao.create(driver1)
     dao.create(driver2)
@@ -119,9 +139,11 @@ def test_list_all_drivers(dao):
 
 def test_update_driver_ok(dao):
     username = unique_username("update_driver")
+    salt = unique_username("saltupdate")
     driver = Driver(
         user_name=username,
-        password=hash_password("secret", username),
+        password=hash_password("secret", salt),
+        salt=salt,
         first_name="Update",
         last_name="Driver",
         email=f"{username}@test.com",
@@ -131,31 +153,35 @@ def test_update_driver_ok(dao):
 
     driver.mean_of_transport = "Bike"
     updated = dao.update(driver)
-    updated_driver = dao.get_by_id(driver.id)
     assert updated
+    updated_driver = dao.get_by_id(driver.id)
     assert updated_driver.mean_of_transport == "Bike"
 
 
 def test_update_driver_ko(dao):
     driver = Driver(
+        id=999999,
         user_name="nonexist",
         password=hash_password("secret", "nonexist"),
+        salt="nonexist",
         first_name="No",
         last_name="Exist",
         email="noexist@test.com",
         mean_of_transport="Car",
-        id=999999,
     )
     updated = dao.update(driver)
     assert not updated
 
 
 def test_login_driver_ok(dao):
-    username = unique_username("login_driver")
+    username = unique_username("login_ok")
     password = "secret"
+    salt = unique_username("saltlogin")
+    hashed = hash_password(password, salt)
     driver = Driver(
         user_name=username,
-        password=hash_password(password, username),
+        password=hashed,
+        salt=salt,
         first_name="Login",
         last_name="Driver",
         email=f"{username}@test.com",
@@ -163,32 +189,52 @@ def test_login_driver_ok(dao):
     )
     dao.create(driver)
 
-    logged_in = dao.login(username, hash_password(password, username))
-    assert logged_in is not None
-    assert logged_in.user_name == username
+    logged = dao.login(username, hashed)
+    assert logged is not None
+    assert logged.user_name == username
 
 
-def test_login_driver_ko(dao):
-    logged_in = dao.login("wronguser", hash_password("wrongpass", "wronguser"))
-    assert logged_in is None
-
-
-def test_delete_driver_ok(dao):
-    username = unique_username("delete_driver")
+def test_login_driver_wrong_password(dao):
+    username = unique_username("login_wrong")
+    salt = unique_username("saltwrong")
+    hashed = hash_password("secret", salt)
     driver = Driver(
         user_name=username,
-        password=hash_password("secret", username),
-        first_name="Delete",
+        password=hashed,
+        salt=salt,
+        first_name="Login",
         last_name="Driver",
         email=f"{username}@test.com",
         mean_of_transport="Car",
     )
     dao.create(driver)
 
+    wrong_hash = hash_password("wrongpass", salt)
+    logged = dao.login(username, wrong_hash)
+    assert logged is None
+
+
+def test_login_driver_nonexistent_user(dao):
+    logged = dao.login("nonexistent", "anypass")
+    assert logged is None
+
+
+def test_delete_driver_ok(dao):
+    username = unique_username("delete_ok")
+    salt = unique_username("saltdel")
+    driver = Driver(
+        user_name=username,
+        password=hash_password("secret", salt),
+        salt=salt,
+        first_name="Delete",
+        last_name="Driver",
+        email=f"{username}@test.com",
+        mean_of_transport="Car",
+    )
+    dao.create(driver)
     deleted = dao.delete(driver.id)
-    driver_after = dao.get_by_id(driver.id)
     assert deleted
-    assert driver_after is None
+    assert dao.get_by_id(driver.id) is None
 
 
 def test_delete_driver_ko(dao):
