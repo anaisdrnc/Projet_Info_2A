@@ -4,9 +4,11 @@ from src.CLI.view_abstract import VueAbstraite
 #from src.CLI.session import Session
 
 from src.DAO.UserRepo import UserRepo
+from src.DAO.CustomerDAO import CustomerDAO
 from src.DAO.DBConnector import DBConnector
 
 from src.Service.UserService import UserService
+from src.Service.CustomerService import CustomerService
 from src.Service.PasswordService import validate_username_password
 
 
@@ -16,6 +18,7 @@ class LoginView(VueAbstraite):
     def choisir_menu(self):
 
         user_repo = UserRepo(DBConnector(test = False))
+        customerdao = CustomerDAO(DBConnector(test = False))
 
         # Demande à l'utilisateur de saisir pseudo et mot de passe
         pseudo = inquirer.text(message="Enter your username : ").execute()
