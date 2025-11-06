@@ -38,4 +38,5 @@ class ProductService:
     @log
     def get_list_products_descriptions(self):
         """Liste des noms et descriptions des produits"""
-        return self.productdao.get_all_product_names_descriptions()
+        productdao = self.productdao
+        return productdao.get_all_product_names_descriptions()
