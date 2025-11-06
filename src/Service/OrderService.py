@@ -12,7 +12,7 @@ class OrderService:
         self.orderdao = orderdao
 
     @log
-    def create(self, id_customer, id_driver, id_address, nb_items, total_amount, payment_method) -> Order:
+    def create(self, id_customer, id_driver = None, id_address, nb_items, total_amount, payment_method) -> Order:
         """Création d'une commande à partir de ses attributs"""
         orderdao = self.orderdao
 
