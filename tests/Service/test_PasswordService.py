@@ -25,7 +25,7 @@ def test_hash_password_with_salt():
     hashed_password = hash_password(password, salt)
     assert (
         hashed_password
-        == "56d25b0190eb6fcdab76f20550aa3e85a37ee48d520ac70385ae3615deb7d53a"
+        == "7877d4860ef88458096f549b618667d860540db5d59b1d153557d5cdbe1221e7"
     )
 
 
@@ -39,12 +39,14 @@ class MockUserRepo:
         if username == "janjak":
             return User(
                 id=4,
-                username="janjak",
+                user_name="janjak",
+                first_name="Jean",
+                last_name="Jacques",
+                email="janjak@test.com",
                 salt="jambon",
-                password="56d25b0190eb6fcdab76f20550aa3e85a37ee48d520ac70385ae3615deb7d53a",
+                password="7877d4860ef88458096f549b618667d860540db5d59b1d153557d5cdbe1221e7",
             )
-        else:
-            return None
+        return None
 
 
 user_repo = MockUserRepo()
