@@ -12,6 +12,12 @@ from utils.reset_database import ResetDatabase
 load_dotenv()
 
 
+@pytest.fixture(autouse=True)
+def setup_test_environment():
+    """Reset the test database before each test function"""
+    ResetDatabase(test=True).lancer()
+
+
 @pytest.fixture(scope="session", autouse=True)
 def setup_test_environment():
     """Initialize the test database environment"""
@@ -21,7 +27,7 @@ def setup_test_environment():
 @pytest.fixture
 def dao():
     """DAO configuré pour le schéma test"""
-    product_dao = ProductDAO()
+    product_dao = ProductDAO(db_connector=DBConnector(test=True))
     product_dao.db_connector = DBConnector(test=True)
     return product_dao
 
@@ -38,7 +44,7 @@ def test_create_ok(dao):
         stock=15,
     )
 
-    creation_ok = ProductDAO().create_product(product)
+    creation_ok = dao.create_product(product)
     assert creation_ok
     assert product.id_product is not None
 

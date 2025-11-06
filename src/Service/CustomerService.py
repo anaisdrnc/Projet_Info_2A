@@ -1,20 +1,19 @@
-from utils.log_decorator import log
+from src.DAO.CustomerDAO import CustomerDAO
+from src.DAO.DBConnector import DBConnector
 from src.DAO.UserRepo import UserRepo
+from src.Model.Customer import Customer
 from src.Model.User import User
 from src.Service.PasswordService import check_password_strength, create_salt
+from utils.log_decorator import log
 from utils.securite import hash_password
-from src.DAO.DBConnector import DBConnector
-from src.DAO.CustomerDAO import CustomerDAO
-from src.Model.Customer import Customer
+
 
 class CustomerService:
-    def __init__(self, customerdao = CustomerDAO(DBConnector)):
+    def __init__(self, customerdao=CustomerDAO(DBConnector)):
         self.customerdao = customerdao
-    
+
     @log
-    def create_customer(
-        self, username: str, password: str, firstname: str, lastname: str, email: str
-    ) -> Customer:
+    def create_customer(self, username: str, password: str, firstname: str, lastname: str, email: str) -> Customer:
         """
         Crée un nouveau client :
         - Vérifie la force du mot de passe
@@ -32,7 +31,7 @@ class CustomerService:
             first_name=firstname,
             last_name=lastname,
             email=email,
-            salt = salt
+            salt=salt,
         )
 
         if customerdao.add_customer(new_user) is not None:
