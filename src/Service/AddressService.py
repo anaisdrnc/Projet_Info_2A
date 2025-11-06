@@ -13,6 +13,8 @@ ALLOWED_ADDRESSES = {
 
 
 class AddressService:
+    """Class containing address service methods"""
+
     @log
     def validate_address(address: Address) -> bool:
         """Return True if the address is validated"""
