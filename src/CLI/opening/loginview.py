@@ -32,9 +32,9 @@ class LoginView(VueAbstraite):
             message = f"You are connected on the account {user.user_name}"
             #Session().connexion(joueur)
 
-            #from view.menu_joueur_vue import MenuJoueurVue
+            from src.CLI.menu_customer import MenuView
 
-            #return MenuJoueurVue(message)
+            return MenuView(message)
 
         message = "Erreur de connexion (pseudo ou mot de passe invalide)"
         from src.CLI.opening.openingview import OpeningView
