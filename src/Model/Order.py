@@ -13,4 +13,4 @@ class Order(BaseModel):
     status: Literal["Delivered", "Preparing", "Cancelled"] = "Preparing"
     nb_items: int = Field(..., ge=0)
     total_amount: float = Field(..., gt=0)
-    payment_method: Literal["Card", "Cash"]
+    payment_method: Literal["Card", "Cash"] = "Card"

@@ -13,16 +13,16 @@ def get_all_orders():
     Récupère toutes les commandes depuis la base PostgreSQL.
     """
     try:
-        query = """
-            SELECT *
-            FROM orders
-        """
+        query = 'SELECT * FROM "orders";'  # ou 'SELECT * FROM orders;' selon ton schéma
         orders_data = db.sql_query(query, return_type="all")
 
-        return orders_data
+        if not orders_data:
+            return []  # retourne une liste vide plutôt que None
+
+        # Conversion explicite en objets Pydantic
+        return [Order(**order) for order in orders_data]
 
     except Exception as e:
-        # Affiche l'erreur exacte dans le log et dans la réponse
         print("DEBUG ERROR:", str(e))
         raise HTTPException(
             status_code=500,
