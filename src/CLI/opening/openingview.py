@@ -34,9 +34,9 @@ class OpeningView(VueAbstraite):
                 pass
 
             case "Login":
-                from src.CLI.opening.loginview import Loginview
+                from src.CLI.opening.loginview import LoginView
 
-                return Loginview("Log into the application")
+                return LoginView("Log into the application")
 
             case "Create account":
                 from src.CLI.opening.inscriptionview import InscriptionView
