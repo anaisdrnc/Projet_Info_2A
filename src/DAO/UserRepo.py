@@ -124,3 +124,42 @@ class UserRepo:
             return False
         return True
 
+    @log
+    def update_user(self, user: 'User') -> bool:
+        """
+        Met à jour les informations d'un utilisateur existant dans la table users.
+        Retourne True si la mise à jour a réussi, False sinon.
+        """
+        if not user.id:
+            logging.info("update_user: user.id is missing")
+            return False
+
+        try:
+            res = self.db_connector.sql_query(
+                """
+                UPDATE users
+                SET first_name = %(first_name)s,
+                    last_name = %(last_name)s,
+                    email = %(email)s,
+                    user_name = %(user_name)s,
+                    password = %(password)s,
+                    salt = %(salt)s
+                WHERE id_user = %(id_user)s
+                RETURNING id_user;
+                """,
+                {
+                    "first_name": user.first_name,
+                    "last_name": user.last_name,
+                    "email": user.email,
+                    "user_name": user.user_name,
+                    "password": user.password,
+                    "salt": user.salt,
+                    "id_user": user.id,
+                },
+                "one",
+            )
+            return res is not None
+        except Exception as e:
+            logging.info(e)
+            return False
+

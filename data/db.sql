@@ -112,21 +112,24 @@ INSERT INTO users (first_name, last_name, user_name, password, email, salt) VALU
 ('Emma', 'Boisse', 'EmmaMache', '8d3a5fcc03ea32df25e905dc47b27c4d8a5fabf9f77bbec1a305a59af5ab9143', 'emmamache@project.com','j'),
 ('Emma', 'Glorieux', 'EmmaDriver', 'f11b5649b0e3b97afae7b6db66b48f66407096f4771d599159ea7d0d7cd1d8de', 'emmadriver@project.com','j'),
 ('JF', 'Lapitre', 'PresidentEnsai', '118adf271202feab0f44fb1a53285c72ab1857e8d49ca2c930cfee09da4555bf', 'jf@project.com','j'),
-('Pierre', 'Cycliste', 'PierreVelo', '671ac9d528b52b5d47f8ab43c74d4584fba7af774cd8f376d96bf6c45b01b796', 'pierre.velo@project.com', 'j');
+('Pierre', 'Cycliste', 'PierreVelo', '671ac9d528b52b5d47f8ab43c74d4584fba7af774cd8f376d96bf6c45b01b796', 'pierre.velo@project.com', 'j'),
+('Vincent', 'Dupont', 'Vincdupont', '671ac9d528b52b5d47f8ab43c74d4584fba7af774cd8f376d96bf6c45b01b796', 'v.dupont@project.com', 'j');
 
 -----------------------
 -- INSERT INTO CUSTOMER
 -----------------------
 INSERT INTO customer (id_user, address, city, postal_code) VALUES
 (2, '12 Yvonne Jean-Haffen Street', 'Rennes', '35000'),
-(3, '1 Rohan Street', 'Rennes', '35000');
+(3, '1 Rohan Street', 'Rennes', '35000'),
+(7, '1 Rue Duguesclin', 'Rennes', '35000');
 
 -----------------------
 -- INSERT INTO ADDRESS
 -----------------------
 INSERT INTO address (address, city, postal_code) VALUES
 ('12 Yvonne Jean-Haffen Street', 'Rennes', '35000'),
-('1 Rohan Street', 'Rennes', '35000');
+('1 Rohan Street', 'Rennes', '35000'),
+('1 Rue Duguesclin', 'Rennes', '35000');
 
 -----------------------
 -- INSERT INTO DRIVER
@@ -182,7 +185,8 @@ INSERT INTO product (name, price, production_cost, description, product_type, st
 -----------------------
 INSERT INTO orders (id_customer, id_driver, id_address, date, status, nb_items, total_amount, payment_method) VALUES
 (1, 1, 1, NOW(),'Preparing', 2, 6.00, 'Card'),
-(2, 2, 2, NOW(),'Delivered', 1, 3.00, 'Cash');
+(2, 2, 2, NOW(),'Delivered', 1, 3.00, 'Cash'),
+(3, 3, 3, NOW(),'Ready', 1, 3.00, 'Cash');
 
 -----------------------
 -- INSERT INTO ORDER_PRODUCTS
@@ -190,7 +194,8 @@ INSERT INTO orders (id_customer, id_driver, id_address, date, status, nb_items, 
 INSERT INTO order_products (id_order, id_product, quantity) VALUES
 (1, 1, 1),  -- 1 Italian Panini in order 1
 (1, 13, 1),  -- 1 Classic Burger in order 1
-(2, 17, 1);  -- 1 Chicken Wrap in order 2
+(2, 17, 1),  -- 1 Chicken Wrap in order 2
+(3, 2, 1);  -- 1 Indian Panini in order 3
 
 
 

@@ -9,8 +9,9 @@ from src.Model.Order import Order
 class OrderDAO:
     """DAO pour la gestion des commandes et leurs produits."""
 
-    def __init__(self, test: bool = False):
-        self.db_connector = DBConnector(test=test)
+    def __init__(self, db_connector=None):
+        """Initialize a new OrderDAO instance with a database connector."""
+        self.db_connector = db_connector if db_connector is not None else DBConnector()
 
     def create_order(self, order: Order) -> Optional[int]:
         """Crée une nouvelle commande avec l'adresse déjà insérée en base."""
@@ -162,6 +163,24 @@ class OrderDAO:
             return result
         except Exception as e:
             print(f"Error listing all orders: {e}")
+            return []
+
+    def list_all_orders_ready(self):
+        """Returns all ready orders ordered chronologically."""
+        try:
+            raw_orders = self.db_connector.sql_query(
+                "SELECT id_order, id_address, date FROM default_schema.orders WHERE status = 'Ready' ORDER BY date ",
+                None,
+                "all",
+            )
+            result = []
+            for o in raw_orders:
+                order_data = self.get_by_id(o["id_order"])
+                if order_data:
+                    result.append(order_data)
+            return result
+        except Exception as e:
+            print(f"Error listing all ready orders: {e}")
             return []
 
     def get_assigned_orders(self, driver_id: int) -> List[Dict[str, Any]]:

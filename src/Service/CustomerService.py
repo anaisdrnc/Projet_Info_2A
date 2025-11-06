@@ -1,6 +1,7 @@
 from src.DAO.CustomerDAO import CustomerDAO
 from src.DAO.DBConnector import DBConnector
-from src.DAO.UserRepo import UserRepo
+
+# from src.DAO.UserRepo import UserRepo
 from src.Model.Customer import Customer
 from src.Model.User import User
 from src.Service.PasswordService import check_password_strength, create_salt
@@ -9,6 +10,8 @@ from utils.securite import hash_password
 
 
 class CustomerService:
+    """Class containing customers service methods"""
+
     def __init__(self, customerdao=CustomerDAO(DBConnector)):
         self.customerdao = customerdao
 

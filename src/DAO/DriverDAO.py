@@ -1,10 +1,12 @@
 import logging
 from typing import List, Optional
+
 from src.DAO.DBConnector import DBConnector
-from src.Model.Driver import Driver
 from src.DAO.UserRepo import UserRepo
-from utils.securite import hash_password
+from src.Model.Driver import Driver
 from utils.log_decorator import log
+from utils.securite import hash_password
+
 
 class DriverDAO:
     def __init__(self):
@@ -65,7 +67,7 @@ class DriverDAO:
                 first_name=res["first_name"],
                 last_name=res["last_name"],
                 email=res["email"],
-                mean_of_transport=res["mean_of_transport"]
+                mean_of_transport=res["mean_of_transport"],
             )
         except Exception as e:
             logging.info(e)
@@ -98,7 +100,7 @@ class DriverDAO:
                             first_name=row["first_name"],
                             last_name=row["last_name"],
                             email=row["email"],
-                            mean_of_transport=row["mean_of_transport"]
+                            mean_of_transport=row["mean_of_transport"],
                         )
                     )
             return drivers
@@ -178,6 +180,6 @@ class DriverDAO:
             first_name=res["first_name"],
             last_name=res["last_name"],
             email=res["email"],
-            mean_of_transport=res["mean_of_transport"]
+            mean_of_transport=res["mean_of_transport"],
         )
         return driver

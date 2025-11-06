@@ -1,34 +1,25 @@
 from InquirerPy import inquirer
 
 from src.CLI.view_abstract import VueAbstraite
-from src.Service.ProductService import ProductService
 from src.DAO.ProductDAO import ProductDAO
+from src.DAO.DBConnector import DBConnector
+from src.Service.ProductService import ProductService
 
 
 class ProductView(VueAbstraite):
     """View that shows :
-    - the list of products available
+    - the list of products available with description
     """
 
     def choisir_menu(self):
-        """pokemon_client = PokemonClient()
+        productdao = ProductDAO(DBConnector)
+        productservice = ProductService(productdao)
 
-        pokemon_types = pokemon_client.get_pokemon_types()
-        pokemon_types.append("Retour au Menu Joueur")
+        list_products = productservice.get_list_products_descriptions()
 
-        choix = inquirer.select(
-            message="Choisissez un type de Pokemon : ",
-            choices=pokemon_types,
-        ).execute()
+        from src.CLI.menu_customer import MenuView
 
-        if choix == "Retour au Menu Joueur":
-            from view.menu_joueur_vue import MenuJoueurVue
-
-            return MenuJoueurVue()
-
-        from view.menu_joueur_vue import MenuJoueurVue
-
-        pokemons_str = f"Liste des pokemons du type {choix} :\n\n"
-        pokemons_str += str(pokemon_client.get_all_pokemon_by_types(choix))
-        return MenuJoueurVue(pokemons_str)"""
-        pass
+        products_str = f"Liste des produits disponibles : \n\n"
+        products_str += str(list_products)
+        return MenuView(products_str)
+        
