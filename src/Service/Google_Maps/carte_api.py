@@ -6,7 +6,6 @@ import config
 import folium
 import googlemaps
 
-# from src.DAO.DriverDAO import DriverDAO
 current_dir = os.path.dirname(os.path.abspath(__file__))
 project_root = os.path.dirname(os.path.dirname(os.path.dirname(current_dir)))
 sys.path.insert(0, project_root)

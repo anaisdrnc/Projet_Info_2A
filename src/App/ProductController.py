@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, status
 
 from src.Model.Product import Product
 from src.DAO.DBConnector import DBConnector
-product_router = APIRouter(prefix="/Product", tags=["Menu"])
+product_router = APIRouter(prefix="/Product", tags=["Products"])
 
 db = DBConnector()
 
