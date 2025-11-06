@@ -1,11 +1,13 @@
+from datetime import datetime
+
 import pytest
 from dotenv import load_dotenv
-from utils.reset_database import ResetDatabase
-from utils.securite import hash_password
+
+from src.DAO.DBConnector import DBConnector
 from src.DAO.DriverDAO import DriverDAO
 from src.Model.Driver import Driver
-from datetime import datetime
-from src.DAO.DBConnector import DBConnector
+from utils.reset_database import ResetDatabase
+from utils.securite import hash_password
 
 load_dotenv()
 

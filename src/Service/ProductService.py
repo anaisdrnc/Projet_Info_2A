@@ -1,8 +1,4 @@
-from tabulate import tabulate
-
 from src.DAO.ProductDAO import ProductDAO
-
-# from utils.securite import hash_password
 from src.Model.Product import Product
 from utils.log_decorator import log
 
