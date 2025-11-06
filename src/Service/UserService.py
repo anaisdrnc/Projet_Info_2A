@@ -5,10 +5,11 @@ from src.DAO.UserRepo import UserRepo
 from src.Model.User import User
 from src.Service.PasswordService import check_password_strength, create_salt
 from utils.securite import hash_password
+from src.DAO.DBConnector import DBConnector
 
 
 class UserService:
-    def __init__(self, user_repo: UserRepo):
+    def __init__(self, user_repo = UserRepo(db_connector=DBConnector(test=False))):
         self.user_repo = user_repo
     
     @log
