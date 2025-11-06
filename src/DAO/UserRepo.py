@@ -10,7 +10,8 @@ class UserRepo:
     def __init__(self, db_connector):
         """Initialize a new UserDAO instance with a database connector."""
         self.db_connector = DBConnector()
-
+    
+    @log
     def add_user(self, user):
         """add user to the database and return id_user, in order to add the user to the
         proprer table (customer, driver or admin) with another method"""
@@ -36,7 +37,8 @@ class UserRepo:
             user.id = res["id_user"]
             return user.id
         return None
-
+    
+    @log
     def delete_user(self, user_id):
         """delete user with their id from the user table"""
         try:
@@ -53,7 +55,8 @@ class UserRepo:
         except Exception as e:
             logging.info(e)
             return False
-
+    
+    @log
     def get_by_id(self, user_id: int) -> Optional[User]:
         raw_user = self.db_connector.sql_query(
             "SELECT * from users WHERE id_user=%s", [user_id], "one"
@@ -62,7 +65,8 @@ class UserRepo:
             return None
         # pyrefly: ignore
         return User(**raw_user)
-
+    
+    @log
     def get_by_username(self, user_name: str) -> Optional[User]:
         raw_user = self.db_connector.sql_query(
             "SELECT * from users WHERE user_name=%s", [user_name], "one"
@@ -71,7 +75,8 @@ class UserRepo:
             return None
         # pyrefly: ignore
         return User(**raw_user)
-
+    
+    @log
     def get_all_users(self, include_password=False) -> list[User]:
         """List all the users, optionally including the password."""
         raw_list = self.db_connector.sql_query("SELECT * FROM users")
@@ -96,7 +101,8 @@ class UserRepo:
             list_users.append(user)
 
         return list_users
-
+    
+    @log
     def get_password(self, username):
         raw_password = self.db_connector.sql_query(
             "SELECT password from users WHERE user_name=%s", [username], "one"
@@ -106,7 +112,8 @@ class UserRepo:
         if raw_password:
             password = raw_password["password"]
             return password
-
+    
+    @log
     def is_username_taken(self, username):
         raw_answer = self.db_connector.sql_query(
             "SELECT * FROM users WHERE user_name = %s;", [username], "one"
