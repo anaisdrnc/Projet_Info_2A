@@ -65,7 +65,7 @@ class ProductDAO:
     
     def get_all_products(self):
         """get all products to show the customer"""
-        raw_list = self.db_connector.sql_query("SELECT * FROM product WHERE stock>0")
+        raw_list = self.db_connector.sql_query("SELECT * FROM product WHERE stock>0", [], "all")
         if raw_list is None:
             return []
         list_products = []
