@@ -1,76 +1,97 @@
-from unittest.mock import patch
-
-from src.Model.Product import Product
+import pytest
+from src.DAO.DBConnector import DBConnector
+from src.DAO.ProductDAO import ProductDAO
 from src.Service.ProductService import ProductService
+from src.Model.Product import Product
+from utils.reset_database import ResetDatabase
+
+@pytest.fixture(autouse=True)
+def reset_db():
+    """Reset the test database avant chaque test"""
+    ResetDatabase(test=True).lancer()
+
+@pytest.fixture
+def dao():
+    """DAO pour tests"""
+    return ProductDAO(DBConnector(test=True))
 
 
-def test_creer_ok():
-    name = "Panini Mozarella"
-    price = 3.5
-    production_cost = 2.5
-    product_type = "lunch"
-    description = "Panini with mozzarella and tomato"
-    stock = 4
-
-    with patch("src.Service.ProductService.ProductDAO.create_product", return_value=True) as mock_create:
-        with patch("src.DAO.ProductDAO.DBConnector"):
-            service = ProductService()
-            result = service.create(
-                name=name,
-                price=price,
-                production_cost=production_cost,
-                product_type=product_type,
-                description=description,
-                stock=stock,
-            )
-
-            assert result is not None
-            assert isinstance(result, Product)
-            mock_create.assert_called_once()
+@pytest.fixture
+def service(dao):
+    """Service basé sur le DAO"""
+    return ProductService(productdao=dao)
 
 
-def test_creer_ko():
-    name = "Panini Mozarella"
-    price = 3.5
-    production_cost = 2.5
-    product_type = "lunch"
-    description = "Panini with mozzarella and tomato"
-    stock = 4
-
-    with patch("src.Service.ProductService.ProductDAO.create_product", return_value=False) as mock_create:
-        with patch("src.DAO.ProductDAO.DBConnector"):
-            service = ProductService()
-
-            result = service.create(
-                name=name,
-                price=price,
-                production_cost=production_cost,
-                product_type=product_type,
-                description=description,
-                stock=stock,
-            )
-
-            assert result is None
-            mock_create.assert_called_once()
+def test_create_ok(service):
+    product = service.create(
+        name="Test Burger",
+        price=3.0,
+        production_cost=2.0,
+        product_type="lunch",
+        description="Simple Burger",
+        stock=10,
+    )
+    assert product is not None
+    assert isinstance(product, Product)
+    assert product.id_product is not None
 
 
-def test_delete_ok():
-    with patch("src.Service.ProductService.ProductDAO.deleting_product", return_value=True) as mock_delete:
-        with patch("src.DAO.ProductDAO.DBConnector"):
-            service = ProductService()
+def test_create_ko(service, monkeypatch):
+    # On force la création à échouer
+    monkeypatch.setattr(service.productdao, "create_product", lambda p: False)
+    product = service.create(
+        name="Test Panini KO",
+        price=3.0,
+        production_cost=2.0,
+        product_type="lunch",
+        description="Simple panini KO",
+        stock=10,
+    )
+    assert product is None
 
-            result = service.delete(product=1)
 
-            assert result is True
-            mock_delete.assert_called_once_with(1)
+def test_delete_ok(service):
+    # Créer un produit pour le supprimer
+    product = service.create(
+        name="Test Delete",
+        price=2.5,
+        production_cost=1.5,
+        product_type="lunch",
+        description="Produit à supprimer",
+        stock=5,
+    )
+    result = service.delete(product.id_product)
+    assert result is True
 
 
-def test_delete_ko():
-    with patch("src.Service.ProductService.ProductDAO.deleting_product", return_value=False) as mock_delete:
-        with patch("src.DAO.ProductDAO.DBConnector"):
-            service = ProductService()
+def test_delete_ko(service):
+    # Supprimer un id qui n'existe pas
+    result = service.delete(999999)
+    assert result is False
 
-            result = service.delete(product=1)
 
-            assert result is False
-            mock_delete.assert_called_once_with(1)
+def test_get_list_products_names(service):
+    # Ajouter des produits spécifiques
+    products = [
+        Product(name="Café", price=2.5, production_cost=1.0, product_type="drink", description="Café chaud", stock=10),
+        Product(name="Croissant", price=1.5, production_cost=0.5, product_type="dessert", description="Croissant frais", stock=5),
+    ]
+    for p in products:
+        service.productdao.create_product(p)
+
+    names = service.get_list_products_names()
+    for p in products:
+        assert p.name in names
+
+
+def test_get_list_products_descriptions(service):
+    products = [
+        Product(name="Café", price=2.5, production_cost=1.0, product_type="drink", description="Café chaud", stock=10),
+        Product(name="Croissant", price=1.5, production_cost=0.5, product_type="dessert", description="Croissant frais", stock=5),
+    ]
+    for p in products:
+        service.productdao.create_product(p)
+
+    result = service.get_list_products_descriptions()
+    for p in products:
+        assert [p.name, p.description] in result
