@@ -1,8 +1,8 @@
 from typing import Optional
 import logging
-from utils.log_decorator import log
 from src.Model.User import User
 from .DBConnector import DBConnector
+from utils.log_decorator import log
 
 
 class UserRepo:

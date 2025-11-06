@@ -1,7 +1,5 @@
 from unittest.mock import patch
 
-import pytest
-
 from src.Model.Product import Product
 from src.Service.ProductService import ProductService
 
@@ -14,8 +12,7 @@ def test_creer_ok():
     description = "Panini with mozzarella and tomato"
     stock = 4
 
-    # Patch la méthode create_product et DBConnector pour éviter la DB réelle
-    with patch("src.Service.ProductService.ProductDAO.create_product", return_value=True):
+    with patch("src.Service.ProductService.ProductDAO.create_product", return_value=True) as mock_create:
         with patch("src.DAO.ProductDAO.DBConnector"):
             service = ProductService()
             result = service.create(
@@ -29,12 +26,10 @@ def test_creer_ok():
 
             assert result is not None
             assert isinstance(result, Product)
+            mock_create.assert_called_once()
 
 
 def test_creer_ko():
-    """Création de produit échouée via ProductService"""
-
-    # GIVEN
     name = "Panini Mozarella"
     price = 3.5
     production_cost = 2.5
@@ -42,12 +37,10 @@ def test_creer_ko():
     description = "Panini with mozzarella and tomato"
     stock = 4
 
-    # PATCH : on simule que create_product échoue et DBConnector pour éviter la vraie DB
-    with patch("src.Service.ProductService.ProductDAO.create_product", return_value=False):
+    with patch("src.Service.ProductService.ProductDAO.create_product", return_value=False) as mock_create:
         with patch("src.DAO.ProductDAO.DBConnector"):
             service = ProductService()
 
-            # WHEN
             result = service.create(
                 name=name,
                 price=price,
@@ -57,18 +50,27 @@ def test_creer_ko():
                 stock=stock,
             )
 
-            # THEN
-            # La création a échoué → retourne None
             assert result is None
+            mock_create.assert_called_once()
 
 
 def test_delete_ok():
-    """Suppression réussie d'un produit"""
-
-    with patch("src.Service.ProductService.ProductDAO.deleting_product", return_value=True):
-        with patch("src.DAO.ProductDAO.DBConnector"):  # éviter la vraie DB
+    with patch("src.Service.ProductService.ProductDAO.deleting_product", return_value=True) as mock_delete:
+        with patch("src.DAO.ProductDAO.DBConnector"):
             service = ProductService()
 
-            result = service.delete(product=1)  # 1 = id ou objet selon ton usage
+            result = service.delete(product=1)
 
             assert result is True
+            mock_delete.assert_called_once_with(1)
+
+
+def test_delete_ko():
+    with patch("src.Service.ProductService.ProductDAO.deleting_product", return_value=False) as mock_delete:
+        with patch("src.DAO.ProductDAO.DBConnector"):
+            service = ProductService()
+
+            result = service.delete(product=1)
+
+            assert result is False
+            mock_delete.assert_called_once_with(1)
