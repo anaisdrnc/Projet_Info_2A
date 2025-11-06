@@ -109,3 +109,61 @@ def delete_product(product_id: int):
             status_code=500,
             detail=f"Database error: {str(e)}"
         )
+
+
+@product_router.put("/{product_id}", response_model=Product, status_code=status.HTTP_200_OK)
+def update_product(product_id: int, updated_product: Product):
+    """
+    Met à jour un produit existant dans la base PostgreSQL.
+    """
+    try:
+        # Vérifie si le produit existe
+        check_query = "SELECT id_product FROM product WHERE id_product = %s;"
+        existing_product = db.sql_query(check_query, (product_id,), return_type="one")
+
+        if not existing_product:
+            raise HTTPException(
+                status_code=404,
+                detail=f"Product with id [{product_id}] not found"
+            )
+
+        # Mise à jour du produit
+        update_query = """
+            UPDATE product
+            SET name = %s,
+                price = %s,
+                production_cost = %s,
+                product_type = %s,
+                description = %s,
+                stock = %s
+            WHERE id_product = %s
+            RETURNING id_product, name, price, production_cost, product_type, description, stock;
+        """
+
+        data = (
+            updated_product.name,
+            updated_product.price,
+            updated_product.production_cost,
+            updated_product.product_type,
+            updated_product.description,
+            updated_product.stock,
+            product_id
+        )
+
+        updated_data = db.sql_query(update_query, data, return_type="one")
+
+        if not updated_data:
+            raise HTTPException(
+                status_code=500,
+                detail="Product update failed"
+            )
+
+        return Product(**updated_data)
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Database error: {str(e)}"
+        )
