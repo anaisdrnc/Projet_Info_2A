@@ -11,6 +11,7 @@ from utils.reset_database import ResetDatabase
 from utils.securite import hash_password
 from datetime import datetime
 from src.DAO.DBConnector import DBConnector
+from src.Service.PasswordService import create_salt
 
 load_dotenv()
 
@@ -36,27 +37,31 @@ def unique_username(base="admin"):
 
 def test_add_user_ok(dao):
     username = unique_username("user_test")
+    salt = create_salt()
     user = User(
         user_name=username,
         first_name="User",
         last_name="Test",
-        password="1234password",
+        password=hash_password("1234password", salt),
         email="user.test1@gmail.com",
+        salt=salt,
     )
     created = dao.add_user(user)
-    assert created != None
+    assert created is not None
     assert created > 0
 
 
 def test_add_user_ko(dao):
     "test if the user already exist"
     username = unique_username("user_test")
+    salt = create_salt()
     user = User(
         user_name=username,
         first_name="User",
         last_name="Test",
         password="1234password",
         email="user.test2@gmail.com",
+        salt=salt,
     )
     created = dao.add_user(user)
     assert created != None
@@ -67,12 +72,14 @@ def test_add_user_ko(dao):
 
 def test_get_by_id_ok(dao):
     username = unique_username("user_test")
+    salt = create_salt()
     user = User(
         user_name=username,
         first_name="User",
         last_name="Test",
         password="1234password",
         email="user.test3@gmail.com",
+        salt=salt,
     )
     created = dao.add_user(user=user)
     assert created != None
@@ -90,12 +97,14 @@ def test_get_by_id_ko(dao):
 
 def test_get_by_username_ok(dao):
     username = unique_username("user_test")
+    salt = create_salt()
     user = User(
         user_name=username,
         first_name="User",
         last_name="Test",
         password="1234password",
         email="user.test4@gmail.com",
+        salt=salt,
     )
     created = dao.add_user(user)
     assert created != None
@@ -109,12 +118,14 @@ def test_get_by_username_ok(dao):
 def test_delete_user_ok(dao):
     "test if we can delete user with their id"
     username = unique_username("user_test")
+    salt = create_salt()
     user = User(
         user_name=username,
         first_name="User",
         last_name="Test",
         password="1234password",
         email="user.test5@gmail.com",
+        salt=salt,
     )
     created = dao.add_user(user)
     assert created != None
