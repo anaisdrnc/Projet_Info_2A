@@ -1,11 +1,12 @@
+from src.DAO.DBConnector import DBConnector
 from src.DAO.ProductDAO import ProductDAO
 from src.Model.Product import Product
 from utils.log_decorator import log
-from src.DAO.DBConnector import DBConnector
 
 
 class ProductService:
     """Classe contenant les méthodes de services des produits"""
+
     def __init__(self, productdao):
         self.productdao = productdao
 
@@ -42,7 +43,7 @@ class ProductService:
             list_names.append(name)
         return list_names
 
-    @log 
+    @log
     def get_list_products_descriptions(self):
         """Get the list of the names and descriptions of all products available"""
         productdao = self.productdao
