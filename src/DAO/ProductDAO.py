@@ -62,7 +62,7 @@ class ProductDAO:
         except Exception as e:
             logging.info(f"Erreur lors de l'insertion : {e}")
             return False
-            
+
     @log
     def get_all_products(self):
         """Récupérer tous les produits"""
@@ -99,7 +99,7 @@ class ProductDAO:
     def get_all_product_names_descriptions(self):
         """Retourne les noms et descriptions de tous les produits"""
         try:
-            raw = self.db_connector.sql_query("SELECT name, description FROM product", None, "all")
+            raw = self.db_connector.sql_query("SELECT name, description FROM product", [], "all")
             return [[r["name"], r["description"]] for r in raw]
         except Exception as e:
             logging.info(f"Erreur get_all_product_names_descriptions: {e}")
