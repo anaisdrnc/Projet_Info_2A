@@ -26,10 +26,10 @@ API_KEY = config.API_KEY_GOOGLE_MAPS
 gmaps = googlemaps.Client(key=API_KEY)
 
 
-def calculer_itineraire(origin: str, destination: str):
+def calculer_itineraire(origin: str, destination: str, transport_mode: str):
     """Calcule l'itinéraire entre deux adresses."""
     try:
-        directions = gmaps.directions(origin=origin, destination=destination, mode="driving", units="metric")
+        directions = gmaps.directions(origin=origin, destination=destination, mode=transport_mode, units="metric")
 
         if directions:
             print("Itinéraire calculé avec succès!")
@@ -49,7 +49,7 @@ def create_map(origin, destination, transport_mode):
     directions = gmaps.directions(
         origin,
         destination,
-        mode=transport_mode,  # souvent "driving"
+        mode=transport_mode,
         departure_time=now,
     )
 
@@ -117,7 +117,7 @@ def main():
     transport_mapping = {"Car": "driving", "Bike": "bicycling", "Walk": "walking"}
     transport_mode = transport_mapping.get(driver.mean_of_transport, "driving")
 
-    print(f"Mode Google Maps sélectionné : {transport_mode}")
+    print(f"Mode de transport sélectionné : {transport_mode}")
 
     # Adresse d'origine fixe
     origin = "ENSAI, Rennes, France"
@@ -139,15 +139,11 @@ def main():
         return
 
     # Calcul de l'itinéraire
-    directions = calculer_itineraire(origin_complete, destination)
+    directions = calculer_itineraire(origin_complete, destination, transport_mode)
 
     if directions:
         # Affichage de la carte
-        create_map(origin_complete, destination, "driving")
-        # driving
-        # bicycling
-        # walking
-        # transit
+        create_map(origin_complete, destination, transport_mode)
 
 
 if __name__ == "__main__":
