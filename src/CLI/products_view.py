@@ -1,8 +1,8 @@
 from InquirerPy import inquirer
 
 from src.CLI.view_abstract import VueAbstraite
-from src.Service.ProductService import ProductService
 from src.DAO.ProductDAO import ProductDAO
+from src.Service.ProductService import ProductService
 
 
 class ProductView(VueAbstraite):

@@ -62,3 +62,13 @@ class ProductDAO:
         except Exception as e:
             logging.info(f"Erreur lors de l'insertion : {e}")
             return False
+    
+    def get_all_products(self):
+        """get all products to show the customer"""
+        raw_list = self.db_connector.sql_query("SELECT * FROM product WHERE stock>0")
+        if raw_list is None:
+            return []
+        list_users = []
+        for line in raw_list:
+            
+        
