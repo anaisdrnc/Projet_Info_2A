@@ -111,7 +111,8 @@ INSERT INTO users (first_name, last_name, user_name, password, email, salt) VALU
 ('Neo', 'Gandhaye', 'SecretNeo', '671ac9d528b52b5d47f8ab43c74d4584fba7af774cd8f376d96bf6c45b01b796', 'secretneo@project.com','j'),
 ('Emma', 'Boisse', 'EmmaMache', '8d3a5fcc03ea32df25e905dc47b27c4d8a5fabf9f77bbec1a305a59af5ab9143', 'emmamache@project.com','j'),
 ('Emma', 'Glorieux', 'EmmaDriver', 'f11b5649b0e3b97afae7b6db66b48f66407096f4771d599159ea7d0d7cd1d8de', 'emmadriver@project.com','j'),
-('JF', 'Lapitre', 'PresidentEnsai', '118adf271202feab0f44fb1a53285c72ab1857e8d49ca2c930cfee09da4555bf', 'jf@project.com','j');
+('JF', 'Lapitre', 'PresidentEnsai', '118adf271202feab0f44fb1a53285c72ab1857e8d49ca2c930cfee09da4555bf', 'jf@project.com','j'),
+('Pierre', 'Cycliste', 'PierreVelo', '671ac9d528b52b5d47f8ab43c74d4584fba7af774cd8f376d96bf6c45b01b796', 'pierre.velo@project.com', 'j');
 
 -----------------------
 -- INSERT INTO CUSTOMER
@@ -132,7 +133,8 @@ INSERT INTO address (address, city, postal_code) VALUES
 -----------------------
 INSERT INTO driver (id_user, mean_of_transport) VALUES
 (4, 'Car'),
-(5, 'Car');
+(5, 'Car'),
+(6, 'Bike');
 
 -----------------------
 -- INSERT INTO ADMINISTRATOR

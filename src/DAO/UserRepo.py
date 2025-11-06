@@ -8,10 +8,11 @@ from utils.log_decorator import log
 class UserRepo:
     """DAO User"""
 
-    def __init__(self, db_connector):
+    def __init__(self, db_connector=None):
         """Initialize a new UserDAO instance with a database connector."""
-        self.db_connector = DBConnector()
-    
+        self.db_connector = db_connector if db_connector is not None else DBConnector()
+
+
     @log
     def add_user(self, user):
         """add user to the database and return id_user, in order to add the user to the

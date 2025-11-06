@@ -47,10 +47,10 @@ class DBConnector:
                     if return_type is None:
                         connection.commit()
                         return
-                    if return_type == "one":
-                        return cursor.fetchone()
-                    elif return_type == "all":
-                        return cursor.fetchall()
+                    if return_type in ["one", "all"]:
+                        result = cursor.fetchone() if return_type=="one" else cursor.fetchall()
+                        connection.commit()
+                        return result
                     #elif return_type is None:
                         #return cursor.rowcount
         except Exception as e:

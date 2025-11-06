@@ -2,17 +2,16 @@ import logging
 from typing import List, Optional
 
 from src.DAO.DBConnector import DBConnector
-from src.Model.Driver import Driver
 from src.DAO.UserRepo import UserRepo
-from utils.securite import hash_password
+from src.Model.Driver import Driver
 from utils.log_decorator import log
+from utils.securite import hash_password
 
 
 class DriverDAO:
     def __init__(self):
         self.db_connector = DBConnector()
         self.user_repo = UserRepo(self.db_connector)
-
 
     def create(self, driver: Driver) -> bool:
         """Créer un driver dans la DB"""
@@ -41,7 +40,6 @@ class DriverDAO:
             logging.info(e)
         return False
 
-
     @log
     def get_by_id(self, driver_id: int) -> Optional[Driver]:
         """Récupérer un driver par son ID"""
@@ -68,7 +66,7 @@ class DriverDAO:
                 first_name=res["first_name"],
                 last_name=res["last_name"],
                 email=res["email"],
-                mean_of_transport=res["mean_of_transport"]
+                mean_of_transport=res["mean_of_transport"],
             )
         except Exception as e:
             logging.info(e)
@@ -100,7 +98,7 @@ class DriverDAO:
                             first_name=row["first_name"],
                             last_name=row["last_name"],
                             email=row["email"],
-                            mean_of_transport=row["mean_of_transport"]
+                            mean_of_transport=row["mean_of_transport"],
                         )
                     )
             return drivers
@@ -188,7 +186,7 @@ class DriverDAO:
                 first_name=user.first_name,
                 last_name=user.last_name,
                 email=user.email,
-                mean_of_transport=res["mean_of_transport"]
+                mean_of_transport=res["mean_of_transport"],
             )
         except Exception as e:
             logging.info(e)
