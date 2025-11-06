@@ -120,3 +120,17 @@ def test_delete_ko(dao):
     delete_ok = dao.deleting_product(non_existent_id)
 
     assert not delete_ok
+
+def test_get_all_products(dao):
+    # Ajouter deux produits
+    p1 = Product(name="Prod1", price=1.0, production_cost=0.5, description="desc1", product_type="drink", stock=5)
+    p2 = Product(name="Prod2", price=2.0, production_cost=1.0, description="desc2", product_type="dessert", stock=3)
+    dao.create_product(p1)
+    dao.create_product(p2)
+
+    all_products = dao.get_all_products()
+    assert len(all_products) >= 2
+    names = [p.name for p in all_products]
+    assert "Prod1" in names
+    assert "Prod2" in names
+
