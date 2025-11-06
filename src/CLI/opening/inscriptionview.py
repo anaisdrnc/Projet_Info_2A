@@ -14,7 +14,9 @@ class InscriptionView(VueAbstraite):
         # Demande à l'utilisateur de saisir pseudo, mot de passe...
         pseudo = inquirer.text(message="Enter your username : ").execute()
 
-        user_service = UserService(UserRepo(DBConnector(test = False)))
+        user_repo = UserRepo(DBConnector(test = False))
+
+        user_service = UserService(user_repo)
 
         if not user_service.is_username_taken(user_name=pseudo):
             from src.CLI.opening.openingview import OpeningView
