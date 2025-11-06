@@ -9,7 +9,7 @@ from src.DAO.DBConnector import DBConnector
 
 
 class UserService:
-    def __init__(self, user_repo = UserRepo(db_connector=DBConnector(test=False))):
+    def __init__(self, user_repo = UserRepo(DBConnector)):
         self.user_repo = user_repo
     
     @log
