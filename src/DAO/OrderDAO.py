@@ -174,5 +174,3 @@ class OrderDAO:
         except Exception as e:
             print(f"Error fetching assigned orders: {e}")
             return []
-
-    
