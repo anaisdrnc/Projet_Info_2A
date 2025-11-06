@@ -52,6 +52,7 @@ class UserService:
     
     @log
     def is_username_taken(self, user_name):
-        answer = UserRepo.is_username_taken(username = user_name)
+        user_repo = self.user_repo
+        answer = user_repo.is_username_taken(username = user_name)
         return answer
 
