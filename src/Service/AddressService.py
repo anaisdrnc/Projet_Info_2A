@@ -13,4 +13,4 @@ ALLOWED_ADDRESSES = {
 
 def validate_address(address: Address) -> bool:
     """Retourne True si l'adresse est valide"""
-    return address.postalcode in ALLOWED_ADDRESSES and ALLOWED_ADDRESSES[address.postalcode] == address.city
+    return address.postal_code in ALLOWED_ADDRESSES and ALLOWED_ADDRESSES[address.postal_code] == address.city

@@ -2,7 +2,6 @@ from typing import List, Optional, Dict, Any
 from datetime import datetime
 from src.Model.Order import Order
 from src.Model.Address import Address
-from src.Model.Product import Product
 from src.DAO.DBConnector import DBConnector
 
 
@@ -45,53 +44,59 @@ class OrderDAO:
 
 
     def add_product(self, order_id: int, product_id: int, quantity: int) -> bool:
-        """Ajoute un produit à une commande (ou met à jour sa quantité)."""
         try:
             self.db_connector.sql_query(
                 """
                 INSERT INTO order_products (id_order, id_product, quantity)
-                VALUES (%(order_id)s, %(product_id)s, %(quantity)s)
-                ON CONFLICT (id_order, id_product)
-                DO UPDATE SET quantity = EXCLUDED.quantity;
+                VALUES (%s, %s, %s)
                 """,
-                {"order_id": order_id, "product_id": product_id, "quantity": quantity}
+                [order_id, product_id, quantity],
+                return_type=None
             )
             return True
         except Exception as e:
-            print(f"Error adding product: {e}")
+            print("Error adding product:", e)
             return False
 
 
     def remove_product(self, order_id: int, product_id: int) -> bool:
-        """Retire un produit d'une commande."""
         try:
-            self.db_connector.sql_query(
-                "DELETE FROM order_products WHERE id_order = %s AND id_product = %s",
-                [order_id, product_id]
+            res = self.db_connector.sql_query(
+                """
+                DELETE FROM order_products
+                WHERE id_order = %s AND id_product = %s
+                RETURNING id_order
+                """,
+                [order_id, product_id],
+                return_type="one"
             )
-            return True
+            return res is not None
         except Exception as e:
             print(f"Error removing product: {e}")
             return False
 
 
-    def cancel_order(self, order_id: int) -> bool:
-        """Annule une commande existante."""
+    def cancel_order(self, id_order: int) -> bool:
         try:
-            self.db_connector.sql_query("DELETE FROM orders WHERE id_order = %s", [order_id])
-            return True
+            res = self.db_connector.sql_query(
+                "UPDATE orders SET status='Cancelled' WHERE id_order=%s RETURNING id_order",
+                [id_order],
+                return_type="one"
+            )
+            return res is not None
         except Exception as e:
             print(f"Error cancelling order: {e}")
             return False
 
-    def mark_as_delivered(self, order_id: int) -> bool:
-        """Marque une commande comme livrée."""
+
+    def mark_as_delivered(self, id_order: int) -> bool:
         try:
-            self.db_connector.sql_query(
-                "UPDATE orders SET status = 'Delivered', date = %s WHERE id_order = %s",
-                [datetime.now(), order_id]
+            res = self.db_connector.sql_query(
+                "UPDATE orders SET status='Delivered', date=%s WHERE id_order=%s RETURNING id_order",
+                [datetime.now(), id_order],
+                return_type="one"
             )
-            return True
+            return res is not None
         except Exception as e:
             print(f"Error marking order delivered: {e}")
             return False
@@ -102,8 +107,7 @@ class OrderDAO:
         try:
             rows = self.db_connector.sql_query(
                 """
-                SELECT p.id_product, p.name, p.price, p.description, 
-                       p.product_type, p.stock, op.quantity
+                SELECT p.id_product, p.name, p.price, p.product_type, op.quantity
                 FROM order_products op
                 JOIN product p ON p.id_product = op.id_product
                 WHERE op.id_order = %s

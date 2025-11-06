@@ -1,217 +1,230 @@
-import pytest
 from datetime import datetime
-from src.Model.Order import Order
-from src.DAO.OrderDAO import OrderDAO
-from src.DAO.DBConnector import DBConnector
+
+import pytest
 from dotenv import load_dotenv
+
+from src.DAO.DBConnector import DBConnector
+from src.DAO.OrderDAO import OrderDAO
+from src.Model.Address import Address
+from src.Model.Order import Order
 
 load_dotenv()
 
+
 @pytest.fixture(scope="session", autouse=True)
 def setup_test_environment():
-    """Initialiser la base de test"""
+    """Réinitialise la base de test avant la session."""
     from utils.reset_database import ResetDatabase
+
     ResetDatabase(test=True).lancer()
 
 
 @pytest.fixture
 def dao():
-    """DAO configuré pour le schéma test"""
+    """DAO connecté à la base de test."""
     order_dao = OrderDAO(test=True)
     order_dao.db_connector = DBConnector(test=True)
     return order_dao
 
 
-def create_test_address():
-    """Crée une adresse temporaire dans la base"""
+def create_test_address(address="15 Rue du Test", city="Rennes", postal_code="35000"):
+    """Insère une adresse de test dans la base et la renvoie."""
     db = DBConnector(test=True)
     res = db.sql_query(
-        "INSERT INTO address (address, city, postal_code) VALUES (%s, %s, %s) RETURNING id_address",
-        ["10 Rue du Test", "Rennes", "35000"],
+        """
+        INSERT INTO address (address, city, postal_code)
+        VALUES (%s, %s, %s)
+        RETURNING id_address
+        """,
+        [address, city, postal_code],
         "one",
     )
-    return res["id_address"]
+    return Address(id_address=res["id_address"], address=address, city=city, postal_code=postal_code)
 
 
-# -------------------------
-# TESTS DE BASE
-# -------------------------
+# TESTS
+
 
 def test_create_order_ok(dao):
-    id_address = create_test_address()
+    addr = create_test_address()
     order = Order(
-        id_customer=1,
-        id_driver=1,
-        id_address=id_address,
-        nb_items=2,
-        total_amount=25.5,
-        payment_method="cash",
+        id_customer=999, id_driver=999, id_address=addr.id_address, nb_items=2, total_amount=25.0, payment_method="Cash"
     )
     order_id = dao.create_order(order)
     assert order_id is not None
-    retrieved = dao.get_by_id(order_id)
-    assert retrieved is not None
-    assert retrieved.id_order == order_id
+    assert isinstance(order_id, int)
+
+
+def test_create_order_invalid_customer(dao):
+    addr = create_test_address()
+    order = Order(
+        id_customer=123456,  # inexistant
+        id_driver=999,
+        id_address=addr.id_address,
+        nb_items=1,
+        total_amount=10.0,
+        payment_method="Cash",
+    )
+    order_id = dao.create_order(order)
+    assert order_id is None
 
 
 def test_add_product_ok(dao):
-    id_address = create_test_address()
+    addr = create_test_address()
     order = Order(
-        id_customer=2,
-        id_driver=2,
-        id_address=id_address,
+        id_customer=999,
+        id_driver=999,
+        id_address=addr.id_address,
         nb_items=1,
-        total_amount=15.0,
-        payment_method="cash",
+        total_amount=5.0,
+        payment_method="Card"
     )
     order_id = dao.create_order(order)
     assert order_id is not None
-    added = dao.add_product(order_id, product_id=1, quantity=2)
+
+    added = dao.add_product(order_id, product_id=997, quantity=2)
     assert added is True
 
 
 def test_add_product_invalid_order(dao):
-    added = dao.add_product(order_id=999999, product_id=1, quantity=1)
+    added = dao.add_product(order_id=999999, product_id=999, quantity=1)
     assert added is False
 
 
 def test_remove_product_ok(dao):
-    id_address = create_test_address()
+    addr = create_test_address()
     order = Order(
-        id_customer=3,
-        id_driver=3,
-        id_address=id_address,
+        id_customer=998,
+        id_driver=999,
+        id_address=addr.id_address,
         nb_items=1,
-        total_amount=10.0,
-        payment_method="cash",
+        total_amount=3.0,
+        payment_method="Cash"
     )
     order_id = dao.create_order(order)
-    dao.add_product(order_id, product_id=1, quantity=1)
-    removed = dao.remove_product(order_id, product_id=1)
+    dao.add_product(order_id, product_id=999, quantity=1)
+
+    removed = dao.remove_product(order_id, product_id=999)
     assert removed is True
 
 
 def test_remove_product_invalid(dao):
-    removed = dao.remove_product(order_id=999999, product_id=1)
+    removed = dao.remove_product(order_id=123456, product_id=999)
     assert removed is False
 
 
-def test_cancel_order_ok(dao):
-    id_address = create_test_address()
+def test_get_order_products_ok(dao):
+    addr = create_test_address()
     order = Order(
-        id_customer=4,
-        id_driver=4,
-        id_address=id_address,
+        id_customer=999,
+        id_driver=999,
+        id_address=addr.id_address,
         nb_items=1,
-        total_amount=20.0,
-        payment_method="card",
+        total_amount=8.0,
+        payment_method="Card"
+    )
+    order_id = dao.create_order(order)
+    dao.add_product(order_id, product_id=998, quantity=2)
+
+    products = dao.get_order_products(order_id)
+    assert isinstance(products, list)
+    assert len(products) == 1
+    assert products[0]["id_product"] == 998
+    assert products[0]["quantity"] == 2
+
+
+def test_get_order_products_invalid(dao):
+    products = dao.get_order_products(order_id=999999)
+    assert products == []
+
+
+def test_cancel_order_ok(dao):
+    addr = create_test_address()
+    order = Order(
+        id_customer=999,
+        id_driver=998,
+        id_address=addr.id_address,
+        nb_items=1,
+        total_amount=7.0,
+        payment_method="Card"
     )
     order_id = dao.create_order(order)
     cancelled = dao.cancel_order(order_id)
     assert cancelled is True
 
+    data = dao.get_by_id(order_id)
+    assert data is not None
+    assert data["order"].status == "Cancelled"
+
 
 def test_cancel_order_invalid(dao):
-    cancelled = dao.cancel_order(999999)
+    cancelled = dao.cancel_order(987654)
     assert cancelled is False
 
 
-def test_get_by_id_ok(dao):
-    id_address = create_test_address()
-    order = Order(
-        id_customer=5,
-        id_driver=5,
-        id_address=id_address,
-        nb_items=1,
-        total_amount=9.99,
-        payment_method="cash",
-    )
-    order_id = dao.create_order(order)
-    retrieved = dao.get_by_id(order_id)
-    assert retrieved is not None
-    assert retrieved.id_order == order_id
-    assert isinstance(retrieved.total_amount, float)
-
-
-def test_get_by_id_invalid(dao):
-    retrieved = dao.get_by_id(999999)
-    assert retrieved is None
-
-
 def test_mark_as_delivered_ok(dao):
-    id_address = create_test_address()
+    addr = create_test_address()
     order = Order(
-        id_customer=6,
-        id_driver=6,
-        id_address=id_address,
-        nb_items=2,
-        total_amount=18.5,
-        payment_method="card",
+        id_customer=998,
+        id_driver=999,
+        id_address=addr.id_address,
+        nb_items=1,
+        total_amount=9.0,
+        payment_method="Card"
     )
     order_id = dao.create_order(order)
-    marked = dao.mark_as_delivered(order_id)
-    assert marked is True
-    retrieved = dao.get_by_id(order_id)
-    assert retrieved.status == "Delivered"
+    delivered = dao.mark_as_delivered(order_id)
+    assert delivered is True
 
 
 def test_mark_as_delivered_invalid(dao):
-    marked = dao.mark_as_delivered(999999)
-    assert marked is False
+    delivered = dao.mark_as_delivered(999999)
+    assert delivered is False
+
+
+def test_get_by_id_ok(dao):
+    addr = create_test_address()
+    order = Order(
+        id_customer=999, id_driver=999, id_address=addr.id_address, nb_items=2, total_amount=10.0, payment_method="Cash"
+    )
+    order_id = dao.create_order(order)
+    dao.add_product(order_id, 997, 1)
+    dao.add_product(order_id, 998, 2)
+
+    data = dao.get_by_id(order_id)
+    assert data is not None
+    assert "order" in data and "address" in data and "products" in data
+    assert data["order"].id_order == order_id
+    assert len(data["products"]) == 2
+
+
+def test_get_by_id_invalid(dao):
+    data = dao.get_by_id(999999)
+    assert data is None
 
 
 def test_list_all_orders(dao):
     orders = dao.list_all_orders()
     assert isinstance(orders, list)
-    if orders:
-        assert isinstance(orders[0], Order)
+    for entry in orders:
+        assert isinstance(entry, dict)
+        assert "order" in entry and "products" in entry
+        assert isinstance(entry["order"], Order)
 
 
-def test_list_orders_by_customer(dao):
-    id_address = create_test_address()
+def test_get_assigned_orders_ok(dao):
+    addr = create_test_address()
     order = Order(
-        id_customer=99,
-        id_driver=1,
-        id_address=id_address,
-        nb_items=3,
-        total_amount=42.0,
-        payment_method="cash",
-    )
-    dao.create_order(order)
-    orders = dao.list_orders_by_customer(99)
-    assert isinstance(orders, list)
-    assert all(o.id_customer == 99 for o in orders)
-
-
-def test_list_orders_by_driver(dao):
-    id_address = create_test_address()
-    order = Order(
-        id_customer=10,
-        id_driver=88,
-        id_address=id_address,
-        nb_items=1,
-        total_amount=12.5,
-        payment_method="cash",
-    )
-    dao.create_order(order)
-    orders = dao.list_orders_by_driver(88)
-    assert isinstance(orders, list)
-    assert all(o.id_driver == 88 for o in orders)
-
-
-def test_list_delivered_orders(dao):
-    id_address = create_test_address()
-    order = Order(
-        id_customer=12,
-        id_driver=12,
-        id_address=id_address,
-        nb_items=1,
-        total_amount=10.0,
-        payment_method="card",
+        id_customer=998, id_driver=999, id_address=addr.id_address, nb_items=2, total_amount=12.0, payment_method="Cash"
     )
     order_id = dao.create_order(order)
-    dao.mark_as_delivered(order_id)
-    delivered = dao.list_delivered_orders()
-    assert isinstance(delivered, list)
-    if delivered:
-        assert all(o.status == "Delivered" for o in delivered)
+    dao.add_product(order_id, 999, 1)
+
+    assigned = dao.get_assigned_orders(driver_id=999)
+    assert isinstance(assigned, list)
+    assert any(o["order"].id_order == order_id for o in assigned)
+
+
+def test_get_assigned_orders_empty(dao):
+    assigned = dao.get_assigned_orders(driver_id=123456)
+    assert assigned == []

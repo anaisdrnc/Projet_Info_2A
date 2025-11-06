@@ -17,7 +17,7 @@ def test_order_constructor_ok():
         date="2025-10-23 12:30:00",
         status="Preparing",
         total_amount=45.3,
-        payment_method="cash",
+        payment_method="Cash",
         nb_items=2,
     )
     assert order.id_order == 3
@@ -27,7 +27,7 @@ def test_order_constructor_ok():
     assert order.date == datetime(2025, 10, 23, 12, 30, 0)
     assert order.status == "Preparing"
     assert order.total_amount == 45.3
-    assert order.payment_method == "cash"
+    assert order.payment_method == "Cash"
     assert order.nb_items == 2
 
 
@@ -40,7 +40,7 @@ def test_order_constructor_on_incorrect_id():
             id_driver=2,
             id_address=1,
             total_amount=45.3,
-            payment_method="cash",
+            payment_method="Cash",
             nb_items=2,
         )
     assert "id_order" in str(exc.value)
@@ -56,7 +56,7 @@ def test_order_constructor_on_incorrect_date():
             id_address=1,
             date=[2025, 10, 23],
             total_amount=45.3,
-            payment_method="cash",
+            payment_method="Cash",
             nb_items=2,
         )
     assert "date" in str(exc.value)
@@ -72,7 +72,7 @@ def test_order_constructor_on_incorrect_status():
             id_address=1,
             status="ok",
             total_amount=45.3,
-            payment_method="cash",
+            payment_method="Cash",
             nb_items=2,
         )
     assert "status" in str(exc.value)
@@ -88,7 +88,7 @@ def test_order_constructor_on_incorrect_total_amount():
             id_driver=2,
             id_address=1,
             total_amount="quarante",
-            payment_method="cash",
+            payment_method="Cash",
             nb_items=2,
         )
     assert "total_amount" in str(exc.value)
@@ -103,7 +103,7 @@ def test_order_constructor_on_negative_total_amount():
             id_driver=2,
             id_address=1,
             total_amount=-14.67,
-            payment_method="cash",
+            payment_method="Cash",
             nb_items=2,
         )
     assert "greater_than" in str(exc.value)
@@ -118,7 +118,7 @@ def test_order_constructor_on_total_amount_equal_to_zero():
             id_driver=2,
             id_address=1,
             total_amount=0.00,
-            payment_method="cash",
+            payment_method="Cash",
             nb_items=2,
         )
     assert "greater_than" in str(exc.value)
@@ -148,7 +148,7 @@ def test_order_constructor_on_negative_nb_items():
             id_driver=2,
             id_address=1,
             total_amount=43.5,
-            payment_method="cash",
+            payment_method="Cash",
             nb_items=-1,
         )
     assert "greater_than_equal" in str(exc.value)

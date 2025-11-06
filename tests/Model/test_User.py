@@ -12,6 +12,7 @@ def test_user_constructor_ok():
         first_name="Lilas",
         last_name="Dupont",
         email="lilas.dpt@gmail.com",
+        salt="g"
     )
     assert User1.id == 1
     assert User1.user_name == "Lil"
@@ -19,6 +20,7 @@ def test_user_constructor_ok():
     assert User1.first_name == "Lilas"
     assert User1.last_name == "Dupont"
     assert User1.email == "lilas.dpt@gmail.com"
+    assert User1.salt == "g"
 
 
 def test_user_constructor_throws_on_incorrect_id():
@@ -30,6 +32,7 @@ def test_user_constructor_throws_on_incorrect_id():
             first_name="Lilas",
             last_name="Dupont",
             email="lilas.dpt@gmail.com",
+            salt="n"
         )
     assert "id" in str(
         exception_info.value
@@ -47,6 +50,7 @@ def test_user_constructor_throws_on_incorrect_username():
             first_name="Lilas",
             last_name="Dupont",
             email="lilas.dpt@gmail.com",
+            salt="i"
         )
     assert "user_name" in str(
         exception_info.value
@@ -62,6 +66,7 @@ def test_user_constructor_throws_on_incorrect_firstname():
             first_name=123,
             last_name="Dupont",
             email="lilas.dpt@gmail.com",
+            salt="h"
         )
     assert "first_name" in str(
         exception_info.value
@@ -77,6 +82,7 @@ def test_user_constructor_throws_on_incorrect_lastname():
             first_name="Lilas",
             last_name=True,
             email="lilas.dpt@gmail.com",
+            salt="y"
         )
     assert "last_name" in str(
         exception_info.value
@@ -92,6 +98,7 @@ def test_user_constructor_throws_on_incorrect_email():
             first_name="Lilas",
             last_name="Dupont",
             email=[1, 2],
+            salt="r"
         )
     assert "email" in str(
         exception_info.value
