@@ -28,10 +28,10 @@ class UserService:
         salt = create_salt()
         hashed_password = hash_password(password, sel=salt)
         new_user = User(
-            username=username,
+            user_name=username,
             password=hashed_password,
-            firstname=firstname,
-            lastname=lastname,
+            first_name=firstname,
+            last_name=lastname,
             email=email,
             salt = salt
         )
