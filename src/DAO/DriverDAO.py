@@ -4,6 +4,7 @@ from typing import List, Optional
 from utils.log_decorator import log
 from src.DAO.DBConnector import DBConnector
 from src.Model.Driver import Driver
+from utils.log_decorator import log
 
 
 class DriverDAO:
@@ -60,12 +61,12 @@ class DriverDAO:
         try:
             res = self.db_connector.sql_query(
                 """
-                SELECT d.id_driver, d.mean_of_transport,
-                       u.user_name, u.password, u.first_name, u.last_name, u.email
-                FROM driver d
-                JOIN users u ON d.id_user = u.id_user
-                WHERE d.id_driver = %(id_driver)s;
-                """,
+            SELECT d.id_driver, d.mean_of_transport,
+                   u.user_name, u.password, u.first_name, u.last_name, u.email
+            FROM default_schema.driver d
+            JOIN default_schema.users u ON d.id_user = u.id_user
+            WHERE d.id_driver = %(id_driver)s;
+            """,
                 {"id_driver": driver_id},
                 "one",
             )

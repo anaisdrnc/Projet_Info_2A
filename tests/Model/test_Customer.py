@@ -6,19 +6,20 @@ from src.Model.Customer import Customer
 
 def test_create_customer_with_address():
     """Test normal : création d’un Customer avec adresse complète"""
-    addr = Address(address="12 Maple Street", postalcode=35000, city="Rennes")
+    addr = Address(address="12 Maple Street", postal_code=35000, city="Rennes")
     cust = Customer(
         id=1,
-        username="testuser",
+        user_name="testuser",
         password="secret",
-        firstname="Alice",
-        lastname="Martin",
+        first_name="Alice",
+        last_name="Martin",
         email="alice@test.com",
+        salt="j",
         address=addr,
     )
 
     assert cust.id == 1
-    assert cust.username == "testuser"
+    assert cust.user_name == "testuser"
     assert cust.address.city == "Rennes"
     assert isinstance(cust.address, Address)
 
@@ -27,16 +28,17 @@ def test_create_customer_without_address():
     """Test : création d’un Customer sans adresse"""
     cust = Customer(
         id=2,
-        username="bobuser",
+        user_name="bobuser",
         password="secret",
-        firstname="Bob",
-        lastname="Durand",
+        first_name="Bob",
+        last_name="Durand",
         email="bob@test.com",
+        salt='k',
         address=None,
     )
 
     assert cust.address is None
-    assert cust.firstname == "Bob"
+    assert cust.first_name == "Bob"
 
 
 def test_invalid_address_type():
@@ -49,5 +51,6 @@ def test_invalid_address_type():
             firstname="Charlie",
             lastname="Dupont",
             email="charlie@test.com",
+            salt="m",
             address="This should not be a string",
         )
