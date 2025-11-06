@@ -24,7 +24,7 @@ def login_admin(username: str, password: str) -> JWTResponse:
     try:
         print(username)
         admin = AdminService.get_by_username(username)
-        print("hklhjkl"+admin)
+        print("hello"+admin)
         if not admin or not AdminService.verify_password(password, admin.password_hash):
             raise Exception("Invalid username or password")
     except Exception as error:

@@ -1,4 +1,5 @@
 import logging
+from typing import Optional
 from src.DAO.DBConnector import DBConnector
 from src.DAO.UserRepo import UserRepo
 from src.Model.Admin import Admin
@@ -71,4 +72,37 @@ class AdminDAO:
             return admin
         except Exception as e:
             logging.info(e)
+            return None
+
+    def get_by_username(self, username: str) -> Optional[Admin]:
+        """Récupérer un administrateur à partir de son nom d'utilisateur."""
+        try:
+            res = self.db_connector.sql_query(
+                """
+                SELECT a.id_admin, u.id_user, u.user_name, u.password, u.salt,
+                       u.first_name, u.last_name, u.email
+                FROM admin a
+                JOIN users u ON a.id_user = u.id_user
+                WHERE u.user_name = %(username)s;
+                """,
+                {"username": username},
+                "one",
+            )
+
+            if not res:
+                return None
+
+            return Admin(
+                id_admin=res["id_admin"],
+                id_user=res["id_user"],
+                username=res["user_name"],
+                password=res["password"],
+                salt=res["salt"],
+                firstname=res["first_name"],
+                lastname=res["last_name"],
+                email=res["email"]
+            )
+
+        except Exception as e:
+            logging.error(f"[AdminDAO] Erreur lors de la récupération de l'admin '{username}': {e}")
             return None
