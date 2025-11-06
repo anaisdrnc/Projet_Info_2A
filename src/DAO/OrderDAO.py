@@ -9,8 +9,9 @@ from src.Model.Order import Order
 class OrderDAO:
     """DAO pour la gestion des commandes et leurs produits."""
 
-    def __init__(self, test: bool = False):
-        self.db_connector = DBConnector(test=test)
+    def __init__(self, db_connector=None):
+        """Initialize a new OrderDAO instance with a database connector."""
+        self.db_connector = db_connector if db_connector is not None else DBConnector()
 
     def create_order(self, order: Order) -> Optional[int]:
         """Crée une nouvelle commande avec l'adresse déjà insérée en base."""

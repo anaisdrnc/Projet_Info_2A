@@ -13,7 +13,7 @@ class ProductDAO:
     """Class providing access to products in the database"""
 
     def __init__(self, db_connector=None):
-        """Initialize a new DriverDAO instance with a database connector."""
+        """Initialize a new productDAO instance with a database connector."""
         self.db_connector = db_connector if db_connector is not None else DBConnector()
 
     @log
@@ -76,7 +76,7 @@ class ProductDAO:
                     production_cost=o["production_cost"],
                     description=o["description"],
                     product_type=o["product_type"],
-                    stock=o["stock"]
+                    stock=o["stock"],
                 )
                 result.append(product_data)
             return result
