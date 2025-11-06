@@ -14,7 +14,9 @@ class InscriptionView(VueAbstraite):
         # Demande à l'utilisateur de saisir pseudo, mot de passe...
         pseudo = inquirer.text(message="Enter your username : ").execute()
 
-        if not UserService(user_repo=UserRepo(DBConnector)).is_username_taken(pseudo):
+        user_service = UserService(UserRepo(DBConnector(test = False)))
+
+        if not user_service.is_username_taken(pseudo):
             from src.CLI.opening.openingview import OpeningView
 
             return OpeningView(f"The username {pseudo} is already used.")
@@ -36,7 +38,7 @@ class InscriptionView(VueAbstraite):
         mail = inquirer.text(message="Entrez votre mail : ", validate=MailValidator()).execute()
 
         # Appel du service pour créer le joueur
-        user = UserService.create_user(username= pseudo, password= mdp, firstname = first_name, lastname= last_name, email = mail)
+        user = user_service.create_user(username= pseudo, password= mdp, firstname = first_name, lastname= last_name, email = mail)
 
         # Si le joueur a été créé
         if user:
