@@ -62,17 +62,24 @@ class ProductDAO:
         except Exception as e:
             logging.info(f"Erreur lors de l'insertion : {e}")
             return False
-    
+
     def get_all_products(self):
-        """get all products to show the customer"""
+        """Récupérer tous les produits"""
         try:
-            raw_products = self.db_connector.sql_query("SELECT * FROM product", [], "all")
+            raw_products = self.db_connector.sql_query("SELECT * FROM product", None, "all")
             result = []
             for o in raw_products:
-                product_data = self.get_by_id(o["id_order"])
-                if product_data:
-                    result.append(product_data)
+                product_data = Product(
+                    id_product=o["id_product"],
+                    name=o["name"],
+                    price=o["price"],
+                    production_cost=o["production_cost"],
+                    description=o["description"],
+                    product_type=o["product_type"],
+                    stock=o["stock"]
+                )
+                result.append(product_data)
             return result
         except Exception as e:
-            print(f"Error listing all products: {e}")
+            logging.info(f"Error listing all products: {e}")
             return []
