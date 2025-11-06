@@ -4,8 +4,10 @@ from InquirerPy.validator import EmptyInputValidator, PasswordValidator
 from prompt_toolkit.validation import ValidationError, Validator
 
 from src.Service.UserService import UserService
+from src.Service.CustomerService import CustomerService
 from src.CLI.view_abstract import VueAbstraite
 from src.DAO.UserRepo import UserRepo
+from src.DAO.CustomerDAO import CustomerDAO
 from src.DAO.DBConnector import DBConnector
 
 
@@ -15,8 +17,10 @@ class InscriptionView(VueAbstraite):
         pseudo = inquirer.text(message="Enter your username : ").execute()
 
         user_repo = UserRepo(DBConnector(test = False))
+        customerdao = CustomerDAO(DBConnector(test = False))
 
         user_service = UserService(user_repo)
+        customer_service = CustomerService(customerdao= customerdao)
 
         if user_service.is_username_taken(user_name=pseudo):
             from src.CLI.opening.openingview import OpeningView
@@ -40,12 +44,12 @@ class InscriptionView(VueAbstraite):
         mail = inquirer.text(message="Entrez votre mail : ", validate=MailValidator()).execute()
 
         # Appel du service pour créer le joueur
-        user = user_service.create_user(username= pseudo, password= mdp, firstname = first_name, lastname= last_name, email = mail)
+        customer = customer_service.create_customer(username= pseudo, password= mdp, firstname = first_name, lastname= last_name, email = mail)
 
         # Si le joueur a été créé
-        if user:
+        if customer:
             message = (
-                f"Your account {user.user_name} was successfully created, you can now log in the application"
+                f"Your account {customer.user_name} was successfully created, you can now log in the application"
             )
         else:
             message = "Connection error (invalid username or password)"

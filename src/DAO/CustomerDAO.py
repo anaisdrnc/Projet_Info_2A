@@ -16,7 +16,8 @@ class CustomerDAO:
     def add_customer(self, user: User):
         """Add a customer to the database (from a user, creating the users in the user table
         and then putting the customer in the customers database with the id_user)"""
-        id_user = UserRepo.add_user(user)
+        user_repo = UserRepo(self.db_connector)
+        id_user = user_repo.add_user(user)
         try:
             res = self.db_connector.sql_query(
                 "INSERT INTO customer (id_user)"
