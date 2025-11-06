@@ -60,3 +60,15 @@ def test_creer_ko():
             # THEN
             # La création a échoué → retourne None
             assert result is None
+
+
+def test_delete_ok():
+    """Suppression réussie d'un produit"""
+
+    with patch("src.Service.ProductService.ProductDAO.deleting_product", return_value=True):
+        with patch("src.DAO.ProductDAO.DBConnector"):  # éviter la vraie DB
+            service = ProductService()
+
+            result = service.delete(product=1)  # 1 = id ou objet selon ton usage
+
+            assert result is True
