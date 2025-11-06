@@ -5,6 +5,8 @@ from prompt_toolkit.validation import ValidationError, Validator
 
 from src.Service.UserService import UserService
 from src.CLI.view_abstract import VueAbstraite
+from src.DAO.UserRepo import UserRepo
+from src.DAO.DBConnector import DBConnector
 
 
 class InscriptionView(VueAbstraite):
@@ -12,7 +14,7 @@ class InscriptionView(VueAbstraite):
         # Demande à l'utilisateur de saisir pseudo, mot de passe...
         pseudo = inquirer.text(message="Enter your username : ").execute()
 
-        if not UserService().is_username_taken(pseudo):
+        if not UserService(user_repo=UserRepo(DBConnector)).is_username_taken(pseudo):
             from src.CLI.opening.openingview import OpeningView
 
             return OpeningView(f"The username {pseudo} is already used.")
