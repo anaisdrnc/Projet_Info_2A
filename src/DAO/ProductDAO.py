@@ -6,13 +6,15 @@ from src.DAO.DBConnector import DBConnector
 from src.Model.Product import Product
 from utils.log_decorator import log
 
+from .DBConnector import DBConnector
+
 
 class ProductDAO:
     """Class providing access to products in the database"""
 
-    def __init__(self):
+    def __init__(self, db_connector=None):
         """Initialize a new DriverDAO instance with a database connector."""
-        self.db_connector = DBConnector()
+        self.db_connector = db_connector if db_connector is not None else DBConnector()
 
     @log
     def deleting_product(self, id_product: int) -> bool:
