@@ -100,7 +100,8 @@ class ProductDAO:
         """Retourne les noms et descriptions de tous les produits"""
         try:
             raw = self.db_connector.sql_query("SELECT name, description FROM product", [], "all")
-            return [[r["name"], r["description"]] for r in raw]
+            #return [[r["name"], r["description"]] for r in raw]
+            return raw
         except Exception as e:
             logging.info(f"Erreur get_all_product_names_descriptions: {e}")
             return []
