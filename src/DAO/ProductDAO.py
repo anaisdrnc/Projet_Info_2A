@@ -68,7 +68,15 @@ class ProductDAO:
         raw_list = self.db_connector.sql_query("SELECT * FROM product WHERE stock>0")
         if raw_list is None:
             return []
-        list_users = []
+        list_products = []
         for line in raw_list:
-            
-        
+            id_product = line["id_product"]
+            name = line["name"]
+            price = line["price"]
+            production_cost = line["production_cost"]
+            product_type = line["product_type"]
+            description = line["description"]
+            stock = line["stock"]
+            product = Product(id_product, name, price, production_cost, product_type, description, stock)
+            list_products.append(product)
+        return list_products
