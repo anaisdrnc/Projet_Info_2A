@@ -1,6 +1,6 @@
 from src.DAO.AdminDAO import AdminDAO
 from src.DAO.DBConnector import DBConnector
-
+import logging
 # from src.DAO.UserRepo import UserRepo
 from src.Model.Admin import Admin
 from src.Model.User import User
@@ -40,3 +40,11 @@ class AdminService:
         if admindao.add_admin(new_user) is not None:
             return new_user
         return None
+
+    def get_by_username(self, username: str) -> Admin | None:
+        """Récupère un administrateur à partir de son nom d'utilisateur."""
+        try:
+            return self.admindao.get_by_username(username)
+        except Exception as e:
+            logging.error(f"[AdminService] Erreur lors de la récupération de l'admin {username}: {e}")
+            return None
