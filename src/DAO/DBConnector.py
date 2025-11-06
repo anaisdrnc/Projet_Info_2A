@@ -22,7 +22,8 @@ class DBConnector:
             self.port = os.environ["POSTGRES_PORT"]
             self.database = os.environ["POSTGRES_DATABASE"]
             self.user = os.environ["POSTGRES_USER"]
-            self.password = os.environ["POSTGRES_PASSWORD"] # Choix du schema selon si c’est un test
+            self.password = os.environ["POSTGRES_PASSWORD"]
+            # Choix du schema selon si c’est un test
             self.schema = os.environ["POSTGRES_SCHEMA"] if not test else "test"
 
     def sql_query(

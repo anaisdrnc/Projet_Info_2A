@@ -1,6 +1,5 @@
 from typing import Optional
 import logging
-from utils.log_decorator import log
 from src.Model.User import User
 from .DBConnector import DBConnector
 
@@ -107,7 +106,7 @@ class UserRepo:
         if raw_password:
             password = raw_password["password"]
             return password
-        
+
     def is_username_taken(self, username):
         raw_answer = self.db_connector.sql_query(
             "SELECT * FROM users WHERE user_name = %s;", [username], "one"
