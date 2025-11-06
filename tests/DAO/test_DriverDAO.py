@@ -1,21 +1,24 @@
-import pytest
 from datetime import datetime
-from utils.securite import hash_password
-from src.Model.Driver import Driver
-from src.DAO.DriverDAO import DriverDAO
-from src.DAO.DBConnector import DBConnector
-from utils.reset_database import ResetDatabase
-from src.DAO.UserRepo import UserRepo
+
+import pytest
 from dotenv import load_dotenv
+
+from src.DAO.DBConnector import DBConnector
+from src.DAO.DriverDAO import DriverDAO
+from src.Model.Driver import Driver
+from utils.reset_database import ResetDatabase
+from utils.securite import hash_password
 
 load_dotenv()
 
 # --- Fixtures ---
 
+
 @pytest.fixture(scope="session", autouse=True)
 def setup_test_environment():
     """Reset DB before tests"""
     ResetDatabase(test=True).lancer()
+
 
 @pytest.fixture
 def dao():
@@ -27,12 +30,15 @@ def dao():
 
 # --- Utilitaire ---
 
+
 def unique_username(base="driver"):
     return f"{base}_{datetime.utcnow().timestamp()}"
 
+
 # --- Tests ---
 
-def test_create_driver_ok(dao):
+
+def test_cre42c10735e4daa4860ee7ate_driver_ok(dao):
     username = unique_username("create_ok")
     salt = unique_username("salt")
     driver = Driver(
@@ -47,6 +53,7 @@ def test_create_driver_ok(dao):
     created = dao.create(driver)
     assert created
     assert driver.id > 0
+
 
 def test_create_driver_duplicate(dao):
     username = unique_username("dup_driver")
@@ -74,6 +81,7 @@ def test_create_driver_duplicate(dao):
     created2 = dao.create(driver2)
     assert not created2
 
+
 def test_get_by_id_ok(dao):
     username = unique_username("get_driver")
     salt = unique_username("saltget")
@@ -91,9 +99,11 @@ def test_get_by_id_ok(dao):
     assert retrieved is not None
     assert retrieved.user_name == username
 
+
 def test_get_by_id_ko(dao):
     retrieved = dao.get_by_id(999999)
     assert retrieved is None
+
 
 def test_list_all_drivers(dao):
     username1 = unique_username("list1")
@@ -126,6 +136,7 @@ def test_list_all_drivers(dao):
     assert username1 in usernames
     assert username2 in usernames
 
+
 def test_update_driver_ok(dao):
     username = unique_username("update_driver")
     salt = unique_username("saltupdate")
@@ -146,6 +157,7 @@ def test_update_driver_ok(dao):
     updated_driver = dao.get_by_id(driver.id)
     assert updated_driver.mean_of_transport == "Bike"
 
+
 def test_update_driver_ko(dao):
     driver = Driver(
         id=999999,
@@ -159,6 +171,7 @@ def test_update_driver_ko(dao):
     )
     updated = dao.update(driver)
     assert not updated
+
 
 def test_login_driver_ok(dao):
     username = unique_username("login_ok")
@@ -180,6 +193,7 @@ def test_login_driver_ok(dao):
     assert logged is not None
     assert logged.user_name == username
 
+
 def test_login_driver_wrong_password(dao):
     username = unique_username("login_wrong")
     salt = unique_username("saltwrong")
@@ -199,9 +213,11 @@ def test_login_driver_wrong_password(dao):
     logged = dao.login(username, wrong_hash)
     assert logged is None
 
+
 def test_login_driver_nonexistent_user(dao):
     logged = dao.login("nonexistent", "anypass")
     assert logged is None
+
 
 def test_delete_driver_ok(dao):
     username = unique_username("delete_ok")
@@ -220,9 +236,11 @@ def test_delete_driver_ok(dao):
     assert deleted
     assert dao.get_by_id(driver.id) is None
 
+
 def test_delete_driver_ko(dao):
     deleted = dao.delete(999999)
     assert not deleted
+
 
 if __name__ == "__main__":
     pytest.main([__file__])

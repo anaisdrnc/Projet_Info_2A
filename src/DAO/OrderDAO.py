@@ -1,8 +1,9 @@
-from typing import List, Optional, Dict, Any
 from datetime import datetime
-from src.Model.Order import Order
-from src.Model.Address import Address
+from typing import Any, Dict, List, Optional
+
 from src.DAO.DBConnector import DBConnector
+from src.Model.Address import Address
+from src.Model.Order import Order
 
 
 class OrderDAO:
@@ -10,7 +11,6 @@ class OrderDAO:
 
     def __init__(self, test: bool = False):
         self.db_connector = DBConnector(test=test)
-
 
     def create_order(self, order: Order) -> Optional[int]:
         """Crée une nouvelle commande avec l'adresse déjà insérée en base."""
@@ -31,9 +31,9 @@ class OrderDAO:
                     "status": order.status,
                     "total_amount": order.total_amount,
                     "payment_method": order.payment_method,
-                    "nb_items": order.nb_items
+                    "nb_items": order.nb_items,
                 },
-                "one"
+                "one",
             )
             if res_order:
                 return res_order["id_order"]
@@ -41,7 +41,6 @@ class OrderDAO:
         except Exception as e:
             print(f"Error creating order: {e}")
             return None
-
 
     def add_product(self, order_id: int, product_id: int, quantity: int) -> bool:
         try:
@@ -51,13 +50,12 @@ class OrderDAO:
                 VALUES (%s, %s, %s)
                 """,
                 [order_id, product_id, quantity],
-                return_type=None
+                return_type=None,
             )
             return True
         except Exception as e:
             print("Error adding product:", e)
             return False
-
 
     def remove_product(self, order_id: int, product_id: int) -> bool:
         try:
@@ -68,39 +66,36 @@ class OrderDAO:
                 RETURNING id_order
                 """,
                 [order_id, product_id],
-                return_type="one"
+                return_type="one",
             )
             return res is not None
         except Exception as e:
             print(f"Error removing product: {e}")
             return False
 
-
     def cancel_order(self, id_order: int) -> bool:
         try:
             res = self.db_connector.sql_query(
                 "UPDATE orders SET status='Cancelled' WHERE id_order=%s RETURNING id_order",
                 [id_order],
-                return_type="one"
+                return_type="one",
             )
             return res is not None
         except Exception as e:
             print(f"Error cancelling order: {e}")
             return False
 
-
     def mark_as_delivered(self, id_order: int) -> bool:
         try:
             res = self.db_connector.sql_query(
                 "UPDATE orders SET status='Delivered', date=%s WHERE id_order=%s RETURNING id_order",
                 [datetime.now(), id_order],
-                return_type="one"
+                return_type="one",
             )
             return res is not None
         except Exception as e:
             print(f"Error marking order delivered: {e}")
             return False
-
 
     def get_order_products(self, order_id: int) -> List[Dict[str, Any]]:
         """Récupère tous les produits liés à une commande."""
@@ -113,30 +108,23 @@ class OrderDAO:
                 WHERE op.id_order = %s
                 """,
                 [order_id],
-                "all"
+                "all",
             )
             return rows
         except Exception as e:
             print(f"Error fetching order products: {e}")
             return []
 
-
     def get_by_id(self, order_id: int) -> Optional[Dict[str, Any]]:
         """Récupère une commande et les produits associés (sans modifier Order)."""
         try:
-            raw_order = self.db_connector.sql_query(
-                "SELECT * FROM orders WHERE id_order = %s",
-                [order_id],
-                "one"
-            )
+            raw_order = self.db_connector.sql_query("SELECT * FROM orders WHERE id_order = %s", [order_id], "one")
             if not raw_order:
                 return None
 
             # Récupérer l'adresse
             raw_address = self.db_connector.sql_query(
-                "SELECT * FROM address WHERE id_address = %s",
-                [raw_order["id_address"]],
-                "one"
+                "SELECT * FROM address WHERE id_address = %s", [raw_order["id_address"]], "one"
             )
             address = Address(**raw_address) if raw_address else None
 
@@ -153,14 +141,10 @@ class OrderDAO:
                 status=raw_order["status"],
                 nb_items=raw_order["nb_items"],
                 total_amount=float(raw_order["total_amount"]),
-                payment_method=raw_order["payment_method"]
+                payment_method=raw_order["payment_method"],
             )
 
-            return {
-                "order": order_obj,
-                "address": address,
-                "products": products
-            }
+            return {"order": order_obj, "address": address, "products": products}
 
         except Exception as e:
             print(f"Error fetching order: {e}")
@@ -184,9 +168,7 @@ class OrderDAO:
         """Récupère les commandes en préparation pour un livreur."""
         try:
             raw_orders = self.db_connector.sql_query(
-                "SELECT * FROM orders WHERE id_driver = %s AND status = 'Preparing'",
-                [driver_id],
-                "all"
+                "SELECT * FROM orders WHERE id_driver = %s AND status = 'Preparing'", [driver_id], "all"
             )
             return [self.get_by_id(o["id_order"]) for o in raw_orders]
         except Exception as e:
