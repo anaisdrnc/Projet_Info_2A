@@ -18,7 +18,8 @@ class AdminDAO:
     def add_admin(self, admin: Admin):
         """Add a admin to the database (from a user, creating the users in the user table
         and then putting the admin in the admins database with the id_user)"""
-        id_user = UserRepo.add_user(admin)
+        user_repo = UserRepo(self.db_connector)
+        id_user = user_repo.add_user(admin)
         try:
             res = self.db_connector.sql_query(
                 "INSERT INTO administrator (id_user)VALUES (%(id_user)s)RETURNING id_administrator;",

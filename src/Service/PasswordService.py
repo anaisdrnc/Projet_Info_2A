@@ -25,7 +25,7 @@ def check_password_strength(password: str):
 def validate_username_password(
     username: str, password: str, user_repo: UserRepo
 ) -> User:
-    user_with_username: Optional[User] = user_repo.get_by_username(username=username)
+    user_with_username: Optional[User] = user_repo.get_by_username(user_name=username)
     if user_with_username is None:
         raise Exception("User not found")
 

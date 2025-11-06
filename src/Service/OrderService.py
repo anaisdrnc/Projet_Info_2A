@@ -6,7 +6,7 @@ from utils.log_decorator import log
 
 
 class OrderService:
-    """Classe contenant les méthodes de services des commandes"""
+    """Class containing order service methods"""
 
     @log
     def create(self, id_customer, id_driver, id_address, nb_items, total_amount, payment_method) -> Order:
