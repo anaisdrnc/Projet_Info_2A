@@ -18,7 +18,7 @@ class InscriptionView(VueAbstraite):
 
         user_service = UserService(user_repo)
 
-        if not user_service.is_username_taken(user_name=pseudo):
+        if user_service.is_username_taken(user_name=pseudo):
             from src.CLI.opening.openingview import OpeningView
 
             return OpeningView(f"The username {pseudo} is already used.")
@@ -26,10 +26,10 @@ class InscriptionView(VueAbstraite):
         mdp = inquirer.secret(
             message="Enter your password : ",
             validate=PasswordValidator(
-                length=35,
+                length=8,
                 cap=True,
                 number=True,
-                message="Au moins 35 caractères, incluant une majuscule et un chiffre",
+                message="Au moins 8 caractères, incluant une majuscule et un chiffre",
             ),
         ).execute()
 
