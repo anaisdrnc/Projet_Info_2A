@@ -65,18 +65,14 @@ class ProductDAO:
     
     def get_all_products(self):
         """get all products to show the customer"""
-        raw_list = self.db_connector.sql_query("SELECT * FROM product WHERE stock>0", [], "all")
-        if raw_list is None:
+        try:
+            raw_products = self.db_connector.sql_query("SELECT * FROM product", [], "all")
+            result = []
+            for o in raw_products:
+                product_data = self.get_by_id(o["id_order"])
+                if product_data:
+                    result.append(product_data)
+            return result
+        except Exception as e:
+            print(f"Error listing all products: {e}")
             return []
-        list_products = []
-        for line in raw_list:
-            id_product = line["id_product"]
-            name = line["name"]
-            price = line["price"]
-            production_cost = line["production_cost"]
-            product_type = line["product_type"]
-            description = line["description"]
-            stock = line["stock"]
-            product = Product(id_product, name, price, production_cost, product_type, description, stock)
-            list_products.append(product)
-        return list_products
