@@ -97,6 +97,30 @@ class OrderDAO:
             print(f"Error marking order delivered: {e}")
             return False
 
+    def mark_as_ready(self, id_order: int) -> bool:
+        try:
+            res = self.db_connector.sql_query(
+                "UPDATE orders SET status='Ready', date=%s WHERE id_order=%s RETURNING id_order",
+                [datetime.now(), id_order],
+                return_type="one",
+            )
+            return res is not None
+        except Exception as e:
+            print(f"Error marking order ready: {e}")
+            return False
+
+    def mark_as_en_route(self, id_order: int) -> bool:
+        try:
+            res = self.db_connector.sql_query(
+                "UPDATE orders SET status='En route', date=%s WHERE id_order=%s RETURNING id_order",
+                [datetime.now(), id_order],
+                return_type="one",
+            )
+            return res is not None
+        except Exception as e:
+            print(f"Error marking order en route: {e}")
+            return False
+
     def get_order_products(self, order_id: int) -> List[Dict[str, Any]]:
         """Récupère tous les produits liés à une commande."""
         try:

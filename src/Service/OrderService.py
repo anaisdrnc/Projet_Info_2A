@@ -47,6 +47,16 @@ class OrderService:
         return OrderDAO().mark_as_delivered(id_order)
 
     @log
+    def mark_as_ready(self, id_order: int) -> bool:
+        """Marquer une commande comme prête"""
+        return OrderDAO().mark_as_ready(id_order)
+
+    @log
+    def mark_as_en_route(self, id_order: int) -> bool:
+        """Marquer une commande comme en route"""
+        return OrderDAO().mark_as_en_route(id_order)
+
+    @log
     def get_order_products(self, id_order: int) -> List[Dict[str, Any]]:
         """Récupère les produits liés à une commande"""
         if id_order <= 0:
@@ -65,6 +75,11 @@ class OrderService:
     def list_all_orders(self) -> List[Dict[str, Any]]:
         """Retourne toutes les commandes avec leurs produits"""
         return OrderDAO().list_all_orders()
+
+    @log
+    def list_all_orders_ready(self) -> List[Dict[str, Any]]:
+        """Retourne toutes les commandes prêtes avec leurs produits et la date depuis qu'elles sont prêtes"""
+        return OrderDAO().list_all_orders_ready()
 
     @log
     def get_assigned_orders(self, id_driver: int) -> List[Dict[str, Any]]:
