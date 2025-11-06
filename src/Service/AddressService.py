@@ -1,4 +1,5 @@
 from src.Model.Address import Address
+from utils.log_decorator import log
 
 ALLOWED_ADDRESSES = {
     35000: "Rennes",
@@ -11,6 +12,8 @@ ALLOWED_ADDRESSES = {
 }
 
 
-def validate_address(address: Address) -> bool:
-    """Retourne True si l'adresse est valide"""
-    return address.postal_code in ALLOWED_ADDRESSES and ALLOWED_ADDRESSES[address.postal_code] == address.city
+class AddressService:
+    @log
+    def validate_address(address: Address) -> bool:
+        """Return True if the address is validated"""
+        return address.postal_code in ALLOWED_ADDRESSES and ALLOWED_ADDRESSES[address.postal_code] == address.city
