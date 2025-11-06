@@ -22,12 +22,10 @@ def check_password_strength(password: str):
         raise Exception("Password must contain at least one number")
 
 
-def validate_username_password(
-    username: str, password: str, user_repo: UserRepo
-) -> User:
-    user_with_username: Optional[User] = user_repo.get_by_username(user_name=username)
+def validate_username_password(username: str, password: str, user_repo: UserRepo) -> User:
+    user_with_username: Optional[User] = user_repo.get_by_username(username=username)
     if user_with_username is None:
-        raise Exception("User not found")
+        raise Exception(f"user with username {username} not found")
 
     # On récupère le salt et le hash enregistré
     salt = user_with_username.salt
@@ -37,6 +35,6 @@ def validate_username_password(
     computed_hash = hash_password(password, salt)
 
     if computed_hash != stored_hash:
-        raise Exception("Invalid password")
+        raise Exception("Incorrect password")
 
     return user_with_username
