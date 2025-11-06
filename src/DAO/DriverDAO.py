@@ -1,12 +1,10 @@
 import logging
 from typing import List, Optional
-
 from src.DAO.DBConnector import DBConnector
-from src.DAO.UserRepo import UserRepo
 from src.Model.Driver import Driver
-from utils.log_decorator import log
+from src.DAO.UserRepo import UserRepo
 from utils.securite import hash_password
-
+from utils.log_decorator import log
 
 class DriverDAO:
     def __init__(self):
@@ -33,7 +31,7 @@ class DriverDAO:
             )
 
             if driver_res and "id_driver" in driver_res:
-                driver.id = driver_res["id_driver"]
+                driver.id_driver = driver_res["id_driver"]
                 return True
 
         except Exception as e:
@@ -42,7 +40,7 @@ class DriverDAO:
 
     @log
     def get_by_id(self, driver_id: int) -> Optional[Driver]:
-        """Récupérer un driver par son ID"""
+        """Récupérer un driver par son ID driver"""
         try:
             res = self.db_connector.sql_query(
                 """
@@ -59,14 +57,15 @@ class DriverDAO:
                 return None
 
             return Driver(
-                id=res["id_driver"],
+                id=res["id_user"],
+                id_driver=res["id_driver"],
                 user_name=res["user_name"],
                 password=res["password"],
                 salt=res["salt"],
                 first_name=res["first_name"],
                 last_name=res["last_name"],
                 email=res["email"],
-                mean_of_transport=res["mean_of_transport"],
+                mean_of_transport=res["mean_of_transport"]
             )
         except Exception as e:
             logging.info(e)
@@ -91,14 +90,15 @@ class DriverDAO:
                 for row in res:
                     drivers.append(
                         Driver(
-                            id=row["id_driver"],
+                            id=row["id_user"],
+                            id_driver=row["id_driver"],
                             user_name=row["user_name"],
                             password=row["password"],
                             salt=row["salt"],
                             first_name=row["first_name"],
                             last_name=row["last_name"],
                             email=row["email"],
-                            mean_of_transport=row["mean_of_transport"],
+                            mean_of_transport=row["mean_of_transport"]
                         )
                     )
             return drivers
@@ -117,7 +117,7 @@ class DriverDAO:
                 WHERE id_driver = %(id_driver)s
                 RETURNING id_driver;
                 """,
-                {"mean_of_transport": driver.mean_of_transport, "id_driver": driver.id},
+                {"mean_of_transport": driver.mean_of_transport, "id_driver": driver.id_driver},
                 "one",
             )
             return res is not None
@@ -147,47 +147,37 @@ class DriverDAO:
                 return False
 
             # Supprime l'utilisateur associé
-            return self.user_repo.delete_user(driver.id_user)
+            return self.user_repo.delete_user(driver.id)
         except Exception as e:
             logging.info(e)
             return False
 
     @log
-    def login(self, user_name: str, password: str) -> Optional[Driver]:
-        """Login via UserRepo pour gérer le hash + salt"""
-        try:
-            user = self.user_repo.get_user_by_username(user_name)
-            if not user:
-                return None
-
-            # Vérification du mot de passe avec salt
-            hashed_input = hash_password(password, user.salt)
-            if hashed_input != user.password:
-                return None
-
-            # Récupérer le driver correspondant
-            res = self.db_connector.sql_query(
-                """
-                SELECT id_driver, mean_of_transport
-                FROM driver
-                WHERE id_user = %(id_user)s;
-                """,
-                {"id_user": user.id},
-                "one",
-            )
-            if not res:
-                return None
-
-            return Driver(
-                id=res["id_driver"],
-                user_name=user.user_name,
-                password=user.password,
-                salt=user.salt,
-                first_name=user.first_name,
-                last_name=user.last_name,
-                email=user.email,
-                mean_of_transport=res["mean_of_transport"],
-            )
-        except Exception as e:
-            logging.info(e)
+    def login(self, username, password):
+        query = """
+        SELECT u.id_user, u.user_name, u.password, u.salt, u.first_name, u.last_name, u.email,
+            d.id_driver, d.mean_of_transport
+        FROM users u
+        JOIN driver d ON u.id_user = d.id_user
+        WHERE u.user_name = %(username)s
+        """
+        res = self.db_connector.sql_query(query, {"username": username}, "one")
+        if not res:
             return None
+
+        hashed_input = hash_password(password, res["salt"])
+        if hashed_input != res["password"]:
+            return None
+
+        driver = Driver(
+            id=res["id_user"],
+            id_driver=res["id_driver"],
+            user_name=res["user_name"],
+            password=res["password"],
+            salt=res["salt"],
+            first_name=res["first_name"],
+            last_name=res["last_name"],
+            email=res["email"],
+            mean_of_transport=res["mean_of_transport"]
+        )
+        return driver
