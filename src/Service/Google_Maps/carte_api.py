@@ -49,7 +49,7 @@ def create_map(origin, destination, transport_mode):
     directions = gmaps.directions(
         origin,
         destination,
-        mode=transport_mode,  # souvent "driving"
+        mode=transport_mode,
         departure_time=now,
     )
 
@@ -117,7 +117,7 @@ def main():
     transport_mapping = {"Car": "driving", "Bike": "bicycling", "Walk": "walking"}
     transport_mode = transport_mapping.get(driver.mean_of_transport, "driving")
 
-    print(f"Mode Google Maps sélectionné : {transport_mode}")
+    print(f"Mode de transport sélectionné : {transport_mode}")
 
     # Adresse d'origine fixe
     origin = "ENSAI, Rennes, France"
@@ -144,10 +144,6 @@ def main():
     if directions:
         # Affichage de la carte
         create_map(origin_complete, destination, transport_mode)
-        # driving
-        # bicycling
-        # walking
-        # transit
 
 
 if __name__ == "__main__":
