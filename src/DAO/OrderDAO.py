@@ -98,6 +98,30 @@ class OrderDAO:
             print(f"Error marking order delivered: {e}")
             return False
 
+    def mark_as_ready(self, id_order: int) -> bool:
+        try:
+            res = self.db_connector.sql_query(
+                "UPDATE orders SET status='Ready', date=%s WHERE id_order=%s RETURNING id_order",
+                [datetime.now(), id_order],
+                return_type="one",
+            )
+            return res is not None
+        except Exception as e:
+            print(f"Error marking order ready: {e}")
+            return False
+
+    def mark_as_en_route(self, id_order: int) -> bool:
+        try:
+            res = self.db_connector.sql_query(
+                "UPDATE orders SET status='En route', date=%s WHERE id_order=%s RETURNING id_order",
+                [datetime.now(), id_order],
+                return_type="one",
+            )
+            return res is not None
+        except Exception as e:
+            print(f"Error marking order en route: {e}")
+            return False
+
     def get_order_products(self, order_id: int) -> List[Dict[str, Any]]:
         """Récupère tous les produits liés à une commande."""
         try:
@@ -166,10 +190,10 @@ class OrderDAO:
             return []
 
     def list_all_orders_ready(self):
-        """Returns all ready orders ordered chronologically."""
+        """Returns all ready orders ordered chronologically with their complete address."""
         try:
             raw_orders = self.db_connector.sql_query(
-                "SELECT id_order, id_address, date FROM default_schema.orders WHERE status = 'Ready' ORDER BY date ",
+                "SELECT o.id_order, o.date, a.address, a.city, a.postal_code FROM default_schema.orders o JOIN default_schema.address a ON o.id_address = a.id_address WHERE o.status = 'Ready' ORDER BY o.date ",
                 None,
                 "all",
             )
