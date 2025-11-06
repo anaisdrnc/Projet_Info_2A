@@ -190,10 +190,10 @@ class OrderDAO:
             return []
 
     def list_all_orders_ready(self):
-        """Returns all ready orders ordered chronologically."""
+        """Returns all ready orders ordered chronologically with their complete address."""
         try:
             raw_orders = self.db_connector.sql_query(
-                "SELECT id_order, id_address, date FROM default_schema.orders WHERE status = 'Ready' ORDER BY date ",
+                "SELECT o.id_order, o.date, a.address, a.city, a.postal_code FROM default_schema.orders o JOIN default_schema.address a ON o.id_address = a.id_address WHERE o.status = 'Ready' ORDER BY o.date ",
                 None,
                 "all",
             )
