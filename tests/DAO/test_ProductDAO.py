@@ -134,3 +134,28 @@ def test_get_all_products(dao):
     assert "Prod1" in names
     assert "Prod2" in names
 
+def test_get_all_product_names(dao):
+    """Vérifie que les noms des produits sont récupérés correctement"""
+    products = [
+        Product(name="Café", price=2.5, production_cost=1.0, product_type="drink", description="Café chaud", stock=10),
+        Product(name="Croissant", price=1.5, production_cost=0.5, product_type="dessert", description="Croissant frais", stock=5),
+    ]
+    for p in products:
+        dao.create_product(p)
+
+    names = dao.get_all_product_names()
+    for p in products:
+        assert p.name in names
+
+def test_get_all_product_names_descriptions(dao):
+    """Vérifie que les noms et descriptions des produits sont récupérés correctement"""
+    products = [
+        Product(name="Café", price=2.5, production_cost=1.0, product_type="drink", description="Café chaud", stock=10),
+        Product(name="Croissant", price=1.5, production_cost=0.5, product_type="dessert", description="Croissant frais", stock=5),
+    ]
+    for p in products:
+        dao.create_product(p)
+
+    result = dao.get_all_product_names_descriptions()
+    for p in products:
+        assert [p.name, p.description] in result

@@ -83,3 +83,21 @@ class ProductDAO:
         except Exception as e:
             logging.info(f"Error listing all products: {e}")
             return []
+
+    def get_all_product_names(self):
+        """Retourne juste les noms de tous les produits"""
+        try:
+            raw = self.db_connector.sql_query("SELECT name FROM product", None, "all")
+            return [r["name"] for r in raw]
+        except Exception as e:
+            logging.info(f"Erreur get_all_product_names: {e}")
+            return []
+
+    def get_all_product_names_descriptions(self):
+        """Retourne les noms et descriptions de tous les produits"""
+        try:
+            raw = self.db_connector.sql_query("SELECT name, description FROM product", None, "all")
+            return [[r["name"], r["description"]] for r in raw]
+        except Exception as e:
+            logging.info(f"Erreur get_all_product_names_descriptions: {e}")
+            return []
