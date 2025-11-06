@@ -189,7 +189,7 @@ class OrderDAO:
             print(f"Error listing all orders: {e}")
             return []
 
-    def list_all_orders_ready(self):
+    def list_all_orders_ready(self) -> List[Dict[str, Any]]:
         """Returns all ready orders ordered chronologically with their complete address."""
         try:
             raw_orders = self.db_connector.sql_query(

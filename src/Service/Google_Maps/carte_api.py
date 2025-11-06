@@ -2,7 +2,7 @@ import os
 import sys
 from datetime import datetime
 
-import config
+import env
 import folium
 import googlemaps
 
@@ -11,6 +11,7 @@ project_root = os.path.dirname(os.path.dirname(os.path.dirname(current_dir)))
 sys.path.insert(0, project_root)
 
 from src.DAO.DriverDAO import DriverDAO
+from src.Service.OrderService import OrderService
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -19,7 +20,7 @@ from Google_Maps.check_address import (
     validate_and_get_routable_address,
 )
 
-API_KEY = config.API_KEY_GOOGLE_MAPS
+API_KEY = env.API_KEY_GOOGLE_MAPS
 
 # Initialiser le client Google Maps
 gmaps = googlemaps.Client(key=API_KEY)
@@ -205,6 +206,17 @@ def main():
         # on choisit la voiture
         mean_of_transport = "driving"
     # else : trouver un driver de dispo peu importe son moyen de transport
+    ready_orders_list_of_dict = OrderService.list_all_orders_ready()
+    oldest_order = ready_orders_list_of_dict[0]  # Commande la plus ancienne
+    answer_driver = str(input("Do you accept the next order ? (y/n)"))
+    if answer_driver == "y":
+        # Assigner la commande au driver
+        pass
+    elif answer_driver == "n":
+        # Sortir de l'applicaiton pour le driver
+        pass
+    else:
+        continue
 
 
 if __name__ == "__main__":

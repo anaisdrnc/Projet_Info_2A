@@ -91,7 +91,8 @@ class OrderService:
 
     @log
     def list_all_orders_ready(self) -> List[Dict[str, Any]]:
-        """Retourne toutes les commandes prêtes avec leurs produits et la date depuis qu'elles sont prêtes"""
+        """Retourne toutes les commandes prêtes avec leurs produits, l'adresse complète de la commande
+        et la date depuis qu'elles sont prêtes"""
         return OrderDAO().list_all_orders_ready()
 
     @log
