@@ -16,7 +16,7 @@ class InscriptionView(VueAbstraite):
 
         user_service = UserService(UserRepo(DBConnector(test = False)))
 
-        if not user_service.is_username_taken(username=pseudo):
+        if not user_service.is_username_taken(user_name=pseudo):
             from src.CLI.opening.openingview import OpeningView
 
             return OpeningView(f"The username {pseudo} is already used.")
