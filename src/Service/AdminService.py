@@ -1,30 +1,30 @@
-from src.DAO.CustomerDAO import CustomerDAO
+from src.DAO.AdminDAO import AdminDAO
 from src.DAO.DBConnector import DBConnector
 
 # from src.DAO.UserRepo import UserRepo
-from src.Model.Customer import Customer
+from src.Model.Admin import Admin
 from src.Model.User import User
 from src.Service.PasswordService import check_password_strength, create_salt
 from utils.log_decorator import log
 from utils.securite import hash_password
 
 
-class CustomerService:
-    """Class containing customers service methods"""
+class AdminService:
+    """Class containing administrators service methods"""
 
-    def __init__(self, customerdao=CustomerDAO(DBConnector)):
-        self.customerdao = customerdao
+    def __init__(self, admindao=AdminDAO(DBConnector)):
+        self.admindao = admindao
 
     @log
-    def create_customer(self, username: str, password: str, firstname: str, lastname: str, email: str) -> Customer:
+    def create_admin(self, username: str, password: str, firstname: str, lastname: str, email: str) -> Admin:
         """
-        Crée un nouveau client :
+        Crée un nouveau admin :
         - Vérifie la force du mot de passe
         - Génère un sel
         - Hache le mot de passe
         - Sauvegarde le client via CustomerDAO
         """
-        customerdao = self.customerdao
+        admindao = self.admindao
         check_password_strength(password)
         salt = create_salt()
         hashed_password = hash_password(password, sel=salt)
@@ -37,6 +37,6 @@ class CustomerService:
             salt=salt,
         )
 
-        if customerdao.add_customer(new_user) is not None:
+        if admindao.add_admin(new_user) is not None:
             return new_user
         return None
