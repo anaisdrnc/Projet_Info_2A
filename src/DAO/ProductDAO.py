@@ -62,7 +62,8 @@ class ProductDAO:
         except Exception as e:
             logging.info(f"Erreur lors de l'insertion : {e}")
             return False
-
+            
+    @log
     def get_all_products(self):
         """Récupérer tous les produits"""
         try:
@@ -83,7 +84,8 @@ class ProductDAO:
         except Exception as e:
             logging.info(f"Error listing all products: {e}")
             return []
-
+    
+    @log
     def get_all_product_names(self):
         """Retourne juste les noms de tous les produits"""
         try:
@@ -93,6 +95,7 @@ class ProductDAO:
             logging.info(f"Erreur get_all_product_names: {e}")
             return []
 
+    @log
     def get_all_product_names_descriptions(self):
         """Retourne les noms et descriptions de tous les produits"""
         try:
