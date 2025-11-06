@@ -1,12 +1,14 @@
+from src.DAO.DBConnector import DBConnector
 from src.DAO.ProductDAO import ProductDAO
 from src.Model.Product import Product
 from utils.log_decorator import log
+from src.DAO.DBConnector import DBConnector
+
 
 class ProductService:
     """Classe contenant les méthodes de services des produits"""
 
     def __init__(self, productdao=None):
-        # Si aucun DAO fourni, on en crée un
         self.productdao = productdao or ProductDAO()
 
     @log
