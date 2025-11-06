@@ -12,9 +12,9 @@ from .DBConnector import DBConnector
 class ProductDAO:
     """Class providing access to products in the database"""
 
-    def __init__(self, db_connector=None):
+    def __init__(self, db_connector):
         """Initialize a new productDAO instance with a database connector."""
-        self.db_connector = db_connector if db_connector is not None else DBConnector()
+        self.db_connector = db_connector
 
     @log
     def deleting_product(self, id_product: int) -> bool:
@@ -63,6 +63,7 @@ class ProductDAO:
             logging.info(f"Erreur lors de l'insertion : {e}")
             return False
 
+    @log
     def get_all_products(self):
         """Récupérer tous les produits"""
         try:
@@ -82,4 +83,25 @@ class ProductDAO:
             return result
         except Exception as e:
             logging.info(f"Error listing all products: {e}")
+            return []
+    
+    @log
+    def get_all_product_names(self):
+        """Retourne juste les noms de tous les produits"""
+        try:
+            raw = self.db_connector.sql_query("SELECT name FROM product", None, "all")
+            return [r["name"] for r in raw]
+        except Exception as e:
+            logging.info(f"Erreur get_all_product_names: {e}")
+            return []
+
+    @log
+    def get_all_product_names_descriptions(self):
+        """Retourne les noms et descriptions de tous les produits"""
+        try:
+            raw = self.db_connector.sql_query("SELECT name, description FROM product", [], "all")
+            #return [[r["name"], r["description"]] for r in raw]
+            return raw
+        except Exception as e:
+            logging.info(f"Erreur get_all_product_names_descriptions: {e}")
             return []
