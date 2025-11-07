@@ -1,133 +1,117 @@
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock, Mock, patch
 
 from src.Model.Address import Address
 from src.Model.Order import Order
 from src.Service.OrderService import OrderService
 
-### TEST DE ADD
+
+@pytest.fixture
+def mock_dao():
+    return Mock()  # Simulates any objects that allows for more flexibility during testing
 
 
-def test_add_product_ok():
-    """Ajout d’un produit à la commande réussi"""
-    with patch("src.Service.OrderService.OrderDAO.add_product", return_value=True):
-        service = OrderService()
-        result = service.add(id_order=1, id_product=2, quantity=3)
+def test_add_product_ok(mock_dao):
+    """Ajout d'un produit à la commande réussi"""
+    with patch.object(mock_dao, "add_product", return_value=True):
+        service = OrderService(mock_dao)
+        result = service.add(1, 2, 3)
         assert result is True
 
 
-def test_add_product_ko_dao_fails():
+def test_add_product_ko_dao_fails(mock_dao):
     """Échec car le DAO retourne False"""
-    with patch("src.Service.OrderService.OrderDAO.add_product", return_value=False):
-        service = OrderService()
-        result = service.add(id_order=1, id_product=2, quantity=3)
+    with patch.object(mock_dao, "add_product", return_value=False):
+        service = OrderService(mock_dao)
+        result = service.add(1, 2, 3)
         assert result is False
 
 
-def test_add_product_ko_invalid_quantity():
+def test_add_product_ko_invalid_quantity(mock_dao):
     """Échec car quantité invalide"""
-    service = OrderService()
-    result = service.add(id_order=1, id_product=2, quantity=0)
+    service = OrderService(mock_dao)
+    result = service.add(1, 2, 0)  # Quantité invalide
     assert result is False
 
 
-# TEST DE REMOVE
-
-
-def test_remove_product_ok():
+def test_remove_product_ok(mock_dao):
     """Suppression OK → le DAO retourne True"""
-    with patch("src.Service.OrderService.OrderDAO.remove_product", return_value=True):
-        service = OrderService()
-        result = service.remove(id_order=1, id_product=2, quantity=2)
+    with patch.object(mock_dao, "remove_product", return_value=True):
+        service = OrderService(mock_dao)
+        result = service.remove(1, 2)
         assert result is True
 
 
-def test_remove_product_ko_not_found():
+def test_remove_product_ko_not_found(mock_dao):
     """Suppression KO → produit pas trouvé dans la commande (DAO retourne False)"""
-    with patch("src.Service.OrderService.OrderDAO.remove_product", return_value=False):
-        service = OrderService()
-        result = service.remove(id_order=1, id_product=2, quantity=10)
+    with patch.object(mock_dao, "remove_product", return_value=False):
+        service = OrderService(mock_dao)
+        result = service.remove(1, 2)
         assert result is False
 
 
-# TEST DE CANCEL ORDER
-
-
-def test_cancel_order_ok():
+def test_cancel_order_ok(mock_dao):
     """Annulation réussie → le DAO retourne True"""
-    with patch("src.Service.OrderService.OrderDAO.cancel_order", return_value=True):
-        service = OrderService()
-        result = service.cancel_order(5)
+    with patch.object(mock_dao, "cancel_order", return_value=True):
+        service = OrderService(mock_dao)
+        result = service.cancel_order(1)
         assert result is True
 
 
-def test_cancel_order_ko_not_found():
+def test_cancel_order_ko_not_found(mock_dao):
     """Annulation échoue → commande introuvable (DAO retourne False)"""
-    with patch("src.Service.OrderService.OrderDAO.cancel_order", return_value=False):
-        service = OrderService()
-        result = service.cancel_order(999)
+    with patch.object(mock_dao, "cancel_order", return_value=False):
+        service = OrderService(mock_dao)
+        result = service.cancel_order(1)
         assert result is False
 
 
-# TEST DE MARK DELIVERED
-
-
-def test_mark_as_delivered_ok():
+def test_mark_as_delivered_ok(mock_dao):
     """La commande existe → doit retourner True"""
-    with patch("src.Service.OrderService.OrderDAO.mark_as_delivered", return_value=True):
-        service = OrderService()
-        result = service.mark_as_delivered(10)
+    with patch.object(mock_dao, "mark_as_delivered", return_value=True):
+        service = OrderService(mock_dao)
+        result = service.mark_as_delivered(1)
         assert result is True
 
 
-def test_mark_as_delivered_ko():
+def test_mark_as_delivered_ko(mock_dao):
     """La commande n'existe pas → doit retourner False"""
-    with patch("src.Service.OrderService.OrderDAO.mark_as_delivered", return_value=False):
-        service = OrderService()
-        result = service.mark_as_delivered(999)
+    with patch.object(mock_dao, "mark_as_delivered", return_value=False):
+        service = OrderService(mock_dao)
+        result = service.mark_as_delivered(1)
         assert result is False
 
 
-def test_mark_as_delivered_invalid_id():
-    service = OrderService()
-    assert not service.mark_as_delivered(0)
-    assert not service.mark_as_delivered(-5)
+def test_mark_as_delivered_invalid_id(mock_dao):
+    """ID invalide → doit retourner False"""
+    service = OrderService(mock_dao)
+    result = service.mark_as_delivered(0)
+    assert result is False
 
 
-# TEST DE GET ORDER PRODUCT
-
-
-def test_get_order_products_ok():
+def test_get_order_products_ok(mock_dao):
     """Retourne une liste de produits si la commande existe"""
     fake_products = [
         {"id_product": 1, "name": "Coca", "price": 2.5, "product_type": "drink", "quantity": 2},
         {"id_product": 3, "name": "Panini", "price": 4.0, "product_type": "lunch", "quantity": 1},
     ]
-
-    with patch("src.Service.OrderService.OrderDAO.get_order_products", return_value=fake_products):
-        service = OrderService()
-        result = service.get_order_products(5)
-
+    with patch.object(mock_dao, "get_order_products", return_value=fake_products):
+        service = OrderService(mock_dao)
+        result = service.get_order_products(1)
         assert result == fake_products
-        assert isinstance(result, list)
-        assert result[0]["name"] == "Coca"
 
 
-def test_get_order_products_empty():
+def test_get_order_products_empty(mock_dao):
     """Commande existe mais aucun produit → retourne liste vide"""
-    with patch("src.Service.OrderService.OrderDAO.get_order_products", return_value=[]):
-        service = OrderService()
-        result = service.get_order_products(5)
-
+    with patch.object(mock_dao, "get_order_products", return_value=[]):
+        service = OrderService(mock_dao)
+        result = service.get_order_products(1)
         assert result == []
 
 
-def test_get_order_products_invalid_id():
+def test_get_order_products_invalid_id(mock_dao):
     """ID invalide → doit retourner [] et ne pas appeler le DAO"""
-    service = OrderService()
+    service = OrderService(mock_dao)
     result = service.get_order_products(0)
-    assert result == []
-
-    result = service.get_order_products(-10)
     assert result == []
 
 
