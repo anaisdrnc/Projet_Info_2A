@@ -10,6 +10,7 @@ from src.DAO.UserRepo import UserRepo
 from src.Model.Address import Address
 from src.Model.Driver import Driver
 from src.Model.Order import Order
+from src.Model.Product import Product
 
 load_dotenv()
 
@@ -121,8 +122,7 @@ def test_add_product_ok(dao, productdao):
     # Création adresse et commande
     addr = create_test_address()
     order = Order(
-        id_customer=999, id_driver=999, id_address=addr.id_address,
-        nb_items=1, total_amount=5.0, payment_method="Card"
+        id_customer=999, id_driver=999, id_address=addr.id_address, nb_items=1, total_amount=5.0, payment_method="Card"
     )
     order_id = dao.create_order(order)
     assert order_id is not None
@@ -133,9 +133,7 @@ def test_add_product_ok(dao, productdao):
 
     # Vérifier que le stock a diminué
     raw = productdao.db_connector.sql_query(
-        "SELECT stock FROM product WHERE id_product = %s",
-        [product.id_product],
-        "one"
+        "SELECT stock FROM product WHERE id_product = %s", [product.id_product], "one"
     )
     assert raw["stock"] == 7  # 10 - 3
 
@@ -157,9 +155,7 @@ def test_add_product_invalid_order(dao, productdao):
 
     # Vérifier que le stock n'a pas été décrémenté
     raw = productdao.db_connector.sql_query(
-        "SELECT stock FROM product WHERE id_product = %s",
-        [product.id_product],
-        "one"
+        "SELECT stock FROM product WHERE id_product = %s", [product.id_product], "one"
     )
     assert raw["stock"] == 5
 
@@ -178,8 +174,7 @@ def test_remove_product_ok(dao, productdao):
 
     addr = create_test_address()
     order = Order(
-        id_customer=998, id_driver=999, id_address=addr.id_address,
-        nb_items=1, total_amount=3.0, payment_method="Cash"
+        id_customer=998, id_driver=999, id_address=addr.id_address, nb_items=1, total_amount=3.0, payment_method="Cash"
     )
     order_id = dao.create_order(order)
     dao.add_product(order_id, product_id=product.id_product, quantity=2)
@@ -189,9 +184,7 @@ def test_remove_product_ok(dao, productdao):
 
     # Vérifier que le stock est revenu
     raw = productdao.db_connector.sql_query(
-        "SELECT stock FROM product WHERE id_product = %s",
-        [product.id_product],
-        "one"
+        "SELECT stock FROM product WHERE id_product = %s", [product.id_product], "one"
     )
     assert raw["stock"] == 5
 
@@ -200,7 +193,6 @@ def test_remove_product_invalid(dao):
     """Vérifie que la suppression échoue pour un produit ou order inexistant"""
     removed = dao.remove_product(order_id=123456, product_id=999)
     assert removed is False
-
 
 
 def test_get_order_products_ok(dao):

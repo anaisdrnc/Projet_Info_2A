@@ -2,6 +2,7 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from src.DAO.DBConnector import DBConnector
+from src.DAO.ProductDAO import ProductDAO
 from src.Model.Address import Address
 from src.Model.Order import Order
 
@@ -47,8 +48,8 @@ class OrderDAO:
         """
         Ajoute un produit à la commande et décrémente le stock.
         """
-
-        success_stock = self.productdao.decrement_stock(product_id, quantity)
+        productdao = ProductDAO(DBConnector())
+        success_stock = productdao.decrement_stock(product_id, quantity)
         if not success_stock:
             print(f"Stock insuffisant pour le produit {product_id}")
             return False
@@ -90,7 +91,6 @@ class OrderDAO:
         except Exception as e:
             print(f"Error removing product: {e}")
             return False
-
 
     def cancel_order(self, id_order: int) -> bool:
         try:

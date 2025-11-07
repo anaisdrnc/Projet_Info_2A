@@ -6,8 +6,6 @@ from src.DAO.DBConnector import DBConnector
 from src.Model.Product import Product
 from utils.log_decorator import log
 
-from .DBConnector import DBConnector
-
 
 class ProductDAO:
     """Class providing access to products in the database"""
@@ -84,7 +82,7 @@ class ProductDAO:
         except Exception as e:
             logging.info(f"Error listing all products: {e}")
             return []
-    
+
     @log
     def get_all_product_names(self):
         """Retourne juste les noms de tous les produits"""
@@ -100,7 +98,7 @@ class ProductDAO:
         """Retourne les noms et descriptions de tous les produits"""
         try:
             raw = self.db_connector.sql_query("SELECT name, description FROM product", [], "all")
-            #return [[r["name"], r["description"]] for r in raw]
+            # return [[r["name"], r["description"]] for r in raw]
             return raw
         except Exception as e:
             logging.info(f"Erreur get_all_product_names_descriptions: {e}")
@@ -134,7 +132,7 @@ class ProductDAO:
             self.db_connector.sql_query(
                 "UPDATE product SET stock = stock + %(quantity)s WHERE id_product = %(product_id)s",
                 {"quantity": quantity, "product_id": product_id},
-                "none"
+                "none",
             )
             return True
         except Exception as e:
@@ -150,4 +148,3 @@ class ProductDAO:
         except Exception as e:
             logging.info(f"Erreur get_available_products: {e}")
             return []
-
