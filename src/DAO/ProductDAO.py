@@ -105,3 +105,49 @@ class ProductDAO:
         except Exception as e:
             logging.info(f"Erreur get_all_product_names_descriptions: {e}")
             return []
+
+    @log
+    def decrement_stock(self, product_id: int, quantity: int = 1) -> bool:
+        """
+        Diminue le stock du produit de la quantité spécifiée.
+        Retourne True si la mise à jour a réussi, False sinon.
+        """
+        try:
+            res = self.db_connector.sql_query(
+                """
+                UPDATE product
+                SET stock = stock - %s
+                WHERE id_product = %s AND stock >= %s
+                RETURNING id_product;
+                """,
+                [quantity, product_id, quantity],
+                "one",
+            )
+            return res is not None
+        except Exception as e:
+            logging.error(f"Erreur decrement_stock: {e}")
+            return False
+
+    def increment_stock(self, product_id: int, quantity: int = 1):
+        """Remet du stock si la commande est annulée"""
+        try:
+            self.db_connector.sql_query(
+                "UPDATE product SET stock = stock + %(quantity)s WHERE id_product = %(product_id)s",
+                {"quantity": quantity, "product_id": product_id},
+                "none"
+            )
+            return True
+        except Exception as e:
+            logging.error(f"Erreur increment_stock: {e}")
+            return False
+
+    @log
+    def get_available_products(self):
+        """Retourne uniquement les produits dont le stock est supérieur à 0"""
+        try:
+            raw = self.db_connector.sql_query("SELECT name, description, price FROM product WHERE stock > 0", [], "all")
+            return raw
+        except Exception as e:
+            logging.info(f"Erreur get_available_products: {e}")
+            return []
+

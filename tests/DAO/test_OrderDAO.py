@@ -105,38 +105,102 @@ def test_create_order_invalid_customer(dao):
     assert order_id is None
 
 
-def test_add_product_ok(dao):
+def test_add_product_ok(dao, productdao):
+    """Vérifie que l'ajout de produit fonctionne et décrémente le stock"""
+    # Création produit de test
+    product = Product(
+        name="Produit Test Add",
+        price=5.0,
+        production_cost=2.0,
+        product_type="drink",
+        description="Pour test add_product",
+        stock=10,
+    )
+    productdao.create_product(product)
+
+    # Création adresse et commande
     addr = create_test_address()
     order = Order(
-        id_customer=999, id_driver=999, id_address=addr.id_address, nb_items=1, total_amount=5.0, payment_method="Card"
+        id_customer=999, id_driver=999, id_address=addr.id_address,
+        nb_items=1, total_amount=5.0, payment_method="Card"
     )
     order_id = dao.create_order(order)
     assert order_id is not None
 
-    added = dao.add_product(order_id, product_id=997, quantity=2)
+    # Ajouter produit
+    added = dao.add_product(order_id, product_id=product.id_product, quantity=3)
     assert added is True
 
+    # Vérifier que le stock a diminué
+    raw = productdao.db_connector.sql_query(
+        "SELECT stock FROM product WHERE id_product = %s",
+        [product.id_product],
+        "one"
+    )
+    assert raw["stock"] == 7  # 10 - 3
 
-def test_add_product_invalid_order(dao):
-    added = dao.add_product(order_id=999999, product_id=999, quantity=1)
+
+def test_add_product_invalid_order(dao, productdao):
+    """Vérifie que l'ajout échoue pour un order inexistant"""
+    product = Product(
+        name="Produit Test Invalid",
+        price=5.0,
+        production_cost=2.0,
+        product_type="drink",
+        description="Pour test add_product invalid",
+        stock=5,
+    )
+    productdao.create_product(product)
+
+    added = dao.add_product(order_id=999999, product_id=product.id_product, quantity=1)
     assert added is False
 
+    # Vérifier que le stock n'a pas été décrémenté
+    raw = productdao.db_connector.sql_query(
+        "SELECT stock FROM product WHERE id_product = %s",
+        [product.id_product],
+        "one"
+    )
+    assert raw["stock"] == 5
 
-def test_remove_product_ok(dao):
+
+def test_remove_product_ok(dao, productdao):
+    """Vérifie que la suppression d'un produit fonctionne et remet le stock"""
+    product = Product(
+        name="Produit Test Remove",
+        price=3.0,
+        production_cost=1.0,
+        product_type="drink",
+        description="Pour test remove_product",
+        stock=5,
+    )
+    productdao.create_product(product)
+
     addr = create_test_address()
     order = Order(
-        id_customer=998, id_driver=999, id_address=addr.id_address, nb_items=1, total_amount=3.0, payment_method="Cash"
+        id_customer=998, id_driver=999, id_address=addr.id_address,
+        nb_items=1, total_amount=3.0, payment_method="Cash"
     )
     order_id = dao.create_order(order)
-    dao.add_product(order_id, product_id=999, quantity=1)
+    dao.add_product(order_id, product_id=product.id_product, quantity=2)
 
-    removed = dao.remove_product(order_id, product_id=999)
+    removed = dao.remove_product(order_id, product_id=product.id_product, quantity=2)
     assert removed is True
+
+    # Vérifier que le stock est revenu
+    raw = productdao.db_connector.sql_query(
+        "SELECT stock FROM product WHERE id_product = %s",
+        [product.id_product],
+        "one"
+    )
+    assert raw["stock"] == 5
 
 
 def test_remove_product_invalid(dao):
+    """Vérifie que la suppression échoue pour un produit ou order inexistant"""
     removed = dao.remove_product(order_id=123456, product_id=999)
     assert removed is False
+
 
 
 def test_get_order_products_ok(dao):

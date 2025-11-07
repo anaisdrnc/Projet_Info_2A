@@ -85,13 +85,18 @@ def test_get_list_products_names(service):
 
 
 def test_get_list_products_descriptions(service):
-    products = [
+    products_to_add = [
         Product(name="Café", price=2.5, production_cost=1.0, product_type="drink", description="Café chaud", stock=10),
-        Product(name="Croissant", price=1.5, production_cost=0.5, product_type="dessert", description="Croissant frais", stock=5),
+        Product(name="Croissant", price=1.5, production_cost=0.5, product_type="dessert", description="Croissant frais",
+        stock=5),
     ]
-    for p in products:
+
+    for p in products_to_add:
         service.productdao.create_product(p)
 
     result = service.get_list_products_descriptions()
-    for p in products:
-        assert [p.name, p.description] in result
+    result_list = [[r["name"], r["description"]] if isinstance(r, dict) else r for r in result]
+
+    for p in products_to_add:
+        assert [p.name, p.description] in result_list
+

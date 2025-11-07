@@ -44,6 +44,15 @@ class OrderDAO:
             return None
 
     def add_product(self, order_id: int, product_id: int, quantity: int) -> bool:
+        """
+        Ajoute un produit à la commande et décrémente le stock.
+        """
+
+        success_stock = self.productdao.decrement_stock(product_id, quantity)
+        if not success_stock:
+            print(f"Stock insuffisant pour le produit {product_id}")
+            return False
+
         try:
             self.db_connector.sql_query(
                 """
@@ -55,10 +64,12 @@ class OrderDAO:
             )
             return True
         except Exception as e:
-            print("Error adding product:", e)
+            print(f"Error adding product: {e}")
+            self.productdao.increment_stock(product_id, quantity)
             return False
 
-    def remove_product(self, order_id: int, product_id: int) -> bool:
+    def remove_product(self, order_id: int, product_id: int, quantity: int = 1) -> bool:
+        """Supprime un produit de la commande et remet le stock."""
         try:
             res = self.db_connector.sql_query(
                 """
@@ -69,10 +80,17 @@ class OrderDAO:
                 [order_id, product_id],
                 return_type="one",
             )
-            return res is not None
+
+            if res:
+                # Remettre le stock
+                self.productdao.increment_stock(product_id, quantity)
+                return True
+
+            return False
         except Exception as e:
             print(f"Error removing product: {e}")
             return False
+
 
     def cancel_order(self, id_order: int) -> bool:
         try:

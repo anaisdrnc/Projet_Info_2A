@@ -28,14 +28,13 @@ class OrderService:
         return new_order if orderdao.create_order(new_order) else None
 
     @log
-    def add(self, id_order: int, id_product, quantity: int) -> bool:
-        orderdao = self.orderdao
+    def add_product_to_order(self, order_id: int, product_id: int, quantity: int = 1) -> bool:
+        """Add product to order"""
+        success = self.product_service.decrement_stock(product_id, quantity)
+        if not success:
+            return False
 
-        """Ajoute un produit à une commande"""
-        if quantity <= 0:
-            return False  # On refuse les quantités invalides
-
-        return orderdao.add_product(id_order, id_product, quantity)
+        return self.orderdao.add_product(order_id, product_id, quantity)
 
     @log
     def remove(self, id_order: int, id_product, quantity: int) -> bool:
@@ -45,10 +44,19 @@ class OrderService:
         return orderdao.remove_product(id_order, id_product)
 
     @log
-    def cancel_order(self, id_order: int) -> bool:
-        """Annule une commande"""
-        orderdao = self.orderdao
-        return orderdao.cancel_order(id_order)
+    def cancel_order(self, order_id: int) -> bool:
+        """
+        Annule une commande et remet les produits en stock.
+        """
+        order_data = self.orderdao.get_by_id(order_id)
+        if not order_data:
+            return False
+
+        # Remettre les produits en stock
+        for p in order_data["products"]:
+            self.orderdao.productdao.increment_stock(p["id_product"], p["quantity"])
+
+        return self.orderdao.cancel_order(order_id)
 
     @log
     def mark_as_delivered(self, id_order: int) -> bool:
