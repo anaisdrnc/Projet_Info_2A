@@ -23,11 +23,12 @@ def check_password_strength(password: str):
 
 
 def validate_username_password(username: str, password: str, user_repo: UserRepo) -> User:
-    user_with_username: Optional[User] = user_repo.get_by_username(username=username)
+    user_with_username: Optional[User] = user_repo.get_by_username(user_name=username)
     if user_with_username is None:
         raise Exception(f"user with username {username} not found")
 
     # On récupère le salt et le hash enregistré
+
     salt = user_with_username.salt
     stored_hash = user_with_username.password
 

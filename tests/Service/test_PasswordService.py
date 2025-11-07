@@ -35,8 +35,8 @@ def test_create_salt():
 
 
 class MockUserRepo:
-    def get_by_username(self, username: str) -> Optional[User]:
-        if username == "janjak":
+    def get_by_username(self, user_name: str) -> Optional[User]:
+        if user_name == "janjak":
             return User(
                 id=4,
                 user_name="janjak",
