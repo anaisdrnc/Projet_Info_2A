@@ -16,7 +16,9 @@ class CustomerService:
         self.customerdao = customerdao
 
     @log
-    def create_customer(self, username: str, password: str, firstname: str, lastname: str, email: str) -> Customer:
+    def create_customer(
+        self, username: str, password: str, firstname: str, lastname: str, email: str
+    ) -> Customer:
         """
         Crée un nouveau client :
         - Vérifie la force du mot de passe

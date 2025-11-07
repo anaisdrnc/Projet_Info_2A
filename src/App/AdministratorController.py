@@ -29,7 +29,9 @@ def login_admin(username: str, password: str) -> JWTResponse:
         if not admin or not AdminService.verify_password(password, admin.password_hash):
             raise Exception("Invalid username or password")
     except Exception as error:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(error)) from error
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN, detail=str(error)
+        ) from error
 
     # Encode JWT pour l'admin
     return jwt_service.encode_jwt(admin.id_admin)

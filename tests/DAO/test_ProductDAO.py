@@ -121,10 +121,25 @@ def test_delete_ko(dao):
 
     assert not delete_ok
 
+
 def test_get_all_products(dao):
     # Ajouter deux produits
-    p1 = Product(name="Prod1", price=1.0, production_cost=0.5, description="desc1", product_type="drink", stock=5)
-    p2 = Product(name="Prod2", price=2.0, production_cost=1.0, description="desc2", product_type="dessert", stock=3)
+    p1 = Product(
+        name="Prod1",
+        price=1.0,
+        production_cost=0.5,
+        description="desc1",
+        product_type="drink",
+        stock=5,
+    )
+    p2 = Product(
+        name="Prod2",
+        price=2.0,
+        production_cost=1.0,
+        description="desc2",
+        product_type="dessert",
+        stock=3,
+    )
     dao.create_product(p1)
     dao.create_product(p2)
 
@@ -134,12 +149,26 @@ def test_get_all_products(dao):
     assert "Prod1" in names
     assert "Prod2" in names
 
+
 def test_get_all_product_names(dao):
     """Vérifie que les noms des produits sont récupérés correctement"""
     products = [
-        Product(name="Café", price=2.5, production_cost=1.0, product_type="drink", description="Café chaud", stock=10),
-        Product(name="Croissant", price=1.5, production_cost=0.5, product_type="dessert", description="Croissant frais",
-        stock=5),
+        Product(
+            name="Café",
+            price=2.5,
+            production_cost=1.0,
+            product_type="drink",
+            description="Café chaud",
+            stock=10,
+        ),
+        Product(
+            name="Croissant",
+            price=1.5,
+            production_cost=0.5,
+            product_type="dessert",
+            description="Croissant frais",
+            stock=5,
+        ),
     ]
     for p in products:
         dao.create_product(p)
@@ -148,11 +177,26 @@ def test_get_all_product_names(dao):
     for p in products:
         assert p.name in names
 
+
 def test_get_all_product_names_descriptions(dao):
     """Vérifie que les noms et descriptions des produits sont récupérés correctement"""
     products_to_add = [
-        Product(name="Café", price=2.5, production_cost=1.0, product_type="drink", description="Café chaud", stock=10),
-        Product(name="Croissant", price=1.5, production_cost=0.5, product_type="dessert", description="Croissant frais", stock=5),
+        Product(
+            name="Café",
+            price=2.5,
+            production_cost=1.0,
+            product_type="drink",
+            description="Café chaud",
+            stock=10,
+        ),
+        Product(
+            name="Croissant",
+            price=1.5,
+            production_cost=0.5,
+            product_type="dessert",
+            description="Croissant frais",
+            stock=5,
+        ),
     ]
 
     for p in products_to_add:
@@ -185,7 +229,9 @@ def test_decrement_stock(dao):
     assert success
 
     # Vérifier le stock
-    updated = [p for p in dao.get_all_products() if p.id_product == product.id_product][0]
+    updated = [p for p in dao.get_all_products() if p.id_product == product.id_product][
+        0
+    ]
     assert updated.stock == 2
 
     # Décrémenter de 3 → échoue car stock insuffisant
@@ -210,8 +256,11 @@ def test_increment_stock(dao):
     assert success
 
     # Vérifier le stock
-    updated = [p for p in dao.get_all_products() if p.id_product == product.id_product][0]
+    updated = [p for p in dao.get_all_products() if p.id_product == product.id_product][
+        0
+    ]
     assert updated.stock == 7
+
 
 def test_get_available_products(dao):
     """Vérifie que seuls les produits avec stock > 0 sont retournés"""

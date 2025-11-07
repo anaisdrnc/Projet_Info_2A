@@ -12,7 +12,6 @@ class UserRepo:
         """Initialize a new UserDAO instance with a database connector."""
         self.db_connector = db_connector if db_connector is not None else DBConnector()
 
-
     @log
     def add_user(self, user):
         """add user to the database and return id_user, in order to add the user to the
@@ -39,7 +38,7 @@ class UserRepo:
             user.id = res["id_user"]
             return user.id
         return None
-    
+
     @log
     def delete_user(self, user_id):
         """delete user with their id from the user table"""
@@ -57,7 +56,7 @@ class UserRepo:
         except Exception as e:
             logging.info(e)
             return False
-    
+
     @log
     def get_by_id(self, user_id: int) -> Optional[User]:
         raw_user = self.db_connector.sql_query(
@@ -67,7 +66,7 @@ class UserRepo:
             return None
         # pyrefly: ignore
         return User(**raw_user)
-    
+
     @log
     def get_by_username(self, user_name: str) -> Optional[User]:
         raw_user = self.db_connector.sql_query(
@@ -77,7 +76,7 @@ class UserRepo:
             return None
         # pyrefly: ignore
         return User(**raw_user)
-    
+
     @log
     def get_all_users(self, include_password=False) -> list[User]:
         """List all the users, optionally including the password."""
@@ -103,7 +102,7 @@ class UserRepo:
             list_users.append(user)
 
         return list_users
-    
+
     @log
     def get_password(self, username):
         raw_password = self.db_connector.sql_query(
@@ -114,7 +113,7 @@ class UserRepo:
         if raw_password:
             password = raw_password["password"]
             return password
-    
+
     @log
     def is_username_taken(self, username):
         raw_answer = self.db_connector.sql_query(
@@ -125,7 +124,7 @@ class UserRepo:
         return True
 
     @log
-    def update_user(self, user: 'User') -> bool:
+    def update_user(self, user: "User") -> bool:
         """
         Met à jour les informations d'un utilisateur existant dans la table users.
         Retourne True si la mise à jour a réussi, False sinon.
@@ -162,4 +161,3 @@ class UserRepo:
         except Exception as e:
             logging.info(e)
             return False
-

@@ -8,4 +8,4 @@ def hash_password(password, sel=""):
     return hash_object.hexdigest()
 
 
-print(hash_password("soleil1234", "jambon")) # pour avoir le mdp hashé
+print(hash_password("soleil1234", "jambon"))  # pour avoir le mdp hashé

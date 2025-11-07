@@ -12,7 +12,15 @@ class OrderService:
         self.orderdao = orderdao
 
     @log
-    def create(self, id_customer, id_address, nb_items, total_amount, payment_method, id_driver=None) -> Order:
+    def create(
+        self,
+        id_customer,
+        id_address,
+        nb_items,
+        total_amount,
+        payment_method,
+        id_driver=None,
+    ) -> Order:
         """Création d'une commande à partir de ses attributs"""
         orderdao = self.orderdao
 
@@ -28,7 +36,9 @@ class OrderService:
         return new_order if orderdao.create_order(new_order) else None
 
     @log
-    def add_product_to_order(self, order_id: int, product_id: int, quantity: int = 1) -> bool:
+    def add_product_to_order(
+        self, order_id: int, product_id: int, quantity: int = 1
+    ) -> bool:
         """Add product to order"""
         success = self.product_service.decrement_stock(product_id, quantity)
         if not success:

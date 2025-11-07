@@ -40,7 +40,6 @@ class CustomerDAO:
             logging.info(e)
         return False
 
-
     def get_by_id(self, customer_id: int) -> Optional[Customer]:
         """Récupérer un client par son ID customer."""
         try:
@@ -66,12 +65,11 @@ class CustomerDAO:
                 salt=res["salt"],
                 first_name=res["first_name"],
                 last_name=res["last_name"],
-                email=res["email"]
+                email=res["email"],
             )
         except Exception as e:
             logging.info(e)
             return None
-
 
     def update_customer(self, customer: Customer) -> bool:
         """Permet au client de mettre à jour ses informations."""
@@ -110,4 +108,3 @@ class CustomerDAO:
         except Exception as e:
             logging.info(e)
             return False
-

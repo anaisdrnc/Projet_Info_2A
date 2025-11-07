@@ -49,8 +49,8 @@ class MenuView(VueAbstraite):
 
             case "Place an order":
                 pass
-                #joueurs_str = JoueurService().afficher_tous()
-                #return MenuJoueurVue(joueurs_str)
+                # joueurs_str = JoueurService().afficher_tous()
+                # return MenuJoueurVue(joueurs_str)
 
             case "Get menu":
                 from src.CLI.products_view import ProductView

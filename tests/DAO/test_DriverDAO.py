@@ -225,7 +225,6 @@ def test_login_driver_nonexistent_user(dao):
     assert logged is None
 
 
-
 def test_delete_driver_ok(dao):
     username = unique_username("delete_ok")
     salt = unique_username("saltdel")

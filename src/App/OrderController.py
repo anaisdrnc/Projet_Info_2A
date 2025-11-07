@@ -8,6 +8,7 @@ from src.Model.Order import Order  # ton modèle Pydantic pour les commandes
 order_router = APIRouter(prefix="/Order", tags=["Orders"])
 db = DBConnector()
 
+
 @order_router.get("/", response_model=List[Order], status_code=status.HTTP_200_OK)
 def get_all_orders():
     """
@@ -25,7 +26,4 @@ def get_all_orders():
 
     except Exception as e:
         print("DEBUG ERROR:", str(e))
-        raise HTTPException(
-            status_code=500,
-            detail=f"Database error: {str(e)}"
-        )
+        raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")

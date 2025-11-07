@@ -33,7 +33,7 @@ def test_create_customer_without_address():
         first_name="Bob",
         last_name="Durand",
         email="bob@test.com",
-        salt='k',
+        salt="k",
         address=None,
     )
 

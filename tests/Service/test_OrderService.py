@@ -7,7 +7,9 @@ from src.Service.OrderService import OrderService
 
 @pytest.fixture
 def mock_dao():
-    return Mock()  # Simulates any objects that allows for more flexibility during testing
+    return (
+        Mock()
+    )  # Simulates any objects that allows for more flexibility during testing
 
 
 def test_add_product_ok(mock_dao):
@@ -91,8 +93,20 @@ def test_mark_as_delivered_invalid_id(mock_dao):
 def test_get_order_products_ok(mock_dao):
     """Retourne une liste de produits si la commande existe"""
     fake_products = [
-        {"id_product": 1, "name": "Coca", "price": 2.5, "product_type": "drink", "quantity": 2},
-        {"id_product": 3, "name": "Panini", "price": 4.0, "product_type": "lunch", "quantity": 1},
+        {
+            "id_product": 1,
+            "name": "Coca",
+            "price": 2.5,
+            "product_type": "drink",
+            "quantity": 2,
+        },
+        {
+            "id_product": 3,
+            "name": "Panini",
+            "price": 4.0,
+            "product_type": "lunch",
+            "quantity": 1,
+        },
     ]
     with patch.object(mock_dao, "get_order_products", return_value=fake_products):
         service = OrderService(mock_dao)
@@ -126,7 +140,11 @@ def test_get_by_id_ok():
 
     with patch(
         "src.Service.OrderService.OrderDAO.get_by_id",
-        return_value={"order": fake_order, "address": fake_address, "products": fake_products},
+        return_value={
+            "order": fake_order,
+            "address": fake_address,
+            "products": fake_products,
+        },
     ):
         service = OrderService()
         result = service.get_by_id(5)
@@ -162,7 +180,9 @@ def test_list_all_orders_ok():
         {"order": MagicMock(), "address": MagicMock(), "products": [{"id_product": 2}]},
     ]
 
-    with patch("src.Service.OrderService.OrderDAO.list_all_orders", return_value=fake_orders):
+    with patch(
+        "src.Service.OrderService.OrderDAO.list_all_orders", return_value=fake_orders
+    ):
         service = OrderService()
         result = service.list_all_orders()
 
@@ -189,7 +209,10 @@ def test_get_assigned_orders_ok():
         {"order": MagicMock(), "address": MagicMock(), "products": [{"id_product": 2}]},
     ]
 
-    with patch("src.Service.OrderService.OrderDAO.get_assigned_orders", return_value=fake_orders):
+    with patch(
+        "src.Service.OrderService.OrderDAO.get_assigned_orders",
+        return_value=fake_orders,
+    ):
         service = OrderService()
         result = service.get_assigned_orders(5)
 
@@ -200,7 +223,9 @@ def test_get_assigned_orders_ok():
 
 def test_get_assigned_orders_empty():
     """Livreur sans commandes → retourne []"""
-    with patch("src.Service.OrderService.OrderDAO.get_assigned_orders", return_value=[]):
+    with patch(
+        "src.Service.OrderService.OrderDAO.get_assigned_orders", return_value=[]
+    ):
         service = OrderService()
         result = service.get_assigned_orders(5)
         assert result == []

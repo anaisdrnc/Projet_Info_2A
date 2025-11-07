@@ -16,7 +16,6 @@ from src.Service.PasswordService import create_salt
 load_dotenv()
 
 
-
 @pytest.fixture(scope="session", autouse=True)
 def setup_test_environment():
     """Initialize the test database environment"""

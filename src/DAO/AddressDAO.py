@@ -25,7 +25,11 @@ class AddressDAO:
                 VALUES (%(address)s, %(city)s, %(postal_code)s)
                 RETURNING id_address;
                 """,
-                {"address": address.address, "city": address.city, "postal_code": address.postal_code},
+                {
+                    "address": address.address,
+                    "city": address.city,
+                    "postal_code": address.postal_code,
+                },
                 return_type="one",
             )
 

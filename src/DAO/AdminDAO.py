@@ -5,6 +5,7 @@ from src.DAO.UserRepo import UserRepo
 from src.Model.Admin import Admin
 from utils.securite import hash_password
 
+
 class AdminDAO:
     """DAO pour gérer les admins dans la base de données."""
 
@@ -66,7 +67,7 @@ class AdminDAO:
                 salt=res["salt"],
                 first_name=res["first_name"],
                 last_name=res["last_name"],
-                email=res["email"]
+                email=res["email"],
             )
             admin.id_admin = res.get("id_administrator")
             return admin
@@ -100,9 +101,11 @@ class AdminDAO:
                 salt=res["salt"],
                 firstname=res["first_name"],
                 lastname=res["last_name"],
-                email=res["email"]
+                email=res["email"],
             )
 
         except Exception as e:
-            logging.error(f"[AdminDAO] Erreur lors de la récupération de l'admin '{username}': {e}")
+            logging.error(
+                f"[AdminDAO] Erreur lors de la récupération de l'admin '{username}': {e}"
+            )
             return None

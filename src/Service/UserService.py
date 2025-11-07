@@ -9,9 +9,9 @@ from src.DAO.DBConnector import DBConnector
 
 
 class UserService:
-    def __init__(self, user_repo = UserRepo(DBConnector)):
+    def __init__(self, user_repo=UserRepo(DBConnector)):
         self.user_repo = user_repo
-    
+
     @log
     def create_user(
         self, username: str, password: str, firstname: str, lastname: str, email: str
@@ -33,16 +33,16 @@ class UserService:
             first_name=firstname,
             last_name=lastname,
             email=email,
-            salt = salt
+            salt=salt,
         )
         if user_repo.add_user(new_user) is not None:
             return new_user
         return None
-    
+
     @log
     def get_user(self, user_id: int) -> User | None:
         return self.user_repo.get_by_id(user_id)
-    
+
     @log
     def get_all_users(self, include_password=False):
         user_repo = self.user_repo
@@ -51,10 +51,9 @@ class UserService:
             for user in users:
                 user.password = None
         return users
-    
+
     @log
     def is_username_taken(self, user_name):
         user_repo = self.user_repo
-        answer = user_repo.is_username_taken(username = user_name)
+        answer = user_repo.is_username_taken(username=user_name)
         return answer
-

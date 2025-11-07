@@ -14,6 +14,7 @@ load_dotenv()
 
 # --- Fixtures ---
 
+
 @pytest.fixture(scope="session", autouse=True)
 def setup_test_environment():
     """Reset DB before tests"""
@@ -30,11 +31,13 @@ def dao():
 
 # --- Utilitaire ---
 
+
 def unique_username(base="customer"):
     return f"{base}_{datetime.utcnow().timestamp()}"
 
 
 # --- Tests ---
+
 
 def test_add_customer_ok(dao):
     username = unique_username("add_ok")

@@ -7,7 +7,10 @@ product_router = APIRouter(prefix="/Product", tags=["Products"])
 
 db = DBConnector()
 
-@product_router.get("/{product_id}", response_model=Product, status_code=status.HTTP_200_OK)
+
+@product_router.get(
+    "/{product_id}", response_model=Product, status_code=status.HTTP_200_OK
+)
 def get_product_by_id(product_id: int):
     """
     Récupère un produit à partir de son ID depuis la base PostgreSQL.
@@ -29,8 +32,7 @@ def get_product_by_id(product_id: int):
 
         if not product_data:
             raise HTTPException(
-                status_code=404,
-                detail=f"Product with id [{product_id}] not found"
+                status_code=404, detail=f"Product with id [{product_id}] not found"
             )
         return Product(**product_data)
 
@@ -38,10 +40,7 @@ def get_product_by_id(product_id: int):
         raise
 
     except Exception as e:
-        raise HTTPException(
-            status_code=500,
-            detail=f"Database error: {str(e)}"
-        )
+        raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
 
 
 @product_router.post("/", response_model=Product, status_code=status.HTTP_201_CREATED)
@@ -61,26 +60,18 @@ def create_product(product: Product):
             product.production_cost,
             product.product_type,
             product.description,
-            product.stock
+            product.stock,
         )
 
         new_product = db.sql_query(query, data, return_type="one")
 
         if not new_product:
-            raise HTTPException(
-                status_code=500,
-                detail="Product could not be created"
-            )
+            raise HTTPException(status_code=500, detail="Product could not be created")
 
         return Product(**new_product)
 
     except Exception as e:
-        raise HTTPException(
-            status_code=500,
-            detail=f"Database error: {str(e)}"
-        )
-
-
+        raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
 
 
 @product_router.delete("/{product_id}", status_code=status.HTTP_200_OK)
@@ -94,8 +85,7 @@ def delete_product(product_id: int):
 
         if not product_exists:
             raise HTTPException(
-                status_code=404,
-                detail=f"Product with id [{product_id}] not found"
+                status_code=404, detail=f"Product with id [{product_id}] not found"
             )
 
         delete_query = "DELETE FROM product WHERE id_product = %s;"
@@ -106,13 +96,12 @@ def delete_product(product_id: int):
     except HTTPException:
         raise
     except Exception as e:
-        raise HTTPException(
-            status_code=500,
-            detail=f"Database error: {str(e)}"
-        )
+        raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
 
 
-@product_router.put("/{product_id}", response_model=Product, status_code=status.HTTP_200_OK)
+@product_router.put(
+    "/{product_id}", response_model=Product, status_code=status.HTTP_200_OK
+)
 def update_product(product_id: int, updated_product: Product):
     """
     Met à jour un produit existant dans la base PostgreSQL.
@@ -124,8 +113,7 @@ def update_product(product_id: int, updated_product: Product):
 
         if not existing_product:
             raise HTTPException(
-                status_code=404,
-                detail=f"Product with id [{product_id}] not found"
+                status_code=404, detail=f"Product with id [{product_id}] not found"
             )
 
         # Mise à jour du produit
@@ -148,23 +136,17 @@ def update_product(product_id: int, updated_product: Product):
             updated_product.product_type,
             updated_product.description,
             updated_product.stock,
-            product_id
+            product_id,
         )
 
         updated_data = db.sql_query(update_query, data, return_type="one")
 
         if not updated_data:
-            raise HTTPException(
-                status_code=500,
-                detail="Product update failed"
-            )
+            raise HTTPException(status_code=500, detail="Product update failed")
 
         return Product(**updated_data)
 
     except HTTPException:
         raise
     except Exception as e:
-        raise HTTPException(
-            status_code=500,
-            detail=f"Database error: {str(e)}"
-        )
+        raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")

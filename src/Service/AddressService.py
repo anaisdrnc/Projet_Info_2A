@@ -14,18 +14,20 @@ ALLOWED_ADDRESSES = {
 
 class AddressService:
     """Class containing address service methods"""
+
     def __init__(self, addressdao):
         self.addressdao = addressdao
 
     @log
-    def validate_address(self, address : Address) -> bool:
+    def validate_address(self, address: Address) -> bool:
         """Return True if the address is validated"""
-        return address.postal_code in ALLOWED_ADDRESSES and ALLOWED_ADDRESSES[address.postal_code] == address.city
+        return (
+            address.postal_code in ALLOWED_ADDRESSES
+            and ALLOWED_ADDRESSES[address.postal_code] == address.city
+        )
 
     @log
     def add_address(self, address, city, postal_code):
         addressdao = self.addressdao
-        new_address = Address(address = address, city = city, postal_code = postal_code)
+        new_address = Address(address=address, city=city, postal_code=postal_code)
         return addressdao.add_address(new_address)
-        
-

@@ -3,21 +3,23 @@ from datetime import datetime
 import pytest
 from dotenv import load_dotenv
 
-from src.DAO.DBConnector import DBConnector
 from src.DAO.AdminDAO import AdminDAO
+from src.DAO.DBConnector import DBConnector
+from src.DAO.UserRepo import UserRepo
 from src.Model.Admin import Admin
 from utils.reset_database import ResetDatabase
 from utils.securite import hash_password
-from src.DAO.UserRepo import UserRepo
 
 load_dotenv()
 
 # --- Fixtures ---
 
+
 @pytest.fixture(scope="session", autouse=True)
 def setup_test_environment():
     """Reset DB before tests"""
     ResetDatabase(test=True).lancer()
+
 
 @pytest.fixture
 def dao():
@@ -25,12 +27,16 @@ def dao():
     admin_dao.user_repo = UserRepo(admin_dao.db_connector)
     return admin_dao
 
+
 # --- Utilitaire ---
+
 
 def unique_username(base="admin"):
     return f"{base}_{datetime.utcnow().timestamp()}"
 
+
 # --- Tests ---
+
 
 def test_add_admin_ok(dao):
     username = unique_username("add_admin")
@@ -47,6 +53,7 @@ def test_add_admin_ok(dao):
     assert created
     assert admin.id > 0
     assert admin.id_admin > 0
+
 
 def test_add_admin_duplicate(dao):
     username = unique_username("dup_admin")
@@ -72,6 +79,7 @@ def test_add_admin_duplicate(dao):
     created2 = dao.add_admin(admin2)
     assert not created2
 
+
 def test_login_admin_ok(dao):
     username = unique_username("login_admin")
     password = "secret"
@@ -92,6 +100,7 @@ def test_login_admin_ok(dao):
     assert logged.user_name == username
     assert logged.email == admin.email
 
+
 def test_login_admin_wrong_password(dao):
     username = unique_username("login_wrong")
     password = "secret"
@@ -110,9 +119,11 @@ def test_login_admin_wrong_password(dao):
     logged = dao.login(username, "wrongpass")
     assert logged is None
 
+
 def test_login_admin_nonexistent_user(dao):
     logged = dao.login("nonexistent_admin_xyz", "anypass")
     assert logged is None
+
 
 if __name__ == "__main__":
     pytest.main([__file__])

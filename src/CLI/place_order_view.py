@@ -10,6 +10,7 @@ from src.DAO.ProductDAO import ProductDAO
 from src.DAO.OrderDAO import OrderDAO
 from src.DAO.DBConnector import DBConnector
 
+
 class PlaceOrderView(VueAbstraite):
     def choisir_menu(self):
         """Place an order"""
@@ -17,5 +18,3 @@ class PlaceOrderView(VueAbstraite):
         orderdao = OrderDAO(DBConnector)
         product_service = ProductService(productdao)
         order_service = OrderService(orderdao)
-        
-        

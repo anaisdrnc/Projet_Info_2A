@@ -119,7 +119,10 @@ class DriverDAO:
                 WHERE id_driver = %(id_driver)s
                 RETURNING id_driver;
                 """,
-                {"mean_of_transport": driver.mean_of_transport, "id_driver": driver.id_driver},
+                {
+                    "mean_of_transport": driver.mean_of_transport,
+                    "id_driver": driver.id_driver,
+                },
                 "one",
             )
             return res is not None

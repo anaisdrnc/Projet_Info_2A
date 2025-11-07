@@ -34,8 +34,14 @@ class ResetDatabase:
             ) as conn:
                 conn.autocommit = True
                 with conn.cursor() as cursor:
-                    cursor.execute(sql.SQL("DROP SCHEMA IF EXISTS {} CASCADE").format(sql.Identifier(self.schema)))
-                    cursor.execute(sql.SQL("CREATE SCHEMA {}").format(sql.Identifier(self.schema)))
+                    cursor.execute(
+                        sql.SQL("DROP SCHEMA IF EXISTS {} CASCADE").format(
+                            sql.Identifier(self.schema)
+                        )
+                    )
+                    cursor.execute(
+                        sql.SQL("CREATE SCHEMA {}").format(sql.Identifier(self.schema))
+                    )
 
                     with open(self.sql_file, "r") as f:
                         sql_commands = f.read()

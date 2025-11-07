@@ -43,11 +43,21 @@ def create_test_address(address="15 Rue du Test", city="Rennes", postal_code="35
         [address, city, postal_code],
         "one",
     )
-    return Address(id_address=res["id_address"], address=address, city=city, postal_code=postal_code)
+    return Address(
+        id_address=res["id_address"],
+        address=address,
+        city=city,
+        postal_code=postal_code,
+    )
 
 
 def create_test_driver(
-    user_name=None, first_name="Test", last_name="Driver", email=None, password="password", mean_of_transport="Bike"
+    user_name=None,
+    first_name="Test",
+    last_name="Driver",
+    email=None,
+    password="password",
+    mean_of_transport="Bike",
 ):
     """Crée un driver de test en utilisant DriverDAO et retourne son ID."""
     if email is None:
@@ -85,7 +95,12 @@ def create_test_driver(
 def test_create_order_ok(dao):
     addr = create_test_address()
     order = Order(
-        id_customer=999, id_driver=999, id_address=addr.id_address, nb_items=2, total_amount=25.0, payment_method="Cash"
+        id_customer=999,
+        id_driver=999,
+        id_address=addr.id_address,
+        nb_items=2,
+        total_amount=25.0,
+        payment_method="Cash",
     )
     order_id = dao.create_order(order)
     assert order_id is not None
@@ -122,7 +137,12 @@ def test_add_product_ok(dao, productdao):
     # Création adresse et commande
     addr = create_test_address()
     order = Order(
-        id_customer=999, id_driver=999, id_address=addr.id_address, nb_items=1, total_amount=5.0, payment_method="Card"
+        id_customer=999,
+        id_driver=999,
+        id_address=addr.id_address,
+        nb_items=1,
+        total_amount=5.0,
+        payment_method="Card",
     )
     order_id = dao.create_order(order)
     assert order_id is not None
@@ -174,7 +194,12 @@ def test_remove_product_ok(dao, productdao):
 
     addr = create_test_address()
     order = Order(
-        id_customer=998, id_driver=999, id_address=addr.id_address, nb_items=1, total_amount=3.0, payment_method="Cash"
+        id_customer=998,
+        id_driver=999,
+        id_address=addr.id_address,
+        nb_items=1,
+        total_amount=3.0,
+        payment_method="Cash",
     )
     order_id = dao.create_order(order)
     dao.add_product(order_id, product_id=product.id_product, quantity=2)
@@ -198,7 +223,12 @@ def test_remove_product_invalid(dao):
 def test_get_order_products_ok(dao):
     addr = create_test_address()
     order = Order(
-        id_customer=999, id_driver=999, id_address=addr.id_address, nb_items=1, total_amount=8.0, payment_method="Card"
+        id_customer=999,
+        id_driver=999,
+        id_address=addr.id_address,
+        nb_items=1,
+        total_amount=8.0,
+        payment_method="Card",
     )
     order_id = dao.create_order(order)
     dao.add_product(order_id, product_id=998, quantity=2)
@@ -218,7 +248,12 @@ def test_get_order_products_invalid(dao):
 def test_cancel_order_ok(dao):
     addr = create_test_address()
     order = Order(
-        id_customer=999, id_driver=998, id_address=addr.id_address, nb_items=1, total_amount=7.0, payment_method="Card"
+        id_customer=999,
+        id_driver=998,
+        id_address=addr.id_address,
+        nb_items=1,
+        total_amount=7.0,
+        payment_method="Card",
     )
     order_id = dao.create_order(order)
     cancelled = dao.cancel_order(order_id)
@@ -237,7 +272,12 @@ def test_cancel_order_invalid(dao):
 def test_mark_as_delivered_ok(dao):
     addr = create_test_address()
     order = Order(
-        id_customer=998, id_driver=999, id_address=addr.id_address, nb_items=1, total_amount=9.0, payment_method="Card"
+        id_customer=998,
+        id_driver=999,
+        id_address=addr.id_address,
+        nb_items=1,
+        total_amount=9.0,
+        payment_method="Card",
     )
     order_id = dao.create_order(order)
     delivered = dao.mark_as_delivered(order_id)
@@ -252,7 +292,12 @@ def test_mark_as_delivered_invalid(dao):
 def test_mark_as_ready_ok(dao):
     addr = create_test_address()
     order = Order(
-        id_customer=998, id_driver=999, id_address=addr.id_address, nb_items=1, total_amount=9.0, payment_method="Card"
+        id_customer=998,
+        id_driver=999,
+        id_address=addr.id_address,
+        nb_items=1,
+        total_amount=9.0,
+        payment_method="Card",
     )
     order_id = dao.create_order(order)
     marked = dao.mark_as_ready(order_id)
@@ -271,7 +316,12 @@ def test_mark_as_ready_invalid_order(dao):
 def test_mark_as_en_route_ok(dao):
     addr = create_test_address()
     order = Order(
-        id_customer=998, id_driver=999, id_address=addr.id_address, nb_items=1, total_amount=9.0, payment_method="Card"
+        id_customer=998,
+        id_driver=999,
+        id_address=addr.id_address,
+        nb_items=1,
+        total_amount=9.0,
+        payment_method="Card",
     )
     order_id = dao.create_order(order)
 
@@ -288,7 +338,12 @@ def test_mark_as_en_route_ok(dao):
 def test_mark_as_en_route_from_ready(dao):
     addr = create_test_address()
     order = Order(
-        id_customer=998, id_driver=999, id_address=addr.id_address, nb_items=1, total_amount=9.0, payment_method="Card"
+        id_customer=998,
+        id_driver=999,
+        id_address=addr.id_address,
+        nb_items=1,
+        total_amount=9.0,
+        payment_method="Card",
     )
     order_id = dao.create_order(order)
 
@@ -308,7 +363,12 @@ def test_mark_as_en_route_invalid_order(dao):
 def test_mark_as_ready_twice(dao):
     addr = create_test_address()
     order = Order(
-        id_customer=998, id_driver=999, id_address=addr.id_address, nb_items=1, total_amount=9.0, payment_method="Card"
+        id_customer=998,
+        id_driver=999,
+        id_address=addr.id_address,
+        nb_items=1,
+        total_amount=9.0,
+        payment_method="Card",
     )
     order_id = dao.create_order(order)
 
@@ -324,7 +384,12 @@ def test_mark_as_ready_twice(dao):
 def test_mark_as_ready_updates_date(dao):
     addr = create_test_address()
     order = Order(
-        id_customer=998, id_driver=999, id_address=addr.id_address, nb_items=1, total_amount=9.0, payment_method="Card"
+        id_customer=998,
+        id_driver=999,
+        id_address=addr.id_address,
+        nb_items=1,
+        total_amount=9.0,
+        payment_method="Card",
     )
     order_id = dao.create_order(order)
 
@@ -346,7 +411,12 @@ def test_mark_as_ready_updates_date(dao):
 def test_mark_multiple_status_changes(dao):
     addr = create_test_address()
     order = Order(
-        id_customer=998, id_driver=999, id_address=addr.id_address, nb_items=1, total_amount=9.0, payment_method="Card"
+        id_customer=998,
+        id_driver=999,
+        id_address=addr.id_address,
+        nb_items=1,
+        total_amount=9.0,
+        payment_method="Card",
     )
     order_id = dao.create_order(order)
 
@@ -372,7 +442,12 @@ def test_mark_multiple_status_changes(dao):
 def test_mark_as_ready_with_products(dao):
     addr = create_test_address()
     order = Order(
-        id_customer=998, id_driver=999, id_address=addr.id_address, nb_items=2, total_amount=15.0, payment_method="Card"
+        id_customer=998,
+        id_driver=999,
+        id_address=addr.id_address,
+        nb_items=2,
+        total_amount=15.0,
+        payment_method="Card",
     )
     order_id = dao.create_order(order)
 
@@ -392,7 +467,12 @@ def test_mark_status_sequence(dao):
     """Test une séquence complète de statuts"""
     addr = create_test_address()
     order = Order(
-        id_customer=998, id_driver=999, id_address=addr.id_address, nb_items=1, total_amount=9.0, payment_method="Card"
+        id_customer=998,
+        id_driver=999,
+        id_address=addr.id_address,
+        nb_items=1,
+        total_amount=9.0,
+        payment_method="Card",
     )
     order_id = dao.create_order(order)
 
@@ -413,7 +493,12 @@ def test_mark_status_sequence(dao):
 def test_get_by_id_ok(dao):
     addr = create_test_address()
     order = Order(
-        id_customer=999, id_driver=999, id_address=addr.id_address, nb_items=2, total_amount=10.0, payment_method="Cash"
+        id_customer=999,
+        id_driver=999,
+        id_address=addr.id_address,
+        nb_items=2,
+        total_amount=10.0,
+        payment_method="Cash",
     )
     order_id = dao.create_order(order)
     dao.add_product(order_id, 997, 1)
@@ -443,7 +528,12 @@ def test_list_all_orders(dao):
 def test_get_assigned_orders_ok(dao):
     addr = create_test_address()
     order = Order(
-        id_customer=998, id_driver=999, id_address=addr.id_address, nb_items=2, total_amount=12.0, payment_method="Cash"
+        id_customer=998,
+        id_driver=999,
+        id_address=addr.id_address,
+        nb_items=2,
+        total_amount=12.0,
+        payment_method="Cash",
     )
     order_id = dao.create_order(order)
     dao.add_product(order_id, 999, 1)
@@ -479,7 +569,9 @@ def test_assign_order_ok(dao):
 
     # Create another driver for assignment
     new_driver_id = create_test_driver(
-        user_name=f"newdriver_{datetime.now().timestamp()}", first_name="New", last_name="Driver"
+        user_name=f"newdriver_{datetime.now().timestamp()}",
+        first_name="New",
+        last_name="Driver",
     )
     assert new_driver_id is not None
 

@@ -65,7 +65,9 @@ class ProductDAO:
     def get_all_products(self):
         """Récupérer tous les produits"""
         try:
-            raw_products = self.db_connector.sql_query("SELECT * FROM product", None, "all")
+            raw_products = self.db_connector.sql_query(
+                "SELECT * FROM product", None, "all"
+            )
             result = []
             for o in raw_products:
                 product_data = Product(
@@ -97,7 +99,9 @@ class ProductDAO:
     def get_all_product_names_descriptions(self):
         """Retourne les noms et descriptions de tous les produits"""
         try:
-            raw = self.db_connector.sql_query("SELECT name, description FROM product", [], "all")
+            raw = self.db_connector.sql_query(
+                "SELECT name, description FROM product", [], "all"
+            )
             # return [[r["name"], r["description"]] for r in raw]
             return raw
         except Exception as e:
@@ -143,7 +147,11 @@ class ProductDAO:
     def get_available_products(self):
         """Retourne uniquement les produits dont le stock est supérieur à 0"""
         try:
-            raw = self.db_connector.sql_query("SELECT name, description, price FROM product WHERE stock > 0", [], "all")
+            raw = self.db_connector.sql_query(
+                "SELECT name, description, price FROM product WHERE stock > 0",
+                [],
+                "all",
+            )
             return raw
         except Exception as e:
             logging.info(f"Erreur get_available_products: {e}")

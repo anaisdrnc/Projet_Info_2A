@@ -161,13 +161,17 @@ class OrderDAO:
     def get_by_id(self, order_id: int) -> Optional[Dict[str, Any]]:
         """Récupère une commande et les produits associés (sans modifier Order)."""
         try:
-            raw_order = self.db_connector.sql_query("SELECT * FROM orders WHERE id_order = %s", [order_id], "one")
+            raw_order = self.db_connector.sql_query(
+                "SELECT * FROM orders WHERE id_order = %s", [order_id], "one"
+            )
             if not raw_order:
                 return None
 
             # Récupérer l'adresse
             raw_address = self.db_connector.sql_query(
-                "SELECT * FROM address WHERE id_address = %s", [raw_order["id_address"]], "one"
+                "SELECT * FROM address WHERE id_address = %s",
+                [raw_order["id_address"]],
+                "one",
             )
             address = Address(**raw_address) if raw_address else None
 
@@ -229,7 +233,9 @@ class OrderDAO:
         """Récupère les commandes en préparation pour un livreur."""
         try:
             raw_orders = self.db_connector.sql_query(
-                "SELECT * FROM orders WHERE id_driver = %s AND status = 'Preparing'", [driver_id], "all"
+                "SELECT * FROM orders WHERE id_driver = %s AND status = 'Preparing'",
+                [driver_id],
+                "all",
             )
             return [self.get_by_id(o["id_order"]) for o in raw_orders]
         except Exception as e:

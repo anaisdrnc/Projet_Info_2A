@@ -30,10 +30,14 @@ API_KEY = os.getenv("API_KEY_GOOGLE_MAPS")
 gmaps = googlemaps.Client(key=API_KEY)
 
 
-def calculer_itineraire(origin: str, destination: str, transport_mode: str) -> gmaps.directions:
+def calculer_itineraire(
+    origin: str, destination: str, transport_mode: str
+) -> gmaps.directions:
     """Calcule l'itinéraire entre deux adresses."""
     try:
-        directions = gmaps.directions(origin=origin, destination=destination, mode=transport_mode, units="metric")
+        directions = gmaps.directions(
+            origin=origin, destination=destination, mode=transport_mode, units="metric"
+        )
 
         if directions:
             print("Itinéraire calculé avec succès!")
@@ -56,7 +60,7 @@ def display_itinerary_details(directions):
     leg = directions[0]["legs"][0]
 
     print("\nÉtapes principales:")
-    for i, step in enumerate(leg["steps"][:10], 1):  # Afficher les 10 premières étapes
+    for i, step in enumerate(leg["steps"], 1):  # Afficher toutes les étapes
         instruction = (
             step["html_instructions"]
             .replace("<b>", "")
@@ -65,10 +69,6 @@ def display_itinerary_details(directions):
             .replace("</div>", "")
         )
         print(f"   {i}. {instruction} ({step['distance']['text']})")
-
-    if len(leg["steps"]) > 10:
-        print(f"   ... et {len(leg['steps']) - 10} étapes supplémentaires")
-    print("=" * 60)
 
 
 # Récupérer les directions
@@ -92,7 +92,9 @@ def create_map(origin, destination, transport_mode):
     print(f" Durée estimée : {duration}")
 
     # Carte créée avec Folium
-    m = folium.Map(location=[start_location["lat"], start_location["lng"]], zoom_start=6)
+    m = folium.Map(
+        location=[start_location["lat"], start_location["lng"]], zoom_start=6
+    )
 
     # Ajouter un marqueur pour le point de départ et d’arrivée
     folium.Marker(
@@ -122,6 +124,8 @@ def create_map(origin, destination, transport_mode):
     script_dir = os.path.dirname(os.path.abspath(__file__))
     output_path = os.path.join(script_dir, "delivery_path.html")
     m.save(output_path)
+
+    return output_path
 
 
 """def compute_map_for_driver_id(id_driver, origin, destination):
@@ -222,16 +226,24 @@ def main():
                 directions_velo = calculer_itineraire(origin, destination, "bicycling")
 
                 if directions_velo and directions_velo[0]["legs"]:
-                    duration_velo_seconds = directions_velo[0]["legs"][0]["duration"]["value"]
+                    duration_velo_seconds = directions_velo[0]["legs"][0]["duration"][
+                        "value"
+                    ]
                     duration_velo_minutes = duration_velo_seconds // 60
 
                     if duration_velo_seconds <= max_bike_time:
                         filtered_orders.append(order_data)
-                        print(f"Commande {order_data['order'].id_order}: {duration_velo_minutes} min")
+                        print(
+                            f"Commande {order_data['order'].id_order}: {duration_velo_minutes} min"
+                        )
                     else:
-                        print(f"Commande {order_data['order'].id_order}: {duration_velo_minutes} min (trop loin)")
+                        print(
+                            f"Commande {order_data['order'].id_order}: {duration_velo_minutes} min (trop loin)"
+                        )
                 else:
-                    print(f"Commande {order_data['order'].id_order}: impossible de calculer l'itinéraire")
+                    print(
+                        f"Commande {order_data['order'].id_order}: impossible de calculer l'itinéraire"
+                    )
 
             except Exception as e:
                 print(f" Erreur pour la commande {order_data['order'].id_order}: {e}")
@@ -265,7 +277,9 @@ def main():
 
             order_address = oldest_order["address"]
             destination_address = f"{order_address.address}, {order_address.postal_code} {order_address.city}"
-            directions = calculer_itineraire(origin, destination_address, transport_mode)
+            directions = calculer_itineraire(
+                origin, destination_address, transport_mode
+            )
 
             # 🗺️ AFFICHER LA CARTE ET L'ITINÉRAIRE
             print("\n" + "=" * 60)

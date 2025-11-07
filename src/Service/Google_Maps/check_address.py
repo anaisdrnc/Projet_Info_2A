@@ -83,8 +83,12 @@ def get_address_suggestions(adresse: str, max_results: int = 5) -> List[Dict[str
             elif "postal_code" in types:
                 components["postal_code"] = name
 
-        has_city = any("locality" in comp.get("types", []) for comp in address_components)
-        has_street = any("route" in comp.get("types", []) for comp in address_components)
+        has_city = any(
+            "locality" in comp.get("types", []) for comp in address_components
+        )
+        has_street = any(
+            "route" in comp.get("types", []) for comp in address_components
+        )
         components["is_routable"] = has_city or has_street
 
         suggestions.append(components)
@@ -152,7 +156,9 @@ def validate_and_get_routable_address(prompt: str, max_attempts: int = 3) -> str
             print(f"Adresse valide pour l'itinéraire: {complete_address}")
             return complete_address
         else:
-            print(f"Adresse trop imprécise pour calculer un itinéraire (tentative {attempt + 1}/{max_attempts})")
+            print(
+                f"Adresse trop imprécise pour calculer un itinéraire (tentative {attempt + 1}/{max_attempts})"
+            )
 
             display_suggestions(address_input)
 
@@ -175,7 +181,9 @@ def validate_and_get_routable_address(prompt: str, max_attempts: int = 3) -> str
                     try:
                         selected = int(input("Numéro de l'adresse: ")) - 1
                         if 0 <= selected < len(routable_suggestions):
-                            selected_address = routable_suggestions[selected]["full_address"]
+                            selected_address = routable_suggestions[selected][
+                                "full_address"
+                            ]
                             print(f"Adresse sélectionnée: {selected_address}")
                             return selected_address
                         else:

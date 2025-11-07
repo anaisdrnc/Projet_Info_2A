@@ -12,7 +12,9 @@ class ProductService:
         self.productdao = productdao or ProductDAO()
 
     @log
-    def create(self, name, price, production_cost, product_type, description, stock) -> Product | None:
+    def create(
+        self, name, price, production_cost, product_type, description, stock
+    ) -> Product | None:
         """Création d'un produit à partir de ses attributs"""
         new_product = Product(
             name=name,

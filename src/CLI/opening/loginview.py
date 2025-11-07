@@ -1,7 +1,8 @@
 from InquirerPy import inquirer
 
 from src.CLI.view_abstract import VueAbstraite
-#from src.CLI.session import Session
+
+# from src.CLI.session import Session
 
 from src.DAO.UserRepo import UserRepo
 from src.DAO.CustomerDAO import CustomerDAO
@@ -17,20 +18,22 @@ class LoginView(VueAbstraite):
 
     def choisir_menu(self):
 
-        user_repo = UserRepo(DBConnector(test = False))
-        customerdao = CustomerDAO(DBConnector(test = False))
+        user_repo = UserRepo(DBConnector(test=False))
+        customerdao = CustomerDAO(DBConnector(test=False))
 
         # Demande à l'utilisateur de saisir pseudo et mot de passe
         pseudo = inquirer.text(message="Enter your username : ").execute()
         mdp = inquirer.secret(message="Enter your password :").execute()
 
         # Appel du service pour trouver le joueur
-        user = validate_username_password(username= pseudo, password= mdp, user_repo = user_repo)
+        user = validate_username_password(
+            username=pseudo, password=mdp, user_repo=user_repo
+        )
 
         # Si le joueur a été trouvé à partir des ses identifiants de connexion
         if user:
             message = f"You are connected on the account {user.user_name}"
-            #Session().connexion(joueur)
+            # Session().connexion(joueur)
 
             from src.CLI.menu_customer import MenuView
 

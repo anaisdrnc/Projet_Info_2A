@@ -22,4 +22,3 @@ class ProductView(VueAbstraite):
         products_str = f"Liste des produits disponibles : \n\n"
         products_str += str(list_products)
         return MenuView(products_str)
-        
