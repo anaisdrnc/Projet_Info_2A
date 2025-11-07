@@ -40,3 +40,10 @@ class ProductService:
         """Liste des noms et descriptions des produits"""
         productdao = self.productdao
         return productdao.get_all_product_names_descriptions()
+
+    @log
+    def get_available_products(self):
+        """
+        Retourne les produits disponibles (stock > 0)
+        """
+        return self.productdao.get_available_products()

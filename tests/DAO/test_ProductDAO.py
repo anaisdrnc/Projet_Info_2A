@@ -138,7 +138,8 @@ def test_get_all_product_names(dao):
     """Vérifie que les noms des produits sont récupérés correctement"""
     products = [
         Product(name="Café", price=2.5, production_cost=1.0, product_type="drink", description="Café chaud", stock=10),
-        Product(name="Croissant", price=1.5, production_cost=0.5, product_type="dessert", description="Croissant frais", stock=5),
+        Product(name="Croissant", price=1.5, production_cost=0.5, product_type="dessert", description="Croissant frais",
+        stock=5),
     ]
     for p in products:
         dao.create_product(p)
@@ -149,13 +150,91 @@ def test_get_all_product_names(dao):
 
 def test_get_all_product_names_descriptions(dao):
     """Vérifie que les noms et descriptions des produits sont récupérés correctement"""
-    products = [
+    products_to_add = [
         Product(name="Café", price=2.5, production_cost=1.0, product_type="drink", description="Café chaud", stock=10),
         Product(name="Croissant", price=1.5, production_cost=0.5, product_type="dessert", description="Croissant frais", stock=5),
     ]
-    for p in products:
+
+    for p in products_to_add:
         dao.create_product(p)
 
     result = dao.get_all_product_names_descriptions()
-    for p in products:
-        assert [p.name, p.description] in result
+
+    # Convertit les RealDictRow ou dict en liste de [name, description]
+    result_list = [[r["name"], r["description"]] for r in result]
+
+    # On vérifie que chaque produit ajouté est présent dans le résultat
+    for p in products_to_add:
+        assert [p.name, p.description] in result_list
+
+
+def test_decrement_stock(dao):
+    """Vérifie que le stock diminue correctement et bloque si insuffisant"""
+    product = Product(
+        name="dercrement",
+        price=5.0,
+        production_cost=2.0,
+        product_type="drink",
+        description="Produit pour test decrement",
+        stock=5,
+    )
+    dao.create_product(product)
+
+    # Décrémenter de 3 → OK
+    success = dao.decrement_stock(product.id_product, 3)
+    assert success
+
+    # Vérifier le stock
+    updated = [p for p in dao.get_all_products() if p.id_product == product.id_product][0]
+    assert updated.stock == 2
+
+    # Décrémenter de 3 → échoue car stock insuffisant
+    success = dao.decrement_stock(product.id_product, 3)
+    assert not success
+
+
+def test_increment_stock(dao):
+    """Vérifie que le stock augmente correctement"""
+    product = Product(
+        name="increment",
+        price=5.0,
+        production_cost=2.0,
+        product_type="drink",
+        description="Produit pour test increment",
+        stock=2,
+    )
+    dao.create_product(product)
+
+    # Incrémenter de 5
+    success = dao.increment_stock(product.id_product, 5)
+    assert success
+
+    # Vérifier le stock
+    updated = [p for p in dao.get_all_products() if p.id_product == product.id_product][0]
+    assert updated.stock == 7
+
+def test_get_available_products(dao):
+    """Vérifie que seuls les produits avec stock > 0 sont retournés"""
+    product1 = Product(
+        name="Disponible",
+        price=2.0,
+        production_cost=1.0,
+        product_type="drink",
+        description="Stock > 0",
+        stock=3,
+    )
+    product2 = Product(
+        name="Indisponible",
+        price=2.0,
+        production_cost=1.0,
+        product_type="lunch",
+        description="Stock = 0",
+        stock=0,
+    )
+    dao.create_product(product1)
+    dao.create_product(product2)
+
+    available = dao.get_available_products()
+    names = [p["name"] for p in available]
+    assert "Disponible" in names
+    assert "Indisponible" not in names
