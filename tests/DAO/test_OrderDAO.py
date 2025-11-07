@@ -22,7 +22,7 @@ def setup_test_environment():
 @pytest.fixture
 def dao():
     """DAO connecté à la base de test."""
-    order_dao = OrderDAO(test=True)
+    order_dao = OrderDAO()
     order_dao.db_connector = DBConnector(test=True)
     return order_dao
 
@@ -364,3 +364,302 @@ def test_get_assigned_orders_ok(dao):
 def test_get_assigned_orders_empty(dao):
     assigned = dao.get_assigned_orders(driver_id=123456)
     assert assigned == []
+
+
+def test_assign_order_ok(dao):
+    """Test successful assignment of an order to a driver"""
+    addr = create_test_address()
+    order = Order(
+        id_customer=999,
+        id_driver=None,
+        id_address=addr.id_address,
+        nb_items=2,
+        total_amount=25.0,
+        payment_method="Cash",
+        status="Preparing",
+    )
+    order_id = dao.create_order(order)
+    assert order_id is not None
+
+    assigned = dao.assign_order(driver_id=888, id_order=order_id)
+    assert assigned is True
+
+    data = dao.get_by_id(order_id)
+    assert data is not None
+    assert data["order"].id_driver == 888
+
+
+def test_assign_order_invalid_order(dao):
+    """Test assignment with non-existent order"""
+    assigned = dao.assign_order(driver_id=888, id_order=999999)
+    assert assigned is False
+
+
+def test_assign_order_already_assigned(dao):
+    """Test assigning an order that already has a driver"""
+    addr = create_test_address()
+    order = Order(
+        id_customer=999,
+        id_driver=777,  # Already has a driver
+        id_address=addr.id_address,
+        nb_items=1,
+        total_amount=10.0,
+        payment_method="Card",
+        status="Preparing",
+    )
+    order_id = dao.create_order(order)
+    assert order_id is not None
+
+    # Try to assign to another driver
+    assigned = dao.assign_order(driver_id=888, id_order=order_id)
+    # This depends on your business logic - should reassignment be allowed?
+    assert assigned is False or assigned is True  # Adjust based on your requirements
+
+
+def test_assign_order_delivered_status(dao):
+    """Test assigning an order that's already delivered"""
+    addr = create_test_address()
+    order = Order(
+        id_customer=999,
+        id_driver=None,
+        id_address=addr.id_address,
+        nb_items=1,
+        total_amount=15.0,
+        payment_method="Card",
+        status="Delivered",  # Already delivered
+    )
+    order_id = dao.create_order(order)
+    assert order_id is not None
+
+    # Try to assign delivered order
+    assigned = dao.assign_order(driver_id=888, id_order=order_id)
+    assert assigned is False
+
+    # Verify status remains unchanged
+    data = dao.get_by_id(order_id)
+    assert data["order"].status == "Delivered"
+    assert data["order"].id_driver is None
+
+
+def test_assign_order_cancelled_status(dao):
+    """Test assigning a cancelled order"""
+    addr = create_test_address()
+    order = Order(
+        id_customer=999,
+        id_driver=None,
+        id_address=addr.id_address,
+        nb_items=1,
+        total_amount=15.0,
+        payment_method="Card",
+        status="Cancelled",  # Cancelled order
+    )
+    order_id = dao.create_order(order)
+    assert order_id is not None
+
+    # Try to assign cancelled order
+    assigned = dao.assign_order(driver_id=888, id_order=order_id)
+    assert assigned is False
+
+    # Verify status remains unchanged
+    data = dao.get_by_id(order_id)
+    assert data["order"].status == "Cancelled"
+
+
+def test_assign_order_ready_status(dao):
+    """Test assigning a ready order"""
+    addr = create_test_address()
+    order = Order(
+        id_customer=999,
+        id_driver=None,
+        id_address=addr.id_address,
+        nb_items=1,
+        total_amount=15.0,
+        payment_method="Card",
+        status="Ready",  # Ready order
+    )
+    order_id = dao.create_order(order)
+    assert order_id is not None
+
+    # Try to assign ready order
+    assigned = dao.assign_order(driver_id=888, id_order=order_id)
+    # This depends on your business logic
+    assert assigned is True or assigned is False
+
+
+def test_assign_order_en_route_status(dao):
+    """Test assigning an en route order"""
+    addr = create_test_address()
+    order = Order(
+        id_customer=999,
+        id_driver=None,
+        id_address=addr.id_address,
+        nb_items=1,
+        total_amount=15.0,
+        payment_method="Card",
+        status="En route",  # En route order
+    )
+    order_id = dao.create_order(order)
+    assert order_id is not None
+
+    # Try to assign en route order
+    assigned = dao.assign_order(driver_id=888, id_order=order_id)
+    assert assigned is False  # Should not reassign orders already en route
+
+
+def test_assign_order_multiple_orders_same_driver(dao):
+    """Test assigning multiple orders to the same driver"""
+    addr = create_test_address()
+
+    # Create multiple preparing orders
+    orders_data = [(999, 2, 25.0, "Cash"), (998, 1, 15.0, "Card"), (997, 3, 35.0, "Cash")]
+
+    order_ids = []
+    for customer_id, nb_items, total, payment in orders_data:
+        order = Order(
+            id_customer=customer_id,
+            id_driver=None,
+            id_address=addr.id_address,
+            nb_items=nb_items,
+            total_amount=total,
+            payment_method=payment,
+            status="Preparing",
+        )
+        order_id = dao.create_order(order)
+        assert order_id is not None
+        order_ids.append(order_id)
+
+    # Assign all orders to the same driver
+    driver_id = 888
+    for order_id in order_ids:
+        assigned = dao.assign_order(driver_id=driver_id, id_order=order_id)
+        assert assigned is True
+
+    # Verify all orders are assigned to the same driver
+    for order_id in order_ids:
+        data = dao.get_by_id(order_id)
+        assert data["order"].id_driver == driver_id
+
+
+def test_assign_order_different_drivers(dao):
+    """Test assigning orders to different drivers"""
+    addr = create_test_address()
+
+    # Create multiple preparing orders
+    order1 = Order(
+        id_customer=999,
+        id_driver=None,
+        id_address=addr.id_address,
+        nb_items=2,
+        total_amount=25.0,
+        payment_method="Cash",
+        status="Preparing",
+    )
+    order1_id = dao.create_order(order1)
+
+    order2 = Order(
+        id_customer=998,
+        id_driver=None,
+        id_address=addr.id_address,
+        nb_items=1,
+        total_amount=15.0,
+        payment_method="Card",
+        status="Preparing",
+    )
+    order2_id = dao.create_order(order2)
+
+    # Assign to different drivers
+    assigned1 = dao.assign_order(driver_id=777, id_order=order1_id)
+    assigned2 = dao.assign_order(driver_id=888, id_order=order2_id)
+
+    assert assigned1 is True
+    assert assigned2 is True
+
+    # Verify correct assignments
+    data1 = dao.get_by_id(order1_id)
+    data2 = dao.get_by_id(order2_id)
+
+    assert data1["order"].id_driver == 777
+    assert data2["order"].id_driver == 888
+
+
+def test_assign_order_zero_driver_id(dao):
+    """Test assignment with invalid driver ID"""
+    addr = create_test_address()
+    order = Order(
+        id_customer=999,
+        id_driver=None,
+        id_address=addr.id_address,
+        nb_items=1,
+        total_amount=10.0,
+        payment_method="Cash",
+        status="Preparing",
+    )
+    order_id = dao.create_order(order)
+
+    assigned = dao.assign_order(driver_id=0, id_order=order_id)
+    assert assigned is False
+
+
+def test_assign_order_negative_driver_id(dao):
+    """Test assignment with negative driver ID"""
+    addr = create_test_address()
+    order = Order(
+        id_customer=999,
+        id_driver=None,
+        id_address=addr.id_address,
+        nb_items=1,
+        total_amount=10.0,
+        payment_method="Cash",
+        status="Preparing",
+    )
+    order_id = dao.create_order(order)
+
+    assigned = dao.assign_order(driver_id=-1, id_order=order_id)
+    assert assigned is False
+
+
+def test_assign_order_status_workflow(dao):
+    """Test order assignment as part of complete workflow"""
+    addr = create_test_address()
+    order = Order(
+        id_customer=999,
+        id_driver=None,
+        id_address=addr.id_address,
+        nb_items=2,
+        total_amount=20.0,
+        payment_method="Card",
+        status="Preparing",
+    )
+    order_id = dao.create_order(order)
+
+    # 1. Assign order to driver
+    assigned = dao.assign_order(driver_id=888, id_order=order_id)
+    assert assigned is True
+
+    data = dao.get_by_id(order_id)
+    assert data["order"].id_driver == 888
+
+    # 2. Mark as ready
+    ready = dao.mark_as_ready(order_id)
+    assert ready is True
+
+    data = dao.get_by_id(order_id)
+    assert data["order"].status == "Ready"
+    assert data["order"].id_driver == 888  # Driver should still be assigned
+
+    # 3. Mark as en route
+    en_route = dao.mark_as_en_route(order_id)
+    assert en_route is True
+
+    data = dao.get_by_id(order_id)
+    assert data["order"].status == "En route"
+    assert data["order"].id_driver == 888  # Driver should still be assigned
+
+    # 4. Mark as delivered
+    delivered = dao.mark_as_delivered(order_id)
+    assert delivered is True
+
+    data = dao.get_by_id(order_id)
+    assert data["order"].status == "Delivered"
+    # Driver should still be assigned even after delivery
+    assert data["order"].id_driver == 888

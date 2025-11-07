@@ -217,3 +217,21 @@ class OrderDAO:
         except Exception as e:
             print(f"Error fetching assigned orders: {e}")
             return []
+
+    def assign_order(self, id_driver: int, id_order: int) -> bool:
+        """Assign the order id_order to the driver id_driver"""
+        try:
+            res = self.db_connector.sql_query(
+                """
+                UPDATE orders
+                SET id_driver = %s, status = 'En route'
+                WHERE id_order = %s AND status = 'Ready'
+                RETURNING id_order
+                """,
+                [id_driver, id_order],
+                return_type="one",
+            )
+            return res is not None
+        except Exception as e:
+            print(f"Error assigning order to driver: {e}")
+            return False

@@ -15,6 +15,4 @@ def get_movie_by_id(tmdb_id: int):
         else:
             raise FileNotFoundError
     except FileNotFoundError:
-        raise HTTPException(
-            status_code=404, detail=f"Movie with id [{tmdb_id}] not found"
-        )
+        raise HTTPException(status_code=404, detail=f"Movie with id [{tmdb_id}] not found")

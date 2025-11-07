@@ -1,8 +1,9 @@
-from fastapi import APIRouter, HTTPException, status
 from typing import List
 
-from src.Model.Order import Order  # ton modèle Pydantic pour les commandes
+from fastapi import APIRouter, HTTPException, status
+
 from src.DAO.DBConnector import DBConnector
+from src.Model.Order import Order  # ton modèle Pydantic pour les commandes
 
 order_router = APIRouter(prefix="/Order", tags=["Orders"])
 db = DBConnector()

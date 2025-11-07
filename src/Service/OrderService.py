@@ -12,7 +12,7 @@ class OrderService:
         self.orderdao = orderdao
 
     @log
-    def create(self, id_customer, id_driver = None, id_address, nb_items, total_amount, payment_method) -> Order:
+    def create(self, id_customer, id_address, nb_items, total_amount, payment_method, id_driver=None) -> Order:
         """Création d'une commande à partir de ses attributs"""
         orderdao = self.orderdao
 
@@ -42,7 +42,7 @@ class OrderService:
         """Supprime un produit d'une commande"""
         orderdao = self.orderdao
 
-        return orderdao.remove_product(id_order, id_order)
+        return orderdao.remove_product(id_order, id_product)
 
     @log
     def cancel_order(self, id_order: int) -> bool:
@@ -59,12 +59,14 @@ class OrderService:
     @log
     def mark_as_ready(self, id_order: int) -> bool:
         """Marquer une commande comme prête"""
-        return OrderDAO().mark_as_ready(id_order)
+        orderdao = self.orderdao
+        return orderdao.mark_as_ready(id_order)
 
     @log
     def mark_as_en_route(self, id_order: int) -> bool:
         """Marquer une commande comme en route"""
-        return OrderDAO().mark_as_en_route(id_order)
+        orderdao = self.orderdao
+        return orderdao.mark_as_en_route(id_order)
 
     @log
     def get_order_products(self, id_order: int) -> List[Dict[str, Any]]:
@@ -93,7 +95,8 @@ class OrderService:
     def list_all_orders_ready(self) -> List[Dict[str, Any]]:
         """Retourne toutes les commandes prêtes avec leurs produits, l'adresse complète de la commande
         et la date depuis qu'elles sont prêtes"""
-        return OrderDAO().list_all_orders_ready()
+        orderdao = self.orderdao
+        return orderdao.list_all_orders_ready()
 
     @log
     def get_assigned_orders(self, id_driver: int) -> List[Dict[str, Any]]:
@@ -102,3 +105,12 @@ class OrderService:
         if id_driver <= 0:
             return []
         return orderdao.get_assigned_orders(id_driver)
+
+    @log
+    def assign_order(self, id_driver: int, id_order: int) -> bool:
+        """Assign the order id_order to the driver id_driver"""
+        orderdao = self.orderdao
+        if id_driver <= 0 or id_order <= 0:
+            return False
+        else:
+            orderdao.assign_order(id_driver, id_order)

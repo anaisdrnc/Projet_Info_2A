@@ -210,13 +210,13 @@ def main():
     oldest_order = ready_orders_list_of_dict[0]  # Commande la plus ancienne
     answer_driver = str(input("Do you accept the next order ? (y/n)"))
     if answer_driver == "y":
-        # Assigner la commande au driver
+        # Assigner la commande la plus ancienne au driver (il ne peut pas choisir la commande qu'il souhaite)
         pass
     elif answer_driver == "n":
         # Sortir de l'applicaiton pour le driver
         pass
     else:
-        continue
+        pass
 
 
 if __name__ == "__main__":
