@@ -224,8 +224,8 @@ class OrderDAO:
             res = self.db_connector.sql_query(
                 """
                 UPDATE orders
-                SET id_driver = %s, status = 'En route'
-                WHERE id_order = %s AND status = 'Ready'
+                SET id_driver = %s
+                WHERE id_order = %s
                 RETURNING id_order
                 """,
                 [id_driver, id_order],
