@@ -282,13 +282,13 @@ def main():
         if success:
             print(f"Commande {order_id} assignée avec succès!")
 
-            OrderService().mark_as_en_route(order_id)
+            OrderService(OrderDAO()).mark_as_en_route(order_id)
             print("Commande marquée comme 'En route'")
         else:
             print("Erreur lors de l'assignation de la commande")
 
     elif answer_driver.lower() == "n":
-        print("👋 Au revoir!")
+        print("Au revoir!")
     elif answer_driver == "n":
         pass
     else:

@@ -113,4 +113,4 @@ class OrderService:
         if id_driver <= 0 or id_order <= 0:
             return False
         else:
-            orderdao.assign_order(id_driver, id_order)
+            return orderdao.assign_order(id_driver, id_order)
