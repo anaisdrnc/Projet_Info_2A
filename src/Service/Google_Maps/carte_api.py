@@ -171,14 +171,16 @@ def main():
     # Adresse d'origine fixe
     origin = "ENSAI, Rennes, France"
 
-    # Vérification que l'origine est utilisable
+    """# Vérification que l'origine est utilisable
     is_origin_routable, origin_complete = is_address_sufficient_for_routing(origin)
     if not is_origin_routable:
         print("Adresse d'origine non utilisable pour l'itinéraire !")
         return
 
-    print(f"Adresse d'origine: {origin_complete}")
+    print(f"Adresse d'origine: {origin_complete}")"""
 
+    """
+    # IL FAUT D'ABORD LISTER LES COMMANDES ADAPTEES AU MODE DE TRANSPORT
     # Saisie de la destination avec validation
     print("\n" + "=" * 50)
     destination = validate_and_get_routable_address("Entrez votre adresse de destination: ")
@@ -209,20 +211,7 @@ def main():
         # Si le temps de trajet en vélo est de plus d'1h ou est au moins 20 min plus long qu'en voiture,
         # on choisit la voiture
         mean_of_transport = "driving"
-    # else : trouver un driver de dispo peu importe son moyen de transport
-    ready_orders_list_of_dict = OrderService(OrderDAO()).list_all_orders_ready()
-    oldest_order = ready_orders_list_of_dict[0]  # Commande la plus ancienne
-
-    if not ready_orders_list_of_dict:
-        print("Aucune commande prête pour le moment.")
-    else:
-        oldest_order = ready_orders_list_of_dict[0]  # Commande la plus ancienne
-        order_id = oldest_order["order"].id_order
-
-    print(f"Commande disponible: ID {order_id}")
-    print(
-        f"Adresse: {oldest_order['address'].address}, {oldest_order['address'].postal_code} {oldest_order['address'].city}"
-    )
+    # else : trouver un driver de dispo peu importe son moyen de transport"""
 
     driver_dao = DriverDAO()
     driver_id = int(input("Enter your driver ID: "))
@@ -240,24 +229,67 @@ def main():
 
     print(f"Mode de transport sélectionné : {transport_mode}")
 
-    answer_driver = str(input("Do you accept the next order ? (y/n)"))
+    if driver.mean_of_transport == "Bike":
+        # ready_orders_list_of_dict = OrderService(OrderDAO()).list_all_orders_ready()
+        # Filter all orders that are adapted to bicycling
+        max_bike_time = 30 * 60  # 30 minutes
+        all_ready_orders = OrderService(OrderDAO()).list_all_orders_ready()
+        filtered_orders = []
+
+        for order_data in all_ready_orders:
+            order_address = order_data["address"]
+            destination = f"{order_address.address}, {order_address.postal_code} {order_address.city}"
+
+            try:
+                directions_velo = calculer_itineraire(origin, destination, "bicycling")
+
+                if directions_velo and directions_velo[0]["legs"]:
+                    duration_velo_seconds = directions_velo[0]["legs"][0]["duration"]["value"]
+                    duration_velo_minutes = duration_velo_seconds // 60
+
+                    if duration_velo_seconds <= max_bike_time:
+                        filtered_orders.append(order_data)
+                        print(f"Commande {order_data['order'].id_order}: {duration_velo_minutes} min")
+                    else:
+                        print(f"Commande {order_data['order'].id_order}: {duration_velo_minutes} min (trop loin)")
+                else:
+                    print(f"Commande {order_data['order'].id_order}: impossible de calculer l'itinéraire")
+
+            except Exception as e:
+                print(f" Erreur pour la commande {order_data['order'].id_order}: {e}")
+                continue
+
+        ready_orders_list_of_dict = filtered_orders
+    else:
+        ready_orders_list_of_dict = OrderService(OrderDAO()).list_all_orders_ready()
+
+    if not ready_orders_list_of_dict:
+        print("Aucune commande prête pour le moment.")
+        return  # Arrêter la fonction
+    else:
+        oldest_order = ready_orders_list_of_dict[0]  # Commande la plus ancienne
+        order_id = oldest_order["order"].id_order
+
+    print(f"Commande disponible: ID {order_id}")
+    print(
+        f"Adresse: {oldest_order['address'].address}, {oldest_order['address'].postal_code} {oldest_order['address'].city}"
+    )
+
+    answer_driver = str(input("Do you accept the next order ? (y/n): "))
     if answer_driver == "y":
-        # Assigner la commande la plus ancienne au driver (il ne peut pas choisir la commande qu'il souhaite)
         success = OrderService(OrderDAO()).assign_order(driver_id, order_id)
 
         if success:
-            print(f"✅ Commande {order_id} assignée avec succès!")
+            print(f"Commande {order_id} assignée avec succès!")
 
-            # Optionnel : Marquer la commande comme "En route" immédiatement
             OrderService().mark_as_en_route(order_id)
-            print("🛵 Commande marquée comme 'En route'")
+            print("Commande marquée comme 'En route'")
         else:
-            print("❌ Erreur lors de l'assignation de la commande")
+            print("Erreur lors de l'assignation de la commande")
 
     elif answer_driver.lower() == "n":
         print("👋 Au revoir!")
     elif answer_driver == "n":
-        # Sortir de l'applicaiton pour le driver
         pass
     else:
         pass
