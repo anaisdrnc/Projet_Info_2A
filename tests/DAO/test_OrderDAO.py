@@ -10,7 +10,6 @@ from src.DAO.UserRepo import UserRepo
 from src.Model.Address import Address
 from src.Model.Driver import Driver
 from src.Model.Order import Order
-from utils.securite import generate_salt, hash_password
 
 load_dotenv()
 
@@ -56,25 +55,21 @@ def create_test_driver(
     if user_name is None:
         user_name = f"testdriver_{datetime.now().timestamp()}"
 
-    # Generate salt and hash the password before creating the Driver object
-    salt = generate_salt()
-    hashed_password = hash_password(password, salt)
+    salt = "mock_salt_for_testing_12345"
+    hashed_password = f"hashed_{password}_{salt}"
 
     driver = Driver(
         user_name=user_name,
         first_name=first_name,
         last_name=last_name,
         email=email,
-        password=hashed_password,  # Use the hashed password
-        salt=salt,  # Provide the salt
+        password=hashed_password,
+        salt=salt,
         mean_of_transport=mean_of_transport,
     )
 
-    # Create a custom DriverDAO instance for testing
     driver_dao = DriverDAO()
-    # Override the db_connector to use test database
     driver_dao.db_connector = DBConnector(test=True)
-    # Re-initialize UserRepo with the test connector
     driver_dao.user_repo = UserRepo(driver_dao.db_connector)
 
     success = driver_dao.create(driver)
