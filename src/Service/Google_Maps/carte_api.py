@@ -2,25 +2,29 @@ import os
 import sys
 from datetime import datetime
 
-import env
 import folium
 import googlemaps
+from dotenv import load_dotenv
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 project_root = os.path.dirname(os.path.dirname(os.path.dirname(current_dir)))
 sys.path.insert(0, project_root)
 
-from src.DAO.DriverDAO import DriverDAO
-from src.Service.OrderService import OrderService
-
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-from Google_Maps.check_address import (
+from src.Service.Google_Maps.check_address import (
     is_address_sufficient_for_routing,
     validate_and_get_routable_address,
 )
 
-API_KEY = env.API_KEY_GOOGLE_MAPS
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from src.DAO.DriverDAO import DriverDAO
+from src.DAO.OrderDAO import OrderDAO
+from src.Service.OrderService import OrderService
+
+load_dotenv()
+load_dotenv(".env")
+load_dotenv("/PROJET_INFO_2A/.env")
+API_KEY = os.getenv("API_KEY_GOOGLE_MAPS")
 
 # Initialiser le client Google Maps
 gmaps = googlemaps.Client(key=API_KEY)
@@ -206,12 +210,52 @@ def main():
         # on choisit la voiture
         mean_of_transport = "driving"
     # else : trouver un driver de dispo peu importe son moyen de transport
-    ready_orders_list_of_dict = OrderService.list_all_orders_ready()
+    ready_orders_list_of_dict = OrderService(OrderDAO()).list_all_orders_ready()
     oldest_order = ready_orders_list_of_dict[0]  # Commande la plus ancienne
+
+    if not ready_orders_list_of_dict:
+        print("Aucune commande prête pour le moment.")
+    else:
+        oldest_order = ready_orders_list_of_dict[0]  # Commande la plus ancienne
+        order_id = oldest_order["order"].id_order
+
+    print(f"Commande disponible: ID {order_id}")
+    print(
+        f"Adresse: {oldest_order['address'].address}, {oldest_order['address'].postal_code} {oldest_order['address'].city}"
+    )
+
+    driver_dao = DriverDAO()
+    driver_id = int(input("Enter your driver ID: "))
+    driver = driver_dao.get_by_id(driver_id)
+
+    if not driver:
+        print(f"Aucun conducteur trouvé avec l'ID {driver_id}.")
+        return
+
+    print(f"Conducteur trouvé : {driver.first_name} {driver.last_name}")
+    print(f"Moyen de transport : {driver.mean_of_transport}")
+
+    transport_mapping = {"Car": "driving", "Bike": "bicycling", "Walk": "walking"}
+    transport_mode = transport_mapping.get(driver.mean_of_transport, "driving")
+
+    print(f"Mode de transport sélectionné : {transport_mode}")
+
     answer_driver = str(input("Do you accept the next order ? (y/n)"))
     if answer_driver == "y":
         # Assigner la commande la plus ancienne au driver (il ne peut pas choisir la commande qu'il souhaite)
-        pass
+        success = OrderService(OrderDAO()).assign_order(driver_id, order_id)
+
+        if success:
+            print(f"✅ Commande {order_id} assignée avec succès!")
+
+            # Optionnel : Marquer la commande comme "En route" immédiatement
+            OrderService().mark_as_en_route(order_id)
+            print("🛵 Commande marquée comme 'En route'")
+        else:
+            print("❌ Erreur lors de l'assignation de la commande")
+
+    elif answer_driver.lower() == "n":
+        print("👋 Au revoir!")
     elif answer_driver == "n":
         # Sortir de l'applicaiton pour le driver
         pass

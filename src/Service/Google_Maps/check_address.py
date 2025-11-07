@@ -1,9 +1,13 @@
+import os
 from typing import Dict, List, Tuple
 
-import config
 import googlemaps
+from dotenv import load_dotenv
 
-API_KEY = config.API_KEY_GOOGLE_MAPS
+load_dotenv()
+load_dotenv(".env")
+load_dotenv("/PROJET_INFO_2A/.env")
+API_KEY = os.getenv("API_KEY_GOOGLE_MAPS")
 gmaps = googlemaps.Client(key=API_KEY)
 
 
