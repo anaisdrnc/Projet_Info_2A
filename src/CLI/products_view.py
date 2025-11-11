@@ -27,6 +27,5 @@ class ProductView(VueAbstraite):
 
         products_str = f"List of available products : \n\n"
         for product in list_products:
-            products_str += f" {product[0]}, ingredients : {product[1]}, price : {product[2]}"
-            #products_str += str(product[0]) + f"  ingredients :" + str(product[1]) + f", price : " + str(product[2]) + f"\n"
+            products_str += f" {product[0]}, ingredients : {product[1]}, price : {product[2]} \n"
         return MenuView(products_str)
