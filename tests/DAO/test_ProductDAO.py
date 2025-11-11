@@ -287,3 +287,18 @@ def test_get_available_products(dao):
     names = [p["name"] for p in available]
     assert "Disponible" in names
     assert "Indisponible" not in names
+
+
+def test_get_id_by_productname(dao):
+    product = Product(
+        name="test_id",
+        price=5.0,
+        production_cost=2.0,
+        product_type="drink",
+        description="Produit pour test id",
+        stock=2,
+    )
+    dao.create_product(product)
+    id_product = dao.get_id_by_productname("test_id")
+    assert id_product == product.id_product
+
