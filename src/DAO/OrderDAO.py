@@ -1,5 +1,6 @@
 from datetime import datetime
 from typing import Any, Dict, List, Optional
+import logging
 
 from src.DAO.DBConnector import DBConnector
 from src.DAO.ProductDAO import ProductDAO
@@ -13,6 +14,7 @@ class OrderDAO:
     def __init__(self, db_connector=None):
         """Initialize a new OrderDAO instance with a database connector."""
         self.db_connector = db_connector if db_connector is not None else DBConnector()
+        self.productdao = ProductDAO(self.db_connector)
 
     def create_order(self, order: Order) -> Optional[int]:
         """Crée une nouvelle commande avec l'adresse déjà insérée en base."""
@@ -44,30 +46,34 @@ class OrderDAO:
             print(f"Error creating order: {e}")
             return None
 
-    def add_product(self, order_id: int, product_id: int, quantity: int) -> bool:
-        """
-        Ajoute un produit à la commande et décrémente le stock.
-        """
-        productdao = ProductDAO(DBConnector())
-        success_stock = productdao.decrement_stock(product_id, quantity)
-        if not success_stock:
-            print(f"Stock insuffisant pour le produit {product_id}")
-            return False
 
+    def add_product(self, order_id: int, product_id: int, quantity: int = 1) -> bool:
+        """
+        Ajoute un produit à la commande, décrémente le stock via ProductDAO.
+        """
         try:
-            self.db_connector.sql_query(
+            # Diminuer le stock
+            success = self.productdao.decrement_stock(product_id, quantity)
+            if not success:
+                logging.warning(f"Stock insuffisant pour le produit {product_id}")
+                return False
+
+            # Ajouter le produit à la commande
+            res = self.db_connector.sql_query(
                 """
                 INSERT INTO order_products (id_order, id_product, quantity)
                 VALUES (%s, %s, %s)
+                RETURNING id_order;
                 """,
                 [order_id, product_id, quantity],
-                return_type=None,
+                "one",
             )
-            return True
+            return res is not None
         except Exception as e:
-            print(f"Error adding product: {e}")
+            logging.error(f"Erreur add_product: {e}")
             self.productdao.increment_stock(product_id, quantity)
             return False
+
 
     def remove_product(self, order_id: int, product_id: int, quantity: int = 1) -> bool:
         """Supprime un produit de la commande et remet le stock."""
@@ -215,7 +221,14 @@ class OrderDAO:
         """Returns all ready orders ordered chronologically with their complete address."""
         try:
             raw_orders = self.db_connector.sql_query(
-                "SELECT o.id_order, o.date, a.address, a.city, a.postal_code FROM default_schema.orders o JOIN default_schema.address a ON o.id_address = a.id_address WHERE o.status = 'Ready' ORDER BY o.date ",
+                """
+                SELECT o.id_order, o.date, a.address, a.city, a.postal_code 
+                FROM default_schema.orders o
+                JOIN default_schema.address a
+                ON o.id_address = a.id_address
+                WHERE o.status = 'Ready'
+                ORDER BY o.date
+                """,
                 None,
                 "all",
             )

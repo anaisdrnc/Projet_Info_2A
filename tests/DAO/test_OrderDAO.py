@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 from src.DAO.DBConnector import DBConnector
 from src.DAO.DriverDAO import DriverDAO
 from src.DAO.OrderDAO import OrderDAO
+from src.DAO.ProductDAO import ProductDAO
 from src.DAO.UserRepo import UserRepo
 from src.Model.Address import Address
 from src.Model.Driver import Driver
@@ -22,13 +23,20 @@ def setup_test_environment():
 
     ResetDatabase(test=True).lancer()
 
+@pytest.fixture
+def db():
+    """Connexion unique à la base de test."""
+    return DBConnector(test=True)
 
 @pytest.fixture
-def dao():
-    """DAO connecté à la base de test."""
-    order_dao = OrderDAO()
-    order_dao.db_connector = DBConnector(test=True)
-    return order_dao
+def dao(db):
+    """DAO commandes utilisant la même connexion que les produits."""
+    return OrderDAO(db)
+
+@pytest.fixture
+def productdao(db):
+    """DAO produits utilisant la même connexion que les commandes."""
+    return ProductDAO(db)
 
 
 def create_test_address(address="15 Rue du Test", city="Rennes", postal_code="35000"):
@@ -502,7 +510,7 @@ def test_get_by_id_ok(dao):
     )
     order_id = dao.create_order(order)
     dao.add_product(order_id, 997, 1)
-    dao.add_product(order_id, 998, 2)
+    dao.add_product(order_id, 999, 2)
 
     data = dao.get_by_id(order_id)
     assert data is not None
