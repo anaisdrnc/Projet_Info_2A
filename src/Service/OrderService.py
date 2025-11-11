@@ -92,7 +92,7 @@ class OrderService:
         """Récupère une commande, son adresse et ses produits"""
         if id_order <= 0:
             return None
-        return self.orderdao.get_by_id(id_order)
+        return self.orderdao.get_by_id(id_order)['order']
 
     @log
     def list_all_orders(self) -> List[Dict[str, Any]]:
