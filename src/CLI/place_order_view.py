@@ -9,6 +9,7 @@ from src.CLI.view_abstract import VueAbstraite
 from src.CLI.session import Session
 from src.DAO.ProductDAO import ProductDAO
 from src.DAO.OrderDAO import OrderDAO
+from src.DAO.AddressDAO import AddressDAO
 from src.DAO.DBConnector import DBConnector
 
 
@@ -19,6 +20,8 @@ class PlaceOrderView(VueAbstraite):
         orderdao = OrderDAO(DBConnector())
         product_service = ProductService(productdao)
         order_service = OrderService(orderdao)
+        addressdao = AddressDAO(DBConnector())
+        address_service = AddressService(addressdao)
 
         #get id_user for creating order
         #id_user = Session.id_user
@@ -77,7 +80,7 @@ class PlaceOrderView(VueAbstraite):
         address = inquirer.text(message= "Enter your address (ex : 51 rue Blaise Pascal) :").execute()
         city = inquirer.text(message= "Enter your city (ex: Bruz):").execute()
         postal_code = inquirer.text(message= "Enter your postal code (ex: 35 170) :").execute()
-        address_order = AddressService.add_address(
+        address_order = address_service.add_address(
             address = address, city = city, postal_code = postal_code)
         if address_order == None:
             return MenuView(f"Your address is incorrect. Please try again.")
