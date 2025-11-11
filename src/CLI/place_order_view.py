@@ -1,7 +1,4 @@
-import regex
 from InquirerPy import inquirer
-from InquirerPy.validator import EmptyInputValidator, PasswordValidator
-from prompt_toolkit.validation import ValidationError, Validator
 
 from src.CLI.menu_customer import MenuView
 
@@ -24,7 +21,7 @@ class PlaceOrderView(VueAbstraite):
         order_service = OrderService(orderdao)
 
         #get id_user for creating order
-        id_user = Session.get_id_user()
+        id_user = Session.id_user
 
         #get the list of products, the quantities and the price of the order
         list_choosen_products_names = []
