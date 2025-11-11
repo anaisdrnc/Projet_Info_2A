@@ -7,6 +7,8 @@ from src.DAO.ProductDAO import ProductDAO
 from src.Model.Address import Address
 from src.Model.Order import Order
 
+from utils.log_decorator import log
+
 
 class OrderDAO:
     """DAO pour la gestion des commandes et leurs produits."""
@@ -16,6 +18,7 @@ class OrderDAO:
         self.db_connector = db_connector if db_connector is not None else DBConnector()
         self.productdao = ProductDAO(self.db_connector)
 
+    @log
     def create_order(self, order: Order) -> Optional[int]:
         """Crée une nouvelle commande avec l'adresse déjà insérée en base."""
         try:
@@ -46,7 +49,7 @@ class OrderDAO:
             print(f"Error creating order: {e}")
             return None
 
-
+    @log
     def add_product(self, order_id: int, product_id: int, quantity: int = 1) -> bool:
         """
         Ajoute un produit à la commande, décrémente le stock via ProductDAO.
@@ -74,7 +77,7 @@ class OrderDAO:
             self.productdao.increment_stock(product_id, quantity)
             return False
 
-
+    @log
     def remove_product(self, order_id: int, product_id: int, quantity: int = 1) -> bool:
         """Supprime un produit de la commande et remet le stock."""
         try:
@@ -98,6 +101,7 @@ class OrderDAO:
             print(f"Error removing product: {e}")
             return False
 
+    @log
     def cancel_order(self, id_order: int) -> bool:
         try:
             res = self.db_connector.sql_query(
@@ -110,6 +114,7 @@ class OrderDAO:
             print(f"Error cancelling order: {e}")
             return False
 
+    @log
     def mark_as_delivered(self, id_order: int) -> bool:
         try:
             res = self.db_connector.sql_query(
@@ -122,6 +127,7 @@ class OrderDAO:
             print(f"Error marking order delivered: {e}")
             return False
 
+    @log
     def mark_as_ready(self, id_order: int) -> bool:
         try:
             res = self.db_connector.sql_query(
@@ -134,6 +140,7 @@ class OrderDAO:
             print(f"Error marking order ready: {e}")
             return False
 
+    @log
     def mark_as_en_route(self, id_order: int) -> bool:
         try:
             res = self.db_connector.sql_query(
@@ -146,6 +153,7 @@ class OrderDAO:
             print(f"Error marking order en route: {e}")
             return False
 
+    @log
     def get_order_products(self, order_id: int) -> List[Dict[str, Any]]:
         """Récupère tous les produits liés à une commande."""
         try:
@@ -164,6 +172,7 @@ class OrderDAO:
             print(f"Error fetching order products: {e}")
             return []
 
+    @log
     def get_by_id(self, order_id: int) -> Optional[Dict[str, Any]]:
         """Récupère une commande et les produits associés (sans modifier Order)."""
         try:
@@ -203,6 +212,7 @@ class OrderDAO:
             print(f"Error fetching order: {e}")
             return None
 
+    @log
     def list_all_orders(self) -> List[Dict[str, Any]]:
         """Retourne toutes les commandes avec leurs produits."""
         try:
@@ -217,6 +227,7 @@ class OrderDAO:
             print(f"Error listing all orders: {e}")
             return []
 
+    @log
     def list_all_orders_ready(self) -> List[Dict[str, Any]]:
         """Retourne toutes les commandes prêtes avec leurs produits et l'adresse complète."""
         try:
@@ -243,6 +254,7 @@ class OrderDAO:
             print(f"Error listing all ready orders: {e}")
             return []
 
+    @log
     def get_assigned_orders(self, driver_id: int) -> List[Dict[str, Any]]:
         """Récupère les commandes en préparation pour un livreur."""
         try:
@@ -256,6 +268,7 @@ class OrderDAO:
             print(f"Error fetching assigned orders: {e}")
             return []
 
+    @log
     def assign_order(self, id_driver: int, id_order: int) -> bool:
         """Assign the order id_order to the driver id_driver"""
         try:
