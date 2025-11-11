@@ -16,7 +16,7 @@ class Session():
     def connexion(self, user):
         """Enregistement des données en session"""
         self.username = user.user_name
-        self.id_user = user.id_user
+        self.id_user = user.id
         self.debut_connexion = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
 
     def deconnexion(self):
