@@ -15,16 +15,18 @@ class ProductView(VueAbstraite):
         productdao = ProductDAO(DBConnector(test = False))
         productservice = ProductService(productdao)
 
-        raw_list_products = productservice.get_list_products_descriptions()
+        raw_list_products = productservice.get_available_products()
         list_products = []
         for product in raw_list_products:
             name = product["name"]
             description = product["description"]
-            list_products.append([name, description])
+            price = product["price"]
+            list_products.append([name, description, price])
 
         from src.CLI.menu_customer import MenuView
 
         products_str = f"List of available products : \n\n"
         for product in list_products:
-            products_str += str(product[0]) + f"  ingredients :" + str(product[1]) + f"\n"
+            products_str += f" {product[0]}, ingredients : {product[1]}, price : {product[2]}"
+            #products_str += str(product[0]) + f"  ingredients :" + str(product[1]) + f", price : " + str(product[2]) + f"\n"
         return MenuView(products_str)

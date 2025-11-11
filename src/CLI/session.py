@@ -27,3 +27,7 @@ class Session(metaclass=Singleton):
         self.username = None
         self.id_user = None
         self.debut_connexion = None
+
+    def get_id_user(self):
+        """return the id of the connected user"""
+        return self.id_user
