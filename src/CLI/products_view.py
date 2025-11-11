@@ -24,7 +24,7 @@ class ProductView(VueAbstraite):
 
         from src.CLI.menu_customer import MenuView
 
-        products_str = f"Liste des produits disponibles : \n\n"
+        products_str = f"List of available products : \n\n"
         for product in list_products:
-            products_str += str(product[0]) + f"  description :" + str(product[1]) + f"\n"
+            products_str += str(product[0]) + f"  ingredients :" + str(product[1]) + f"\n"
         return MenuView(products_str)
