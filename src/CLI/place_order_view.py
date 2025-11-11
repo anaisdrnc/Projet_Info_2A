@@ -109,7 +109,7 @@ class PlaceOrderView(VueAbstraite):
             added = order_service.add_product_to_order(
                 order_id= id_order,
                 product_id= id_product,
-                quantity= quantity
+                quantity= int(quantity)
             )
         
         message = "Order validated"
