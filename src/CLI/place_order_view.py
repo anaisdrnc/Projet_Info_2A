@@ -24,7 +24,7 @@ class PlaceOrderView(VueAbstraite):
         address_service = AddressService(addressdao)
 
         #get id_user for creating order
-        #id_user = Session.id_user
+        id_customer = 2
 
         #get the list of products, the quantities and the price of the order
         list_choosen_products_names = []
@@ -92,7 +92,7 @@ class PlaceOrderView(VueAbstraite):
 
         #creating the order
         order = order_service.create(
-            id_customer= id_user,
+            id_customer= id_customer,
             id_address = id_address,
             nb_items= nb_items,
             total_amount= total_amount,
