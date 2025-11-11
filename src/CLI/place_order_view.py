@@ -110,6 +110,9 @@ class PlaceOrderView(VueAbstraite):
                 quantity= quantity
             )
         
+        message = "Order validated"
+        return MenuView(message=message)
+        
 
 
         
