@@ -41,10 +41,11 @@ class PlaceOrderView(VueAbstraite):
             message="Choose a product : ",
             choices=list_products,
         ).execute()
-        quantity = inquirer.number(message= "Quantity :").execute()
+        quantity = inquirer.number(message= "Quantity :", min_allowed=0,
+            max_allowed=10,).execute()
         list_choosen_products_names.append(product)
         quantities.append(quantity)
-        total_amount += prices[product]*quantity
+        total_amount += prices[product]*int(quantity)
 
         choice = inquirer.select(
             message= "choose : ",
