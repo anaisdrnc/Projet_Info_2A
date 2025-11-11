@@ -218,20 +218,21 @@ class OrderDAO:
             return []
 
     def list_all_orders_ready(self) -> List[Dict[str, Any]]:
-        """Returns all ready orders ordered chronologically with their complete address."""
+        """Retourne toutes les commandes prêtes avec leurs produits et l'adresse complète."""
         try:
+            # Retrait du hardcodage 'default_schema'
             raw_orders = self.db_connector.sql_query(
                 """
-                SELECT o.id_order, o.date, a.address, a.city, a.postal_code 
-                FROM default_schema.orders o
-                JOIN default_schema.address a
-                ON o.id_address = a.id_address
+                SELECT o.id_order, o.date, a.address, a.city, a.postal_code
+                FROM orders o
+                JOIN address a ON o.id_address = a.id_address
                 WHERE o.status = 'Ready'
                 ORDER BY o.date
                 """,
                 None,
                 "all",
             )
+
             result = []
             for o in raw_orders:
                 order_data = self.get_by_id(o["id_order"])

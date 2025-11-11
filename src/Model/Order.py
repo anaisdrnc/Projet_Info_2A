@@ -14,5 +14,5 @@ class Order(BaseModel):
         "Preparing"
     )
     nb_items: int = Field(..., ge=0)
-    total_amount: float = Field(..., gt=0)
+    total_amount: float = Field(default=0.0, ge=0)
     payment_method: Literal["Card", "Cash"] = "Card"

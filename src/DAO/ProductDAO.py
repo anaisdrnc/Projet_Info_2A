@@ -45,7 +45,7 @@ class ProductDAO:
                 {
                     "name": product.name,
                     "price": product.price,
-                    "production_cost": product.production_cost,  # corrigé
+                    "production_cost": product.production_cost,
                     "description": product.description,
                     "product_type": product.product_type,
                     "stock": product.stock,

@@ -533,6 +533,44 @@ def test_list_all_orders(dao):
         assert isinstance(entry["order"], Order)
 
 
+def test_list_all_orders_ready(dao):
+    # Créer une adresse de test
+    addr = create_test_address()
+
+    # Créer une commande
+    order = Order(
+        id_customer=999,
+        id_driver=None,
+        id_address=addr.id_address,
+        nb_items=2,
+        total_amount=20.0,
+        payment_method="Cash",
+    )
+    order_id = dao.create_order(order)
+    assert order_id is not None
+
+    # Vérifier que la commande n'est pas dans les commandes "Ready" au départ
+    ready_orders_before = dao.list_all_orders_ready()
+    assert all(o["order"].id_order != order_id for o in ready_orders_before)
+
+    # Marquer la commande comme prête
+    marked = dao.mark_as_ready(order_id)
+    assert marked is True
+
+    # Récupérer les commandes prêtes
+    ready_orders = dao.list_all_orders_ready()
+    assert isinstance(ready_orders, list)
+
+    # Vérifier que notre commande est dans la liste
+    assert any(o["order"].id_order == order_id for o in ready_orders)
+
+    # vérifier que le statut est bien "Ready"
+    for o in ready_orders:
+        if o["order"].id_order == order_id:
+            assert o["order"].status == "Ready"
+
+
+
 def test_get_assigned_orders_ok(dao):
     addr = create_test_address()
     order = Order(
