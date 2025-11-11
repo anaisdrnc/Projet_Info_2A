@@ -14,7 +14,9 @@ from src.DAO.DBConnector import DBConnector
 class PlaceOrderView(VueAbstraite):
     def choisir_menu(self):
         """Place an order"""
-        productdao = ProductDAO(DBConnector)
-        orderdao = OrderDAO(DBConnector)
+        productdao = ProductDAO(DBConnector())
+        orderdao = OrderDAO(DBConnector())
         product_service = ProductService(productdao)
         order_service = OrderService(orderdao)
+
+        
