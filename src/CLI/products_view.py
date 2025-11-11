@@ -12,7 +12,7 @@ class ProductView(VueAbstraite):
     """
 
     def choisir_menu(self):
-        productdao = ProductDAO(DBConnector)
+        productdao = ProductDAO(DBConnector(test = False))
         productservice = ProductService(productdao)
 
         list_products = productservice.get_list_products_descriptions()
