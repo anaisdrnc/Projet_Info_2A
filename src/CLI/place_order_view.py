@@ -35,7 +35,7 @@ class PlaceOrderView(VueAbstraite):
             name = product["name"]
             list_products.append(name)
             price = product["price"]
-            prices[name] = price
+            prices[name] = float(price)
 
         product = inquirer.select(
             message="Choose a product : ",
