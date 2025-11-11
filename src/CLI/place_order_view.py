@@ -21,7 +21,7 @@ class PlaceOrderView(VueAbstraite):
         order_service = OrderService(orderdao)
 
         #get id_user for creating order
-        id_user = Session.id_user
+        #id_user = Session.id_user
 
         #get the list of products, the quantities and the price of the order
         list_choosen_products_names = []
