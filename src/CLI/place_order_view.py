@@ -88,7 +88,7 @@ class PlaceOrderView(VueAbstraite):
             id_address = address_order.id_address
         
         #payment method
-        payment_method = inquirer.select(message= "Select a payment method :", choices= ["Cash", "Card"])
+        payment_method = inquirer.select(message= "Select a payment method :", choices= ["Cash", "Card"]).execute()
 
         #creating the order
         order = order_service.create(
