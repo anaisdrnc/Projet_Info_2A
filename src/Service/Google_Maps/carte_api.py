@@ -10,11 +10,6 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 project_root = os.path.dirname(os.path.dirname(os.path.dirname(current_dir)))
 sys.path.insert(0, project_root)
 
-from src.Service.Google_Maps.check_address import (
-    is_address_sufficient_for_routing,
-    validate_and_get_routable_address,
-)
-
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from src.DAO.DriverDAO import DriverDAO
@@ -30,14 +25,10 @@ API_KEY = os.getenv("API_KEY_GOOGLE_MAPS")
 gmaps = googlemaps.Client(key=API_KEY)
 
 
-def calculer_itineraire(
-    origin: str, destination: str, transport_mode: str
-) -> gmaps.directions:
+def calculer_itineraire(origin: str, destination: str, transport_mode: str) -> gmaps.directions:
     """Calcule l'itinéraire entre deux adresses."""
     try:
-        directions = gmaps.directions(
-            origin=origin, destination=destination, mode=transport_mode, units="metric"
-        )
+        directions = gmaps.directions(origin=origin, destination=destination, mode=transport_mode, units="metric")
 
         if directions:
             print("Itinéraire calculé avec succès!")
@@ -92,9 +83,7 @@ def create_map(origin, destination, transport_mode):
     print(f" Durée estimée : {duration}")
 
     # Carte créée avec Folium
-    m = folium.Map(
-        location=[start_location["lat"], start_location["lng"]], zoom_start=6
-    )
+    m = folium.Map(location=[start_location["lat"], start_location["lng"]], zoom_start=6)
 
     # Ajouter un marqueur pour le point de départ et d’arrivée
     folium.Marker(
@@ -126,54 +115,6 @@ def create_map(origin, destination, transport_mode):
     m.save(output_path)
 
     return output_path
-
-
-"""def compute_map_for_driver_id(id_driver, origin, destination):
-    """ """Identifie le livreur et son moyen de transport, vérifie si l'adresse rentrée est correcte et affiche
-    la carte avec l'itinéraire.""" """
-    print("=== SYSTÈME DE NAVIGATION ===")
-
-    driver_dao = DriverDAO()
-    driver_id = int(input("Enter your driver ID: "))
-    driver = driver_dao.get_by_id(driver_id)
-
-    if not driver:
-        print(f"Aucun conducteur trouvé avec l'ID {driver_id}.")
-        return
-
-    print(f"Conducteur trouvé : {driver.first_name} {driver.last_name}")
-    print(f"Moyen de transport : {driver.mean_of_transport}")
-
-    transport_mapping = {"Car": "driving", "Bike": "bicycling", "Walk": "walking"}
-    transport_mode = transport_mapping.get(driver.mean_of_transport, "driving")
-
-    print(f"Mode de transport sélectionné : {transport_mode}")
-
-    # Adresse d'origine fixe
-    origin = "ENSAI, Rennes, France"
-
-    # Vérification que l'origine est utilisable
-    is_origin_routable, origin_complete = is_address_sufficient_for_routing(origin)
-    if not is_origin_routable:
-        print("Adresse d'origine non utilisable pour l'itinéraire !")
-        return
-
-    print(f"Adresse d'origine: {origin_complete}")
-
-    # Saisie de la destination avec validation
-    print("\n" + "=" * 50)
-    destination = validate_and_get_routable_address("Entrez votre adresse de destination: ")
-
-    if not destination:
-        print("Impossible de continuer sans adresse de destination valide.")
-        return
-
-    # Calcul de l'itinéraire
-    directions = calculer_itineraire(origin_complete, destination, transport_mode)
-
-    if directions:
-        # Affichage de la carte
-        create_map(origin_complete, destination, transport_mode)"""
 
 
 def difference_time_value_to_time_str(seconds):
@@ -210,8 +151,6 @@ def main():
     transport_mapping = {"Car": "driving", "Bike": "bicycling", "Walk": "walking"}
     transport_mode = transport_mapping.get(driver.mean_of_transport, "driving")
 
-    print(f"Mode de transport sélectionné : {transport_mode}")
-
     if driver.mean_of_transport == "Bike":
         # Filter all orders that are adapted to bicycling
         max_bike_time = 30 * 60  # 30 minutes
@@ -226,24 +165,16 @@ def main():
                 directions_velo = calculer_itineraire(origin, destination, "bicycling")
 
                 if directions_velo and directions_velo[0]["legs"]:
-                    duration_velo_seconds = directions_velo[0]["legs"][0]["duration"][
-                        "value"
-                    ]
+                    duration_velo_seconds = directions_velo[0]["legs"][0]["duration"]["value"]
                     duration_velo_minutes = duration_velo_seconds // 60
 
                     if duration_velo_seconds <= max_bike_time:
                         filtered_orders.append(order_data)
-                        print(
-                            f"Commande {order_data['order'].id_order}: {duration_velo_minutes} min"
-                        )
+                        print(f"Commande {order_data['order'].id_order}: {duration_velo_minutes} min")
                     else:
-                        print(
-                            f"Commande {order_data['order'].id_order}: {duration_velo_minutes} min (trop loin)"
-                        )
+                        print(f"Commande {order_data['order'].id_order}: {duration_velo_minutes} min (trop loin)")
                 else:
-                    print(
-                        f"Commande {order_data['order'].id_order}: impossible de calculer l'itinéraire"
-                    )
+                    print(f"Commande {order_data['order'].id_order}: impossible de calculer l'itinéraire")
 
             except Exception as e:
                 print(f" Erreur pour la commande {order_data['order'].id_order}: {e}")
@@ -277,13 +208,11 @@ def main():
 
             order_address = oldest_order["address"]
             destination_address = f"{order_address.address}, {order_address.postal_code} {order_address.city}"
-            directions = calculer_itineraire(
-                origin, destination_address, transport_mode
-            )
+            directions = calculer_itineraire(origin, destination_address, transport_mode)
 
-            # 🗺️ AFFICHER LA CARTE ET L'ITINÉRAIRE
+            # Affiche la carte et l'itinéraire
             print("\n" + "=" * 60)
-            print("🗺️  GÉNÉRATION DE L'ITINÉRAIRE DE LIVRAISON")
+            print("Affichage de l'itinéraire de livraison")
             print("=" * 60)
 
             if directions:
@@ -295,9 +224,9 @@ def main():
                 if map_path:
                     print(f"   {map_path}")
                 else:
-                    print("❌ Impossible de créer la carte")
+                    print("Impossible de créer la carte")
             else:
-                print("❌ Impossible de calculer l'itinéraire")
+                print("Impossible de calculer l'itinéraire")
 
         else:
             print("Erreur lors de l'assignation de la commande")
@@ -312,5 +241,4 @@ def main():
 
 
 if __name__ == "__main__":
-    # compute_map_for_driver_id()
     main()
