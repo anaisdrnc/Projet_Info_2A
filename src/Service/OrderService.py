@@ -6,58 +6,49 @@ from utils.log_decorator import log
 
 
 class OrderService:
-    """Class containing order service methods"""
+    """Classe contenant les méthodes de services pour les commandes"""
 
-    def __init__(self, orderdao):
+    def __init__(self, orderdao: OrderDAO):
         self.orderdao = orderdao
 
     @log
-    def create(
-        self,
-        id_customer,
-        id_address,
-        nb_items,
-        total_amount,
-        payment_method,
-        id_driver=None,
-    ) -> Order:
-        """Création d'une commande à partir de ses attributs"""
-        orderdao = self.orderdao
-
-        new_order = Order(
+    def create(self, id_customer, id_address, nb_items, total_amount, payment_method):
+        order = Order(
             id_customer=id_customer,
-            id_driver=id_driver,
+            id_driver=None,
             id_address=id_address,
             nb_items=nb_items,
             total_amount=total_amount,
             payment_method=payment_method,
+            status="Preparing"
         )
-
-        return new_order if orderdao.create_order(new_order) else None
+        order.id_order = self.orderdao.create_order(order)
+        if order.id_order:
+            return self.get_by_id(order.id_order)
+        return None
 
     @log
     def add_product_to_order(
         self, order_id: int, product_id: int, quantity: int = 1
     ) -> bool:
-        """Add product to order"""
-        success = self.product_service.decrement_stock(product_id, quantity)
-        if not success:
+        """Ajoute un produit à une commande et décrémente le stock"""
+        if order_id <= 0 or product_id <= 0 or quantity <= 0:
             return False
-
         return self.orderdao.add_product(order_id, product_id, quantity)
 
     @log
-    def remove(self, id_order: int, id_product, quantity: int) -> bool:
-        """Supprime un produit d'une commande"""
-        orderdao = self.orderdao
-
-        return orderdao.remove_product(id_order, id_product)
+    def remove(self, id_order: int, id_product: int, quantity: int = 1) -> bool:
+        """Supprime un produit d'une commande et remet le stock"""
+        if id_order <= 0 or id_product <= 0 or quantity <= 0:
+            return False
+        return self.orderdao.remove_product(id_order, id_product, quantity)
 
     @log
     def cancel_order(self, order_id: int) -> bool:
-        """
-        Annule une commande et remet les produits en stock.
-        """
+        """Annule une commande et remet les produits en stock"""
+        if order_id <= 0:
+            return False
+
         order_data = self.orderdao.get_by_id(order_id)
         if not order_data:
             return False
@@ -71,64 +62,58 @@ class OrderService:
     @log
     def mark_as_delivered(self, id_order: int) -> bool:
         """Marquer une commande comme livrée"""
-        orderdao = self.orderdao
-        return orderdao.mark_as_delivered(id_order)
+        if id_order <= 0:
+            return False
+        return self.orderdao.mark_as_delivered(id_order)
 
     @log
     def mark_as_ready(self, id_order: int) -> bool:
         """Marquer une commande comme prête"""
-        orderdao = self.orderdao
-        return orderdao.mark_as_ready(id_order)
+        if id_order <= 0:
+            return False
+        return self.orderdao.mark_as_ready(id_order)
 
     @log
     def mark_as_en_route(self, id_order: int) -> bool:
         """Marquer une commande comme en route"""
-        orderdao = self.orderdao
-        return orderdao.mark_as_en_route(id_order)
+        if id_order <= 0:
+            return False
+        return self.orderdao.mark_as_en_route(id_order)
 
     @log
     def get_order_products(self, id_order: int) -> List[Dict[str, Any]]:
         """Récupère les produits liés à une commande"""
-        orderdao = self.orderdao
         if id_order <= 0:
             return []
-        return orderdao.get_order_products(id_order)
+        return self.orderdao.get_order_products(id_order)
 
     @log
     def get_by_id(self, id_order: int) -> Optional[Dict[str, Any]]:
         """Récupère une commande, son adresse et ses produits"""
-        orderdao = self.orderdao
         if id_order <= 0:
             return None
-
-        return orderdao.get_by_id(id_order)
+        return self.orderdao.get_by_id(id_order)['order']
 
     @log
     def list_all_orders(self) -> List[Dict[str, Any]]:
         """Retourne toutes les commandes avec leurs produits"""
-        orderdao = self.orderdao
-        return orderdao.list_all_orders()
+        return self.orderdao.list_all_orders()
 
     @log
     def list_all_orders_ready(self) -> List[Dict[str, Any]]:
-        """Retourne toutes les commandes prêtes avec leurs produits, l'adresse complète de la commande
-        et la date depuis qu'elles sont prêtes"""
-        orderdao = self.orderdao
-        return orderdao.list_all_orders_ready()
+        """Retourne toutes les commandes prêtes avec leurs produits et l'adresse complète"""
+        return self.orderdao.list_all_orders_ready()
 
     @log
     def get_assigned_orders(self, id_driver: int) -> List[Dict[str, Any]]:
         """Récupère les commandes en préparation pour un livreur"""
-        orderdao = self.orderdao
         if id_driver <= 0:
             return []
-        return orderdao.get_assigned_orders(id_driver)
+        return self.orderdao.get_assigned_orders(id_driver)
 
     @log
     def assign_order(self, id_driver: int, id_order: int) -> bool:
-        """Assign the order id_order to the driver id_driver"""
-        orderdao = self.orderdao
+        """Assigne une commande à un livreur"""
         if id_driver <= 0 or id_order <= 0:
             return False
-        else:
-            return orderdao.assign_order(id_driver, id_order)
+        return self.orderdao.assign_order(id_driver, id_order)

@@ -2,7 +2,7 @@ from InquirerPy import inquirer
 
 from src.CLI.view_abstract import VueAbstraite
 
-# from src.CLI.session import Session
+from src.CLI.session import Session
 
 from src.DAO.UserRepo import UserRepo
 from src.DAO.CustomerDAO import CustomerDAO
@@ -33,7 +33,7 @@ class LoginView(VueAbstraite):
         # Si le joueur a été trouvé à partir des ses identifiants de connexion
         if user:
             message = f"You are connected on the account {user.user_name}"
-            # Session().connexion(joueur)
+            Session().connexion(user)
 
             from src.CLI.menu_customer import MenuView
 

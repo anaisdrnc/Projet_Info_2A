@@ -12,13 +12,20 @@ class ProductView(VueAbstraite):
     """
 
     def choisir_menu(self):
-        productdao = ProductDAO(DBConnector)
+        productdao = ProductDAO(DBConnector(test = False))
         productservice = ProductService(productdao)
 
-        list_products = productservice.get_list_products_descriptions()
+        raw_list_products = productservice.get_available_products()
+        list_products = []
+        for product in raw_list_products:
+            name = product["name"]
+            description = product["description"]
+            price = product["price"]
+            list_products.append([name, description, price])
 
         from src.CLI.menu_customer import MenuView
 
-        products_str = f"Liste des produits disponibles : \n\n"
-        products_str += str(list_products)
+        products_str = f"List of available products : \n\n"
+        for product in list_products:
+            products_str += f" {product[0]}, ingredients : {product[1]}, price : {product[2]} \n"
         return MenuView(products_str)

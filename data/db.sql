@@ -79,7 +79,7 @@ CREATE TABLE default_schema.product (
 CREATE TABLE default_schema.orders (
     id_order            SERIAL PRIMARY KEY,
     id_customer         INT NOT NULL,
-    id_driver           INT NOT NULL,
+    id_driver           INT,
     id_address          INT NOT NULL,
     date                TIMESTAMP NOT NULL DEFAULT NOW(),
     status              VARCHAR(30) NOT NULL,

@@ -45,7 +45,7 @@ class ProductDAO:
                 {
                     "name": product.name,
                     "price": product.price,
-                    "production_cost": product.production_cost,  # corrigé
+                    "production_cost": product.production_cost,
                     "description": product.description,
                     "product_type": product.product_type,
                     "stock": product.stock,
@@ -156,3 +156,13 @@ class ProductDAO:
         except Exception as e:
             logging.info(f"Erreur get_available_products: {e}")
             return []
+
+    @log
+    def get_id_by_productname(self, product_name: str):
+        raw_id = self.db_connector.sql_query(
+            "SELECT id_product from product WHERE name=%s", [product_name], "one"
+        )
+        if raw_id is None:
+            return None
+        # pyrefly: ignore
+        return raw_id['id_product']

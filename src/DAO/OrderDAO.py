@@ -1,10 +1,13 @@
 from datetime import datetime
 from typing import Any, Dict, List, Optional
+import logging
 
 from src.DAO.DBConnector import DBConnector
 from src.DAO.ProductDAO import ProductDAO
 from src.Model.Address import Address
 from src.Model.Order import Order
+
+from utils.log_decorator import log
 
 
 class OrderDAO:
@@ -13,7 +16,9 @@ class OrderDAO:
     def __init__(self, db_connector=None):
         """Initialize a new OrderDAO instance with a database connector."""
         self.db_connector = db_connector if db_connector is not None else DBConnector()
+        self.productdao = ProductDAO(self.db_connector)
 
+    @log
     def create_order(self, order: Order) -> Optional[int]:
         """Crée une nouvelle commande avec l'adresse déjà insérée en base."""
         try:
@@ -44,31 +49,35 @@ class OrderDAO:
             print(f"Error creating order: {e}")
             return None
 
-    def add_product(self, order_id: int, product_id: int, quantity: int) -> bool:
+    @log
+    def add_product(self, order_id: int, product_id: int, quantity: int = 1) -> bool:
         """
-        Ajoute un produit à la commande et décrémente le stock.
+        Ajoute un produit à la commande, décrémente le stock via ProductDAO.
         """
-        productdao = ProductDAO(DBConnector())
-        success_stock = productdao.decrement_stock(product_id, quantity)
-        if not success_stock:
-            print(f"Stock insuffisant pour le produit {product_id}")
-            return False
-
         try:
-            self.db_connector.sql_query(
+            # Diminuer le stock
+            success = self.productdao.decrement_stock(product_id, quantity)
+            if not success:
+                logging.warning(f"Stock insuffisant pour le produit {product_id}")
+                return False
+
+            # Ajouter le produit à la commande
+            res = self.db_connector.sql_query(
                 """
                 INSERT INTO order_products (id_order, id_product, quantity)
                 VALUES (%s, %s, %s)
+                RETURNING id_order;
                 """,
                 [order_id, product_id, quantity],
-                return_type=None,
+                "one",
             )
-            return True
+            return res is not None
         except Exception as e:
-            print(f"Error adding product: {e}")
+            logging.error(f"Erreur add_product: {e}")
             self.productdao.increment_stock(product_id, quantity)
             return False
 
+    @log
     def remove_product(self, order_id: int, product_id: int, quantity: int = 1) -> bool:
         """Supprime un produit de la commande et remet le stock."""
         try:
@@ -92,6 +101,7 @@ class OrderDAO:
             print(f"Error removing product: {e}")
             return False
 
+    @log
     def cancel_order(self, id_order: int) -> bool:
         try:
             res = self.db_connector.sql_query(
@@ -104,6 +114,7 @@ class OrderDAO:
             print(f"Error cancelling order: {e}")
             return False
 
+    @log
     def mark_as_delivered(self, id_order: int) -> bool:
         try:
             res = self.db_connector.sql_query(
@@ -116,6 +127,7 @@ class OrderDAO:
             print(f"Error marking order delivered: {e}")
             return False
 
+    @log
     def mark_as_ready(self, id_order: int) -> bool:
         try:
             res = self.db_connector.sql_query(
@@ -128,6 +140,7 @@ class OrderDAO:
             print(f"Error marking order ready: {e}")
             return False
 
+    @log
     def mark_as_en_route(self, id_order: int) -> bool:
         try:
             res = self.db_connector.sql_query(
@@ -140,6 +153,7 @@ class OrderDAO:
             print(f"Error marking order en route: {e}")
             return False
 
+    @log
     def get_order_products(self, order_id: int) -> List[Dict[str, Any]]:
         """Récupère tous les produits liés à une commande."""
         try:
@@ -158,6 +172,7 @@ class OrderDAO:
             print(f"Error fetching order products: {e}")
             return []
 
+    @log
     def get_by_id(self, order_id: int) -> Optional[Dict[str, Any]]:
         """Récupère une commande et les produits associés (sans modifier Order)."""
         try:
@@ -197,6 +212,7 @@ class OrderDAO:
             print(f"Error fetching order: {e}")
             return None
 
+    @log
     def list_all_orders(self) -> List[Dict[str, Any]]:
         """Retourne toutes les commandes avec leurs produits."""
         try:
@@ -211,14 +227,23 @@ class OrderDAO:
             print(f"Error listing all orders: {e}")
             return []
 
+    @log
     def list_all_orders_ready(self) -> List[Dict[str, Any]]:
-        """Returns all ready orders ordered chronologically with their complete address."""
+        """Retourne toutes les commandes prêtes avec leurs produits et l'adresse complète."""
         try:
+            # Retrait du hardcodage 'default_schema'
             raw_orders = self.db_connector.sql_query(
-                "SELECT o.id_order, o.date, a.address, a.city, a.postal_code FROM default_schema.orders o JOIN default_schema.address a ON o.id_address = a.id_address WHERE o.status = 'Ready' ORDER BY o.date ",
+                """
+                SELECT o.id_order, o.date, a.address, a.city, a.postal_code
+                FROM orders o
+                JOIN address a ON o.id_address = a.id_address
+                WHERE o.status = 'Ready'
+                ORDER BY o.date
+                """,
                 None,
                 "all",
             )
+
             result = []
             for o in raw_orders:
                 order_data = self.get_by_id(o["id_order"])
@@ -229,6 +254,7 @@ class OrderDAO:
             print(f"Error listing all ready orders: {e}")
             return []
 
+    @log
     def get_assigned_orders(self, driver_id: int) -> List[Dict[str, Any]]:
         """Récupère les commandes en préparation pour un livreur."""
         try:
@@ -242,6 +268,7 @@ class OrderDAO:
             print(f"Error fetching assigned orders: {e}")
             return []
 
+    @log
     def assign_order(self, id_driver: int, id_order: int) -> bool:
         """Assign the order id_order to the driver id_driver"""
         try:

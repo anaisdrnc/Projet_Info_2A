@@ -1,6 +1,7 @@
 from InquirerPy import inquirer
 
 from src.CLI.view_abstract import VueAbstraite
+from src.CLI.session import Session
 
 
 from src.Service.CustomerService import CustomerService
@@ -44,13 +45,15 @@ class MenuView(VueAbstraite):
         match choix:
             case "Log out":
                 from src.CLI.opening.openingview import OpeningView
+                Session.deconnexion()
 
                 return OpeningView()
 
             case "Place an order":
                 pass
-                # joueurs_str = JoueurService().afficher_tous()
-                # return MenuJoueurVue(joueurs_str)
+                from src.CLI.place_order_view import PlaceOrderView
+
+                return PlaceOrderView()
 
             case "Get menu":
                 from src.CLI.products_view import ProductView

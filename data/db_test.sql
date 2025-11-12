@@ -79,8 +79,8 @@ CREATE TABLE test.product (
 CREATE TABLE test.orders (
     id_order            SERIAL PRIMARY KEY,
     id_customer         INT NOT NULL,
-    id_driver           INT NOT NULL,
-    id_address          INT NOT NULL,
+    id_driver           INT,
+    id_address          INT NOT NUll,
     date                TIMESTAMP NOT NULL DEFAULT NOW(),
     status              VARCHAR(30) NOT NULL,
     nb_items            INT CHECK (nb_items >= 0),
