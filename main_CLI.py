@@ -2,8 +2,8 @@ import logging
 
 import dotenv
 
-from utils.log_init import initialiser_logs
 from src.CLI.opening.openingview import OpeningView
+from utils.log_init import initialiser_logs
 
 if __name__ == "__main__":
     # On charge les variables d'envionnement
@@ -28,8 +28,7 @@ if __name__ == "__main__":
             logging.error(f"{type(e).__name__} : {e}", exc_info=True)
             nb_erreurs += 1
             vue_courante = OpeningView(
-                "Une erreur est survenue, retour au menu principal.\n"
-                "Consultez les logs pour plus d'informations."
+                "Une erreur est survenue, retour au menu principal.\nConsultez les logs pour plus d'informations."
             )
 
     # Lorsque l on quitte l application

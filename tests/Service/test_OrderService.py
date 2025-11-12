@@ -1,5 +1,7 @@
 from unittest.mock import MagicMock, Mock, patch
 
+import pytest
+
 from src.Model.Address import Address
 from src.Model.Order import Order
 from src.Service.OrderService import OrderService
@@ -7,9 +9,7 @@ from src.Service.OrderService import OrderService
 
 @pytest.fixture
 def mock_dao():
-    return (
-        Mock()
-    )  # Simulates any objects that allows for more flexibility during testing
+    return Mock()  # Simulates any objects that allows for more flexibility during testing
 
 
 def test_add_product_ok(mock_dao):
@@ -180,9 +180,7 @@ def test_list_all_orders_ok():
         {"order": MagicMock(), "address": MagicMock(), "products": [{"id_product": 2}]},
     ]
 
-    with patch(
-        "src.Service.OrderService.OrderDAO.list_all_orders", return_value=fake_orders
-    ):
+    with patch("src.Service.OrderService.OrderDAO.list_all_orders", return_value=fake_orders):
         service = OrderService()
         result = service.list_all_orders()
 
@@ -223,9 +221,7 @@ def test_get_assigned_orders_ok():
 
 def test_get_assigned_orders_empty():
     """Livreur sans commandes → retourne []"""
-    with patch(
-        "src.Service.OrderService.OrderDAO.get_assigned_orders", return_value=[]
-    ):
+    with patch("src.Service.OrderService.OrderDAO.get_assigned_orders", return_value=[]):
         service = OrderService()
         result = service.get_assigned_orders(5)
         assert result == []
