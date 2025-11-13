@@ -1,6 +1,7 @@
+import logging
+
 from src.DAO.AdminDAO import AdminDAO
 from src.DAO.DBConnector import DBConnector
-import logging
 
 # from src.DAO.UserRepo import UserRepo
 from src.Model.Admin import Admin
@@ -17,9 +18,7 @@ class AdminService:
         self.admindao = admindao
 
     @log
-    def create_admin(
-        self, username: str, password: str, firstname: str, lastname: str, email: str
-    ) -> Admin:
+    def create_admin(self, username: str, password: str, firstname: str, lastname: str, email: str) -> Admin:
         """
         Crée un nouveau admin :
         - Vérifie la force du mot de passe
@@ -31,7 +30,7 @@ class AdminService:
         check_password_strength(password)
         salt = create_salt()
         hashed_password = hash_password(password, sel=salt)
-        new_user = User(
+        new_user = Admin(  # j'ai changé le USER en admin sinon les tests ne passent pas
             user_name=username,
             password=hashed_password,
             first_name=firstname,
@@ -49,7 +48,5 @@ class AdminService:
         try:
             return self.admindao.get_by_username(username)
         except Exception as e:
-            logging.error(
-                f"[AdminService] Erreur lors de la récupération de l'admin {username}: {e}"
-            )
+            logging.error(f"[AdminService] Erreur lors de la récupération de l'admin {username}: {e}")
             return None
