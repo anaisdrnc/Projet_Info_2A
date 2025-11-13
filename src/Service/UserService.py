@@ -35,9 +35,8 @@ class UserService:
             email=email,
             salt=salt,
         )
-        if user_repo.add_user(new_user) is not None:
-            return new_user
-        return None
+        new_user_added = user_repo.add_user(new_user)
+        return new_user_added
 
     @log
     def get_user(self, user_id: int) -> User | None:
