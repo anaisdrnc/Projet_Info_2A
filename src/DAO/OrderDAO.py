@@ -69,7 +69,7 @@ class OrderDAO:
                 VALUES (%s, %s, %s)
                 """,
                 [order_id, product_id, quantity],
-                return_type=None
+                return_type=None,
             )
 
             # Récupérer le prix du produit
@@ -92,7 +92,7 @@ class OrderDAO:
                 WHERE id_order = %s
                 """,
                 [quantity, total_add, order_id],
-                return_type=None
+                return_type=None,
             )
 
             return True
@@ -102,9 +102,6 @@ class OrderDAO:
             # rollback partiel : remettre le stock
             self.productdao.increment_stock(product_id, quantity)
             return False
-
-
-
 
     @log
     def remove_product(self, order_id: int, product_id: int, quantity: int = 1) -> bool:
@@ -120,7 +117,9 @@ class OrderDAO:
                 "one",
             )
             if not row:
-                logging.warning(f"Produit {product_id} non trouvé dans la commande {order_id}")
+                logging.warning(
+                    f"Produit {product_id} non trouvé dans la commande {order_id}"
+                )
                 return False
 
             current_qty = row["quantity"]
@@ -131,13 +130,13 @@ class OrderDAO:
                 self.db_connector.sql_query(
                     "DELETE FROM order_products WHERE id_order = %s AND id_product = %s",
                     [order_id, product_id],
-                    return_type=None
+                    return_type=None,
                 )
             else:
                 self.db_connector.sql_query(
                     "UPDATE order_products SET quantity = quantity - %s WHERE id_order = %s AND id_product = %s",
                     [remove_qty, order_id, product_id],
-                    return_type=None
+                    return_type=None,
                 )
 
             # Remettre le stock
@@ -160,7 +159,7 @@ class OrderDAO:
                 WHERE id_order = %s
                 """,
                 [remove_qty, total_reduce, order_id],
-                return_type=None
+                return_type=None,
             )
 
             return True
@@ -168,7 +167,6 @@ class OrderDAO:
         except Exception as e:
             logging.error(f"Erreur remove_product: {e}")
             return False
-
 
     @log
     def cancel_order(self, id_order: int) -> bool:
@@ -240,7 +238,6 @@ class OrderDAO:
         except Exception as e:
             print(f"Error fetching order products: {e}")
             return []
-
 
     @log
     def get_by_id(self, order_id: int) -> Optional[Dict[str, Any]]:

@@ -301,4 +301,3 @@ def test_get_id_by_productname(dao):
     dao.create_product(product)
     id_product = dao.get_id_by_productname("test_id")
     assert id_product == product.id_product
-

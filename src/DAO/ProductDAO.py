@@ -165,4 +165,4 @@ class ProductDAO:
         if raw_id is None:
             return None
         # pyrefly: ignore
-        return raw_id['id_product']
+        return raw_id["id_product"]

@@ -1,6 +1,7 @@
 from datetime import datetime
 
-class Session():
+
+class Session:
     """Stocke les données liées à une session.
     Cela permet par exemple de connaitre le joueur connecté à tout moment
     depuis n'importe quelle classe.

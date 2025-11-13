@@ -12,7 +12,7 @@ class ProductView(VueAbstraite):
     """
 
     def choisir_menu(self):
-        productdao = ProductDAO(DBConnector(test = False))
+        productdao = ProductDAO(DBConnector(test=False))
         productservice = ProductService(productdao)
 
         raw_list_products = productservice.get_available_products()
@@ -27,5 +27,7 @@ class ProductView(VueAbstraite):
 
         products_str = f"List of available products : \n\n"
         for product in list_products:
-            products_str += f" {product[0]}, ingredients : {product[1]}, price : {product[2]} \n"
+            products_str += (
+                f" {product[0]}, ingredients : {product[1]}, price : {product[2]} \n"
+            )
         return MenuView(products_str)

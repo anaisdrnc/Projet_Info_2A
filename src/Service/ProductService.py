@@ -65,7 +65,6 @@ class ProductService:
         return self.productdao.increment_stock(product_id, quantity)
 
     @log
-    def get_id_by_name(self, product_name : str) -> int:
+    def get_id_by_name(self, product_name: str) -> int:
         """Get the id from the name of a product"""
         return self.productdao.get_id_by_productname(product_name)
-

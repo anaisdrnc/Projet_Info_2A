@@ -106,5 +106,7 @@ class AdminDAO:
             )
 
         except Exception as e:
-            logging.error(f"[AdminDAO] Erreur lors de la récupération de l'admin '{username}': {e}")
+            logging.error(
+                f"[AdminDAO] Erreur lors de la récupération de l'admin '{username}': {e}"
+            )
             return None

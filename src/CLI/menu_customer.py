@@ -45,6 +45,7 @@ class MenuView(VueAbstraite):
         match choix:
             case "Log out":
                 from src.CLI.opening.openingview import OpeningView
+
                 Session.deconnexion()
 
                 return OpeningView()
