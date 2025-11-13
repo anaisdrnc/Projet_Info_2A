@@ -106,8 +106,8 @@ def test_create_order_ok(dao):
         id_customer=999,
         id_driver=999,
         id_address=addr.id_address,
-        nb_items=2,
-        total_amount=25.0,
+        nb_items=0,
+        total_amount=0,
         payment_method="Cash",
     )
     order_id = dao.create_order(order)
@@ -148,8 +148,8 @@ def test_add_product_ok(dao, productdao):
         id_customer=999,
         id_driver=999,
         id_address=addr.id_address,
-        nb_items=1,
-        total_amount=5.0,
+        nb_items=0,
+        total_amount=0,
         payment_method="Card",
     )
     order_id = dao.create_order(order)
@@ -205,8 +205,8 @@ def test_remove_product_ok(dao, productdao):
         id_customer=998,
         id_driver=999,
         id_address=addr.id_address,
-        nb_items=1,
-        total_amount=3.0,
+        nb_items=0,
+        total_amount=0,
         payment_method="Cash",
     )
     order_id = dao.create_order(order)
