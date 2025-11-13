@@ -30,7 +30,7 @@ class CustomerService:
         check_password_strength(password)
         salt = create_salt()
         hashed_password = hash_password(password, sel=salt)
-        new_user = User(
+        new_customer = Customer(
             user_name=username,
             password=hashed_password,
             first_name=firstname,
@@ -39,4 +39,4 @@ class CustomerService:
             salt=salt,
         )
 
-        return customerdao.add_customer(new_user)
+        return customerdao.add_customer(new_customer)
