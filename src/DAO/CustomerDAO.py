@@ -19,7 +19,7 @@ class CustomerDAO:
             # Ajouter l'utilisateur via UserRepo
             id_user = self.user_repo.add_user(customer)
             if not id_user:
-                return False
+                return None
 
             # Insérer dans customer
             customer_res = self.db_connector.sql_query(
@@ -34,11 +34,11 @@ class CustomerDAO:
 
             if customer_res and "id_customer" in customer_res:
                 customer.id_customer = customer_res["id_customer"]
-                return True
+                return customer
 
         except Exception as e:
             logging.info(e)
-        return False
+        return None
 
     def get_by_id(self, customer_id: int) -> Optional[Customer]:
         """Récupérer un client par son ID customer."""
