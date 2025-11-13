@@ -1,16 +1,15 @@
 from InquirerPy import inquirer
 
 from src.CLI.menu_customer import MenuView
-
-from src.Service.OrderService import OrderService
-from src.Service.ProductService import ProductService
-from src.Service.AddressService import AddressService
-from src.CLI.view_abstract import VueAbstraite
 from src.CLI.session import Session
-from src.DAO.ProductDAO import ProductDAO
-from src.DAO.OrderDAO import OrderDAO
+from src.CLI.view_abstract import VueAbstraite
 from src.DAO.AddressDAO import AddressDAO
 from src.DAO.DBConnector import DBConnector
+from src.DAO.OrderDAO import OrderDAO
+from src.DAO.ProductDAO import ProductDAO
+from src.Service.AddressService import AddressService
+from src.Service.OrderService import OrderService
+from src.Service.ProductService import ProductService
 
 
 class PlaceOrderView(VueAbstraite):
@@ -62,9 +61,7 @@ class PlaceOrderView(VueAbstraite):
 
         while choice == "add a product to the order" and nb_iterations < 50:
             list_products_proposed = {
-                product
-                for product in list_products
-                if product not in list_choosen_products_names
+                product for product in list_products if product not in list_choosen_products_names
             }
             product = inquirer.select(
                 message="Choose a product : ",
@@ -87,25 +84,17 @@ class PlaceOrderView(VueAbstraite):
         nb_items = len(quantities)
 
         # get the address where the order is to be delivered
-        address = inquirer.text(
-            message="Enter your address (ex : 51 rue Blaise Pascal) :"
-        ).execute()
+        address = inquirer.text(message="Enter your address (ex : 51 rue Blaise Pascal) :").execute()
         city = inquirer.text(message="Enter your city (ex: Bruz):").execute()
-        postal_code = inquirer.text(
-            message="Enter your postal code (ex: 35 170) :"
-        ).execute()
-        address_order = address_service.add_address(
-            address=address, city=city, postal_code=postal_code
-        )
+        postal_code = inquirer.text(message="Enter your postal code (ex: 35 170) :").execute()
+        address_order = address_service.add_address(address=address, city=city, postal_code=postal_code)
         if address_order == None:
             return MenuView(f"Your address is incorrect. Please try again.")
         else:
             id_address = address_order.id_address
 
         # payment method
-        payment_method = inquirer.select(
-            message="Select a payment method :", choices=["Cash", "Card"]
-        ).execute()
+        payment_method = inquirer.select(message="Select a payment method :", choices=["Cash", "Card"]).execute()
 
         # creating the order
         order = order_service.create(
@@ -123,9 +112,7 @@ class PlaceOrderView(VueAbstraite):
             product = list_choosen_products_names[i]
             quantity = quantities[i]
             id_product = product_service.get_id_by_name(product)
-            added = order_service.add_product_to_order(
-                order_id=id_order, product_id=id_product, quantity=int(quantity)
-            )
+            added = order_service.add_product_to_order(order_id=id_order, product_id=id_product, quantity=int(quantity))
 
         message = "Order validated"
         return MenuView(message=message)

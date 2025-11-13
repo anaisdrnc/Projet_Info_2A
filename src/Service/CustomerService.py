@@ -39,6 +39,4 @@ class CustomerService:
             salt=salt,
         )
 
-        if customerdao.add_customer(new_user) is not None:
-            return new_user
-        return None
+        return customerdao.add_customer(new_user)
