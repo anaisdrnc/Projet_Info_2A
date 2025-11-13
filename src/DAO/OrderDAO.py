@@ -52,7 +52,8 @@ class OrderDAO:
     @log
     def add_product(self, order_id: int, product_id: int, quantity: int = 1) -> bool:
         """
-        Ajoute un produit à la commande, décrémente le stock via ProductDAO.
+        Ajoute un produit à la commande, décrémente le stock via ProductDAO,
+        et met à jour nb_items et total_amount dans orders.
         """
         try:
             # Diminuer le stock
@@ -61,45 +62,113 @@ class OrderDAO:
                 logging.warning(f"Stock insuffisant pour le produit {product_id}")
                 return False
 
-            # Ajouter le produit à la commande
-            res = self.db_connector.sql_query(
+            # Ajouter le produit à order_products (sans RETURNING et sans fetch)
+            self.db_connector.sql_query(
                 """
                 INSERT INTO order_products (id_order, id_product, quantity)
                 VALUES (%s, %s, %s)
-                RETURNING id_order;
                 """,
                 [order_id, product_id, quantity],
+                return_type=None
+            )
+
+            # Récupérer le prix du produit
+            product = self.db_connector.sql_query(
+                "SELECT price FROM product WHERE id_product = %s",
+                [product_id],
                 "one",
             )
-            return res is not None
+            if not product:
+                raise Exception("Produit introuvable pour mise à jour commande")
+
+            total_add = float(product["price"]) * quantity
+
+            # Mettre à jour la commande (nb_items et total_amount)
+            self.db_connector.sql_query(
+                """
+                UPDATE orders
+                SET nb_items = COALESCE(nb_items, 0) + %s,
+                    total_amount = COALESCE(total_amount, 0) + %s
+                WHERE id_order = %s
+                """,
+                [quantity, total_add, order_id],
+                return_type=None
+            )
+
+            return True
+
         except Exception as e:
             logging.error(f"Erreur add_product: {e}")
+            # rollback partiel : remettre le stock
             self.productdao.increment_stock(product_id, quantity)
             return False
 
+
+
+
     @log
     def remove_product(self, order_id: int, product_id: int, quantity: int = 1) -> bool:
-        """Supprime un produit de la commande et remet le stock."""
+        """
+        Supprime un produit de la commande, remet le stock,
+        et met à jour nb_items et total_amount dans orders.
+        """
         try:
-            res = self.db_connector.sql_query(
-                """
-                DELETE FROM order_products
-                WHERE id_order = %s AND id_product = %s
-                RETURNING id_order
-                """,
+            # Vérifier si le produit est bien dans la commande et sa quantité
+            row = self.db_connector.sql_query(
+                "SELECT quantity FROM order_products WHERE id_order = %s AND id_product = %s",
                 [order_id, product_id],
-                return_type="one",
+                "one",
+            )
+            if not row:
+                logging.warning(f"Produit {product_id} non trouvé dans la commande {order_id}")
+                return False
+
+            current_qty = row["quantity"]
+            remove_qty = min(quantity, current_qty)
+
+            # Supprimer ou mettre à jour la quantité dans order_products
+            if current_qty == remove_qty:
+                self.db_connector.sql_query(
+                    "DELETE FROM order_products WHERE id_order = %s AND id_product = %s",
+                    [order_id, product_id],
+                    return_type=None
+                )
+            else:
+                self.db_connector.sql_query(
+                    "UPDATE order_products SET quantity = quantity - %s WHERE id_order = %s AND id_product = %s",
+                    [remove_qty, order_id, product_id],
+                    return_type=None
+                )
+
+            # Remettre le stock
+            self.productdao.increment_stock(product_id, remove_qty)
+
+            # Récupérer le prix du produit
+            product = self.db_connector.sql_query(
+                "SELECT price FROM product WHERE id_product = %s",
+                [product_id],
+                "one",
+            )
+            total_reduce = float(product["price"]) * remove_qty
+
+            # Mettre à jour la commande (nb_items et total_amount)
+            self.db_connector.sql_query(
+                """
+                UPDATE orders
+                SET nb_items = COALESCE(nb_items, 0) - %s,
+                    total_amount = COALESCE(total_amount, 0) - %s
+                WHERE id_order = %s
+                """,
+                [remove_qty, total_reduce, order_id],
+                return_type=None
             )
 
-            if res:
-                # Remettre le stock
-                self.productdao.increment_stock(product_id, quantity)
-                return True
+            return True
 
-            return False
         except Exception as e:
-            print(f"Error removing product: {e}")
+            logging.error(f"Erreur remove_product: {e}")
             return False
+
 
     @log
     def cancel_order(self, id_order: int) -> bool:
@@ -171,6 +240,7 @@ class OrderDAO:
         except Exception as e:
             print(f"Error fetching order products: {e}")
             return []
+
 
     @log
     def get_by_id(self, order_id: int) -> Optional[Dict[str, Any]]:
