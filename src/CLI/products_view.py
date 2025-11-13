@@ -1,8 +1,8 @@
 from InquirerPy import inquirer
 
 from src.CLI.view_abstract import VueAbstraite
-from src.DAO.ProductDAO import ProductDAO
 from src.DAO.DBConnector import DBConnector
+from src.DAO.ProductDAO import ProductDAO
 from src.Service.ProductService import ProductService
 
 
