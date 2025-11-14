@@ -212,7 +212,7 @@ class ManageOrderView(VueAbstraite):
         return MenuDriver(message=message)
 
 
-# Fonction main pour utilisation standalone (comme dans votre code original)
+# Fonction main pour utilisation standalone
 # def main():
 #     """Fonction main pour lancer le gestionnaire de commandes standalone"""
 #     view = ManageOrderView()
