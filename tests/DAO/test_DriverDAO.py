@@ -246,6 +246,11 @@ def test_delete_driver_ko(dao):
     deleted = dao.delete(999999)
     assert not deleted
 
-def get_by
+
+def test_get_id_driver_by_id_user(dao):
+    result = dao.get_id_driver_by_id_user(4)
+    assert result.id_driver == 3
+
+
 if __name__ == "__main__":
     pytest.main([__file__])
