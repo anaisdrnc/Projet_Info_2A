@@ -75,7 +75,21 @@ class UserRepo:
         if raw_user is None:
             return None
         # pyrefly: ignore
-        return User(**raw_user)
+        id_user = raw_user["id_user"]
+        user_name = raw_user["user_name"]
+        first_name = raw_user["first_name"]
+        last_name = raw_user["last_name"]
+        email = raw_user["email"]
+        password = raw_user["password"]
+        salt = raw_user["salt"]
+        return User(
+            id = id_user, 
+            user_name = user_name, 
+            first_name = first_name,
+            last_name = last_name,
+            email = email,
+            password = password,
+            salt = salt)
 
     @log
     def get_all_users(self, include_password=False) -> list[User]:
