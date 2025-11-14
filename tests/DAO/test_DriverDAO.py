@@ -246,6 +246,6 @@ def test_delete_driver_ko(dao):
     deleted = dao.delete(999999)
     assert not deleted
 
-
+def get_by
 if __name__ == "__main__":
     pytest.main([__file__])
