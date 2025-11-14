@@ -130,11 +130,7 @@ class ManageOrderView(VueAbstraite):
         # Proposer d'accepter ou refuser
         choice = inquirer.select(
             message="Souhaitez-vous accepter cette livraison?",
-            choices=[
-                {"Accepter la livraison"},
-                {"Refuser la livraison"},
-                {"Retour au menu"},
-            ],
+            choices=["Accepter la livraison", "Refuser la livraison", "Retour au menu"],
         ).execute()
 
         if choice == "Accepter la livraison":
