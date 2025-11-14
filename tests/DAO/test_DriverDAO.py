@@ -5,10 +5,10 @@ from dotenv import load_dotenv
 
 from src.DAO.DBConnector import DBConnector
 from src.DAO.DriverDAO import DriverDAO
+from src.DAO.UserRepo import UserRepo
 from src.Model.Driver import Driver
 from utils.reset_database import ResetDatabase
 from utils.securite import hash_password
-from src.DAO.UserRepo import UserRepo
 
 load_dotenv()
 
@@ -245,6 +245,11 @@ def test_delete_driver_ok(dao):
 def test_delete_driver_ko(dao):
     deleted = dao.delete(999999)
     assert not deleted
+
+
+def test_get_id_driver_by_id_user(dao):
+    result = dao.get_id_driver_by_id_user(4)
+    assert result.id_driver == 3
 
 
 if __name__ == "__main__":

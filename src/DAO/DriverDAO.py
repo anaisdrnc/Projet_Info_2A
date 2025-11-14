@@ -189,11 +189,9 @@ class DriverDAO:
         return driver
 
     @log
-    def get_id_driver_locomotion_by_id_user(self, id_user) -> Optional[int]:
-        raw_driver = self.db_connector.sql_query(
-            "SELECT * from driver WHERE id_user =%s", [id_user], "one"
-        )
+    def get_id_driver_by_id_user(self, id_user) -> Optional[int]:
+        raw_driver = self.db_connector.sql_query("SELECT * from driver WHERE id_user =%s", [id_user], "one")
         if raw_driver is None:
             return None
         # pyrefly: ignore
-        return [raw_driver["id_driver"], raw_driver["mean_of_transport"]]
+        return raw_driver["id_driver"]

@@ -37,7 +37,7 @@ def test_create_ok(service):
         firstname="John",
         lastname="Doe",
         email="john.doe@test.com",
-        mean_of_transport="car"
+        mean_of_transport="Car"
     )
 
     # Assert
@@ -63,7 +63,7 @@ def test_create_driver_weak_password(service):
             firstname="Tim",
             lastname="Short",
             email="tim.short@test.com",
-            mean_of_transport="bike"
+            mean_of_transport="Bike"
         )
 
     assert "password" in str(excinfo.value).lower()
@@ -81,8 +81,8 @@ def test_get_by_username_ok(service):
         password="MyPassword99",
         firstname="Alice",
         lastname="Moran",
-        email="alice@test.com",
-        mean_of_transport="scooter"
+        email="alice2@test.com",
+        mean_of_transport="Car"
     )
 
     # Act
@@ -92,7 +92,7 @@ def test_get_by_username_ok(service):
     assert driver is not None
     assert isinstance(driver, Driver)
     assert driver.user_name == "DriverUser"
-    assert driver.email == "alice@test.com"
+    assert driver.email == "alice2@test.com"
 
 
 # ---------------------------------------------------------------------------
@@ -107,7 +107,7 @@ def test_login_ok(service):
         firstname="Laura",
         lastname="Sky",
         email="laura@test.com",
-        mean_of_transport="car"
+        mean_of_transport="Car"
     )
 
     # Act
@@ -127,7 +127,7 @@ def test_login_wrong_password(service):
         firstname="Mark",
         lastname="Stone",
         email="mark@test.com",
-        mean_of_transport="bike"
+        mean_of_transport="Bike"
     )
 
     # Act
@@ -149,10 +149,10 @@ def test_update_driver_ok(service):
         firstname="Paul",
         lastname="Rex",
         email="paul@test.com",
-        mean_of_transport="car"
+        mean_of_transport="Car"
     )
 
-    driver.mean_of_transport = "electric scooter"
+    driver.mean_of_transport = "Bike"
 
     # Act
     updated = service.update_driver(driver)
@@ -161,7 +161,7 @@ def test_update_driver_ok(service):
     assert updated is True
 
     refreshed = service.get_by_username("UpdateDriver")
-    assert refreshed.mean_of_transport == "electric scooter"
+    assert refreshed.mean_of_transport == "Bike"
 
 
 # ---------------------------------------------------------------------------
@@ -176,7 +176,7 @@ def test_delete_driver_ok(service):
         firstname="Lola",
         lastname="Briggs",
         email="lola@test.com",
-        mean_of_transport="bike"
+        mean_of_transport="Bike"
     )
 
     # Act

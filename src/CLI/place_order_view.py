@@ -10,6 +10,7 @@ from src.DAO.ProductDAO import ProductDAO
 from src.Service.AddressService import AddressService
 from src.Service.OrderService import OrderService
 from src.Service.ProductService import ProductService
+from src.Service.Google_Maps.check_address import check_address
 
 
 class PlaceOrderView(VueAbstraite):
@@ -88,7 +89,8 @@ class PlaceOrderView(VueAbstraite):
         city = inquirer.text(message="Enter your city (ex: Bruz):").execute()
         postal_code = inquirer.text(message="Enter your postal code (ex: 35 170) :").execute()
         address_order = address_service.add_address(address=address, city=city, postal_code=postal_code)
-        if address_order == None:
+        address_valid = check_address(address + city + postal_code)
+        if address_order is None or not address_valid:
             return MenuView(f"Your address is incorrect. Please try again.")
         else:
             id_address = address_order.id_address
@@ -107,12 +109,16 @@ class PlaceOrderView(VueAbstraite):
 
         id_order = order.id_order
 
+        message = "Order validated \n \n Summary : \n"
         # putting choosen products into the order
         for i in range(nb_items):
             product = list_choosen_products_names[i]
             quantity = quantities[i]
             id_product = product_service.get_id_by_name(product)
             added = order_service.add_product_to_order(order_id=id_order, product_id=id_product, quantity=int(quantity))
+            message += f"{product} quantity: {quantity} \n"
 
-        message = "Order validated"
+        message += "total price : " + str(total_amount) + " euros \n"
+        message += "address to be delivered : " + address + city + postal_code + " \n"
+        
         return MenuView(message=message)
