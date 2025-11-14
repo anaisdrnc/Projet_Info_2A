@@ -15,19 +15,18 @@ class UserService:
     @log
     def create_user(
         self, username: str, password: str, firstname: str, lastname: str, email: str
-    ) -> User:
+    ) -> int:
         """
-        Crée un nouvel utilisateur :
-        - Vérifie la force du mot de passe
-        - Génère un sel
-        - Hache le mot de passe
-        - Sauvegarde l'utilisateur via UserRepo
+        Crée un nouvel utilisateur et retourne son ID (int).
         """
         user_repo = self.user_repo
         check_password_strength(password)
         salt = create_salt()
         hashed_password = hash_password(password, sel=salt)
+
+        # Crée l'objet User
         new_user = User(
+            id=None,
             user_name=username,
             password=hashed_password,
             first_name=firstname,
@@ -35,8 +34,13 @@ class UserService:
             email=email,
             salt=salt,
         )
-        new_user_added = user_repo.add_user(new_user)
-        return new_user_added
+
+        # Insert en base → retourne un ID
+        new_user_id = user_repo.add_user(new_user)
+
+        return new_user_id
+
+
 
     @log
     def get_user(self, user_id: int) -> User | None:
