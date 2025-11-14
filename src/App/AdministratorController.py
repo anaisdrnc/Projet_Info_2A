@@ -23,9 +23,7 @@ def login_admin(username: str, password: str) -> JWTResponse:
     Authenticate an admin with username and password and obtain a token
     """
     try:
-        print(username)
         admin = admin_service.get_by_username(username)
-        print("hello"+username)
         if not admin or not admin_service.verify_password(password, admin.password, admin.salt):
             raise Exception("Invalid username or password")
     except Exception as error:
@@ -37,7 +35,7 @@ def login_admin(username: str, password: str) -> JWTResponse:
     return jwt_service.encode_jwt(admin.id_admin)
 
 
-@admin_router.get("/me", dependencies=[Depends(JWTBearer())])
+@admin_router.get("/me")
 def get_admin_own_profile(
     credentials: Annotated[HTTPAuthorizationCredentials, Depends(JWTBearer())],
 ) -> APIUser:
@@ -51,8 +49,11 @@ def get_admin_from_credentials(
     credentials: HTTPAuthorizationCredentials,
 ) -> APIUser:
     token = credentials.credentials
+    # Récupère l'id_admin encodé dans le JWT
     admin_id = int(jwt_service.validate_user_jwt(token))
-    admin: "Admin" | None = AdminService.get_by_id(admin_id)
+    # Récupère l'admin correspondant
+    admin = admin_service.get_by_id(admin_id)
     if not admin:
         raise HTTPException(status_code=404, detail="Admin not found")
-    return APIUser(id=admin.id_admin, username=admin.username)
+    return APIUser(id=admin.id_admin, username=admin.user_name, first_name=admin.first_name,
+    last_name=admin.last_name, email=admin.email)

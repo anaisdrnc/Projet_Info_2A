@@ -57,6 +57,17 @@ class AdminService:
             )
             return None
 
+
+    def get_by_id(self, admin_id: int) -> Admin | None:
+        """Récupère un administrateur à partir de son id_admin."""
+        try:
+            return self.admindao.get_by_id(admin_id)
+        except Exception as e:
+            logging.error(
+                f"[AdminService] Erreur lors de la récupération de l'admin id={admin_id}: {e}"
+            )
+            return None
+
     def verify_password(self, plain_password: str, hashed_password: str, salt: str) -> bool:
         """Vérifie si le mot de passe correspond au hash stocké."""
         return hash_password(plain_password, salt) == hashed_password

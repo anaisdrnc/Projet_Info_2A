@@ -110,3 +110,38 @@ class AdminDAO:
                 f"[AdminDAO] Erreur lors de la récupération de l'admin '{username}': {e}"
             )
             return None
+
+    def get_by_id(self, admin_id: int) -> Optional[Admin]:
+        """Récupérer un administrateur à partir de son id_admin."""
+        try:
+            res = self.db_connector.sql_query(
+                """
+                SELECT a.id_administrator AS id_admin, u.id_user, u.user_name, u.password, u.salt,
+                    u.first_name, u.last_name, u.email
+                FROM administrator a
+                JOIN users u ON a.id_user = u.id_user
+                WHERE a.id_administrator = %(admin_id)s;
+                """,
+                {"admin_id": admin_id},
+                "one",
+            )
+
+            if not res:
+                return None
+
+            return Admin(
+                id_admin=res["id_admin"],
+                id_user=res["id_user"],
+                user_name=res["user_name"],
+                password=res["password"],
+                salt=res["salt"],
+                first_name=res["first_name"],
+                last_name=res["last_name"],
+                email=res["email"],
+            )
+
+        except Exception as e:
+            logging.error(
+                f"[AdminDAO] Erreur lors de la récupération de l'admin id={admin_id}: {e}"
+            )
+            return None
