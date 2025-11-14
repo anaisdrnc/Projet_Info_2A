@@ -9,8 +9,9 @@ from utils.securite import hash_password
 
 
 class DriverDAO:
-    def __init__(self):
-        self.db_connector = DBConnector()
+    def __init__(self, db_connector=None):
+        """Initialise DriverDAO avec un connecteur DB."""
+        self.db_connector = db_connector or DBConnector()
         self.user_repo = UserRepo(self.db_connector)
 
     def create(self, driver: Driver) -> bool:
