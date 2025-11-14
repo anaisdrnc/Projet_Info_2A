@@ -131,6 +131,7 @@ def test_get_list_products_descriptions(service):
     for p in products_to_add:
         assert [p.name, p.description] in result_list
 
+
 def test_get_available_products(service):
     # Ajouter des produits avec différents stocks
     products = [
@@ -226,4 +227,3 @@ def test_increment_stock(service):
         "one",
     )
     assert raw["stock"] == 9  # 5 + 4
-

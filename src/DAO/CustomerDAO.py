@@ -4,6 +4,7 @@ from typing import Optional, List
 from src.DAO.DBConnector import DBConnector
 from src.DAO.UserRepo import UserRepo
 from src.Model.Customer import Customer
+from utils.log_decorator import log
 
 
 class CustomerDAO:
@@ -13,13 +14,14 @@ class CustomerDAO:
         self.db_connector = db_connector or DBConnector()
         self.user_repo = UserRepo(self.db_connector)
 
+    @log
     def add_customer(self, customer: Customer) -> bool:
         """Créer un client dans la DB (users + customer)."""
         try:
             # Ajouter l'utilisateur via UserRepo
             id_user = self.user_repo.add_user(customer)
             if not id_user:
-                return False
+                return None
 
             # Insérer dans customer
             customer_res = self.db_connector.sql_query(
@@ -34,12 +36,13 @@ class CustomerDAO:
 
             if customer_res and "id_customer" in customer_res:
                 customer.id_customer = customer_res["id_customer"]
-                return True
+                return customer
 
         except Exception as e:
             logging.info(e)
-        return False
-
+        return None
+    
+    @log
     def get_by_id(self, customer_id: int) -> Optional[Customer]:
         """Récupérer un client par son ID customer."""
         try:
@@ -71,6 +74,7 @@ class CustomerDAO:
             logging.info(e)
             return None
 
+    @log
     def update_customer(self, customer: Customer) -> bool:
         """Permet au client de mettre à jour ses informations."""
         try:
@@ -80,6 +84,7 @@ class CustomerDAO:
             logging.info(e)
             return False
 
+    @log
     def delete_customer(self, id_customer: int) -> bool:
         """Supprime un client et son user associé."""
         customer = self.get_by_id(id_customer)
@@ -108,3 +113,13 @@ class CustomerDAO:
         except Exception as e:
             logging.info(e)
             return False
+    
+    @log
+    def get_id_customer_by_id_user(self, id_user) -> Optional[int]:
+        raw_customer = self.db_connector.sql_query(
+            "SELECT * from customer WHERE id_user =%s", [id_user], "one"
+        )
+        if raw_customer is None:
+            return None
+        # pyrefly: ignore
+        return raw_customer["id_customer"]

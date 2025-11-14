@@ -20,7 +20,7 @@ class OrderService:
             nb_items=nb_items,
             total_amount=total_amount,
             payment_method=payment_method,
-            status="Preparing"
+            status="Preparing",
         )
         order.id_order = self.orderdao.create_order(order)
         if order.id_order:
@@ -92,7 +92,7 @@ class OrderService:
         """Récupère une commande, son adresse et ses produits"""
         if id_order <= 0:
             return None
-        return self.orderdao.get_by_id(id_order)['order']
+        return self.orderdao.get_by_id(id_order)["order"]
 
     @log
     def list_all_orders(self) -> List[Dict[str, Any]]:

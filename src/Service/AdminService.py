@@ -1,5 +1,7 @@
 import logging
 
+from utils.securite import hash_password
+
 from src.DAO.AdminDAO import AdminDAO
 from src.DAO.DBConnector import DBConnector
 
@@ -14,11 +16,13 @@ from utils.securite import hash_password
 class AdminService:
     """Class containing administrators service methods"""
 
-    def __init__(self, admindao=AdminDAO(DBConnector)):
-        self.admindao = admindao
+    def __init__(self, admindao=None):
+        self.admindao = admindao or AdminDAO(DBConnector())
 
     @log
-    def create_admin(self, username: str, password: str, firstname: str, lastname: str, email: str) -> Admin:
+    def create_admin(
+        self, username: str, password: str, firstname: str, lastname: str, email: str
+    ) -> Admin:
         """
         Crée un nouveau admin :
         - Vérifie la force du mot de passe
@@ -48,5 +52,11 @@ class AdminService:
         try:
             return self.admindao.get_by_username(username)
         except Exception as e:
-            logging.error(f"[AdminService] Erreur lors de la récupération de l'admin {username}: {e}")
+            logging.error(
+                f"[AdminService] Erreur lors de la récupération de l'admin {username}: {e}"
+            )
             return None
+
+    def verify_password(self, plain_password: str, hashed_password: str, salt: str) -> bool:
+        """Vérifie si le mot de passe correspond au hash stocké."""
+        return hash_password(plain_password, salt) == hashed_password

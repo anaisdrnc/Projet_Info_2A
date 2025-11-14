@@ -29,11 +29,12 @@ class LoginView(VueAbstraite):
         user = validate_username_password(
             username=pseudo, password=mdp, user_repo=user_repo
         )
+        id_customer = customerdao.get_id_customer_by_id_user(user.id)
 
         # Si le joueur a été trouvé à partir des ses identifiants de connexion
         if user:
             message = f"You are connected on the account {user.user_name}"
-            Session().connexion(user)
+            Session().connexion(user, id_customer)
 
             from src.CLI.menu_customer import MenuView
 

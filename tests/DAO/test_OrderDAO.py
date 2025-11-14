@@ -23,15 +23,18 @@ def setup_test_environment():
 
     ResetDatabase(test=True).lancer()
 
+
 @pytest.fixture
 def db():
     """Connexion unique à la base de test."""
     return DBConnector(test=True)
 
+
 @pytest.fixture
 def dao(db):
     """DAO commandes utilisant la même connexion que les produits."""
     return OrderDAO(db)
+
 
 @pytest.fixture
 def productdao(db):
@@ -568,7 +571,6 @@ def test_list_all_orders_ready(dao):
     for o in ready_orders:
         if o["order"].id_order == order_id:
             assert o["order"].status == "Ready"
-
 
 
 def test_get_assigned_orders_ok(dao):
