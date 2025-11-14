@@ -196,4 +196,4 @@ class DriverDAO:
         if raw_driver is None:
             return None
         # pyrefly: ignore
-        return raw_driver["id_driver"], raw_driver["mean_of_transport"]
+        return [raw_driver["id_driver"], raw_driver["mean_of_transport"]]
