@@ -1,8 +1,10 @@
 from datetime import datetime
+
 from utils.log_decorator import log
 from utils.singleton import Singleton
 
-class Session(metaclass = Singleton):
+
+class Session(metaclass=Singleton):
     """Stocke les données liées à une session.
     Cela permet par exemple de connaitre le joueur connecté à tout moment
     depuis n'importe quelle classe.
