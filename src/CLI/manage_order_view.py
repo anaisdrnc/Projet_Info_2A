@@ -1,9 +1,6 @@
-# manage_order.py
 import os
 import sys
-from datetime import datetime
 
-import folium
 import googlemaps
 from dotenv import load_dotenv
 from InquirerPy import inquirer
@@ -39,9 +36,31 @@ gmaps = googlemaps.Client(key=API_KEY)
 
 
 class ManageOrderView(VueAbstraite):
-    def __init__(self, message=""):
+    def __init__(self, message="", driver_id=None):
         super().__init__(message)
-        self.driver_id = Session().get_id_role()
+        if driver_id is not None:
+            self.driver_id = driver_id
+        else:
+            # Récupérer l'ID depuis la session
+            session = Session()
+            self.driver_id = session.get_id_role()
+            print(f"DEBUG: Session role = {session.get_role()}, id_role = {self.driver_id}")  # Pour debug
+            
+            # Si l'ID est None, essayer de le récupérer autrement
+            if self.driver_id is None:
+                print("DEBUG: ID est None, vérification de la session...")
+                # Essayer de récupérer l'ID via le username de la session
+                if hasattr(session, 'username') and session.username:
+                    try:
+                        driver_dao_temp = DriverDAO()
+                        driver = driver_dao_temp.get_by_username(session.username)
+                        if driver:
+                            self.driver_id = driver.id_driver
+                            print(f"DEBUG: ID récupéré via username: {self.driver_id}")
+                    except Exception as e:
+                        print(f"DEBUG: Erreur récupération ID via username: {e}")
+        
+        print(f"DEBUG: ManageOrderView.__init__ - driver_id final = {self.driver_id}")
         self.driver_dao = DriverDAO()
         self.order_service = OrderService(OrderDAO())
 
@@ -94,57 +113,81 @@ class ManageOrderView(VueAbstraite):
 
     def choisir_menu(self):
         """Menu principal de gestion des commandes pour les livreurs"""
-        print("\n" + "=" * 50)
-        print("        GESTION DES LIVRAISONS")
-        print("=" * 50)
+        while True:
+            print("\n" + "=" * 50)
+            print("        GESTION DES LIVRAISONS")
+            print("=" * 50)
 
-        # Vérifier si le driver existe
-        driver = self.driver_dao.get_by_id(self.driver_id)
-        if not driver:
-            error_message = "Erreur: Conducteur non trouvé"
-            from src.CLI.menu_driver import MenuDriver
+            # Vérifier si le driver existe
+            print("DEBUG: Début de choisir_menu")
 
-            return MenuDriver(message=error_message)
+            driver = self.driver_dao.get_by_id(self.driver_id)
 
-        # Récupérer les commandes disponibles
-        available_orders = self.get_available_orders()
+            print(f"DEBUG: Recherche driver avec ID = {self.driver_id}")
+            print(f"DEBUG: Driver trouvé = {driver}")
 
-        if not available_orders:
-            message = "Aucune commande disponible pour le moment."
-            print(message)
-            from src.CLI.menu_driver import MenuDriver
+            available_orders = self.get_available_orders()
+            print(f"DEBUG: Commandes disponibles: {len(available_orders)}")
 
-            return MenuDriver(message=message)
+            if not driver:
+                error_message = "Erreur: Conducteur non trouvé"
+                print(error_message)
+                from CLI.menu_driver import MenuDriver
+                return MenuDriver(message=error_message)
 
-        # Afficher la commande la plus ancienne
-        oldest_order = available_orders[0]
-        order_id = oldest_order["order"].id_order
-        order_address = oldest_order["address"]
+            # Récupérer les commandes disponibles
+            available_orders = self.get_available_orders()
 
-        print("\n COMMANDE DISPONIBLE:")
-        print(f"   ID: {order_id}")
-        print(f"   Adresse: {order_address.address}")
-        print(f"   Ville: {order_address.city} {order_address.postal_code}")
-        print(f"   Montant: {oldest_order['order'].total_amount}€")
+            if not available_orders:
+                message = "Aucune commande disponible pour le moment."
+                print(message)
 
-        # Proposer d'accepter ou refuser
-        choice = inquirer.select(
-            message="Souhaitez-vous accepter cette livraison?",
-            choices=["Accepter la livraison", "Refuser la livraison", "Retour au menu"],
-        ).execute()
+                # Proposer de rafraîchir ou retourner
+                choice = inquirer.select(
+                    message="Que voulez-vous faire?",
+                    choices=[
+                        "Rafraîchir la liste",
+                        "Retour au menu driver"
+                    ],
+                ).execute()
 
-        if choice == "Accepter la livraison":
-            return self.accept_delivery(oldest_order)
-        elif choice == "Refuser la livraison":
-            message = "Livraison refusée"
-            print(message)
-            from src.CLI.menu_driver import MenuDriver
+                if choice == "Rafraîchir la liste":
+                    continue  # RESTER dans la boucle
+                else:
+                    from CLI.menu_driver import MenuDriver
+                    return MenuDriver(message=message)
 
-            return MenuDriver(message=message)
-        else:  # back
-            from src.CLI.menu_driver import MenuDriver
+                return MenuDriver(message=message)
 
-            return MenuDriver()
+            # Afficher la commande la plus ancienne
+            oldest_order = available_orders[0]
+            order_id = oldest_order["order"].id_order
+            order_address = oldest_order["address"]
+
+            print("\n COMMANDE DISPONIBLE:")
+            print(f"   ID: {order_id}")
+            print(f"   Adresse: {order_address.address}")
+            print(f"   Ville: {order_address.city} {order_address.postal_code}")
+            print(f"   Montant: {oldest_order['order'].total_amount}€")
+
+            # Proposer d'accepter ou refuser
+            choice = inquirer.select(
+                message="Souhaitez-vous accepter cette livraison?",
+                choices=["Accepter la livraison", "Refuser la livraison", "Retour au menu"],
+            ).execute()
+
+            if choice == "Accepter la livraison":
+                return self.accept_delivery(oldest_order)
+            elif choice == "Refuser la livraison":
+                message = "Livraison refusée"
+                print(message)
+                from src.CLI.menu_driver import MenuDriver
+
+                return MenuDriver(message=message)
+            else:  # back
+                from src.CLI.menu_driver import MenuDriver
+
+                return MenuDriver()
 
     def accept_delivery(self, order_data):
         """Traite l'acceptation d'une livraison"""
@@ -203,9 +246,8 @@ class ManageOrderView(VueAbstraite):
             print("Impossible de calculer l'itinéraire")
 
         message = f"Livraison {order_id} acceptée! Itinéraire calculé."
-        from src.CLI.menu_driver import MenuDriver
-
-        return MenuDriver(message=message)
+        print(message)
+        return None
 
 
 # Fonction main pour utilisation standalone
@@ -227,23 +269,41 @@ def main():
         print("ID invalide")
         return
 
-    # Créer une session temporaire
+
+    # Créer une session temporaire qui fonctionne
     class TempSession:
+        def __init__(self, driver_id):
+            self.driver_id = int(driver_id)
+            
         def get_id_role(self):
-            return int(driver_id)
+            return self.driver_id
+        
+        def get_role(self):
+            return "driver"
 
     # Remplacer la session
-    import CLI.session as session_module
-
-    original_session = session_module.Session
-    session_module.Session = TempSession
-
     try:
-        view = ManageOrderView()
-        view.choisir_menu()
+        import CLI.session as session_module
+        
+        # Sauvegarder et remplacer
+        original_session_class = session_module.Session
+        session_module.Session = lambda: TempSession(driver_id)
+        
+        # Maintenant créer la vue
+        view = ManageOrderView(driver_id=int(driver_id))
+
+        result = view.choisir_menu()
+        
+    except Exception as e:
+        print(f"❌ Erreur lors de l'exécution: {e}")
+        import traceback
+        traceback.print_exc()
     finally:
         # Restaurer la session originale
-        session_module.Session = original_session
+        try:
+            session_module.Session = original_session_class
+        except:
+            pass
 
 
 if __name__ == "__main__":
