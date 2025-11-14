@@ -46,7 +46,7 @@ class MenuView(VueAbstraite):
             case "Log out":
                 from src.CLI.opening.openingview import OpeningView
 
-                Session.deconnexion()
+                Session().deconnexion()
 
                 return OpeningView()
 

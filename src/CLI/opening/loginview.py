@@ -32,7 +32,7 @@ class LoginView(VueAbstraite):
             username=pseudo, password=mdp, user_repo=user_repo
         )
         id_customer = customerdao.get_id_customer_by_id_user(user.id)
-        id_driver = driverdao.get_id_driver_locomotion_by_id_user(user.id)[0]
+        id_driver = driverdao.get_id_driver_locomotion_by_id_user(user.id)
 
         # Si le joueur a été trouvé à partir des ses identifiants de connexion
         if user:
