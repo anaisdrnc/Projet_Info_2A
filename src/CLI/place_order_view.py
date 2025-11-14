@@ -10,6 +10,7 @@ from src.DAO.ProductDAO import ProductDAO
 from src.Service.AddressService import AddressService
 from src.Service.OrderService import OrderService
 from src.Service.ProductService import ProductService
+from src.Service.Google_Maps.check_address import check_address
 
 
 class PlaceOrderView(VueAbstraite):
@@ -88,7 +89,8 @@ class PlaceOrderView(VueAbstraite):
         city = inquirer.text(message="Enter your city (ex: Bruz):").execute()
         postal_code = inquirer.text(message="Enter your postal code (ex: 35 170) :").execute()
         address_order = address_service.add_address(address=address, city=city, postal_code=postal_code)
-        if address_order == None:
+        address_valid = check_address(address + city + postal_code)
+        if address_order is None or not address_valid:
             return MenuView(f"Your address is incorrect. Please try again.")
         else:
             id_address = address_order.id_address
