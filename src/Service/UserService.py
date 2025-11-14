@@ -47,15 +47,6 @@ class UserService:
         return self.user_repo.get_by_id(user_id)
 
     @log
-    def get_all_users(self, include_password=False):
-        user_repo = self.user_repo
-        users = user_repo.get_all_users()
-        if not include_password:
-            for user in users:
-                user.password = None
-        return users
-
-    @log
     def is_username_taken(self, user_name):
         user_repo = self.user_repo
         answer = user_repo.is_username_taken(username=user_name)

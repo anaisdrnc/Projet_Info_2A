@@ -91,31 +91,6 @@ class UserRepo:
             password = password,
             salt = salt)
 
-    @log
-    def get_all_users(self, include_password=False) -> list[User]:
-        """List all the users, optionally including the password."""
-        raw_list = self.db_connector.sql_query("SELECT * FROM users")
-        if raw_list is None:
-            return []
-        print(raw_list)
-
-        list_users = []
-        for line in raw_list:
-            # line doit être un tuple : (id_user, first_name, last_name, user_name, password, email)
-            # if not isinstance(line, tuple) or len(line) < 6:
-            #    continue  # ignore invalid rows
-
-            user = User(
-                id=int(line["id_user"]),  # assure l'entier
-                first_name=str(line["first_name"]),
-                last_name=str(line["last_name"]),
-                user_name=str(line["user_name"]),
-                password=str(line["password"]) if include_password else None,
-                email=str(line["email"]),
-            )
-            list_users.append(user)
-
-        return list_users
 
     @log
     def get_password(self, username):
