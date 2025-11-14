@@ -55,6 +55,6 @@ class MenuDriver(VueAbstraite):
                 return ManageOrderView()
 
             case "Changer mes informations":
-                from src.CLI.products_view import ProductView
+                from src.CLI.change_profil_driver import ChangeProfilDriver
 
-                return ProductView()
+                return ChangeProfilDriver()

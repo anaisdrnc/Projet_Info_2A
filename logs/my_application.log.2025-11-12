@@ -1,0 +1,121 @@
+12/11/2025 18:48:21 - INFO     - --------------------------------------------------
+12/11/2025 18:48:21 - INFO     - Lancement Application                           
+12/11/2025 18:48:21 - INFO     - --------------------------------------------------
+12/11/2025 18:48:21 - INFO     - OpeningView
+12/11/2025 18:48:29 - INFO     - LoginView
+12/11/2025 18:49:17 - INFO     -     UserRepo.get_by_username('Vincdupont',) - DEBUT
+12/11/2025 18:49:17 - INFO     -     UserRepo.get_by_username('Vincdupont',) - FIN
+12/11/2025 18:49:17 - INFO     -        └─> Sortie : id=None user_name='Vincdupont' password='671ac9d528b52b5d47f8ab43c74d4584fba7af774cd8f376d96bf6c45b01b796' first_name='Vincent' last_name='Dupont' email='v.dupont@project.com' salt='j'
+12/11/2025 18:49:17 - ERROR    - Exception : Incorrect password
+Traceback (most recent call last):
+  File "/home/onyxia/work/Projet_Info_2A/main_CLI.py", line 26, in <module>
+    vue_courante = vue_courante.choisir_menu()
+  File "/home/onyxia/work/Projet_Info_2A/src/CLI/opening/loginview.py", line 29, in choisir_menu
+    user = validate_username_password(
+        username=pseudo, password=mdp, user_repo=user_repo
+    )
+  File "/home/onyxia/work/Projet_Info_2A/src/Service/PasswordService.py", line 41, in validate_username_password
+    raise Exception("Incorrect password")
+Exception: Incorrect password
+12/11/2025 18:49:17 - INFO     - OpeningView
+12/11/2025 18:49:33 - INFO     - InscriptionView
+12/11/2025 18:49:36 - INFO     -     UserService.is_username_taken('',) - DEBUT
+12/11/2025 18:49:36 - INFO     -         UserRepo.is_username_taken('',) - DEBUT
+12/11/2025 18:49:36 - INFO     -         UserRepo.is_username_taken('',) - FIN
+12/11/2025 18:49:36 - INFO     -            └─> Sortie : False
+12/11/2025 18:49:36 - INFO     -     UserService.is_username_taken('',) - FIN
+12/11/2025 18:49:36 - INFO     -        └─> Sortie : False
+12/11/2025 18:50:21 - INFO     - --------------------------------------------------
+12/11/2025 18:50:21 - INFO     - Lancement Application                           
+12/11/2025 18:50:21 - INFO     - --------------------------------------------------
+12/11/2025 18:50:21 - INFO     - OpeningView
+12/11/2025 18:50:24 - INFO     - InscriptionView
+12/11/2025 18:50:26 - INFO     -     UserService.is_username_taken('robin',) - DEBUT
+12/11/2025 18:50:26 - INFO     -         UserRepo.is_username_taken('robin',) - DEBUT
+12/11/2025 18:50:26 - INFO     -         UserRepo.is_username_taken('robin',) - FIN
+12/11/2025 18:50:26 - INFO     -            └─> Sortie : False
+12/11/2025 18:50:26 - INFO     -     UserService.is_username_taken('robin',) - FIN
+12/11/2025 18:50:26 - INFO     -        └─> Sortie : False
+12/11/2025 18:50:47 - INFO     -     CustomerService.create_customer('robin', '*****', 'robin', 'girard', 'bonjour@gmail.com') - DEBUT
+12/11/2025 18:50:47 - INFO     -         UserRepo.add_user("id=None user_name='robin' password='9ef702fc342e0e87a17d4b2942abb4052183764720cbef7de43241fbdbbff2d6' first_name='robin' last_name='girard' email='bonjour@gmail.com' salt='b24a2ea9166262495be51663cb769b1cfe32b923b747a9ed8ee01dcaf3c71746919d4f3b532d736941d79c00aa4dee712d4067eff5e87a3c2410fc33e8a677f4b8fe71ca145c00c0b95b1a4ae6e87633c5b3706ab7f72c2c2954e50f59172781cac863c41967720bf7ce6cffab19cabf376417988452c7f1e738b988ccfd8e2a'",) - DEBUT
+12/11/2025 18:50:48 - INFO     -         UserRepo.add_user("id=None user_name='robin' password='9ef702fc342e0e87a17d4b2942abb4052183764720cbef7de43241fbdbbff2d6' first_name='robin' last_name='girard' email='bonjour@gmail.com' salt='b24a2ea9166262495be51663cb769b1cfe32b923b747a9ed8ee01dcaf3c71746919d4f3b532d736941d79c00aa4dee712d4067eff5e87a3c2410fc33e8a677f4b8fe71ca145c00c0b95b1a4ae6e87633c5b3706ab7f72c2c2954e50f59172781cac863c41967720bf7ce6cffab19cabf376417988452c7f1e738b988ccfd8e2a'",) - FIN
+12/11/2025 18:50:48 - INFO     -            └─> Sortie : 8
+12/11/2025 18:50:48 - INFO     - "User" object has no field "id_customer"
+12/11/2025 18:50:48 - INFO     -     CustomerService.create_customer('robin', '*****', 'robin', 'girard', 'bonjour@gmail.com') - FIN
+12/11/2025 18:50:48 - INFO     -        └─> Sortie : id=8 user_name='robin' password='9ef702fc342e0e87a17d4b2942abb4052183764720cbef7de43241fbdbbff2d6' first_name='robin' last_name='girard' email='bonjour@gmail.com' salt='b24a2ea9166262495be51663cb769b1cfe32b923b747a9ed8ee01dcaf3c71746919d4f3b532d736941d79c00aa4dee712d4067eff5e87a3c2410fc33e8a677f4b8fe71ca145c00c0b95b1a4ae6e87633c5b3706ab7f72c2c2954e50f59172781cac863c41967720bf7ce6cffab19cabf376417988452c7f1e738b988ccfd8e2a'
+12/11/2025 18:50:48 - INFO     - OpeningView
+12/11/2025 18:50:49 - INFO     - LoginView
+12/11/2025 18:50:56 - INFO     -     UserRepo.get_by_username('robin',) - DEBUT
+12/11/2025 18:50:56 - INFO     -     UserRepo.get_by_username('robin',) - FIN
+12/11/2025 18:50:56 - INFO     -        └─> Sortie : id=None user_name='robin' password='9ef702fc342e0e87a17d4b2942abb4052183764720cbef7de43241fbdbbff2d6' first_name='robin' last_name='girard' email='bonjour@gmail.com' salt='b24a2ea9166262495be51663cb769b1cfe32b923b747a9ed8ee01dcaf3c71746919d4f3b532d736941d79c00aa4dee712d4067eff5e87a3c2410fc33e8a677f4b8fe71ca145c00c0b95b1a4ae6e87633c5b3706ab7f72c2c2954e50f59172781cac863c41967720bf7ce6cffab19cabf376417988452c7f1e738b988ccfd8e2a'
+12/11/2025 18:50:56 - INFO     - MenuView
+12/11/2025 18:51:00 - INFO     - ProductView
+12/11/2025 18:51:00 - INFO     -     ProductService.get_available_products() - DEBUT
+12/11/2025 18:51:00 - INFO     -         ProductDAO.get_available_products() - DEBUT
+12/11/2025 18:51:00 - INFO     -         ProductDAO.get_available_products() - FIN
+12/11/2025 18:51:00 - INFO     -            └─> Sortie : ["RealDictRow({'name': 'Italian Panini', 'description': 'Chicken, fresh tomatoes, mozzarella', 'price': Decimal('3.00')})", "RealDictRow({'name': 'Indian Panini', 'description': 'Chicken, curry, mozzarella', 'price': Decimal('3.00')})", "RealDictRow({'name': 'Goat Cheese & Honey Panini', 'description': 'Onions, cream, goat cheese, honey', 'price': Decimal('3.00')})"] ... (24 elements)
+12/11/2025 18:51:00 - INFO     -     ProductService.get_available_products() - FIN
+12/11/2025 18:51:00 - INFO     -        └─> Sortie : ["RealDictRow({'name': 'Italian Panini', 'description': 'Chicken, fresh tomatoes, mozzarella', 'price': Decimal('3.00')})", "RealDictRow({'name': 'Indian Panini', 'description': 'Chicken, curry, mozzarella', 'price': Decimal('3.00')})", "RealDictRow({'name': 'Goat Cheese & Honey Panini', 'description': 'Onions, cream, goat cheese, honey', 'price': Decimal('3.00')})"] ... (24 elements)
+12/11/2025 18:51:00 - INFO     - MenuView
+12/11/2025 18:51:02 - INFO     - ProductView
+12/11/2025 18:51:02 - INFO     -     ProductService.get_available_products() - DEBUT
+12/11/2025 18:51:02 - INFO     -         ProductDAO.get_available_products() - DEBUT
+12/11/2025 18:51:03 - INFO     -         ProductDAO.get_available_products() - FIN
+12/11/2025 18:51:03 - INFO     -            └─> Sortie : ["RealDictRow({'name': 'Italian Panini', 'description': 'Chicken, fresh tomatoes, mozzarella', 'price': Decimal('3.00')})", "RealDictRow({'name': 'Indian Panini', 'description': 'Chicken, curry, mozzarella', 'price': Decimal('3.00')})", "RealDictRow({'name': 'Goat Cheese & Honey Panini', 'description': 'Onions, cream, goat cheese, honey', 'price': Decimal('3.00')})"] ... (24 elements)
+12/11/2025 18:51:03 - INFO     -     ProductService.get_available_products() - FIN
+12/11/2025 18:51:03 - INFO     -        └─> Sortie : ["RealDictRow({'name': 'Italian Panini', 'description': 'Chicken, fresh tomatoes, mozzarella', 'price': Decimal('3.00')})", "RealDictRow({'name': 'Indian Panini', 'description': 'Chicken, curry, mozzarella', 'price': Decimal('3.00')})", "RealDictRow({'name': 'Goat Cheese & Honey Panini', 'description': 'Onions, cream, goat cheese, honey', 'price': Decimal('3.00')})"] ... (24 elements)
+12/11/2025 18:51:03 - INFO     - MenuView
+12/11/2025 18:51:18 - INFO     - PlaceOrderView
+12/11/2025 18:51:18 - INFO     -     ProductService.get_available_products() - DEBUT
+12/11/2025 18:51:18 - INFO     -         ProductDAO.get_available_products() - DEBUT
+12/11/2025 18:51:19 - INFO     -         ProductDAO.get_available_products() - FIN
+12/11/2025 18:51:19 - INFO     -            └─> Sortie : ["RealDictRow({'name': 'Italian Panini', 'description': 'Chicken, fresh tomatoes, mozzarella', 'price': Decimal('3.00')})", "RealDictRow({'name': 'Indian Panini', 'description': 'Chicken, curry, mozzarella', 'price': Decimal('3.00')})", "RealDictRow({'name': 'Goat Cheese & Honey Panini', 'description': 'Onions, cream, goat cheese, honey', 'price': Decimal('3.00')})"] ... (24 elements)
+12/11/2025 18:51:19 - INFO     -     ProductService.get_available_products() - FIN
+12/11/2025 18:51:19 - INFO     -        └─> Sortie : ["RealDictRow({'name': 'Italian Panini', 'description': 'Chicken, fresh tomatoes, mozzarella', 'price': Decimal('3.00')})", "RealDictRow({'name': 'Indian Panini', 'description': 'Chicken, curry, mozzarella', 'price': Decimal('3.00')})", "RealDictRow({'name': 'Goat Cheese & Honey Panini', 'description': 'Onions, cream, goat cheese, honey', 'price': Decimal('3.00')})"] ... (24 elements)
+12/11/2025 18:51:49 - INFO     -     AddressService.add_address('Rue des pommiers', 'Bruz', '35170') - DEBUT
+12/11/2025 18:51:49 - INFO     -         AddressDAO.add_address("id_address=None address='Rue des pommiers' postal_code=35170 city='Bruz'",) - DEBUT
+12/11/2025 18:51:49 - INFO     -         AddressDAO.add_address("id_address=None address='Rue des pommiers' postal_code=35170 city='Bruz'",) - FIN
+12/11/2025 18:51:49 - INFO     -            └─> Sortie : id_address=4 address='Rue des pommiers' postal_code=35170 city='Bruz'
+12/11/2025 18:51:49 - INFO     -     AddressService.add_address('Rue des pommiers', 'Bruz', '35170') - FIN
+12/11/2025 18:51:49 - INFO     -        └─> Sortie : id_address=4 address='Rue des pommiers' postal_code=35170 city='Bruz'
+12/11/2025 18:51:52 - INFO     -     OrderService.create(3, 4, 1, 3.0, 'Cash') - DEBUT
+12/11/2025 18:51:52 - INFO     -         OrderDAO.create_order("id_order=None id_customer=3 id_driver=None id_address=4 date=datetime.datetime(2025, 11, 12, 18, 51, 52, 945514) status='Preparing' nb_items=1 total_amount=3.0 payment_method='Cash'",) - DEBUT
+12/11/2025 18:51:52 - INFO     -         OrderDAO.create_order("id_order=None id_customer=3 id_driver=None id_address=4 date=datetime.datetime(2025, 11, 12, 18, 51, 52, 945514) status='Preparing' nb_items=1 total_amount=3.0 payment_method='Cash'",) - FIN
+12/11/2025 18:51:52 - INFO     -            └─> Sortie : 4
+12/11/2025 18:51:52 - INFO     -         OrderService.get_by_id(4,) - DEBUT
+12/11/2025 18:51:52 - INFO     -             OrderDAO.get_by_id(4,) - DEBUT
+12/11/2025 18:51:53 - INFO     -                 OrderDAO.get_order_products(4,) - DEBUT
+12/11/2025 18:51:53 - INFO     -                 OrderDAO.get_order_products(4,) - FIN
+12/11/2025 18:51:53 - INFO     -                    └─> Sortie : [] ... (0 elements)
+12/11/2025 18:51:53 - INFO     -             OrderDAO.get_by_id(4,) - FIN
+12/11/2025 18:51:53 - INFO     -                └─> Sortie : [('order', "id_order=4 id_customer=3 id_driver=None id_address=4 date=datetime.datetime(2025, 11, 12, 18, 51, 52, 945514) status='Preparing' nb_items=1 total_amount=3.0 payment_method='Cash'"), ('address', "id_address=4 address='Rue des pommiers' postal_code=35170 city='Bruz'"), ('products', '[]'), ' ', '.', '.', '.', ' ', '(', '3', ' ', 'e', 'l', 'e', 'm', 'e', 'n', 't', 's', ')']
+12/11/2025 18:51:53 - INFO     -         OrderService.get_by_id(4,) - FIN
+12/11/2025 18:51:53 - INFO     -            └─> Sortie : id_order=4 id_customer=3 id_driver=None id_address=4 date=datetime.datetime(2025, 11, 12, 18, 51, 52, 945514) status='Preparing' nb_items=1 total_amount=3.0 payment_method='Cash'
+12/11/2025 18:51:53 - INFO     -     OrderService.create(3, 4, 1, 3.0, 'Cash') - FIN
+12/11/2025 18:51:53 - INFO     -        └─> Sortie : id_order=4 id_customer=3 id_driver=None id_address=4 date=datetime.datetime(2025, 11, 12, 18, 51, 52, 945514) status='Preparing' nb_items=1 total_amount=3.0 payment_method='Cash'
+12/11/2025 18:51:53 - INFO     -     ProductService.get_id_by_name('Pesto Panini',) - DEBUT
+12/11/2025 18:51:53 - INFO     -         ProductDAO.get_id_by_productname('Pesto Panini',) - DEBUT
+12/11/2025 18:51:53 - INFO     -         ProductDAO.get_id_by_productname('Pesto Panini',) - FIN
+12/11/2025 18:51:53 - INFO     -            └─> Sortie : 4
+12/11/2025 18:51:53 - INFO     -     ProductService.get_id_by_name('Pesto Panini',) - FIN
+12/11/2025 18:51:53 - INFO     -        └─> Sortie : 4
+12/11/2025 18:51:53 - INFO     -     OrderService.add_product_to_order(4, 4, 1) - DEBUT
+12/11/2025 18:51:53 - INFO     -         OrderDAO.add_product(4, 4, 1) - DEBUT
+12/11/2025 18:51:53 - INFO     -             ProductDAO.decrement_stock(4, 1) - DEBUT
+12/11/2025 18:51:53 - INFO     -             ProductDAO.decrement_stock(4, 1) - FIN
+12/11/2025 18:51:53 - INFO     -                └─> Sortie : True
+12/11/2025 18:51:53 - INFO     -         OrderDAO.add_product(4, 4, 1) - FIN
+12/11/2025 18:51:53 - INFO     -            └─> Sortie : True
+12/11/2025 18:51:53 - INFO     -     OrderService.add_product_to_order(4, 4, 1) - FIN
+12/11/2025 18:51:53 - INFO     -        └─> Sortie : True
+12/11/2025 18:51:53 - INFO     - MenuView
+12/11/2025 18:53:02 - ERROR    - TypeError : Session.deconnexion() missing 1 required positional argument: 'self'
+Traceback (most recent call last):
+  File "/home/onyxia/work/Projet_Info_2A/main_CLI.py", line 26, in <module>
+    vue_courante = vue_courante.choisir_menu()
+  File "/home/onyxia/work/Projet_Info_2A/src/CLI/menu_customer.py", line 48, in choisir_menu
+    Session.deconnexion()
+    ~~~~~~~~~~~~~~~~~~~^^
+TypeError: Session.deconnexion() missing 1 required positional argument: 'self'
+12/11/2025 18:53:02 - INFO     - OpeningView
+12/11/2025 18:53:03 - INFO     - Fin de l'application
