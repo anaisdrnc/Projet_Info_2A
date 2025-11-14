@@ -5,10 +5,10 @@ from dotenv import load_dotenv
 
 from src.DAO.DBConnector import DBConnector
 from src.DAO.DriverDAO import DriverDAO
+from src.DAO.UserRepo import UserRepo
 from src.Model.Driver import Driver
 from utils.reset_database import ResetDatabase
 from utils.securite import hash_password
-from src.DAO.UserRepo import UserRepo
 
 load_dotenv()
 
