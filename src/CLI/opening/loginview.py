@@ -37,12 +37,20 @@ class LoginView(VueAbstraite):
         # Si le joueur a été trouvé à partir des ses identifiants de connexion
         if user:
             if id_driver == None:
-                message = f"You are connected on the account {user.user_name}"
+                message = f"You are connected on the customer account {user.user_name}"
+                Session().connexion(user, id_customer)
+
+                from src.CLI.menu_customer import MenuView
+
+                return MenuView(message)
+
+            if id_customer == None:
+                message = f"You are connected on the driver account {user.user_name}"
                 Session().connexion(user, id_driver)
 
-            from src.CLI.menu_customer import MenuView
-
-            return MenuView(message)
+                from src.CLI.menu_driver import MenuDriver
+                
+                return MenuDriver(message)
 
         message = "Erreur de connexion (pseudo ou mot de passe invalide)"
         from src.CLI.opening.openingview import OpeningView
