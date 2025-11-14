@@ -226,9 +226,9 @@ class ManageOrderView(VueAbstraite):
 def main():
     """Fonction main pour lancer le gestionnaire de commandes standalone"""
     # Pour le standalone, créer une session temporaire
-    driver_id = input("🚗 Entrez votre ID de livreur: ").strip()
+    driver_id = input("Entrez votre ID de livreur: ").strip()
     if not driver_id.isdigit():
-        print("❌ ID invalide")
+        print("ID invalide")
         return
 
     # Créer une session temporaire
