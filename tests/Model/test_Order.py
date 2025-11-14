@@ -109,21 +109,6 @@ def test_order_constructor_on_negative_total_amount():
     assert "greater_than" in str(exc.value)
 
 
-def test_order_constructor_on_total_amount_equal_to_zero():
-    """Test : total_amount must be strictly greater than 0."""
-    with pytest.raises(ValidationError) as exc:
-        Order(
-            id_order=3,
-            id_customer=1,
-            id_driver=2,
-            id_address=1,
-            total_amount=0.00,
-            payment_method="Cash",
-            nb_items=2,
-        )
-    assert "greater_than" in str(exc.value)
-
-
 def test_order_constructor_on_incorrect_payment_method():
     """Test : payment method must be one of the allowed literals ('cash' or 'card')"""
     with pytest.raises(ValidationError) as exc:

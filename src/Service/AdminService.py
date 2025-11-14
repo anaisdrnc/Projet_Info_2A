@@ -34,7 +34,7 @@ class AdminService:
         check_password_strength(password)
         salt = create_salt()
         hashed_password = hash_password(password, sel=salt)
-        new_user = Admin(  # j'ai changé le USER en admin sinon les tests ne passent pas
+        new_user = Admin(  # j'ai changé le User en admin sinon les tests ne passent pas
             user_name=username,
             password=hashed_password,
             first_name=firstname,
