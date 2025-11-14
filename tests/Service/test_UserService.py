@@ -24,4 +24,4 @@ def dao():
 @pytest.fixture
 def service(dao):
     """Service basé sur le DAO"""
-    return UserService(admindao=dao)
+    return UserService(user_repo=dao)
