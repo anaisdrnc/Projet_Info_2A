@@ -5,6 +5,7 @@ import pytest
 from src.DAO.AdminDAO import AdminDAO
 from src.DAO.DBConnector import DBConnector
 from src.Model.Admin import Admin
+from src.Model.User import User
 from src.Service.AdminService import AdminService
 from utils.reset_database import ResetDatabase
 
