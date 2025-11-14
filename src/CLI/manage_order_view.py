@@ -190,7 +190,7 @@ class ManageOrderView(VueAbstraite):
             # Créer la carte avec la fonction importée
             map_path = create_map(origin, destination, transport_mode)
             if map_path:
-                print(f"🗺️  Carte sauvegardée: {map_path}")
+                print(f"Carte sauvegardée: {map_path}")
 
                 # Proposer d'ouvrir la carte
                 open_map = inquirer.confirm(
