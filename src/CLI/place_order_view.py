@@ -109,12 +109,16 @@ class PlaceOrderView(VueAbstraite):
 
         id_order = order.id_order
 
+        message = "Order validated \n \n Summary : \n"
         # putting choosen products into the order
         for i in range(nb_items):
             product = list_choosen_products_names[i]
             quantity = quantities[i]
             id_product = product_service.get_id_by_name(product)
             added = order_service.add_product_to_order(order_id=id_order, product_id=id_product, quantity=int(quantity))
+            message += f"{product} quantity: {quantity} \n"
 
-        message = "Order validated"
+        message += "total price : {total_amount} euros \n"
+        message += "address to be delivered : {address} {city} {postal_code} \n"
+        
         return MenuView(message=message)
