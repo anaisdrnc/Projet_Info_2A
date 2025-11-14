@@ -63,9 +63,21 @@ class DriverService:
         return driver
 
     @log
-    def update_driver(self, driver: Driver) -> bool:
+    def update_driver(self, username, locomotion) -> bool:
         """Met à jour les informations du driver (transport uniquement)"""
-        return self.driverdao.update(driver)
+        assert locomotion in ["Bike", "Car"]
+        driver = self.get_by_username(username)
+        new_driver = Driver(
+            first_name = driver.first_name,
+            last_name = driver.last_name,
+            user_name = username,
+            email = driver.email,
+            password = driver.password,
+            mean_of_transport = locomotion,
+            id = driver.id,
+            id_driver = driver.id_driver
+        )
+        return self.driverdao.update(new_driver)
 
     @log
     def delete_driver(self, driver_id: int) -> bool:
