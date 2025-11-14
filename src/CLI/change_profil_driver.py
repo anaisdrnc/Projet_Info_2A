@@ -1,0 +1,54 @@
+from InquirerPy import inquirer
+
+from src.CLI.menu_driver import MenuDriver
+from src.CLI.view_abstract import VueAbstraite
+from src.CLI.session import Session
+
+from src.DAO.DBConnector import DBConnector
+from src.DAO.DriverDAO import DriverDAO
+from src.DAO.UserRepo import UserRepo
+
+from src.Model.Driver import Driver
+from src.Model.User import User
+
+from src.Service.DriverService import DriverService
+from src.Service.UserService import UserService
+
+class ChangeProfilDriver(VueAbstraite):
+    """view used to change the profil of the drivers, specially their password (since it is the admin
+    that create the driver) and the mean of transport"""
+
+    driverdao = DriverDAO(DBConnector(test = False))
+    user_repo = UserRepo(DBConnector(test = False))
+    driverservice = DriverService(driverdao)
+    userservice = UserService(user_repo)
+
+    choice = inquirer.select(
+            message="Choose : ",
+            choices=[
+                "Change password",
+                "Change the mean of transport",
+                "Go back",
+            ],
+        ).execute()
+
+    match choice:
+        case "Go back":
+            return MenuDriver()
+
+        case "Change password":
+            username = Session().username
+            old_password = inquirer.secret(message="Enter your current password : ").execute()
+            new_password = inquirer.secret(message= "Enter your new password :").execute()
+            works = userservice.change_password(user_name=username, old_password=old_password, new_password=new_password)
+
+            if works :
+                message = "Success"
+                return MenuDriver(message)
+            
+            else :
+                message = "The operation didn't work, please try again."
+                return MenuDriver(message)
+        
+        case "Change the mean of transport":
+            

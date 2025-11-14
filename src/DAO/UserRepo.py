@@ -138,7 +138,7 @@ class UserRepo:
         return True
 
     @log
-    def update_user(self, user: "User") -> bool:
+    def update_user(self, user: User) -> bool:
         """
         Met à jour les informations d'un utilisateur existant dans la table users.
         Retourne True si la mise à jour a réussi, False sinon.
