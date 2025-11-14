@@ -25,14 +25,10 @@ API_KEY = os.getenv("API_KEY_GOOGLE_MAPS")
 gmaps = googlemaps.Client(key=API_KEY)
 
 
-def calculer_itineraire(
-    origin: str, destination: str, transport_mode: str
-) -> gmaps.directions:
-    """Calcule l'itinéraire entre deux adresses."""
+def calculer_itineraire(origin: str, destination: str, transport_mode: str) -> gmaps.directions:
+    """Calcule l'itinéraire entre deux adresses et renvoie l'objet 'directions' de Google Maps."""
     try:
-        directions = gmaps.directions(
-            origin=origin, destination=destination, mode=transport_mode, units="metric"
-        )
+        directions = gmaps.directions(origin=origin, destination=destination, mode=transport_mode, units="metric")
 
         if directions:
             print("Itinéraire calculé avec succès!")
@@ -87,9 +83,7 @@ def create_map(origin, destination, transport_mode):
     print(f" Durée estimée : {duration}")
 
     # Carte créée avec Folium
-    m = folium.Map(
-        location=[start_location["lat"], start_location["lng"]], zoom_start=6
-    )
+    m = folium.Map(location=[start_location["lat"], start_location["lng"]], zoom_start=6)
 
     # Ajouter un marqueur pour le point de départ et d’arrivée
     folium.Marker(
@@ -121,17 +115,6 @@ def create_map(origin, destination, transport_mode):
     m.save(output_path)
 
     return output_path
-
-
-def difference_time_value_to_time_str(seconds):
-    # Convertit des secondes en format heures:minutes
-    hours = seconds // 3600
-    minutes = (seconds % 3600) // 60
-
-    if hours > 0:
-        print(f"Il y a une différence de {hours}h {minutes:02d}min")
-    else:
-        print(f"Il y a une différence de {minutes}min")
 
 
 def main():
@@ -171,24 +154,16 @@ def main():
                 directions_velo = calculer_itineraire(origin, destination, "bicycling")
 
                 if directions_velo and directions_velo[0]["legs"]:
-                    duration_velo_seconds = directions_velo[0]["legs"][0]["duration"][
-                        "value"
-                    ]
+                    duration_velo_seconds = directions_velo[0]["legs"][0]["duration"]["value"]
                     duration_velo_minutes = duration_velo_seconds // 60
 
                     if duration_velo_seconds <= max_bike_time:
                         filtered_orders.append(order_data)
-                        print(
-                            f"Commande {order_data['order'].id_order}: {duration_velo_minutes} min"
-                        )
+                        print(f"Commande {order_data['order'].id_order}: {duration_velo_minutes} min")
                     else:
-                        print(
-                            f"Commande {order_data['order'].id_order}: {duration_velo_minutes} min (trop loin)"
-                        )
+                        print(f"Commande {order_data['order'].id_order}: {duration_velo_minutes} min (trop loin)")
                 else:
-                    print(
-                        f"Commande {order_data['order'].id_order}: impossible de calculer l'itinéraire"
-                    )
+                    print(f"Commande {order_data['order'].id_order}: impossible de calculer l'itinéraire")
 
             except Exception as e:
                 print(f" Erreur pour la commande {order_data['order'].id_order}: {e}")
@@ -222,9 +197,7 @@ def main():
 
             order_address = oldest_order["address"]
             destination_address = f"{order_address.address}, {order_address.postal_code} {order_address.city}"
-            directions = calculer_itineraire(
-                origin, destination_address, transport_mode
-            )
+            directions = calculer_itineraire(origin, destination_address, transport_mode)
 
             # Affiche la carte et l'itinéraire
             print("\n" + "=" * 60)

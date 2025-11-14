@@ -1,7 +1,7 @@
 ```mermaid
 
 ---
-title: Quick Architecture overview
+title: Architecture overview
 ---
     graph LR
     USR1((User))

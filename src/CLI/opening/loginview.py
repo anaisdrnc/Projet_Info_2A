@@ -7,6 +7,7 @@ from src.CLI.session import Session
 from src.DAO.UserRepo import UserRepo
 from src.DAO.CustomerDAO import CustomerDAO
 from src.DAO.DBConnector import DBConnector
+from src.DAO.DriverDAO import DriverDAO
 
 from src.Service.UserService import UserService
 from src.Service.CustomerService import CustomerService
@@ -20,6 +21,7 @@ class LoginView(VueAbstraite):
 
         user_repo = UserRepo(DBConnector(test=False))
         customerdao = CustomerDAO(DBConnector(test=False))
+        driverdao = DriverDAO(DBConnector(test = False))
 
         # Demande à l'utilisateur de saisir pseudo et mot de passe
         pseudo = inquirer.text(message="Enter your username : ").execute()
@@ -30,11 +32,13 @@ class LoginView(VueAbstraite):
             username=pseudo, password=mdp, user_repo=user_repo
         )
         id_customer = customerdao.get_id_customer_by_id_user(user.id)
+        id_driver, locomotion = driverdao.get_id_driver_locomotion_by_id_user(user.id)
 
         # Si le joueur a été trouvé à partir des ses identifiants de connexion
         if user:
-            message = f"You are connected on the account {user.user_name}"
-            Session().connexion(user, id_customer)
+            if id_driver == None:
+                message = f"You are connected on the account {user.user_name}"
+                Session().connexion(user, id_driver)
 
             from src.CLI.menu_customer import MenuView
 

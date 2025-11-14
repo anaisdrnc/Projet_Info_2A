@@ -9,8 +9,9 @@ from utils.securite import hash_password
 
 
 class DriverDAO:
-    def __init__(self):
-        self.db_connector = DBConnector()
+    def __init__(self, db_connector=None):
+        """Initialise DriverDAO avec un connecteur DB."""
+        self.db_connector = db_connector or DBConnector()
         self.user_repo = UserRepo(self.db_connector)
 
     def create(self, driver: Driver) -> bool:
@@ -186,3 +187,13 @@ class DriverDAO:
             mean_of_transport=res["mean_of_transport"],
         )
         return driver
+
+    @log
+    def get_id_driver_locomotion_by_id_user(self, id_user) -> Optional[int]:
+        raw_driver = self.db_connector.sql_query(
+            "SELECT * from driver WHERE id_user =%s", [id_user], "one"
+        )
+        if raw_driver is None:
+            return None
+        # pyrefly: ignore
+        return raw_driver["id_driver"], raw_driver["mean_of_transport"]
