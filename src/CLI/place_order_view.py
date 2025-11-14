@@ -118,7 +118,7 @@ class PlaceOrderView(VueAbstraite):
             added = order_service.add_product_to_order(order_id=id_order, product_id=id_product, quantity=int(quantity))
             message += f"{product} quantity: {quantity} \n"
 
-        message += "total price : " + total_amount + " euros \n"
+        message += "total price : " + str(total_amount) + " euros \n"
         message += "address to be delivered : " + address + city + postal_code + " \n"
         
         return MenuView(message=message)
