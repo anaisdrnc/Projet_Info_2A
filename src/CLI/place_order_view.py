@@ -28,11 +28,15 @@ class PlaceOrderView(VueAbstraite):
 
         # get the list of products, the quantities and the price of the order
         list_choosen_products_names = []
+        list_choosen_menu = []
         quantities = []
         total_amount = 0
 
         raw_list_products = product_service.get_available_products()
         list_products = []
+        list_lunch = []
+        list_drink = []
+        list_dessert = []
         prices = {}
         stocks = {}
         for product in raw_list_products:
@@ -42,51 +46,102 @@ class PlaceOrderView(VueAbstraite):
             prices[name] = float(price)
             stock = product["stock"]
             stocks[name] = float(stock)
+            type_product = product["product_type"]
+            if type_product == "lunch":
+                list_lunch.append(name)
+            elif type_product == "drink":
+                list_drink.append(name)
+            elif type_product == "dessert":
+                list_dessert.append(name)
 
-        product = inquirer.select(
-            message="Choose a product : ",
-            choices=list_products,
-        ).execute()
-        stock = stocks[product]
-        quantity = inquirer.number(
-            message="Quantity :",
-            min_allowed=0,
-            max_allowed=stock,
-        ).execute()
-        list_choosen_products_names.append(product)
-        quantities.append(quantity)
-        total_amount += prices[product] * int(quantity)
 
         choice = inquirer.select(
-            message="choose : ",
-            choices=["add a product to the order", "finish the order"],
+            message= "Choose :",
+            choices = ["Get a menu (10 percent discount)", "choose a product"]
         ).execute()
-
-        nb_iterations = 0
-
-        while choice == "add a product to the order" and nb_iterations < 50:
-            list_products_proposed = {
-                product for product in list_products if product not in list_choosen_products_names
-            }
+        
+        if choice == "choose a product":
             product = inquirer.select(
                 message="Choose a product : ",
-                choices=list_products_proposed,
+                choices=list_products,
             ).execute()
-            quantity = inquirer.number(message="Quantity :").execute()
+            stock = stocks[product]
+            quantity = inquirer.number(
+                message="Quantity :",
+                min_allowed=0,
+                max_allowed=stock,
+            ).execute()
             list_choosen_products_names.append(product)
             quantities.append(quantity)
             total_amount += prices[product] * int(quantity)
 
+        if choice == "Get a menu (10 percent discount)":
+            lunch = inquirer.select(
+                message="Choose your lunch item :",
+                choices= list_lunch
+            ).execute()
+            list_choosen_menu.append(lunch)
+            drink = inquirer.select(
+                message= "Choose your drink :",
+                choices= list_drink
+            ).execute()
+            list_choosen_menu.append(drink)
+            dessert = inquirer.select(
+                message= "Choose your dessert :",
+                choices = list_dessert
+            ).execute()
+            list_choosen_menu.append(dessert)
+            total_amount += (prices[lunch] + prices[drink] + prices[dessert]) * 0.9
+
+        choice = inquirer.select(
+            message="choose : ",
+            choices=["add a product to the order", "get a menu", "finish the order"],
+        ).execute()
+
+        nb_iterations = 0
+
+        while choice in ["add a product to the order", "get a menu"] and nb_iterations < 50:
+            if choice == "add a product to the order":
+                list_products_proposed = {
+                    product for product in list_products if product not in list_choosen_products_names
+                }
+                product = inquirer.select(
+                    message="Choose a product : ",
+                    choices=list_products_proposed,
+                ).execute()
+                quantity = inquirer.number(message="Quantity :").execute()
+                list_choosen_products_names.append(product)
+                quantities.append(quantity)
+                total_amount += prices[product] * int(quantity)
+
+            else :
+                lunch = inquirer.select(
+                    message="Choose your lunch item :",
+                    choices= list_lunch
+                ).execute()
+                list_choosen_menu.append(lunch)
+                drink = inquirer.select(
+                    message= "Choose your drink :",
+                    choices= list_drink
+                ).execute()
+                list_choosen_menu.append(drink)
+                dessert = inquirer.select(
+                    message= "Choose your dessert :",
+                    choices = list_dessert
+                ).execute()
+                list_choosen_menu.append(dessert)
+                total_amount += (prices[lunch] + prices[drink] + prices[dessert]) * 0.9
+
             choice = inquirer.select(
                 message="choose : ",
-                choices=["add a product to the order", "finish the order"],
+                choices=["add a product to the order",  "get a menu", "finish the order"],
             ).execute()
             nb_iterations += 1
 
         if nb_iterations == 50:
             print("You exceed the maximal number of products ordered")
 
-        nb_items = len(quantities)
+        nb_items = sum(quantities) + len(list_choosen_menu)
 
         # get the address where the order is to be delivered
         address = inquirer.text(message="Enter your address (ex : 51 rue Blaise Pascal) :").execute()
@@ -113,8 +168,16 @@ class PlaceOrderView(VueAbstraite):
 
         id_order = order.id_order
 
-        message = "Order validated \n \n Summary : \n"
+        message = "Order validated \n \n Summary : \n Menus : \n"
         # putting choosen products into the order
+        for product in list_choosen_menu:
+            id_product = product_service.get_id_by_name(product)
+            added = order_service.add_product_to_order(order_id=id_order, product_id = id_product, quantity= 1)
+            message += f"{product}"
+            if product in list_dessert:
+                message += f" \n "
+            else:
+                message += f" and "
         for i in range(nb_items):
             product = list_choosen_products_names[i]
             quantity = quantities[i]
