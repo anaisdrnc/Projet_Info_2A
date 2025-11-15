@@ -41,7 +41,7 @@ class OrdersHistory(VueAbstraite):
                 for raw_product in raw_order['products']:
                     product_name = raw_product['name']
                     quantity = raw_product['quantity']
-                    message += product_name + "quantity : " + quantity +  "\n"
+                    message += product_name + "quantity : " + str(quantity) +  "\n"
                 message += "address : " + address.address + " " + address.city + " " + address.postal_code + "\n"
                 message += "status : " + order.status + "\n"
                 message += "total price : " + order.total_amount + '\n\n'
