@@ -45,6 +45,44 @@ def get_admin_own_profile(
     return get_admin_from_credentials(credentials)
 
 
+@admin_router.post("/create", status_code=status.HTTP_201_CREATED)
+def create_new_admin(
+    username: str,
+    password: str,
+    first_name: str,
+    last_name: str,
+    email: str,
+    credentials: Annotated[HTTPAuthorizationCredentials, Depends(JWTBearer())]
+) -> APIUser:
+    """
+    Create a new admin account (requires JWT authentication).
+    """
+    # Vérifie que le token est valide
+    token = credentials.credentials
+    jwt_service.validate_user_jwt(token)
+
+    # Appelle le service
+    admin = admin_service.create_admin(
+        username=username,
+        password=password,
+        first_name=first_name,
+        last_name=last_name,
+        email=email
+    )
+
+    if not admin:
+        raise HTTPException(status_code=409, detail="Unable to create admin")
+
+    return APIUser(
+        id=admin.id_admin,
+        username=admin.user_name,
+        first_name=admin.first_name,
+        last_name=admin.last_name,
+        email=admin.email
+    )
+
+
+
 def get_admin_from_credentials(
     credentials: HTTPAuthorizationCredentials,
 ) -> APIUser:
