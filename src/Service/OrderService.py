@@ -29,12 +29,12 @@ class OrderService:
 
     @log
     def add_product_to_order(
-        self, order_id: int, product_id: int, quantity: int = 1
+        self, order_id: int, product_id: int, quantity: int = 1, promotion : bool = False
     ) -> bool:
         """Ajoute un produit à une commande et décrémente le stock"""
         if order_id <= 0 or product_id <= 0 or quantity <= 0:
             return False
-        return self.orderdao.add_product(order_id, product_id, quantity)
+        return self.orderdao.add_product(order_id, product_id, quantity, promotion)
 
     @log
     def remove(self, id_order: int, id_product: int, quantity: int = 1) -> bool:

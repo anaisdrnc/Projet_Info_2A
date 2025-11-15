@@ -183,7 +183,7 @@ class PlaceOrderView(VueAbstraite):
             product = list_choosen_products_names[i]
             quantity = quantities[i]
             id_product = product_service.get_id_by_name(product)
-            added = order_service.add_product_to_order(order_id=id_order, product_id=id_product, quantity=int(quantity))
+            added = order_service.add_product_to_order(order_id=id_order, product_id=id_product, quantity=int(quantity), promotion = False)
             message += f"{product} quantity: {quantity} \n"
 
         message += "total price : " + str(total_amount) + " euros \n"
