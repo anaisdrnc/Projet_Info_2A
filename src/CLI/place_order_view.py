@@ -168,16 +168,17 @@ class PlaceOrderView(VueAbstraite):
 
         id_order = order.id_order
 
-        message = "Order validated \n \n Summary : \n Menus : \n"
+        message = "Order validated \n \nSummary : \nMenus : \n"
         # putting choosen products into the order
         for product in list_choosen_menu:
             id_product = product_service.get_id_by_name(product)
             added = order_service.add_product_to_order(order_id=id_order, product_id = id_product, quantity= 1)
             message += f"{product}"
             if product in list_dessert:
-                message += f" \n "
+                message += f" \n"
             else:
                 message += f" and "
+        message += "Single products : \n"
         for i in range(len(list_choosen_products_names)):
             product = list_choosen_products_names[i]
             quantity = quantities[i]
@@ -186,6 +187,6 @@ class PlaceOrderView(VueAbstraite):
             message += f"{product} quantity: {quantity} \n"
 
         message += "total price : " + str(total_amount) + " euros \n"
-        message += "address to be delivered : " + address + city + postal_code + " \n"
+        message += "address to be delivered : " + address + " " + city + " " + postal_code + " \n"
         
         return MenuView(message=message)
