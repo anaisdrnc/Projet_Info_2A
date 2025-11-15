@@ -161,8 +161,8 @@ class PlaceOrderView(VueAbstraite):
         order = order_service.create(
             id_customer=id_customer,
             id_address=id_address,
-            nb_items=nb_items,
-            total_amount=total_amount,
+            nb_items=0,
+            total_amount=0,
             payment_method=payment_method,
         )
 
@@ -172,7 +172,7 @@ class PlaceOrderView(VueAbstraite):
         # putting choosen products into the order
         for product in list_choosen_menu:
             id_product = product_service.get_id_by_name(product)
-            added = order_service.add_product_to_order(order_id=id_order, product_id = id_product, quantity= 1)
+            added = order_service.add_product_to_order(order_id=id_order, product_id = id_product, quantity= 1, promotion = True)
             message += f"{product}"
             if product in list_dessert:
                 message += f" \n"

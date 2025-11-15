@@ -50,7 +50,7 @@ class OrderDAO:
             return None
 
     @log
-    def add_product(self, order_id: int, product_id: int, quantity: int = 1) -> bool:
+    def add_product(self, order_id: int, product_id: int, quantity: int = 1, promotion : bool = False) -> bool:
         """
         Ajoute un produit à la commande, décrémente le stock via ProductDAO,
         et met à jour nb_items et total_amount dans orders.
@@ -81,7 +81,10 @@ class OrderDAO:
             if not product:
                 raise Exception("Produit introuvable pour mise à jour commande")
 
-            total_add = float(product["price"]) * quantity
+            if promotion:
+                total_add = float(product["price"]) * quantity * 0.9
+            else : 
+                total_add = float(product["price"]) * quantity
 
             # Mettre à jour la commande (nb_items et total_amount)
             self.db_connector.sql_query(
