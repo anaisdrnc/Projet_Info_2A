@@ -3,24 +3,25 @@
 ---
 title: Architecture overview
 ---
-    graph LR
+graph LR
     USR1((Customer))
     USR2((Deliverer))
     USR3((Admin))
     DB[("fa:fa-database App Database (PostgreSQL)" )]
-    API(fa:fa-python API / WebService)
     CLI(fa:fa-python CLI)
+    API(fa:fa-python API / WebService)
     DAO(fa:fa-python DAO)
     SVC(fa:fa-python Service / Controllers )
     MDB[(fa:fa-database Google Maps DB)]
     MDBAPI(Google Maps API)
 
-    USR1<--->API
-        subgraph Python app 
-            API<-->SVC<-->DAO
-            CLI<-->SVC
-        end
+    USR1<--->CLI
     USR2<--->CLI
+        subgraph Python app 
+            CLI<-->SVC
+            API<-->SVC
+            SVC<-->DAO
+        end
     USR3<--->API
 
     DAO<--->DB
