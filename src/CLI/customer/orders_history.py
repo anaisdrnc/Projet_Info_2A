@@ -42,9 +42,9 @@ class OrdersHistory(VueAbstraite):
                     product_name = raw_product['name']
                     quantity = raw_product['quantity']
                     message += product_name + "quantity : " + str(quantity) +  "\n"
-                message += "address : " + address.address + " " + address.city + " " + address.postal_code + "\n"
+                message += "address : " + address.address + " " + address.city + " " + str(address.postal_code) + "\n"
                 message += "status : " + order.status + "\n"
-                message += "total price : " + order.total_amount + '\n\n'
+                message += "total price : " + str(order.total_amount) + '\n\n'
 
         return MenuView(message)
 
