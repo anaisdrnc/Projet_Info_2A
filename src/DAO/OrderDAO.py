@@ -361,7 +361,7 @@ class OrderDAO:
     def get_orders_by_id_user(self, id_customer : int):
         """Return all orders placed by a given customer"""
         try:
-            raw_orders = self.db_connector.sql_query("SELECT * FROM orders WHERE id_customer == %s", [id_customer], "all")
+            raw_orders = self.db_connector.sql_query("SELECT * FROM orders WHERE id_customer = %s", [id_customer], "all")
             result = []
             for o in raw_orders:
                 order_data = self.get_by_id(o["id_order"])
