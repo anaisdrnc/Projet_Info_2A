@@ -20,4 +20,6 @@ class OrdersHistory(VueAbstraite):
 
         list_orders = order_service.get_all_orders_by_id_customer(id_customer=id_customer)
 
+        return MenuView()
+
 
