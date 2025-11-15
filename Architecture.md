@@ -1,4 +1,3 @@
-```mermaid
 
 ---
 title: Architecture overview
@@ -28,5 +27,3 @@ graph LR
     MDBAPI <--> MDB
     SVC <--> MDBAPI
 
-
-```
