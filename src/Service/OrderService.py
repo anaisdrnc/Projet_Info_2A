@@ -117,3 +117,8 @@ class OrderService:
         if id_driver <= 0 or id_order <= 0:
             return False
         return self.orderdao.assign_order(id_driver, id_order)
+
+    @log
+    def get_all_orders_by_id_customer(self, id_customer):
+        """Give all orders placed by a customer in order to give an history"""
+        return self.orderdao.get_orders_by_id_user(id_customer)

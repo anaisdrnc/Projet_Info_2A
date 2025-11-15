@@ -356,3 +356,18 @@ class OrderDAO:
         except Exception as e:
             print(f"Error assigning order to driver: {e}")
             return False
+
+    @log
+    def get_orders_by_id_user(self, id_customer : int):
+        """Return all orders placed by a given customer"""
+        try:
+            raw_orders = self.db_connector.sql_query("SELECT * FROM orders WHERE id_customer == %s", [id_customer], "all")
+            result = []
+            for o in raw_orders:
+                order_data = self.get_by_id(o["id_order"])
+                if order_data:
+                    result.append(order_data)
+            return result
+        except Exception as e:
+            print(f"Error listing all orders: {e}")
+            return []

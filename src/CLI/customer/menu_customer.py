@@ -37,6 +37,7 @@ class MenuView(VueAbstraite):
                 "Get menu",
                 "Place an order",
                 "Change profil",
+                "Get my orders history",
                 "Log out",
             ],
         ).execute()
@@ -64,3 +65,8 @@ class MenuView(VueAbstraite):
                 from src.CLI.customer.change_profil import ChangeProfil
 
                 return ChangeProfil()
+
+            case "Get my orders history":
+                from src.CLI.customer.orders_history import OrdersHistory
+
+                return OrdersHistory()
