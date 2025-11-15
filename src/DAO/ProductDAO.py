@@ -148,7 +148,7 @@ class ProductDAO:
         """Retourne uniquement les produits dont le stock est supérieur à 0"""
         try:
             raw = self.db_connector.sql_query(
-                "SELECT name, description, price FROM product WHERE stock > 0",
+                "SELECT name, description, price, product_type, stock FROM product WHERE stock > 0",
                 [],
                 "all",
             )
