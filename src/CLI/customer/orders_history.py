@@ -12,7 +12,7 @@ from src.Service.OrderService import OrderService
 from src.Service.ProductService import ProductService
 
 class OrdersHistory(VueAbstraite):
-    def get_history(self):
+    def choisir_menu(self):
         orderdao = OrderDAO(DBConnector(test = False))
         order_service = OrderService(orderdao)
 
