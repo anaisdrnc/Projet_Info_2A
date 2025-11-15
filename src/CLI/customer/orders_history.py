@@ -18,8 +18,34 @@ class OrdersHistory(VueAbstraite):
 
         id_customer = Session().id_role
 
-        list_orders = order_service.get_all_orders_by_id_customer(id_customer=id_customer)
+        raw_list_orders = order_service.get_all_orders_by_id_customer(id_customer=id_customer)
+        dates_orders = []
+        for raw_order in raw_list_orders:
+            order = raw_order["order"]
+            date = order.date
+            if date not in dates_orders:
+                dates_orders.append(date)
 
-        return MenuView()
+        choosen_date = inquirer.select(
+            message= "I want my order history of which date:",
+            choices= dates_orders
+        ).execute()
+
+        message = "Orders history for {choosen_date}: \n\n"
+
+        for raw_order in raw_list_orders:
+            order = raw_order['order']
+            if order.date == choosen_date:
+                message += "Order #{order.id_order}: \n"
+                address = raw_order['address']
+                for raw_product in raw_order['products']:
+                    product_name = raw_product['name']
+                    quantity = raw_product['quantity']
+                    message += product_name + "quantity : " + quantity +  "\n"
+                message += "address : " + address.address + " " + address.city + " " + address.postal_code + "\n"
+                message += "status : " + order.status + "\n"
+                message += "total price : " + order.total_amount + '\n\n'
+
+        return MenuView(message)
 
 
