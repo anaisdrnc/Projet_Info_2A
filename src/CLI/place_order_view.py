@@ -34,20 +34,24 @@ class PlaceOrderView(VueAbstraite):
         raw_list_products = product_service.get_available_products()
         list_products = []
         prices = {}
+        stocks = {}
         for product in raw_list_products:
             name = product["name"]
             list_products.append(name)
             price = product["price"]
             prices[name] = float(price)
+            stock = product["stock"]
+            stocks[name] = float(stock)
 
         product = inquirer.select(
             message="Choose a product : ",
             choices=list_products,
         ).execute()
+        stock = stocks[product]
         quantity = inquirer.number(
             message="Quantity :",
             min_allowed=0,
-            max_allowed=10,
+            max_allowed=stock,
         ).execute()
         list_choosen_products_names.append(product)
         quantities.append(quantity)
