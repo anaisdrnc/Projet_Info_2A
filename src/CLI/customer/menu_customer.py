@@ -36,6 +36,7 @@ class MenuView(VueAbstraite):
             choices=[
                 "Get menu",
                 "Place an order",
+                "Change profil",
                 "Log out",
             ],
         ).execute()
@@ -58,3 +59,8 @@ class MenuView(VueAbstraite):
                 from src.CLI.customer.products_view import ProductView
 
                 return ProductView()
+
+            case "Change profil":
+                from src.CLI.customer.change_profil import ChangeProfil
+
+                return ChangeProfil()
