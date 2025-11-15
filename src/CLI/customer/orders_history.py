@@ -23,28 +23,28 @@ class OrdersHistory(VueAbstraite):
         for raw_order in raw_list_orders:
             order = raw_order["order"]
             date = order.date
-            if date not in dates_orders:
-                dates_orders.append(date)
+            if date.date() not in dates_orders:
+                dates_orders.append(date.date())
 
         choosen_date = inquirer.select(
             message= "I want my order history of which date:",
             choices= dates_orders
         ).execute()
 
-        message = "Orders history for {choosen_date}: \n\n"
+        message = "Orders history for " + str(choosen_date) + ": \n\n"
 
         for raw_order in raw_list_orders:
             order = raw_order['order']
-            if order.date == choosen_date:
-                message += "Order #{order.id_order}: \n"
+            if order.date.date() == choosen_date:
+                message += "Order #" + str(order.id_order) + " : \n"
                 address = raw_order['address']
                 for raw_product in raw_order['products']:
                     product_name = raw_product['name']
                     quantity = raw_product['quantity']
-                    message += product_name + "quantity : " + str(quantity) +  "\n"
+                    message += product_name + ", quantity : " + str(quantity) +  "\n"
                 message += "address : " + address.address + " " + address.city + " " + str(address.postal_code) + "\n"
                 message += "status : " + order.status + "\n"
-                message += "total price : " + str(order.total_amount) + '\n\n'
+                message += "total price : " + str(order.total_amount) + 'euros \n\n'
 
         return MenuView(message)
 
