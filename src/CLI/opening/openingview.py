@@ -1,8 +1,7 @@
 from InquirerPy import inquirer
 
-from utils.reset_database import ResetDatabase
-
 from src.CLI.view_abstract import VueAbstraite
+from utils.reset_database import ResetDatabase
 
 # from src.CLI.session import Session
 

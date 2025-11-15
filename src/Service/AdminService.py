@@ -21,7 +21,7 @@ class AdminService:
 
     @log
     def create_admin(
-        self, username: str, password: str, firstname: str, lastname: str, email: str
+        self, username: str, password: str, first_name: str, last_name: str, email: str
     ) -> Admin:
         """
         Crée un nouveau admin :
@@ -37,8 +37,8 @@ class AdminService:
         new_user = Admin(  # j'ai changé le User en admin sinon les tests ne passent pas
             user_name=username,
             password=hashed_password,
-            first_name=firstname,
-            last_name=lastname,
+            first_name=first_name,
+            last_name=last_name,
             email=email,
             salt=salt,
         )

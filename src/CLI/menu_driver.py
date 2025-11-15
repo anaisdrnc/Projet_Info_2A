@@ -2,8 +2,6 @@ from InquirerPy import inquirer
 
 from src.CLI.session import Session
 from src.CLI.view_abstract import VueAbstraite
-from src.Service.CustomerService import CustomerService
-from src.Service.UserService import UserService
 
 
 class MenuDriver(VueAbstraite):
@@ -11,8 +9,7 @@ class MenuDriver(VueAbstraite):
 
     Attributes
     ----------
-    message=''
-        str
+    message='': str
 
     Returns
     ------
@@ -55,6 +52,6 @@ class MenuDriver(VueAbstraite):
                 return ManageOrderView()
 
             case "Changer mes informations":
-                from src.CLI.products_view import ProductView
+                from src.CLI.change_profil_driver import ChangeProfilDriver
 
-                return ProductView()
+                return ChangeProfilDriver()

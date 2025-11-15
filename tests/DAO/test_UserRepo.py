@@ -134,14 +134,3 @@ def test_delete_user_ok(dao):
     retrieved = dao.get_by_id(created)
     assert retrieved == None
 
-
-"""def test_get_all_users_ok(dao):
-    username1 = unique_username('list_username1')
-    username2 = unique_username('list_username2')
-    user1 = User(user_name = username1, last_name = "Test1", first_name = "User1", password = '123password', email = "user1.test@gmail.com")
-    user2 = User(user_name = username2, last_name = "Test2", first_name = "User2", password = "234password", email = "user2.test@gmail.com")
-    id1 = dao.add_user(user1)
-    id2 = dao.add_user(user2)
-    list_users = dao.get_all_users()
-    assert user1 in list_users
-    assert user2 in list_users"""

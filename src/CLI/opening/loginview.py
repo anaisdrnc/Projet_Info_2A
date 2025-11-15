@@ -1,16 +1,11 @@
 from InquirerPy import inquirer
 
-from src.CLI.view_abstract import VueAbstraite
-
 from src.CLI.session import Session
-
-from src.DAO.UserRepo import UserRepo
+from src.CLI.view_abstract import VueAbstraite
 from src.DAO.CustomerDAO import CustomerDAO
 from src.DAO.DBConnector import DBConnector
 from src.DAO.DriverDAO import DriverDAO
-
-from src.Service.UserService import UserService
-from src.Service.CustomerService import CustomerService
+from src.DAO.UserRepo import UserRepo
 from src.Service.PasswordService import validate_username_password
 
 
@@ -36,20 +31,20 @@ class LoginView(VueAbstraite):
 
         # Si le joueur a été trouvé à partir des ses identifiants de connexion
         if user:
-            if id_driver == None:
+            if id_driver is None and id_customer is not None:
+                # C'est un client
                 message = f"You are connected on the customer account {user.user_name}"
                 Session().connexion(user, id_customer)
 
                 from src.CLI.menu_customer import MenuView
-
                 return MenuView(message)
 
-            if id_customer == None:
+            elif id_customer is None and id_driver is not None:
+                # C'est un driver
                 message = f"You are connected on the driver account {user.user_name}"
                 Session().connexion(user, id_driver)
 
                 from src.CLI.menu_driver import MenuDriver
-                
                 return MenuDriver(message)
 
         message = "Erreur de connexion (pseudo ou mot de passe invalide)"

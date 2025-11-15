@@ -1,9 +1,6 @@
-# manage_order.py
 import os
 import sys
-from datetime import datetime
 
-import folium
 import googlemaps
 from dotenv import load_dotenv
 from InquirerPy import inquirer
@@ -11,7 +8,7 @@ from InquirerPy import inquirer
 current_dir = os.path.dirname(os.path.abspath(__file__))
 src_dir = os.path.dirname(current_dir)
 project_root = os.path.dirname(src_dir)
-utils_dir = os.path.join(project_root, 'utils')
+utils_dir = os.path.join(project_root, "utils")
 
 # Ajouter tous les paths nécessaires
 sys.path.insert(0, project_root)
@@ -19,11 +16,12 @@ sys.path.insert(0, src_dir)
 sys.path.insert(0, utils_dir)
 
 try:
-    from CLI.session import Session
     from CLI.view_abstract import VueAbstraite
     from DAO.DriverDAO import DriverDAO
     from DAO.OrderDAO import OrderDAO
+    from Service.Google_Maps.map import calculer_itineraire, create_map, display_itinerary_details
     from Service.OrderService import OrderService
+    from src.CLI.session import Session
 except ImportError as e:
     print(f"Erreur d'import: {e}")
     print(f"Python path: {sys.path}")
@@ -38,208 +36,155 @@ gmaps = googlemaps.Client(key=API_KEY)
 
 
 class ManageOrderView(VueAbstraite):
-    def __init__(self, message=""):
-        super().__init__(message)
-        self.driver_id = Session().get_id_role()
-        self.driver_dao = DriverDAO()
-        self.order_service = OrderService(OrderDAO())
-
-    def calculer_itineraire(self, origin: str, destination: str, transport_mode: str):
-        """Calcule l'itinéraire entre deux adresses"""
+    def __init__(self, message="", driver_id=None):
         try:
-            directions = gmaps.directions(origin=origin, destination=destination, mode=transport_mode, units="metric")
+            super().__init__(message)
 
-            if directions:
-                print("Itinéraire calculé avec succès!")
-                return directions
+            self.driver_dao = DriverDAO()
+            self.order_service = OrderService(OrderDAO())
+
+            if driver_id is not None:
+                self.driver_id = driver_id
             else:
-                print("Aucun itinéraire trouvé.")
-                return None
+                session = Session()
+                print(f"Session: {session.__dict__}")
 
+                self.driver_id = session.id_role
+
+                # Si ID est None, on cherche par username
+                if self.driver_id is None and session.username:
+                    print(f"Recherche par username: {session.username}")
+                    try:
+                        driver = self.driver_dao.get_by_username(session.username)
+                        if driver:
+                            self.driver_id = driver.id_driver
+                            print(f"ID trouvé via username: {self.driver_id}")
+                    except:
+                        # Sinon chercher dans tous les drivers
+                        all_drivers = self.driver_dao.get_all()
+                        for driver in all_drivers:
+                            if hasattr(driver, 'user_name') and driver.user_name == session.username:
+                                self.driver_id = driver.id_driver
+                                print(f"ID trouvé dans liste: {self.driver_id}")
+                                break
+            
+            print(f"Driver ID: {self.driver_id}")
+            
         except Exception as e:
-            print(f"Erreur lors du calcul de l'itinéraire: {e}")
-            return None
+            print(f"Erreur: {e}")
+            self.driver_id = None
 
-    def display_itinerary_details(self, directions):
-        """Affiche les détails de l'itinéraire dans la console"""
-        if not directions or not directions[0]["legs"]:
-            print("Aucun détail d'itinéraire disponible")
-            return
 
-        leg = directions[0]["legs"][0]
-
-        print("\n📋 Étapes principales:")
-        for i, step in enumerate(leg["steps"], 1):
-            instruction = (
-                step["html_instructions"]
-                .replace("<b>", "")
-                .replace("</b>", "")
-                .replace('<div style="font-size:0.9em">', " - ")
-                .replace("</div>", "")
-            )
-            print(f"   {i}. {instruction} ({step['distance']['text']})")
-
-    def create_map(self, origin, destination, transport_mode):
-        """Crée une carte interactive avec l'itinéraire"""
-        now = datetime.now()
-        directions = gmaps.directions(
-            origin,
-            destination,
-            mode=transport_mode,
-            departure_time=now,
-        )
-
-        if not directions:
-            print("Impossible de créer la carte: itinéraire non calculé")
-            return None
-
-        leg = directions[0]["legs"][0]
-        distance = leg["distance"]["text"]
-        duration = leg["duration"]["text"]
-        start_location = leg["start_location"]
-        end_location = leg["end_location"]
-
-        print(f"Itinéraire de {origin} à {destination}")
-        print(f"Distance : {distance}")
-        print(f"Durée estimée : {duration}")
-
-        # Créer la carte avec Folium
-        m = folium.Map(location=[start_location["lat"], start_location["lng"]], zoom_start=13)
-
-        # Ajouter les marqueurs
-        folium.Marker(
-            [start_location["lat"], start_location["lng"]],
-            popup=f"Départ : {origin}",
-            icon=folium.Icon(color="green"),
-        ).add_to(m)
-
-        folium.Marker(
-            [end_location["lat"], end_location["lng"]],
-            popup=f"Arrivée : {destination}",
-            icon=folium.Icon(color="red"),
-        ).add_to(m)
-
-        # Extraire et tracer le chemin
-        path = []
-        for step in leg["steps"]:
-            polyline = step["polyline"]["points"]
-            decoded_points = googlemaps.convert.decode_polyline(polyline)
-            for point in decoded_points:
-                path.append((point["lat"], point["lng"]))
-
-        folium.PolyLine(path, color="blue", weight=5, opacity=0.7).add_to(m)
-
-        # Sauvegarder la carte
-        script_dir = os.path.dirname(os.path.abspath(__file__))
-        output_path = os.path.join(script_dir, "delivery_path.html")
-        m.save(output_path)
-
-        return output_path
 
     def get_available_orders(self):
-        """Récupère les commandes disponibles selon le moyen de transport"""
-        driver = self.driver_dao.get_by_id(self.driver_id)
+        try:
+            driver = self.driver_dao.get_by_id(self.driver_id)
+            if not driver:
+                print("Erreur: Driver non trouvé dans get_available_orders")
+                return []
 
-        if not driver:
-            print("Conducteur non trouvé")
+            print(f"Livreur : {driver.first_name} {driver.last_name}")
+            print(f"Moyen de transport : {driver.mean_of_transport}")
+
+            # Adresse d'origine fixe (dépôt)
+            origin = "ENSAI, Rennes, France"
+
+            if driver.mean_of_transport == "Bike":
+                # Filtrer les commandes adaptées au vélo (max 30 minutes)
+                max_bike_time = 30 * 60
+                all_ready_orders = self.order_service.list_all_orders_ready()
+                filtered_orders = []
+
+                for order_data in all_ready_orders:
+                    order_address = order_data["address"]
+                    destination = f"{order_address.address}, {order_address.postal_code} {order_address.city}"
+
+                    try:
+                        directions_velo = calculer_itineraire(origin, destination, "bicycling")
+
+                        if directions_velo and directions_velo[0]["legs"]:
+                            duration_velo_seconds = directions_velo[0]["legs"][0]["duration"]["value"]
+                            duration_velo_minutes = duration_velo_seconds // 60
+
+                            if duration_velo_seconds <= max_bike_time:
+                                filtered_orders.append(order_data)
+                            else:
+                                print(f"Commande {order_data['order'].id_order}: {duration_velo_minutes} min (trop loin)")
+                        else:
+                            print(f"Commande {order_data['order'].id_order}: impossible de calculer l'itinéraire")
+
+                    except Exception as e:
+                        print(f"Erreur pour la commande {order_data['order'].id_order}: {e}")
+                        continue
+
+                return filtered_orders
+
+            else:
+                orders = self.order_service.list_all_orders_ready()
+                return orders
+
+        except Exception as e:
+            print(f"ERREUR dans get_available_orders: {e}")
+            import traceback
+            traceback.print_exc()
             return []
 
-        print(f"Livreur : {driver.first_name} {driver.last_name}")
-        print(f"Moyen de transport : {driver.mean_of_transport}")
-
-        # Adresse d'origine fixe (dépôt)
-        origin = "ENSAI, Rennes, France"
-
-        if driver.mean_of_transport == "Bike":
-            # Filtrer les commandes adaptées au vélo (max 30 minutes)
-            max_bike_time = 30 * 60
-            all_ready_orders = self.order_service.list_all_orders_ready()
-            filtered_orders = []
-
-            for order_data in all_ready_orders:
-                order_address = order_data["address"]
-                destination = f"{order_address.address}, {order_address.postal_code} {order_address.city}"
-
-                try:
-                    directions_velo = self.calculer_itineraire(origin, destination, "bicycling")
-
-                    if directions_velo and directions_velo[0]["legs"]:
-                        duration_velo_seconds = directions_velo[0]["legs"][0]["duration"]["value"]
-                        duration_velo_minutes = duration_velo_seconds // 60
-
-                        if duration_velo_seconds <= max_bike_time:
-                            filtered_orders.append(order_data)
-                        else:
-                            print(f"Commande {order_data['order'].id_order}: {duration_velo_minutes} min (trop loin)")
-                    else:
-                        print(f"Commande {order_data['order'].id_order}: impossible de calculer l'itinéraire")
-
-                except Exception as e:
-                    print(f"Erreur pour la commande {order_data['order'].id_order}: {e}")
-                    continue
-
-            return filtered_orders
-        else:
-            # Toutes les commandes sont disponibles pour la voiture
-            return self.order_service.list_all_orders_ready()
 
     def choisir_menu(self):
-        """Menu principal de gestion des commandes pour les livreurs"""
-        print("\n" + "=" * 50)
-        print("        GESTION DES LIVRAISONS")
-        print("=" * 50)
+        """Menu principal de gestion des commandes"""
+        try:
+            print("\n" + "=" * 50)
+            print("        GESTION DES LIVRAISONS")
+            print("=" * 50)
 
-        # Vérifier si le driver existe
-        driver = self.driver_dao.get_by_id(self.driver_id)
-        if not driver:
-            error_message = "Erreur: Conducteur non trouvé"
-            from src.CLI.menu_driver import MenuDriver
+            # Vérifier le driver
+            driver = self.driver_dao.get_by_id(self.driver_id)
+            if not driver:
+                print("Driver non trouvé")
+                from CLI.menu_driver import MenuDriver
+                return MenuDriver(message="Driver non trouvé")
 
-            return MenuDriver(message=error_message)
+            print(f"Livreur : {driver.first_name} {driver.last_name}")
 
-        # Récupérer les commandes disponibles
-        available_orders = self.get_available_orders()
+            # Récupérer les commandes
+            available_orders = self.get_available_orders()
 
-        if not available_orders:
-            message = "Aucune commande disponible pour le moment."
-            print(message)
-            from src.CLI.menu_driver import MenuDriver
+            if not available_orders:
+                print("Aucune commande disponible")
+                from CLI.menu_driver import MenuDriver
+                return MenuDriver(message="Aucune commande disponible")
 
-            return MenuDriver(message=message)
+            # Afficher la commande
+            oldest_order = available_orders[0]
+            print("\nCOMMANDE DISPONIBLE:")
+            print(f"   ID: {oldest_order['order'].id_order}")
+            print(f"   Adresse: {oldest_order['address'].address}")
+            print(f"   Montant: {oldest_order['order'].total_amount}€")
 
-        # Afficher la commande la plus ancienne
-        oldest_order = available_orders[0]
-        order_id = oldest_order["order"].id_order
-        order_address = oldest_order["address"]
+            choice = inquirer.select(
+                message="Souhaitez-vous accepter cette livraison?",
+                choices=[
+                    "Accepter la livraison",
+                    "Refuser la livraison",
+                    "Retour au menu driver"
+                ],
+            ).execute()
 
-        print("\n COMMANDE DISPONIBLE:")
-        print(f"   ID: {order_id}")
-        print(f"   Adresse: {order_address.address}")
-        print(f"   Ville: {order_address.city} {order_address.postal_code}")
-        print(f"   Montant: {oldest_order['order'].total_amount}€")
+            if choice == "Accepter la livraison":
+                return self.accept_delivery(oldest_order)
+            elif choice == "Refuser la livraison":
+                print("Livraison refusée")
+                from CLI.menu_driver import MenuDriver
+                return MenuDriver(message="Livraison refusée")
+            else:
+                from CLI.menu_driver import MenuDriver
+                return MenuDriver()
 
-        # Proposer d'accepter ou refuser
-        choice = inquirer.select(
-            message="Souhaitez-vous accepter cette livraison?",
-            choices=[
-                {"Accepter la livraison"},
-                {"Refuser la livraison"},
-                {"Retour au menu"},
-            ],
-        ).execute()
-
-        if choice == "Accepter la livraison":
-            return self.accept_delivery(oldest_order)
-        elif choice == "Refuser la livraison":
-            message = "Livraison refusée"
-            print(message)
-            from src.CLI.menu_driver import MenuDriver
-
-            return MenuDriver(message=message)
-        else:  # back
-            from src.CLI.menu_driver import MenuDriver
-
+        except Exception as e:
+            print(f"Erreur: {e}")
+            from CLI.menu_driver import MenuDriver
             return MenuDriver()
+
 
     def accept_delivery(self, order_data):
         """Traite l'acceptation d'une livraison"""
@@ -272,16 +217,16 @@ class ManageOrderView(VueAbstraite):
         print("CALCUL DE L'ITINÉRAIRE")
         print("=" * 60)
 
-        directions = self.calculer_itineraire(origin, destination, transport_mode)
+        directions = calculer_itineraire(origin, destination, transport_mode)
 
         if directions:
-            # Afficher les détails
-            self.display_itinerary_details(directions)
+            # Afficher les détails avec la fonction importée
+            display_itinerary_details(directions)
 
-            # Créer la carte
-            map_path = self.create_map(origin, destination, transport_mode)
+            # Créer la carte avec la fonction importée
+            map_path = create_map(origin, destination, transport_mode)
             if map_path:
-                print(f"🗺️  Carte sauvegardée: {map_path}")
+                print(f"Carte sauvegardée: {map_path}")
 
                 # Proposer d'ouvrir la carte
                 open_map = inquirer.confirm(
@@ -298,17 +243,25 @@ class ManageOrderView(VueAbstraite):
             print("Impossible de calculer l'itinéraire")
 
         message = f"Livraison {order_id} acceptée! Itinéraire calculé."
-        from src.CLI.menu_driver import MenuDriver
+        print(message)
 
-        return MenuDriver(message=message)
+        choice = inquirer.select(
+                message="Que voulez-vous faire maintenant?",
+                choices=[
+                    "Voir d'autres commandes",
+                    "Retour au menu driver"
+                ],
+            ).execute()
+        try:
+            if choice == "Voir d'autres commandes":
+                    # On rappelle choisir_menu pour voir d'autres commandes
+                    return self.choisir_menu()
+            else:
+                    # On retourne au menu driver
+                    print("Retour au menu driver...")
+                    from CLI.menu_driver import MenuDriver
+                    return MenuDriver(message=message)
 
-
-# Fonction main pour utilisation standalone (comme dans votre code original)
-def main():
-    """Fonction main pour lancer le gestionnaire de commandes standalone"""
-    view = ManageOrderView()
-    view.choisir_menu()
-
-
-if __name__ == "__main__":
-    main()
+        except Exception as e:
+            print(f"Erreur dans accept_delivery: {e}")
+            return None
