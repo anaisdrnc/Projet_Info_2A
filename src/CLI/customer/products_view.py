@@ -23,7 +23,7 @@ class ProductView(VueAbstraite):
             price = product["price"]
             list_products.append([name, description, price])
 
-        from src.CLI.menu_customer import MenuView
+        from src.CLI.customer.menu_customer import MenuView
 
         products_str = f"List of available products : \n\n"
         for product in list_products:

@@ -50,11 +50,11 @@ class MenuView(VueAbstraite):
 
             case "Place an order":
                 pass
-                from src.CLI.place_order_view import PlaceOrderView
+                from src.CLI.customer.place_order_view import PlaceOrderView
 
                 return PlaceOrderView()
 
             case "Get menu":
-                from src.CLI.products_view import ProductView
+                from src.CLI.customer.products_view import ProductView
 
                 return ProductView()

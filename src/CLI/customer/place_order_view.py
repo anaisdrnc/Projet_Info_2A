@@ -1,6 +1,6 @@
 from InquirerPy import inquirer
 
-from src.CLI.menu_customer import MenuView
+from src.CLI.customer.menu_customer import MenuView
 from src.CLI.session import Session
 from src.CLI.view_abstract import VueAbstraite
 from src.DAO.AddressDAO import AddressDAO

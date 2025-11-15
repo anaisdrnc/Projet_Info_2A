@@ -36,7 +36,7 @@ class LoginView(VueAbstraite):
                 message = f"You are connected on the customer account {user.user_name}"
                 Session().connexion(user, id_customer)
 
-                from src.CLI.menu_customer import MenuView
+                from src.CLI.customer.menu_customer import MenuView
                 return MenuView(message)
 
             elif id_customer is None and id_driver is not None:
