@@ -141,7 +141,7 @@ class PlaceOrderView(VueAbstraite):
         if nb_iterations == 50:
             print("You exceed the maximal number of products ordered")
 
-        nb_items = sum(quantities) + len(list_choosen_menu)
+        nb_items = sum([int(quantity) for quantity in quantities]) + len(list_choosen_menu)
 
         # get the address where the order is to be delivered
         address = inquirer.text(message="Enter your address (ex : 51 rue Blaise Pascal) :").execute()
@@ -178,7 +178,7 @@ class PlaceOrderView(VueAbstraite):
                 message += f" \n "
             else:
                 message += f" and "
-        for i in range(nb_items):
+        for i in range(len(list_choosen_products_names)):
             product = list_choosen_products_names[i]
             quantity = quantities[i]
             id_product = product_service.get_id_by_name(product)
