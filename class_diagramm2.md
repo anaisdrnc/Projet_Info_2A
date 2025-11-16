@@ -178,7 +178,5 @@ classDiagram
     BaseDAO <|-- DriverDAO : Inherits
     BaseDAO <|-- Order
        
-
-
 ```
 

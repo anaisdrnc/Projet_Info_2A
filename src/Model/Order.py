@@ -20,7 +20,7 @@ class Order(BaseModel):
                 The ID of the delivery address.
     date : datetime
                 The timestamp when the order was created. Defaults to the current time.
-    status : Literal["Delivered", "Preparing", "Ready", "En route", "Cancelled"]
+    status : Literal["Delivered", "Preparing", "Ready", "En route", "Cancelled"] #modifier en route
                 The current status of the order. Defaults to "Preparing".
     nb_items : int
                 The total number of items included in the order. Must be greater than or equal to 0.
