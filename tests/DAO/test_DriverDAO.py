@@ -248,8 +248,32 @@ def test_delete_driver_ko(dao):
 
 
 def test_get_id_driver_by_id_user(dao):
-    result = dao.get_id_driver_by_id_user(4)
-    assert result.id_driver == 3
+    username = unique_username("get_id_by_user")
+    salt = unique_username("salt_driver")
+
+    driver = Driver(
+        user_name=username,
+        password=hash_password("secret", salt),
+        salt=salt,
+        first_name="Id",
+        last_name="Driver",
+        email=f"{username}@test.com",
+        mean_of_transport="Car",
+    )
+
+    created = dao.create(driver)
+    assert created
+    assert driver.id > 0
+    assert driver.id_driver > 0
+
+    retrieved_id_driver = dao.get_id_driver_by_id_user(driver.id)
+
+    assert retrieved_id_driver == driver.id_driver
+
+
+def test_get_id_driver_by_id_user_ko(dao):
+    retrieved = dao.get_id_driver_by_id_user(999999)
+    assert retrieved is None
 
 
 if __name__ == "__main__":

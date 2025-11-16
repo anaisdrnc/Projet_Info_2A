@@ -1,10 +1,11 @@
 from datetime import datetime
+
 import pytest
 from dotenv import load_dotenv
 
+from src.DAO.CustomerDAO import CustomerDAO
 from src.DAO.DBConnector import DBConnector
 from src.DAO.UserRepo import UserRepo
-from src.DAO.CustomerDAO import CustomerDAO
 from src.Model.Customer import Customer
 from utils.reset_database import ResetDatabase
 from utils.securite import hash_password
@@ -164,6 +165,39 @@ def test_delete_customer_ok(dao):
 def test_delete_customer_ko(dao):
     deleted = dao.delete_customer(999999)
     assert not deleted
+
+
+def test_get_id_customer_by_id_user(dao):
+    # --- Arrange ---
+    username = unique_username("get_id_customer")
+    salt = unique_username("salt_customer")
+
+    # On crée un customer complet
+    customer = Customer(
+        user_name=username,
+        password=hash_password("secret", salt),
+        salt=salt,
+        first_name="Id",
+        last_name="Customer",
+        email=f"{username}@test.com",
+    )
+
+    # Création en DB via DAO
+    created = dao.add_customer(customer)
+    assert created is not None
+    assert customer.id > 0
+    assert customer.id_customer > 0
+
+    # --- Act ---
+    retrieved_id_customer = dao.get_id_customer_by_id_user(customer.id)
+
+    # --- Assert ---
+    assert retrieved_id_customer == customer.id_customer
+
+
+def test_get_id_customer_by_id_user_not_found(dao):
+    retrieved = dao.get_id_customer_by_id_user(999999)
+    assert retrieved is None
 
 
 if __name__ == "__main__":

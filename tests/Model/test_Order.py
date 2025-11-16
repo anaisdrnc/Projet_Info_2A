@@ -3,7 +3,6 @@ from datetime import datetime
 import pytest
 from pydantic import ValidationError
 
-# from src.Model.Address import Address
 from src.Model.Order import Order
 
 
@@ -42,6 +41,7 @@ def test_order_constructor_on_incorrect_id():
             total_amount=45.3,
             payment_method="Cash",
             nb_items=2,
+            status="Preparing",
         )
     assert "id_order" in str(exc.value)
 
@@ -58,6 +58,7 @@ def test_order_constructor_on_incorrect_date():
             total_amount=45.3,
             payment_method="Cash",
             nb_items=2,
+            status="Preparing",
         )
     assert "date" in str(exc.value)
 
@@ -90,6 +91,7 @@ def test_order_constructor_on_incorrect_total_amount():
             total_amount="quarante",
             payment_method="Cash",
             nb_items=2,
+            status="Preparing",
         )
     assert "total_amount" in str(exc.value)
 
@@ -105,6 +107,7 @@ def test_order_constructor_on_negative_total_amount():
             total_amount=-14.67,
             payment_method="Cash",
             nb_items=2,
+            status="Preparing",
         )
     assert "greater_than" in str(exc.value)
 
@@ -120,6 +123,7 @@ def test_order_constructor_on_incorrect_payment_method():
             total_amount=43.5,
             payment_method="change",
             nb_items=2,
+            status="Preparing",
         )
     assert "payment_method" in str(exc.value)
 
@@ -135,5 +139,6 @@ def test_order_constructor_on_negative_nb_items():
             total_amount=43.5,
             payment_method="Cash",
             nb_items=-1,
+            status="Preparing",
         )
     assert "greater_than_equal" in str(exc.value)

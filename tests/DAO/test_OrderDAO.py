@@ -324,7 +324,7 @@ def test_mark_as_ready_invalid_order(dao):
     assert marked is False
 
 
-def test_mark_as_en_route_ok(dao):
+def test_mark_as_on_the_way_ok(dao):
     addr = create_test_address()
     order = Order(
         id_customer=998,
@@ -338,15 +338,15 @@ def test_mark_as_en_route_ok(dao):
 
     dao.mark_as_ready(order_id)
 
-    marked = dao.mark_as_en_route(order_id)
+    marked = dao.mark_as_on_the_way(order_id)
     assert marked is True
 
     data = dao.get_by_id(order_id)
     assert data is not None
-    assert data["order"].status == "En route"
+    assert data["order"].status == "On the way"
 
 
-def test_mark_as_en_route_from_ready(dao):
+def test_mark_as_on_the_way_from_ready(dao):
     addr = create_test_address()
     order = Order(
         id_customer=998,
@@ -358,16 +358,16 @@ def test_mark_as_en_route_from_ready(dao):
     )
     order_id = dao.create_order(order)
 
-    marked = dao.mark_as_en_route(order_id)
+    marked = dao.mark_as_on_the_way(order_id)
     assert marked is True
 
     data = dao.get_by_id(order_id)
     assert data is not None
-    assert data["order"].status == "En route"
+    assert data["order"].status == "On the way"
 
 
-def test_mark_as_en_route_invalid_order(dao):
-    marked = dao.mark_as_en_route(999999)
+def test_mark_as_on_the_way_invalid_order(dao):
+    marked = dao.mark_as_on_the_way(999999)
     assert marked is False
 
 
@@ -437,11 +437,11 @@ def test_mark_multiple_status_changes(dao):
     data = dao.get_by_id(order_id)
     assert data["order"].status == "Ready"
 
-    en_route = dao.mark_as_en_route(order_id)
-    assert en_route is True
+    on_the_way = dao.mark_as_on_the_way(order_id)
+    assert on_the_way is True
 
     data = dao.get_by_id(order_id)
-    assert data["order"].status == "En route"
+    assert data["order"].status == "On the way"
 
     delivered = dao.mark_as_delivered(order_id)
     assert delivered is True
@@ -494,8 +494,8 @@ def test_mark_status_sequence(dao):
     assert dao.mark_as_ready(order_id) is True
     assert dao.get_by_id(order_id)["order"].status == "Ready"
 
-    assert dao.mark_as_en_route(order_id) is True
-    assert dao.get_by_id(order_id)["order"].status == "En route"
+    assert dao.mark_as_on_the_way(order_id) is True
+    assert dao.get_by_id(order_id)["order"].status == "On the way"
 
     assert dao.mark_as_delivered(order_id) is True
     assert dao.get_by_id(order_id)["order"].status == "Delivered"

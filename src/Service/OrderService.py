@@ -28,9 +28,7 @@ class OrderService:
         return None
 
     @log
-    def add_product_to_order(
-        self, order_id: int, product_id: int, quantity: int = 1, promotion : bool = False
-    ) -> bool:
+    def add_product_to_order(self, order_id: int, product_id: int, quantity: int = 1, promotion: bool = False) -> bool:
         """Ajoute un produit à une commande et décrémente le stock"""
         if order_id <= 0 or product_id <= 0 or quantity <= 0:
             return False
@@ -74,11 +72,11 @@ class OrderService:
         return self.orderdao.mark_as_ready(id_order)
 
     @log
-    def mark_as_en_route(self, id_order: int) -> bool:
+    def mark_as_on_the_way(self, id_order: int) -> bool:
         """Marquer une commande comme en route"""
         if id_order <= 0:
             return False
-        return self.orderdao.mark_as_en_route(id_order)
+        return self.orderdao.mark_as_on_the_way(id_order)
 
     @log
     def get_order_products(self, id_order: int) -> List[Dict[str, Any]]:

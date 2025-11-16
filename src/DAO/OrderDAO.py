@@ -1,12 +1,11 @@
+import logging
 from datetime import datetime
 from typing import Any, Dict, List, Optional
-import logging
 
 from src.DAO.DBConnector import DBConnector
 from src.DAO.ProductDAO import ProductDAO
 from src.Model.Address import Address
 from src.Model.Order import Order
-
 from utils.log_decorator import log
 
 
@@ -50,7 +49,7 @@ class OrderDAO:
             return None
 
     @log
-    def add_product(self, order_id: int, product_id: int, quantity: int = 1, promotion : bool = False) -> bool:
+    def add_product(self, order_id: int, product_id: int, quantity: int = 1, promotion: bool = False) -> bool:
         """
         Ajoute un produit à la commande, décrémente le stock via ProductDAO,
         et met à jour nb_items et total_amount dans orders.
@@ -83,7 +82,7 @@ class OrderDAO:
 
             if promotion:
                 total_add = float(product["price"]) * quantity * 0.9
-            else : 
+            else:
                 total_add = float(product["price"]) * quantity
 
             # Mettre à jour la commande (nb_items et total_amount)
@@ -120,9 +119,7 @@ class OrderDAO:
                 "one",
             )
             if not row:
-                logging.warning(
-                    f"Produit {product_id} non trouvé dans la commande {order_id}"
-                )
+                logging.warning(f"Produit {product_id} non trouvé dans la commande {order_id}")
                 return False
 
             current_qty = row["quantity"]
@@ -211,16 +208,16 @@ class OrderDAO:
             return False
 
     @log
-    def mark_as_en_route(self, id_order: int) -> bool:
+    def mark_as_on_the_way(self, id_order: int) -> bool:
         try:
             res = self.db_connector.sql_query(
-                "UPDATE orders SET status='En route', date=%s WHERE id_order=%s RETURNING id_order",
+                "UPDATE orders SET status='On the way', date=%s WHERE id_order=%s RETURNING id_order",
                 [datetime.now(), id_order],
                 return_type="one",
             )
             return res is not None
         except Exception as e:
-            print(f"Error marking order en route: {e}")
+            print(f"Error marking order on the way: {e}")
             return False
 
     @log
@@ -246,9 +243,7 @@ class OrderDAO:
     def get_by_id(self, order_id: int) -> Optional[Dict[str, Any]]:
         """Récupère une commande et les produits associés (sans modifier Order)."""
         try:
-            raw_order = self.db_connector.sql_query(
-                "SELECT * FROM orders WHERE id_order = %s", [order_id], "one"
-            )
+            raw_order = self.db_connector.sql_query("SELECT * FROM orders WHERE id_order = %s", [order_id], "one")
             if not raw_order:
                 return None
 
@@ -358,10 +353,12 @@ class OrderDAO:
             return False
 
     @log
-    def get_orders_by_id_user(self, id_customer : int):
+    def get_orders_by_id_user(self, id_customer: int):
         """Return all orders placed by a given customer"""
         try:
-            raw_orders = self.db_connector.sql_query("SELECT * FROM orders WHERE id_customer = %s", [id_customer], "all")
+            raw_orders = self.db_connector.sql_query(
+                "SELECT * FROM orders WHERE id_customer = %s", [id_customer], "all"
+            )
             result = []
             for o in raw_orders:
                 order_data = self.get_by_id(o["id_order"])
