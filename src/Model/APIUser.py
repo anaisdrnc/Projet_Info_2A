@@ -10,7 +10,7 @@ class APIUser(BaseModel):
     id : int
             The unique identifier of the user.
     username : str
-            The user's username. 
+            The user's username.
     first_name : str
             The user's first name.
     last_name : str
@@ -18,6 +18,7 @@ class APIUser(BaseModel):
     email : str
             The user's email address.
     """
+
     id: int
     username: str
     first_name: str
