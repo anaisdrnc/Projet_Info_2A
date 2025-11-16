@@ -5,91 +5,180 @@ title: Ub'EJR Eats Class Diagram
 classDiagram
     direction LR
 
-    %% Base Classes
+    %% ==================================
+    %% 1. CLASSES ENTITÉS (Pydantic Models)
+    %% ==================================
     class BaseModel {
         <<abstract>>
     }
-
     class Address {
-        +Optional~int~ id_address = None
+        +Optional~int~ id_address
         +str address
         +int postal_code
         +str city
     }
-
+    class Product {
+        +Optional~int~ id_product
+        +str name
+        +float price
+        ...
+    }
+    class Order {
+        +Optional~int~ id_order
+        +int customer_id
+        +Optional~int~ driver_id
+        ...
+    }
+    class User {
+        <<BaseModel>>
+        +Optional~int~ id
+        +str user_name
+        +str password
+        ...
+    }
+    class Admin {
+        +Optional~int~ id_admin
+    }
+    class Customer {
+        +Optional~Address~ address
+        +Optional~int~ id_customer
+    }
+    class Driver {
+        +Literal~"Bike", "Car"~ mean_of_transport
+        +Optional~int~ id_driver
+    }
     class APIUser {
         +int id
         +str username
-        +str first_name
-        +str last_name
-        +str email
+        ...
+    }
+    
+    
+    %% ==================================
+    %% 2. CLASSES DAO/REPO
+    %% ==================================
+    class DBConnector {
+        -connection
+        +sql_query(...)
+    }
+    class BaseDAO {
+        <<abstract>>
+        +get_by_id(id)
+        +save(entity)
+        ...
+    }
+    class UserRepo {
+        +add_user(user)
+        +delete_user(id)
+        ...
+    }
+    class AdminDAO {
+        +add_admin(admin)
+        +login(username, password)
+        ...
+    }
+    class CustomerDAO {
+        +add_customer(customer)
+        +update_customer(customer)
+        ...
+    }
+    class DriverDAO {
+        +create(driver)
+        +update(driver)
+        +login(username, password)
+        ...
+    }
+    class OrderDAO {
+        -ProductDAO productdao
+        +create_order(order)
+        +add_product(...)
+        +cancel_order(id)
+        ...
+    }
+    class ProductDAO {
+        +create_product(product)
+        +decrement_stock(...)
+        +increment_stock(...)
+        ...
+    }
+    class AddressDAO {
+        +add_address(...)
+        ...
     }
 
-    class Product {
-        +Optional~int~ id_product = None
-        +str name
-        +float price
-        +float production_cost
-        +Literal~"drink", "lunch", "dessert"~ product_type
-        +str description
-        +int stock
+
+    %% ==================================
+    %% 3. CLASSES SERVICE (Logique Métier)
+    %% ==================================
+    class PasswordService {
+        +check_password_strength(password)
+        +create_salt()
+        +validate_username_password(...)
     }
 
-    class Order {
-        +Optional~int~ id_order = None
-        +int customer_id
-        +Optional~int~ driver_id = None
-        +int address_id
-        +datetime date
-        +Literal~"Delivered", "Preparing", "Ready", "En route", "Cancelled"~ status
-        +int nb_items
-        +float total_amount
-        +Literal~"Card", "Cash"~ payment_method
+    class AddressService {
+        -AddressDAO addressdao
+        +validate_address(address)
+        +add_address(...)
+    }
+    
+    class UserService {
+        -UserRepo user_repo
+        +create_user(...)
+        +change_password(...)
     }
 
-    %% User Classes (Inheritance)
-    class User {
-        <<BaseModel>>
-        +Optional~int~ id = None
-        +str user_name
-        +str password
-        +str first_name
-        +str last_name
-        +str email
-        +Optional~str~ salt = None
+    class AdminService {
+        -AdminDAO admindao
+        +create_admin(...)
+        +verify_password(...)
+    }
+    class CustomerService {
+        -CustomerDAO customerdao
+        +create_customer(...)
+    }
+    class DriverService {
+        -DriverDAO driverdao
+        +create_driver(...)
+        +login(...)
+    }
+    class OrderService {
+        -OrderDAO orderdao
+        +create(...)
+        +add_product_to_order(...)
+        +cancel_order(...)
+        ...
+    }
+    class ProductService {
+        -ProductDAO productdao
+        +create(...)
+        +get_available_products()
+        ...
     }
 
-    class Admin {
-        +Optional~int~ id_admin = None
-    }
 
-    class Customer {
-        +Optional~Address~ address = None
-        +Optional~int~ id_customer = None
-    }
+    %% ==================================
+    %% 4. RELATIONS
+    %% ==================================
 
-    class Driver {
-        +Literal~"Bike", "Car"~ mean_of_transport
-        +Optional~int~ id_driver = None
-    }
-
-    %% -------------------- RELATIONS --------------------
-
-    %% Inheritance: Subclasses inherit from User
+    %% A. Héritage Entités
     User <|-- Admin : Inherits
     User <|-- Customer : Inherits
     User <|-- Driver : Inherits
 
-    %% Association: Foreign key relationships in Order
+    %% B. Relations Entités (simplifiées)
     Order --> Customer : customer_id
     Order --> Driver : driver_id
     Order --> Address : address_id
+    Customer "1" o-- "0..1" Address : has
 
-    %% Association: Explicit/Implicit relations
-    Customer "1" o-- "0..1" Address : has (1 to 0..1 relation)
-    
-    %% Assumption: An Order contains multiple Products
-    Order "1" -- "*" Product : contains
+    %% C. Héritage DAO (pour montrer l'abstraction)
+    BaseDAO <|-- AdminDAO : Inherits
+    BaseDAO <|-- CustomerDAO : Inherits
+    BaseDAO <|-- DriverDAO : Inherits
+    BaseDAO <|-- Order
+       
+
 
 ```
 
