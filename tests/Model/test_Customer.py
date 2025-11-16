@@ -5,7 +5,7 @@ from src.Model.Customer import Customer
 
 
 def test_create_customer_with_address():
-    """Test normal : création d’un Customer avec adresse complète"""
+    """Test : Checks that an Customer object has been initialized correctly."""
     addr = Address(address="12 Maple Street", postal_code=35000, city="Rennes")
     cust = Customer(
         id=1,
@@ -25,7 +25,7 @@ def test_create_customer_with_address():
 
 
 def test_create_customer_without_address():
-    """Test : création d’un Customer sans adresse"""
+    """Test : checks constructor without address."""
     cust = Customer(
         id=2,
         user_name="bobuser",
@@ -42,7 +42,7 @@ def test_create_customer_without_address():
 
 
 def test_invalid_address_type():
-    """Test : on donne une mauvaise valeur pour address"""
+    """Test : checks constructor with a wrong type of address."""
     with pytest.raises(ValueError):
         Customer(
             id=3,

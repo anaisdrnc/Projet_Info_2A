@@ -5,6 +5,7 @@ from src.Model.User import User
 
 
 def test_user_constructor_ok():
+    """Test : Checks that an User object has been initialized correctly."""
     User1 = User(
         id=1,
         user_name="Lil",
@@ -23,7 +24,8 @@ def test_user_constructor_ok():
     assert User1.salt == "g"
 
 
-def test_user_constructor_throws_on_incorrect_id():
+def test_user_constructor_on_incorrect_id():
+    """Test : checks constructor on incorrect id."""
     with pytest.raises(ValidationError) as exception_info:
         User(
             id="one",
@@ -36,12 +38,11 @@ def test_user_constructor_throws_on_incorrect_id():
         )
     assert "id" in str(
         exception_info.value
-    ) and "Input should be a valid integer, unable to parse string as an integer" in str(
-        exception_info.value
-    )
+    ) and "Input should be a valid integer, unable to parse string as an integer" in str(exception_info.value)
 
 
-def test_user_constructor_throws_on_incorrect_username():
+def test_user_constructor_on_incorrect_username():
+    """Test : checks constructor on incorrect username."""
     with pytest.raises(ValidationError) as exception_info:
         User(
             id=1,
@@ -52,12 +53,11 @@ def test_user_constructor_throws_on_incorrect_username():
             email="lilas.dpt@gmail.com",
             salt="i",
         )
-    assert "user_name" in str(
-        exception_info.value
-    ) and "Input should be a valid string" in str(exception_info.value)
+    assert "user_name" in str(exception_info.value) and "Input should be a valid string" in str(exception_info.value)
 
 
-def test_user_constructor_throws_on_incorrect_firstname():
+def test_user_constructor_on_incorrect_firstname():
+    """Test : checks constructor on incorrect firstname."""
     with pytest.raises(ValidationError) as exception_info:
         User(
             id=1,
@@ -68,12 +68,11 @@ def test_user_constructor_throws_on_incorrect_firstname():
             email="lilas.dpt@gmail.com",
             salt="h",
         )
-    assert "first_name" in str(
-        exception_info.value
-    ) and "Input should be a valid string" in str(exception_info.value)
+    assert "first_name" in str(exception_info.value) and "Input should be a valid string" in str(exception_info.value)
 
 
-def test_user_constructor_throws_on_incorrect_lastname():
+def test_user_constructor_on_incorrect_lastname():
+    """Test : checks constructor on incorrect lastname."""
     with pytest.raises(ValidationError) as exception_info:
         User(
             id=1,
@@ -84,12 +83,11 @@ def test_user_constructor_throws_on_incorrect_lastname():
             email="lilas.dpt@gmail.com",
             salt="y",
         )
-    assert "last_name" in str(
-        exception_info.value
-    ) and "Input should be a valid string" in str(exception_info.value)
+    assert "last_name" in str(exception_info.value) and "Input should be a valid string" in str(exception_info.value)
 
 
-def test_user_constructor_throws_on_incorrect_email():
+def test_user_constructor_on_incorrect_email():
+    """Test : checks constructor on incorrect email."""
     with pytest.raises(ValidationError) as exception_info:
         User(
             id=1,
@@ -100,6 +98,4 @@ def test_user_constructor_throws_on_incorrect_email():
             email=[1, 2],
             salt="r",
         )
-    assert "email" in str(
-        exception_info.value
-    ) and "Input should be a valid string" in str(exception_info.value)
+    assert "email" in str(exception_info.value) and "Input should be a valid string" in str(exception_info.value)

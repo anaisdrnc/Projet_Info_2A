@@ -4,7 +4,7 @@ from src.Model.Driver import Driver
 
 
 def test_create_valid_driver():
-    """Test : création d’un Driver valide"""
+    """Test : Checks that an Driver object has been initialized correctly."""
     driver = Driver(
         id=1,
         user_name="emma_driver",
@@ -22,7 +22,7 @@ def test_create_valid_driver():
 
 
 def test_create_driver_with_bicycle():
-    """Test : création d’un Driver avec transport_mean = bicycling"""
+    """Test : checks constructor with transport_mean = bike"""
     driver = Driver(
         id=2,
         user_name="paul_bike",
@@ -38,7 +38,7 @@ def test_create_driver_with_bicycle():
 
 
 def test_create_driver_with_invalid_transport_mean():
-    """Test : mean_of_transport invalide"""
+    """Test : checks constructor with a wrong mean of transport."""
     with pytest.raises(ValueError):
         Driver(
             id=3,

@@ -5,7 +5,7 @@ from src.Model.Product import Product
 
 
 def test_product_constructor_ok():
-    """Constructor test"""
+    """Test : Checks that an Product object has been initialized correctly."""
     Product1 = Product(
         id_product=3,
         name="Italian Panini",
@@ -25,7 +25,7 @@ def test_product_constructor_ok():
 
 
 def test_product_constructor_on_incorrect_id():
-    """Test : id must be an integer"""
+    """Test : checks constructor on incorrect id."""
     with pytest.raises(ValidationError) as exception_info:
         Product(
             id_product="three",
@@ -38,13 +38,11 @@ def test_product_constructor_on_incorrect_id():
         )
     assert "id_product" in str(
         exception_info.value
-    ) and "Input should be a valid integer, unable to parse string as an integer" in str(
-        exception_info.value
-    )
+    ) and "Input should be a valid integer, unable to parse string as an integer" in str(exception_info.value)
 
 
 def test_product_constructor_on_incorrect_name():
-    """Test : name must be a string"""
+    """Test : checks constructor on incorrect name."""
     with pytest.raises(ValidationError) as exception_info:
         Product(
             id_product=3,
@@ -55,13 +53,11 @@ def test_product_constructor_on_incorrect_name():
             stock=3,
             description="tomato panini",
         )
-    assert "name" in str(
-        exception_info.value
-    ) and "Input should be a valid string" in str(exception_info.value)
+    assert "name" in str(exception_info.value) and "Input should be a valid string" in str(exception_info.value)
 
 
 def test_product_constructor_on_price():
-    """Test : price must be a float"""
+    """Test : checks constructor on incorrect type of price."""
     with pytest.raises(ValidationError) as exception_info:
         Product(
             id_product=3,
@@ -72,13 +68,11 @@ def test_product_constructor_on_price():
             stock=3,
             description="tomato panini",
         )
-    assert "price" in str(
-        exception_info.value
-    ) and "Input should be a valid number" in str(exception_info.value)
+    assert "price" in str(exception_info.value) and "Input should be a valid number" in str(exception_info.value)
 
 
 def test_product_constructor_on_zero_price():
-    """Test:  price must be strictly greater than 0."""
+    """Test: checks constructor on price of zero."""
     with pytest.raises(ValidationError) as exception_info:
         Product(
             id_product=3,
@@ -94,7 +88,7 @@ def test_product_constructor_on_zero_price():
 
 
 def test_product_constructor_on_negative_price():
-    """Test: price must be strictly greater than 0 and fails when price is negative."""
+    """Test: checks constructor on negative price."""
     with pytest.raises(ValidationError) as exception_info:
         Product(
             id_product=3,
@@ -110,7 +104,7 @@ def test_product_constructor_on_negative_price():
 
 
 def test_product_constructor_on_production_cost():
-    """Test : production cost must be a float"""
+    """Test : checks constructor on incorrect production cost."""
     with pytest.raises(ValidationError) as exception_info:
         Product(
             id_product=3,
@@ -121,13 +115,13 @@ def test_product_constructor_on_production_cost():
             stock=3,
             description="tomato panini",
         )
-    assert "production_cost" in str(
+    assert "production_cost" in str(exception_info.value) and "Input should be a valid number" in str(
         exception_info.value
-    ) and "Input should be a valid number" in str(exception_info.value)
+    )
 
 
 def test_product_constructor_on_zero_production_cost():
-    """Test: production cost must be strictly greater than 0."""
+    """Test: checks constructor on production cost of zero."""
     with pytest.raises(ValidationError) as exception_info:
         Product(
             id_product=3,
@@ -142,8 +136,8 @@ def test_product_constructor_on_zero_production_cost():
     assert "greater_than" in str(exception_info.value)
 
 
-def test_product_constructor_on_negative_purchase_price():
-    """Test: production_cost must be strictly greater than 0."""
+def test_product_constructor_on_negative_production_cost():
+    """Test: checks constructor on negative production cost."""
     with pytest.raises(ValidationError) as exception_info:
         Product(
             id_product=3,
@@ -159,7 +153,7 @@ def test_product_constructor_on_negative_purchase_price():
 
 
 def test_product_constructor_on_product_type():
-    """Test : product type must be a string"""
+    """Test : checks constructor on incorrect product type."""
     with pytest.raises(ValidationError) as exception_info:
         Product(
             id_product=3,
@@ -170,13 +164,13 @@ def test_product_constructor_on_product_type():
             stock=3,
             description="tomato panini",
         )
-    assert "product_type" in str(
+    assert "product_type" in str(exception_info.value) and "Input should be 'drink', 'lunch' or 'dessert'" in str(
         exception_info.value
-    ) and "Input should be 'drink', 'lunch' or 'dessert'" in str(exception_info.value)
+    )
 
 
 def test_product_constructor_on_stock_quantity():
-    """Test : Stock quantity must be an integer"""
+    """Test : checks constructor on incorrect quantity."""
     with pytest.raises(ValidationError) as exception_info:
         Product(
             id_product=3,
@@ -189,13 +183,11 @@ def test_product_constructor_on_stock_quantity():
         )
     assert "stock" in str(
         exception_info.value
-    ) and "Input should be a valid integer, unable to parse string as an integer" in str(
-        exception_info.value
-    )
+    ) and "Input should be a valid integer, unable to parse string as an integer" in str(exception_info.value)
 
 
-def test_product_constructor_on_negative_stock_quantity_fail():
-    """Test: stock quantity must be greater than or equal to 0."""
+def test_product_constructor_on_negative_stock_quantity():
+    """Test: checks constructor on negative quantity."""
     with pytest.raises(ValidationError) as exception_info:
         Product(
             id_product=3,
@@ -211,7 +203,7 @@ def test_product_constructor_on_negative_stock_quantity_fail():
 
 
 def test_product_constructor_on_description_fail():
-    """Test: description must be a string."""
+    """Test: checks constructor on incorrect description."""
     with pytest.raises(ValidationError) as exception_info:
         Product(
             id_product=3,
@@ -222,6 +214,4 @@ def test_product_constructor_on_description_fail():
             stock=5,
             description=4,
         )
-    assert "description" in str(
-        exception_info.value
-    ) and "Input should be a valid string" in str(exception_info.value)
+    assert "description" in str(exception_info.value) and "Input should be a valid string" in str(exception_info.value)

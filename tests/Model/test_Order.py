@@ -3,12 +3,12 @@ from datetime import datetime
 import pytest
 from pydantic import ValidationError
 
-from src.Model.Address import Address
+# from src.Model.Address import Address
 from src.Model.Order import Order
 
 
 def test_order_constructor_ok():
-    """Constructor test"""
+    """Test : Checks that an Order object has been initialized correctly."""
     order = Order(
         id_order=3,
         id_customer=1,
@@ -32,7 +32,7 @@ def test_order_constructor_ok():
 
 
 def test_order_constructor_on_incorrect_id():
-    """Test : id must be an integer"""
+    """Test : checks constructor on incorrect id."""
     with pytest.raises(ValidationError) as exc:
         Order(
             id_order="three",
@@ -47,7 +47,7 @@ def test_order_constructor_on_incorrect_id():
 
 
 def test_order_constructor_on_incorrect_date():
-    """Test : date must be a datetime"""
+    """Test : checks constructor on incorrect date"""
     with pytest.raises(ValidationError) as exc:
         Order(
             id_order=3,
@@ -63,7 +63,7 @@ def test_order_constructor_on_incorrect_date():
 
 
 def test_order_constructor_on_incorrect_status():
-    """Test : Status must be one of the allowed literals ('delivered' or 'waiting')"""
+    """Test : checks constructor in incorrect status."""
     with pytest.raises(ValidationError) as exc:
         Order(
             id_order=3,
@@ -80,7 +80,7 @@ def test_order_constructor_on_incorrect_status():
 
 
 def test_order_constructor_on_incorrect_total_amount():
-    """Test : total amount must be a float"""
+    """Test : checks constructor in incorrect total amount."""
     with pytest.raises(ValidationError) as exc:
         Order(
             id_order=3,
@@ -95,7 +95,7 @@ def test_order_constructor_on_incorrect_total_amount():
 
 
 def test_order_constructor_on_negative_total_amount():
-    """Test : total_amount must be strictly greater than 0."""
+    """Test : checks constructor on negative total amount."""
     with pytest.raises(ValidationError) as exc:
         Order(
             id_order=3,
@@ -110,7 +110,7 @@ def test_order_constructor_on_negative_total_amount():
 
 
 def test_order_constructor_on_incorrect_payment_method():
-    """Test : payment method must be one of the allowed literals ('cash' or 'card')"""
+    """Test : checks constructor on incorrect payment method."""
     with pytest.raises(ValidationError) as exc:
         Order(
             id_order=3,
@@ -125,7 +125,7 @@ def test_order_constructor_on_incorrect_payment_method():
 
 
 def test_order_constructor_on_negative_nb_items():
-    """Test : nb_items must be >= 0"""
+    """Test : checks constructor on negative number of items."""
     with pytest.raises(ValidationError) as exc:
         Order(
             id_order=3,
