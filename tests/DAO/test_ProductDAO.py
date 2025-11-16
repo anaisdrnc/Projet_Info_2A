@@ -229,9 +229,7 @@ def test_decrement_stock(dao):
     assert success
 
     # Vérifier le stock
-    updated = [p for p in dao.get_all_products() if p.id_product == product.id_product][
-        0
-    ]
+    updated = [p for p in dao.get_all_products() if p.id_product == product.id_product][0]
     assert updated.stock == 2
 
     # Décrémenter de 3 → échoue car stock insuffisant
@@ -256,9 +254,7 @@ def test_increment_stock(dao):
     assert success
 
     # Vérifier le stock
-    updated = [p for p in dao.get_all_products() if p.id_product == product.id_product][
-        0
-    ]
+    updated = [p for p in dao.get_all_products() if p.id_product == product.id_product][0]
     assert updated.stock == 7
 
 
