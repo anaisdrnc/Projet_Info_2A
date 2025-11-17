@@ -47,6 +47,27 @@ class AdminService:
             return new_user
         return None
 
+    def update_admin(self, admin: Admin) -> bool:
+        """
+        Met à jour les informations d'un administrateur.
+        Si le mot de passe est fourni, il sera vérifié et hashé.
+        """
+        try:
+            # Vérifie et hash le mot de passe si nécessaire
+            if admin.password:
+                check_password_strength(admin.password)
+                print("hello")
+                admin.salt = create_salt()
+                admin.password = hash_password(admin.password, admin.salt)
+
+
+            # Appelle le DAO pour mettre à jour
+            return self.admindao.update_admin(admin)
+
+        except Exception as e:
+            logging.error(f"[AdminService] Erreur lors de la mise à jour de l'admin {admin.id_admin}: {e}")
+            return False
+
     def get_by_username(self, username: str) -> Admin | None:
         """Récupère un administrateur à partir de son nom d'utilisateur."""
         try:

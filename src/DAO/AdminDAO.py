@@ -76,6 +76,17 @@ class AdminDAO:
             logging.info(e)
             return None
 
+
+    def update_admin(self, admin: Admin) -> bool:
+        """Permet au client de mettre à jour ses informations."""
+        try:
+        # On met à jour les infos dans users
+            return self.user_repo.update_user(admin)
+        except Exception as e:
+            logging.info(e)
+            return False
+
+
     def get_by_username(self, username: str) -> Optional[Admin]:
         """Récupérer un administrateur à partir de son nom d'utilisateur."""
         try:

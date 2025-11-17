@@ -1,7 +1,8 @@
 from typing import List
-
-from fastapi import APIRouter, HTTPException, status
-
+from typing import Annotated
+from fastapi.security import HTTPAuthorizationCredentials
+from fastapi import APIRouter, HTTPException, status, Depends
+from .JWTBearer import JWTBearer
 from src.DAO.DBConnector import DBConnector
 from src.Model.Order import Order  # ton modèle Pydantic pour les commandes
 
@@ -10,7 +11,8 @@ db = DBConnector()
 
 
 @order_router.get("/", response_model=List[Order], status_code=status.HTTP_200_OK)
-def get_all_orders():
+def get_all_orders(credentials: Annotated[HTTPAuthorizationCredentials, Depends(JWTBearer())]):
+    
     """
     Récupère toutes les commandes depuis la base PostgreSQL.
     """

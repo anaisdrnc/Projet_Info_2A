@@ -78,7 +78,7 @@ class CustomerDAO:
     def update_customer(self, customer: Customer) -> bool:
         """Permet au client de mettre à jour ses informations."""
         try:
-            # On met à jour les infos dans users
+        # On met à jour les infos dans users
             return self.user_repo.update_user(customer)
         except Exception as e:
             logging.info(e)
