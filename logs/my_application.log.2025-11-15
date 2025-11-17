@@ -1,0 +1,11 @@
+15/11/2025 18:41:45 - INFO     - --------------------------------------------------
+15/11/2025 18:41:45 - INFO     - Lancement Application                           
+15/11/2025 18:41:45 - INFO     - --------------------------------------------------
+15/11/2025 18:41:45 - INFO     - OpeningView
+15/11/2025 18:41:48 - INFO     - InscriptionView
+15/11/2025 18:41:51 - INFO     -     UserService.is_username_taken('',) - DEBUT
+15/11/2025 18:41:51 - INFO     -         UserRepo.is_username_taken('',) - DEBUT
+15/11/2025 18:41:51 - INFO     -         UserRepo.is_username_taken('',) - FIN
+15/11/2025 18:41:51 - INFO     -            └─> Sortie : False
+15/11/2025 18:41:51 - INFO     -     UserService.is_username_taken('',) - FIN
+15/11/2025 18:41:51 - INFO     -        └─> Sortie : False
