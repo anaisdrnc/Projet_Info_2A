@@ -202,8 +202,8 @@ class ManageOrderView(VueAbstraite):
             return MenuDriver(message=message)
 
         # Marquer comme en route
-        self.order_service.mark_as_en_route(order_id)
-        print("Commande assignée et marquée comme 'En route'")
+        self.order_service.mark_as_on_the_way(order_id)
+        print("Commande assignée et marquée comme 'On the way'")
 
         # Calculer et afficher l'itinéraire
         driver = self.driver_dao.get_by_id(self.driver_id)
