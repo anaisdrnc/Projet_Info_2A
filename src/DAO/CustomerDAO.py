@@ -1,5 +1,5 @@
 import logging
-from typing import Optional, List
+from typing import Optional
 
 from src.DAO.DBConnector import DBConnector
 from src.DAO.UserRepo import UserRepo
@@ -8,15 +8,32 @@ from utils.log_decorator import log
 
 
 class CustomerDAO:
-    """DAO pour gérer les clients."""
+    """Class providing access to the Customer table of the database"""
 
     def __init__(self, db_connector: DBConnector = None):
+        """Initialize AdminDAO with a DB connector."""
         self.db_connector = db_connector or DBConnector()
         self.user_repo = UserRepo(self.db_connector)
 
     @log
-    def add_customer(self, customer: Customer) -> bool:
-        """Créer un client dans la DB (users + customer)."""
+    def add_customer(self, customer: Customer) -> Optional[Customer]:
+        """Create a new customer in the database (users + customer).
+
+        This method:
+            1) Creates the user in the users table.
+            2) Creates the corresponding entry in the customer table.
+
+        Parameters
+        ----------
+        customer : Customer
+            The Customer object to insert.
+
+        Returns
+        -------
+        Customer or None
+            The Customer object with its id_customer set if creation succeeds.
+            None if the creation fails at any step.
+        """
         try:
             # Ajouter l'utilisateur via UserRepo
             id_user = self.user_repo.add_user(customer)
@@ -41,10 +58,21 @@ class CustomerDAO:
         except Exception as e:
             logging.info(e)
         return None
-    
+
     @log
     def get_by_id(self, customer_id: int) -> Optional[Customer]:
-        """Récupérer un client par son ID customer."""
+        """Retrieve an customer from the database using their customer ID.
+
+        Parameters
+        ----------
+        customer_id : int
+            The id of the customer to retrieve.
+
+        Returns
+        -------
+        Customer or None
+            The corresponding Customer object if found,
+            or None if no customer exists with this ID or if an error occurs."""
         try:
             res = self.db_connector.sql_query(
                 """
@@ -76,9 +104,18 @@ class CustomerDAO:
 
     @log
     def update_customer(self, customer: Customer) -> bool:
-        """Permet au client de mettre à jour ses informations."""
+        """Update an customer's user information.
+
+        Parameters
+        ----------
+        customer : Customer
+
+        Returns
+        -------
+        bool :
+            True if the update succeeds, False otherwise.
+        """
         try:
-        # On met à jour les infos dans users
             return self.user_repo.update_user(customer)
         except Exception as e:
             logging.info(e)
@@ -86,13 +123,24 @@ class CustomerDAO:
 
     @log
     def delete_customer(self, id_customer: int) -> bool:
-        """Supprime un client et son user associé."""
+        """Delete a customer and their associated user from the database.
+
+        Parameters
+        ----------
+        id_customer : int
+            The ID of the customer to delete.
+
+        Returns
+        -------
+        bool
+            True if the customer (and associated user) was successfully deleted.
+            False if the customer does not exist or if the deletion fails.
+        """
         customer = self.get_by_id(id_customer)
         if not customer:
             return False
 
         try:
-            # Supprimer le client avec RETURNING
             res = self.db_connector.sql_query(
                 """
                 DELETE FROM customer
@@ -106,20 +154,29 @@ class CustomerDAO:
             if not res or "id_customer" not in res:
                 return False
 
-            # Supprimer aussi l'utilisateur lié
             self.user_repo.delete_user(customer.id)
             return True
 
         except Exception as e:
             logging.info(e)
             return False
-    
+
     @log
     def get_id_customer_by_id_user(self, id_user) -> Optional[int]:
-        raw_customer = self.db_connector.sql_query(
-            "SELECT * from customer WHERE id_user =%s", [id_user], "one"
-        )
+        """Retrieve the customer ID associated with a given user ID.
+
+        Parameters
+        ----------
+        id_user : int
+            The ID of the user whose customer ID is to be retrieved.
+
+        Returns
+        -------
+        int or None
+            The corresponding customer ID if found.
+            None if no customer exists for the given user ID.
+        """
+        raw_customer = self.db_connector.sql_query("SELECT * from customer WHERE id_user =%s", [id_user], "one")
         if raw_customer is None:
             return None
-        # pyrefly: ignore
         return raw_customer["id_customer"]

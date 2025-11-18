@@ -29,8 +29,7 @@ class AdminDAO:
         Returns
         -------
         bool :
-        - True if the administrator was successfully created.
-        - False if the process fails at any step.
+        - True if the administrator was successfully created, otherwise False.
         """
         id_user = self.user_repo.add_user(admin)
         if not id_user:
@@ -63,7 +62,8 @@ class AdminDAO:
 
         Returns
         -------
-        admin: Admin if authentication was successful, otherwise None
+        Admin or None :
+            Admin if authentication was successful, otherwise None
         """
         try:
             query = """
@@ -104,7 +104,8 @@ class AdminDAO:
 
         Returns
         -------
-        bool : True if the update succeeds, False otherwise.
+        bool :
+            True if the update succeeds, False otherwise.
         """
         try:
             return self.user_repo.update_user(admin)
@@ -113,7 +114,19 @@ class AdminDAO:
             return False
 
     def get_by_username(self, username: str) -> Optional[Admin]:
-        """Récupérer un administrateur à partir de son nom d'utilisateur."""
+        """Retrieve an administrator from the database using their username.
+
+        Parameters
+        ----------
+        username : str
+            The username of the administrator to look up.
+
+        Returns
+        -------
+        Admin or None
+            An Admin object if a matching administrator is found.
+            None if no result is found or an error occurs.
+        """
         try:
             res = self.db_connector.sql_query(
                 """
@@ -146,7 +159,18 @@ class AdminDAO:
             return None
 
     def get_by_id(self, admin_id: int) -> Optional[Admin]:
-        """Récupérer un administrateur à partir de son id_admin."""
+        """Retrieve an administrator from the database using their administrator ID.
+
+        Parameters
+        ----------
+        admin_id : int
+            The id of the administrator to retrieve.
+
+        Returns
+        -------
+        Admin or None
+            The corresponding Admin object if found,
+            or None if no administrator exists with this ID or if an error occurs."""
         try:
             res = self.db_connector.sql_query(
                 """

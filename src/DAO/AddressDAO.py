@@ -1,7 +1,5 @@
 import logging
 
-# from psycopg2 import IntegrityError
-# from src.DAO.DBConnector import DBConnector
 from src.Model.Address import Address
 from utils.log_decorator import log
 
