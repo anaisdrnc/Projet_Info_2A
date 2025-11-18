@@ -1,8 +1,10 @@
-from typing import Optional
 import logging
+from typing import Optional
+
 from src.Model.User import User
-from .DBConnector import DBConnector
 from utils.log_decorator import log
+
+from .DBConnector import DBConnector
 
 
 class UserRepo:
@@ -59,9 +61,7 @@ class UserRepo:
 
     @log
     def get_by_id(self, user_id: int) -> Optional[User]:
-        raw_user = self.db_connector.sql_query(
-            "SELECT * from users WHERE id_user=%s", [user_id], "one"
-        )
+        raw_user = self.db_connector.sql_query("SELECT * from users WHERE id_user=%s", [user_id], "one")
         if raw_user is None:
             return None
         # pyrefly: ignore
@@ -69,9 +69,7 @@ class UserRepo:
 
     @log
     def get_by_username(self, user_name: str) -> Optional[User]:
-        raw_user = self.db_connector.sql_query(
-            "SELECT * from users WHERE user_name=%s", [user_name], "one"
-        )
+        raw_user = self.db_connector.sql_query("SELECT * from users WHERE user_name=%s", [user_name], "one")
         if raw_user is None:
             return None
         # pyrefly: ignore
@@ -83,20 +81,18 @@ class UserRepo:
         password = raw_user["password"]
         salt = raw_user["salt"]
         return User(
-            id = id_user, 
-            user_name = user_name, 
-            first_name = first_name,
-            last_name = last_name,
-            email = email,
-            password = password,
-            salt = salt)
-
+            id=id_user,
+            user_name=user_name,
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            password=password,
+            salt=salt,
+        )
 
     @log
     def get_password(self, username):
-        raw_password = self.db_connector.sql_query(
-            "SELECT password from users WHERE user_name=%s", [username], "one"
-        )
+        raw_password = self.db_connector.sql_query("SELECT password from users WHERE user_name=%s", [username], "one")
         if raw_password is None:
             return None
         if raw_password:
@@ -105,9 +101,7 @@ class UserRepo:
 
     @log
     def is_username_taken(self, username):
-        raw_answer = self.db_connector.sql_query(
-            "SELECT * FROM users WHERE user_name = %s;", [username], "one"
-        )
+        raw_answer = self.db_connector.sql_query("SELECT * FROM users WHERE user_name = %s;", [username], "one")
         if raw_answer is None:
             return False
         return True

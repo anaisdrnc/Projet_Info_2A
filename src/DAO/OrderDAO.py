@@ -10,16 +10,30 @@ from utils.log_decorator import log
 
 
 class OrderDAO:
-    """DAO pour la gestion des commandes et leurs produits."""
+    """Class providing access to the Order table of the database"""
 
     def __init__(self, db_connector=None):
-        """Initialize a new OrderDAO instance with a database connector."""
+        """Initialize DriverDAO with a DB connector."""
         self.db_connector = db_connector if db_connector is not None else DBConnector()
         self.productdao = ProductDAO(self.db_connector)
 
     @log
     def create_order(self, order: Order) -> Optional[int]:
-        """Crée une nouvelle commande avec l'adresse déjà insérée en base."""
+        """Create a new order in the database.
+
+        The order must reference an address that already exists in the database.
+
+        Parameters
+        ----------
+        order : Order
+            The Order object containing all necessary information to create the order.
+
+        Returns
+        -------
+        int or None
+            The ID of the newly created order if successful.
+            None if the creation fails or an error occurs.
+        """
         try:
             res_order = self.db_connector.sql_query(
                 """
@@ -50,18 +64,37 @@ class OrderDAO:
 
     @log
     def add_product(self, order_id: int, product_id: int, quantity: int = 1, promotion: bool = False) -> bool:
-        """
-        Ajoute un produit à la commande, décrémente le stock via ProductDAO,
-        et met à jour nb_items et total_amount dans orders.
+        """Add a product to an existing order, update stock, and adjust order totals.
+
+        This method:
+            1) Decrements the product stock via ProductDAO.
+            2) Inserts the product into the order_products table.
+            3) Updates the order's nb_items and total_amount fields.
+            4) Applies a 10% discount if promotion=True.
+
+        Parameters
+        ----------
+        order_id : int
+            The ID of the order to update.
+        product_id : int
+            The ID of the product to add.
+        quantity : int, optional
+            The quantity of the product to add (default is 1).
+        promotion : bool, optional
+            Whether to apply a 10% discount (default is False).
+
+        Returns
+        -------
+        bool
+            True if the product was successfully added and the order updated.
+            False if stock is insufficient or an error occurs (stock is restored in that case).
         """
         try:
-            # Diminuer le stock
             success = self.productdao.decrement_stock(product_id, quantity)
             if not success:
                 logging.warning(f"Stock insuffisant pour le produit {product_id}")
                 return False
 
-            # Ajouter le produit à order_products (sans RETURNING et sans fetch)
             self.db_connector.sql_query(
                 """
                 INSERT INTO order_products (id_order, id_product, quantity)
@@ -71,7 +104,6 @@ class OrderDAO:
                 return_type=None,
             )
 
-            # Récupérer le prix du produit
             product = self.db_connector.sql_query(
                 "SELECT price FROM product WHERE id_product = %s",
                 [product_id],
@@ -85,7 +117,6 @@ class OrderDAO:
             else:
                 total_add = float(product["price"]) * quantity
 
-            # Mettre à jour la commande (nb_items et total_amount)
             self.db_connector.sql_query(
                 """
                 UPDATE orders
@@ -101,18 +132,35 @@ class OrderDAO:
 
         except Exception as e:
             logging.error(f"Erreur add_product: {e}")
-            # rollback partiel : remettre le stock
             self.productdao.increment_stock(product_id, quantity)
             return False
 
     @log
     def remove_product(self, order_id: int, product_id: int, quantity: int = 1) -> bool:
-        """
-        Supprime un produit de la commande, remet le stock,
-        et met à jour nb_items et total_amount dans orders.
+        """Remove a product (or reduce its quantity) from an existing order and update stock and totals.
+
+        This method:
+            1) Checks the current quantity of the product in the order.
+            2) Reduces the quantity or removes the product from order_products.
+            3) Increments the product stock via ProductDAO.
+            4) Updates the order's nb_items and total_amount fields accordingly.
+
+        Parameters
+        ----------
+        order_id : int
+            The ID of the order to update.
+        product_id : int
+            The ID of the product to remove.
+        quantity : int, optional
+            The quantity of the product to remove (default is 1).
+
+        Returns
+        -------
+        bool
+            True if the product was successfully removed or updated in the order.
+            False if the product was not found in the order or an error occurs.
         """
         try:
-            # Vérifier si le produit est bien dans la commande et sa quantité
             row = self.db_connector.sql_query(
                 "SELECT quantity FROM order_products WHERE id_order = %s AND id_product = %s",
                 [order_id, product_id],
@@ -125,7 +173,6 @@ class OrderDAO:
             current_qty = row["quantity"]
             remove_qty = min(quantity, current_qty)
 
-            # Supprimer ou mettre à jour la quantité dans order_products
             if current_qty == remove_qty:
                 self.db_connector.sql_query(
                     "DELETE FROM order_products WHERE id_order = %s AND id_product = %s",
@@ -139,10 +186,8 @@ class OrderDAO:
                     return_type=None,
                 )
 
-            # Remettre le stock
             self.productdao.increment_stock(product_id, remove_qty)
 
-            # Récupérer le prix du produit
             product = self.db_connector.sql_query(
                 "SELECT price FROM product WHERE id_product = %s",
                 [product_id],
@@ -150,7 +195,6 @@ class OrderDAO:
             )
             total_reduce = float(product["price"]) * remove_qty
 
-            # Mettre à jour la commande (nb_items et total_amount)
             self.db_connector.sql_query(
                 """
                 UPDATE orders
@@ -170,6 +214,19 @@ class OrderDAO:
 
     @log
     def cancel_order(self, id_order: int) -> bool:
+        """Cancel an existing order by updating its status to 'Cancelled'.
+
+        Parameters
+        ----------
+        id_order : int
+            The ID of the order to cancel.
+
+        Returns
+        -------
+        bool
+            True if the order status was successfully updated.
+            False if the order does not exist or an error occurs.
+        """
         try:
             res = self.db_connector.sql_query(
                 "UPDATE orders SET status='Cancelled' WHERE id_order=%s RETURNING id_order",
@@ -183,6 +240,19 @@ class OrderDAO:
 
     @log
     def mark_as_delivered(self, id_order: int) -> bool:
+        """Mark an existing order as delivered and update its delivery date.
+
+        Parameters
+        ----------
+        id_order : int
+            The ID of the order to mark as delivered.
+
+        Returns
+        -------
+        bool
+            True if the order status was successfully updated to 'Delivered' and the date set.
+            False if the order does not exist or an error occurs.
+        """
         try:
             res = self.db_connector.sql_query(
                 "UPDATE orders SET status='Delivered', date=%s WHERE id_order=%s RETURNING id_order",
@@ -196,6 +266,19 @@ class OrderDAO:
 
     @log
     def mark_as_ready(self, id_order: int) -> bool:
+        """Mark an existing order as ready for delivery and update its date.
+
+        Parameters
+        ----------
+        id_order : int
+            The ID of the order to mark as ready.
+
+        Returns
+        -------
+        bool
+            True if the order status was successfully updated to 'Ready' and the date set.
+            False if the order does not exist or an error occurs.
+        """
         try:
             res = self.db_connector.sql_query(
                 "UPDATE orders SET status='Ready', date=%s WHERE id_order=%s RETURNING id_order",
@@ -209,6 +292,19 @@ class OrderDAO:
 
     @log
     def mark_as_on_the_way(self, id_order: int) -> bool:
+        """Mark an existing order as 'On the way' and update its date.
+
+        Parameters
+        ----------
+        id_order : int
+            The ID of the order to mark as on the way.
+
+        Returns
+        -------
+        bool
+            True if the order status was successfully updated to 'On the way' and the date set.
+            False if the order does not exist or an error occurs.
+        """
         try:
             res = self.db_connector.sql_query(
                 "UPDATE orders SET status='On the way', date=%s WHERE id_order=%s RETURNING id_order",
@@ -222,7 +318,19 @@ class OrderDAO:
 
     @log
     def get_order_products(self, order_id: int) -> List[Dict[str, Any]]:
-        """Récupère tous les produits liés à une commande."""
+        """Retrieve all products associated with a specific order.
+
+        Parameters
+        ----------
+        order_id : int
+            The ID of the order whose products are to be retrieved.
+
+        Returns
+        -------
+        List[Dict[str, Any]]
+            A list of dictionaries, each containing product details (id_product, name, price, product_type)
+            and the quantity for the specified order. Returns an empty list if no products are found
+            or an error occurs."""
         try:
             rows = self.db_connector.sql_query(
                 """
@@ -241,13 +349,31 @@ class OrderDAO:
 
     @log
     def get_by_id(self, order_id: int) -> Optional[Dict[str, Any]]:
-        """Récupère une commande et les produits associés (sans modifier Order)."""
+        """Retrieve an order along with its associated address and products.
+
+        Note
+        ----
+        This method does not modify the order in the database.
+
+        Parameters
+        ----------
+        order_id : int
+            The ID of the order to retrieve.
+
+        Returns
+        -------
+        dict or None
+            A dictionary with the following keys:
+                - "order": Order object representing the order details.
+                - "address": Address object associated with the order (or None if not found).
+                - "products": List of dictionaries with product details and quantities.
+            Returns None if the order does not exist or an error occurs.
+        """
         try:
             raw_order = self.db_connector.sql_query("SELECT * FROM orders WHERE id_order = %s", [order_id], "one")
             if not raw_order:
                 return None
 
-            # Récupérer l'adresse
             raw_address = self.db_connector.sql_query(
                 "SELECT * FROM address WHERE id_address = %s",
                 [raw_order["id_address"]],
@@ -255,10 +381,8 @@ class OrderDAO:
             )
             address = Address(**raw_address) if raw_address else None
 
-            # Récupérer les produits associés
             products = self.get_order_products(order_id)
 
-            # Construire un objet Order pour la commande
             order_obj = Order(
                 id_order=raw_order["id_order"],
                 id_customer=raw_order["id_customer"],
@@ -279,7 +403,17 @@ class OrderDAO:
 
     @log
     def list_all_orders(self) -> List[Dict[str, Any]]:
-        """Retourne toutes les commandes avec leurs produits."""
+        """Retrieve all orders along with their associated addresses and products.
+
+        Returns
+        -------
+        List[Dict[str, Any]]
+            A list of dictionaries, each containing:
+                - "order": Order object representing the order details.
+                - "address": Address object associated with the order (or None if not found).
+                - "products": List of dictionaries with product details and quantities.
+            Returns an empty list if no orders are found or an error occurs.
+        """
         try:
             raw_orders = self.db_connector.sql_query("SELECT * FROM orders", [], "all")
             result = []
@@ -294,9 +428,18 @@ class OrderDAO:
 
     @log
     def list_all_orders_ready(self) -> List[Dict[str, Any]]:
-        """Retourne toutes les commandes prêtes avec leurs produits et l'adresse complète."""
+        """Retrieve all orders with status 'Ready', including their products and full address.
+
+        Returns
+        -------
+        List[Dict[str, Any]]
+            A list of dictionaries, each containing:
+                - "order": Order object representing the order details.
+                - "address": Address object associated with the order.
+                - "products": List of dictionaries with product details and quantities.
+            Returns an empty list if no ready orders are found or an error occurs.
+        """
         try:
-            # Retrait du hardcodage 'default_schema'
             raw_orders = self.db_connector.sql_query(
                 """
                 SELECT o.id_order, o.date, a.address, a.city, a.postal_code
@@ -321,7 +464,22 @@ class OrderDAO:
 
     @log
     def get_assigned_orders(self, driver_id: int) -> List[Dict[str, Any]]:
-        """Récupère les commandes en préparation pour un livreur."""
+        """Retrieve all orders currently being prepared that are assigned to a specific driver.
+
+        Parameters
+        ----------
+        driver_id : int
+            The ID of the driver whose assigned orders are to be retrieved.
+
+        Returns
+        -------
+        List[Dict[str, Any]]
+            A list of dictionaries, each containing:
+                - "order": Order object representing the order details.
+                - "address": Address object associated with the order.
+                - "products": List of dictionaries with product details and quantities.
+            Returns an empty list if no assigned orders are found or an error occurs.
+        """
         try:
             raw_orders = self.db_connector.sql_query(
                 "SELECT * FROM orders WHERE id_driver = %s AND status = 'Preparing'",
@@ -335,7 +493,21 @@ class OrderDAO:
 
     @log
     def assign_order(self, id_driver: int, id_order: int) -> bool:
-        """Assign the order id_order to the driver id_driver"""
+        """Assign a specific order to a driver in the database.
+
+        Parameters
+        ----------
+        id_driver : int
+            The ID of the driver to assign the order to.
+        id_order : int
+            The ID of the order to be assigned.
+
+        Returns
+        -------
+        bool
+            True if the order was successfully assigned to the driver.
+            False if the order does not exist, the assignment fails, or an error occurs.
+        """
         try:
             res = self.db_connector.sql_query(
                 """
@@ -354,7 +526,22 @@ class OrderDAO:
 
     @log
     def get_orders_by_id_user(self, id_customer: int):
-        """Return all orders placed by a given customer"""
+        """Retrieve all orders placed by a specific customer, including their products and address.
+
+        Parameters
+        ----------
+        id_customer : int
+            The ID of the customer whose orders are to be retrieved.
+
+        Returns
+        -------
+        List[Dict[str, Any]]
+            A list of dictionaries, each containing:
+                - "order": Order object representing the order details.
+                - "address": Address object associated with the order.
+                - "products": List of dictionaries with product details and quantities.
+            Returns an empty list if the customer has no orders or an error occurs.
+        """
         try:
             raw_orders = self.db_connector.sql_query(
                 "SELECT * FROM orders WHERE id_customer = %s", [id_customer], "all"

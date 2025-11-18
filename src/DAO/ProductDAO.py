@@ -1,8 +1,5 @@
 import logging
 
-from psycopg2 import IntegrityError
-
-from src.DAO.DBConnector import DBConnector
 from src.Model.Product import Product
 from utils.log_decorator import log
 
@@ -65,9 +62,7 @@ class ProductDAO:
     def get_all_products(self):
         """Récupérer tous les produits"""
         try:
-            raw_products = self.db_connector.sql_query(
-                "SELECT * FROM product", None, "all"
-            )
+            raw_products = self.db_connector.sql_query("SELECT * FROM product", None, "all")
             result = []
             for o in raw_products:
                 product_data = Product(
@@ -99,9 +94,7 @@ class ProductDAO:
     def get_all_product_names_descriptions(self):
         """Retourne les noms et descriptions de tous les produits"""
         try:
-            raw = self.db_connector.sql_query(
-                "SELECT name, description FROM product", [], "all"
-            )
+            raw = self.db_connector.sql_query("SELECT name, description FROM product", [], "all")
             # return [[r["name"], r["description"]] for r in raw]
             return raw
         except Exception as e:
@@ -159,9 +152,7 @@ class ProductDAO:
 
     @log
     def get_id_by_productname(self, product_name: str):
-        raw_id = self.db_connector.sql_query(
-            "SELECT id_product from product WHERE name=%s", [product_name], "one"
-        )
+        raw_id = self.db_connector.sql_query("SELECT id_product from product WHERE name=%s", [product_name], "one")
         if raw_id is None:
             return None
         # pyrefly: ignore
