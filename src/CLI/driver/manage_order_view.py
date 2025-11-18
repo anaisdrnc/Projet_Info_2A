@@ -141,7 +141,7 @@ class ManageOrderView(VueAbstraite):
             driver = self.driver_dao.get_by_id(self.driver_id)
             if not driver:
                 print("Driver non trouvé")
-                from CLI.menu_driver import MenuDriver
+                from CLI.driver.menu_driver import MenuDriver
                 return MenuDriver(message="Driver non trouvé")
 
             print(f"Livreur : {driver.first_name} {driver.last_name}")
@@ -151,7 +151,7 @@ class ManageOrderView(VueAbstraite):
 
             if not available_orders:
                 print("Aucune commande disponible")
-                from CLI.menu_driver import MenuDriver
+                from CLI.driver.menu_driver import MenuDriver
                 return MenuDriver(message="Aucune commande disponible")
 
             # Afficher la commande
@@ -174,15 +174,15 @@ class ManageOrderView(VueAbstraite):
                 return self.accept_delivery(oldest_order)
             elif choice == "Refuser la livraison":
                 print("Livraison refusée")
-                from CLI.menu_driver import MenuDriver
+                from CLI.driver.menu_driver import MenuDriver
                 return MenuDriver(message="Livraison refusée")
             else:
-                from CLI.menu_driver import MenuDriver
+                from CLI.driver.menu_driver import MenuDriver
                 return MenuDriver()
 
         except Exception as e:
             print(f"Erreur: {e}")
-            from CLI.menu_driver import MenuDriver
+            from CLI.driver.menu_driver import MenuDriver
             return MenuDriver()
 
 
@@ -259,7 +259,7 @@ class ManageOrderView(VueAbstraite):
             else:
                     # On retourne au menu driver
                     print("Retour au menu driver...")
-                    from CLI.menu_driver import MenuDriver
+                    from CLI.driver.menu_driver import MenuDriver
                     return MenuDriver(message=message)
 
         except Exception as e:

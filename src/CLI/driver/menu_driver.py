@@ -47,11 +47,11 @@ class MenuDriver(VueAbstraite):
 
             case "Gérer les commandes":
                 pass
-                from src.CLI.manage_order_view import ManageOrderView
+                from src.CLI.driver.manage_order_view import ManageOrderView
 
                 return ManageOrderView()
 
             case "Changer mes informations":
-                from src.CLI.change_profil_driver import ChangeProfilDriver
+                from src.CLI.driver.change_profil_driver import ChangeProfilDriver
 
                 return ChangeProfilDriver()
