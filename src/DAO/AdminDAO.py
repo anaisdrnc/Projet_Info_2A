@@ -4,17 +4,20 @@ from typing import Optional
 from src.DAO.DBConnector import DBConnector
 from src.DAO.UserRepo import UserRepo
 from src.Model.Admin import Admin
+from utils.log_decorator import log
 from utils.securite import hash_password
 
 
 class AdminDAO:
     """Class providing access to the Administrator table of the database"""
 
+    @log
     def __init__(self, db_connector=None):
         """Initialize AdminDAO with a DB connector."""
         self.db_connector = db_connector or DBConnector()
         self.user_repo = UserRepo(self.db_connector)
 
+    @log
     def add_admin(self, admin: Admin):
         """Add an administrator to the database.
 
@@ -50,6 +53,7 @@ class AdminDAO:
 
         return False
 
+    @log
     def login(self, username: str, password: str):
         """Authenticates an admin based on username and password.
 
@@ -95,6 +99,7 @@ class AdminDAO:
             logging.info(e)
             return None
 
+    @log
     def update_admin(self, admin: Admin) -> bool:
         """Update an administrator's user information.
 
@@ -113,6 +118,7 @@ class AdminDAO:
             logging.info(e)
             return False
 
+    @log
     def get_by_username(self, username: str) -> Optional[Admin]:
         """Retrieve an administrator from the database using their username.
 
@@ -158,6 +164,7 @@ class AdminDAO:
             logging.error(f"[AdminDAO] Erreur lors de la récupération de l'admin '{username}': {e}")
             return None
 
+    @log
     def get_by_id(self, admin_id: int) -> Optional[Admin]:
         """Retrieve an administrator from the database using their administrator ID.
 

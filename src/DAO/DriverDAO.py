@@ -9,20 +9,38 @@ from utils.securite import hash_password
 
 
 class DriverDAO:
+    """Class providing access to the Driver table of the database"""
+
+    @log
     def __init__(self, db_connector=None):
-        """Initialise DriverDAO avec un connecteur DB."""
+        """Initialize DriverDAO with a DB connector."""
         self.db_connector = db_connector or DBConnector()
         self.user_repo = UserRepo(self.db_connector)
 
+    @log
     def create(self, driver: Driver) -> bool:
-        """Créer un driver dans la DB"""
+        """Create a driver in the database (users + driver).
+
+        This method:
+            1) Creates the user in the users table via user_repo.
+            2) Creates the corresponding entry in the driver table.
+
+        Parameters
+        ----------
+        driver : Driver
+            The Driver object to insert.
+
+        Returns
+        -------
+        bool
+            True if the driver was successfully created and the id_driver set.
+            False if the creation fails at any step or an error occurs.
+        """
         try:
-            # Ajouter l'utilisateur via UserRepo
             id_user = self.user_repo.add_user(driver)
             if not id_user:
                 return False
 
-            # Insérer dans driver
             driver_res = self.db_connector.sql_query(
                 f"""
                 INSERT INTO {self.db_connector.schema}.driver (id_user, mean_of_transport)
@@ -43,7 +61,19 @@ class DriverDAO:
 
     @log
     def get_by_id(self, driver_id: int) -> Optional[Driver]:
-        """Récupérer un driver par son ID driver"""
+        """Retrieve a driver from the database using their driver ID.
+
+        Parameters
+        ----------
+        driver_id : int
+            The ID of the driver to retrieve.
+
+        Returns
+        -------
+        Driver or None
+            The corresponding Driver object if found,
+            or None if no driver exists with this ID or an error occurs.
+        """
         try:
             res = self.db_connector.sql_query(
                 """
@@ -76,7 +106,14 @@ class DriverDAO:
 
     @log
     def list_all(self) -> List[Driver]:
-        """Liste tous les drivers"""
+        """Retrieve all drivers from the database.
+
+        Returns
+        -------
+        List[Driver]
+            A list of Driver objects representing all drivers in the database.
+            Returns an empty list if no drivers are found or an error occurs.
+        """
         try:
             res = self.db_connector.sql_query(
                 """
@@ -111,7 +148,20 @@ class DriverDAO:
 
     @log
     def update(self, driver: Driver) -> bool:
-        """Met à jour uniquement le driver (transport), pas les infos user"""
+        """Update a driver's information in the database.
+        Only updates driver-specific fields (e.g., mean_of_transport).
+        Does not update user information.
+
+        Parameters
+        ----------
+        driver : Driver
+            The Driver object containing updated data.
+
+        Returns
+        -------
+        bool
+            True if the update succeeded, False if it failed or an error occurred.
+        """
         try:
             res = self.db_connector.sql_query(
                 """
@@ -133,13 +183,23 @@ class DriverDAO:
 
     @log
     def delete(self, driver_id: int) -> bool:
-        """Supprime le driver et l'utilisateur associé"""
+        """Delete a driver and their associated user from the database.
+
+        Parameters
+        ----------
+        driver_id : int
+            The ID of the driver to delete.
+
+        Returns
+        -------
+        bool
+            True if both the driver and the associated user were successfully deleted.
+            False if the driver does not exist, the deletion fails, or an error occurs.
+        """
         try:
             driver = self.get_by_id(driver_id)
             if not driver:
                 return False
-
-            # Supprime le driver dans la table driver
             res_driver = self.db_connector.sql_query(
                 """
                 DELETE FROM driver
@@ -152,7 +212,6 @@ class DriverDAO:
             if not res_driver:
                 return False
 
-            # Supprime l'utilisateur associé
             return self.user_repo.delete_user(driver.id)
         except Exception as e:
             logging.info(e)
@@ -160,6 +219,21 @@ class DriverDAO:
 
     @log
     def login(self, username, password):
+        """Authenticate a driver using their username and password.
+
+        Parameters
+        ----------
+        username : str
+            The username of the driver attempting to log in.
+        password : str
+            The password provided by the driver.
+
+        Returns
+        -------
+        Driver or None
+            A Driver object if authentication succeeds.
+            None if the username does not exist or the password is incorrect.
+        """
         query = """
         SELECT u.id_user, u.user_name, u.password, u.salt, u.first_name, u.last_name, u.email,
             d.id_driver, d.mean_of_transport
@@ -190,6 +264,19 @@ class DriverDAO:
 
     @log
     def get_id_driver_by_id_user(self, id_user) -> Optional[int]:
+        """Retrieve the driver ID associated with a given user ID.
+
+        Parameters
+        ----------
+        id_user : int
+            The ID of the user whose driver ID is to be retrieved.
+
+        Returns
+        -------
+        int or None
+            The corresponding driver ID if found.
+            None if no driver exists for the given user ID.
+        """
         raw_driver = self.db_connector.sql_query("SELECT * from driver WHERE id_user =%s", [id_user], "one")
         if raw_driver is None:
             return None
