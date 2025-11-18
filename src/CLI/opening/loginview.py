@@ -44,7 +44,7 @@ class LoginView(VueAbstraite):
                 message = f"You are connected on the driver account {user.user_name}"
                 Session().connexion(user, id_driver)
 
-                from src.CLI.menu_driver import MenuDriver
+                from src.CLI.driver.menu_driver import MenuDriver
                 return MenuDriver(message)
 
         message = "Erreur de connexion (pseudo ou mot de passe invalide)"
