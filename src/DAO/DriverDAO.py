@@ -280,5 +280,4 @@ class DriverDAO:
         raw_driver = self.db_connector.sql_query("SELECT * from driver WHERE id_user =%s", [id_user], "one")
         if raw_driver is None:
             return None
-        # pyrefly: ignore
         return raw_driver["id_driver"]
