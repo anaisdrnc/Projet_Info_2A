@@ -1,7 +1,7 @@
 from typing import Optional
 
-from src.Model.Address import Address
-from src.Model.User import User
+from Model.Address import Address
+from Model.User import User
 
 
 class Customer(User):

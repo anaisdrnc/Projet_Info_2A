@@ -1,4 +1,4 @@
-from src.Model.User import User
+from Model.User import User
 
 
 class Admin(User):
