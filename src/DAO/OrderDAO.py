@@ -13,7 +13,7 @@ class OrderDAO:
     """Class providing access to the Order table of the database"""
 
     def __init__(self, db_connector=None):
-        """Initialize DriverDAO with a DB connector."""
+        """Initialize OrderDAO with a DB connector."""
         self.db_connector = db_connector if db_connector is not None else DBConnector()
         self.productdao = ProductDAO(self.db_connector)
 

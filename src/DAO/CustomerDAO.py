@@ -11,7 +11,7 @@ class CustomerDAO:
     """Class providing access to the Customer table of the database"""
 
     def __init__(self, db_connector: DBConnector = None):
-        """Initialize AdminDAO with a DB connector."""
+        """Initialize CustomerDAO with a DB connector."""
         self.db_connector = db_connector or DBConnector()
         self.user_repo = UserRepo(self.db_connector)
 

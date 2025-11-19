@@ -11,7 +11,6 @@ from utils.securite import hash_password
 class AdminDAO:
     """Class providing access to the Administrator table of the database"""
 
-    @log
     def __init__(self, db_connector=None):
         """Initialize AdminDAO with a DB connector."""
         self.db_connector = db_connector or DBConnector()

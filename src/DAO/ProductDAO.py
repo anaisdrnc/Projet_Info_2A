@@ -5,15 +5,26 @@ from utils.log_decorator import log
 
 
 class ProductDAO:
-    """Class providing access to products in the database"""
+    """Class providing access to the Product table of the database"""
 
     def __init__(self, db_connector):
-        """Initialize a new productDAO instance with a database connector."""
+        """Initialize ProductDAO with a DB connector."""
         self.db_connector = db_connector
 
     @log
     def deleting_product(self, id_product: int) -> bool:
-        """Deleting a product from the database"""
+        """Delete a product from the database by its ID.
+
+        Parameters
+        ----------
+        id_product : int
+            The unique identifier of the product to delete.
+
+        Returns
+        -------
+        bool
+            True if the product was successfully deleted.
+            False if the product does not exist or an error occurs."""
         try:
             res = self.db_connector.sql_query(
                 """
@@ -31,7 +42,18 @@ class ProductDAO:
 
     @log
     def create_product(self, product: Product) -> bool:
-        """Add a product to the database"""
+        """Create a new product in the database.
+
+        Parameters
+        ----------
+        product : Product
+            The product that will be created in the database.
+
+        Returns
+        -------
+        bool
+            True if the product was successfully created and assigned an ID.
+            False if the insertion fails or an error occurs."""
         try:
             res = self.db_connector.sql_query(
                 """
@@ -60,7 +82,14 @@ class ProductDAO:
 
     @log
     def get_all_products(self):
-        """Récupérer tous les produits"""
+        """Retrieve all products stored in the database.
+
+        Returns
+        -------
+        List[Product]
+            A list of Product instances representing all products in the database.
+            Returns an empty list if an error occurs.
+        """
         try:
             raw_products = self.db_connector.sql_query("SELECT * FROM product", None, "all")
             result = []
@@ -82,7 +111,13 @@ class ProductDAO:
 
     @log
     def get_all_product_names(self):
-        """Retourne juste les noms de tous les produits"""
+        """Retrieve the names of all products.
+
+        Returns
+        -------
+        List[str]
+            A list of product names. Returns an empty list if an error occurs.
+        """
         try:
             raw = self.db_connector.sql_query("SELECT name FROM product", None, "all")
             return [r["name"] for r in raw]
@@ -92,7 +127,13 @@ class ProductDAO:
 
     @log
     def get_all_product_names_descriptions(self):
-        """Retourne les noms et descriptions de tous les produits"""
+        """Retrieve the names and descriptions of all products.
+
+        Returns
+        -------
+        List[Dict[str, Any]]
+            A list of dicts with keys "name" and "description".
+            Returns an empty list if an error occurs."""
         try:
             raw = self.db_connector.sql_query("SELECT name, description FROM product", [], "all")
             # return [[r["name"], r["description"]] for r in raw]
@@ -103,9 +144,21 @@ class ProductDAO:
 
     @log
     def decrement_stock(self, product_id: int, quantity: int = 1) -> bool:
-        """
-        Diminue le stock du produit de la quantité spécifiée.
-        Retourne True si la mise à jour a réussi, False sinon.
+        """Decreases the available stock of a product.
+
+        Parameters
+        ----------
+        product_id : int
+            The unique identifier of the product whose stock should be decreased.
+        quantity : int, optional
+            The amount to subtract from the current stock (default is 1).
+
+        Returns
+        -------
+        bool
+            True if the stock update succeeded (product exists and has enough stock).
+            False if the update failed.
+
         """
         try:
             res = self.db_connector.sql_query(
@@ -124,7 +177,20 @@ class ProductDAO:
             return False
 
     def increment_stock(self, product_id: int, quantity: int = 1):
-        """Remet du stock si la commande est annulée"""
+        """Increases the stock level of a product.
+
+        Parameters
+        ----------
+        product_id : int
+            The unique identifier of the product whose stock should be increased.
+        quantity : int, optional
+            The number of units to add back to the stock (default is 1).
+
+        Returns
+        -------
+        bool
+            True if the stock was successfully updated.
+            False if a database error occurred."""
         try:
             self.db_connector.sql_query(
                 "UPDATE product SET stock = stock + %(quantity)s WHERE id_product = %(product_id)s",
@@ -138,7 +204,19 @@ class ProductDAO:
 
     @log
     def get_available_products(self):
-        """Retourne uniquement les produits dont le stock est supérieur à 0"""
+        """Retrieve all products that are currently in stock.
+
+        Returns
+        -------
+        list[dict]
+            A list of dictionaries, each containing the fields:
+            - name
+            - description
+            - price
+            - product_type
+            - stock
+
+        Returns an empty list if no products are available or if an error occurs."""
         try:
             raw = self.db_connector.sql_query(
                 "SELECT name, description, price, product_type, stock FROM product WHERE stock > 0",
@@ -152,8 +230,19 @@ class ProductDAO:
 
     @log
     def get_id_by_productname(self, product_name: str):
+        """Retrieve the product ID for a given product name.
+
+        Parameters
+        ----------
+        product_name : str
+            The name of the product to look up.
+
+        Returns
+        -------
+        Optional[int]
+            The id_product if found, otherwise None.
+        """
         raw_id = self.db_connector.sql_query("SELECT id_product from product WHERE name=%s", [product_name], "one")
         if raw_id is None:
             return None
-        # pyrefly: ignore
         return raw_id["id_product"]
