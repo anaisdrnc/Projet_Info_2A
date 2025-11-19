@@ -40,8 +40,8 @@ class ProductService:
         return self.productdao.deleting_product(product_id)
 
     @log
-    def get_list_products_names(self) -> list[str]:
-        """Retourne la liste des noms de tous les produits."""
+    def get_list_products_names(self):
+        """Retourne la liste des noms et id de tous les produits."""
         return self.productdao.get_all_product_names()
 
     @log

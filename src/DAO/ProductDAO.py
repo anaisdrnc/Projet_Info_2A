@@ -116,11 +116,11 @@ class ProductDAO:
         Returns
         -------
         List[str]
-            A list of product names. Returns an empty list if an error occurs.
+            A list of product names and id. Returns an empty list if an error occurs.
         """
         try:
-            raw = self.db_connector.sql_query("SELECT name FROM product", None, "all")
-            return [r["name"] for r in raw]
+            raw = self.db_connector.sql_query("SELECT name, id_product FROM product", None, "all")
+            return [[r["name"], r['id_product']] for r in raw]
         except Exception as e:
             logging.info(f"Erreur get_all_product_names: {e}")
             return []

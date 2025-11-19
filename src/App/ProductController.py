@@ -31,6 +31,18 @@ def get_product_by_id(
 
 # --- Les endpoints protégés par JWT (admin connecté) ---
 
+@product_router.get("/all_products", status_code= status.HTTP_200_OK)
+def get_all_products(
+    credentials: Annotated[HTTPAuthorizationCredentials, Depends(JWTBearer())]):
+    """Gives all products with id so that the admin can use the others endpoints"""
+    productdao = ProductDAO(DBConnector(test = False))
+    product_service = ProductService(productdao)
+    try : 
+        list_products = product_service.get_list_products_names()
+        return list_products
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
+
 @product_router.post("/", response_model= Product, status_code=status.HTTP_201_CREATED)
 def create_product(
     name, price, description, production_cost, product_type, stock,
@@ -115,7 +127,7 @@ def update_product(
         raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
 
 
-@product_router.put("/{product_id}", response_model=Product, status_code=status.HTTP_200_OK)
+@product_router.put("/update_stock/product_id={product_id}&stock_added={stock_added}", status_code=status.HTTP_200_OK)
 def update_stock(
     product_id: int,
     stock_added : int,
