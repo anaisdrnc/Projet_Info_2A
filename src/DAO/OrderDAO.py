@@ -97,7 +97,7 @@ class OrderDAO:
 
             already_here = self.db_connector.sql_query(
                 """
-                SELECT * FROM order_products WHERE id_order == %(order)s and id_product == %(product)s""",
+                SELECT * FROM order_products WHERE id_order = %(order)s and id_product = %(product)s""",
                 {"order" : order_id, "product" : product_id},
                 "one"
             )
