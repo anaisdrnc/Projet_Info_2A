@@ -20,7 +20,7 @@ class OrderService:
             nb_items=nb_items,
             total_amount=total_amount,
             payment_method=payment_method,
-            status="Preparing",
+            status="Ready",
         )
         order.id_order = self.orderdao.create_order(order)
         if order.id_order:
