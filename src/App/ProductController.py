@@ -53,14 +53,12 @@ def delete_product(
     credentials: Annotated[HTTPAuthorizationCredentials, Depends(JWTBearer())]  # admin connecté
 ):
     """Supprime un produit (uniquement admin)."""
+    productdao = ProductDAO(DBConnector(test = False))
+    product_service = ProductService(productdao)
     try:
-        check_query = "SELECT id_product FROM product WHERE id_product = %s;"
-        product_exists = db.sql_query(check_query, (product_id,), return_type="one")
-        if not product_exists:
-            raise HTTPException(status_code=404, detail=f"Product with id [{product_id}] not found")
-        delete_query = "DELETE FROM product WHERE id_product = %s;"
-        db.sql_query(delete_query, (product_id,), return_type=None)
-        return {"message": f"Product with id [{product_id}] successfully deleted"}
+        deleted = product_service.delete(product_id)
+        if deleted:
+            return {"message": f"Product with id [{product_id}] successfully deleted"}
     except HTTPException:
         raise
     except Exception as e:
