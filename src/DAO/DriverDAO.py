@@ -1,9 +1,9 @@
 import logging
 from typing import List, Optional
 
-from src.DAO.DBConnector import DBConnector
-from src.DAO.UserRepo import UserRepo
-from src.Model.Driver import Driver
+from DAO.DBConnector import DBConnector
+from DAO.UserRepo import UserRepo
+from Model.Driver import Driver
 from utils.log_decorator import log
 from utils.securite import hash_password
 

@@ -2,10 +2,10 @@ import logging
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
-from src.DAO.DBConnector import DBConnector
-from src.DAO.ProductDAO import ProductDAO
-from src.Model.Address import Address
-from src.Model.Order import Order
+from DAO.DBConnector import DBConnector
+from DAO.ProductDAO import ProductDAO
+from Model.Address import Address
+from Model.Order import Order
 from utils.log_decorator import log
 
 
