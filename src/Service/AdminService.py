@@ -1,9 +1,9 @@
 import logging
 
-from src.DAO.AdminDAO import AdminDAO
-from src.DAO.DBConnector import DBConnector
-from src.Model.Admin import Admin
-from src.Service.PasswordService import check_password_strength, create_salt
+from DAO.AdminDAO import AdminDAO
+from DAO.DBConnector import DBConnector
+from Model.Admin import Admin
+from Service.PasswordService import check_password_strength, create_salt
 from utils.log_decorator import log
 from utils.securite import hash_password
 
