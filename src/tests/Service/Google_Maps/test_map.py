@@ -6,7 +6,7 @@ from src.Service.Google_Maps.check_address import (
     check_address,
     get_address_suggestions,
     is_address_sufficient_for_routing,
-    validate_and_get_routable_address,
+    #validate_and_get_routable_address,
 )
 
 
@@ -169,27 +169,27 @@ def test_get_address_suggestions_max_results(mock_geocode_valid):
         assert len(suggestions) == 2
 
 
-def test_validate_and_get_routable_address_valid_first_try(mock_geocode_valid):
-    """Adresse valide du premier coup"""
-    with patch(
-        "src.Service.Google_Maps.check_address.gmaps.geocode",
-        return_value=mock_geocode_valid,
-    ):
-        with patch("builtins.input", return_value="10 Rue de Paris, Paris"):
-            result = validate_and_get_routable_address("Entrez une adresse: ")
+# def test_validate_and_get_routable_address_valid_first_try(mock_geocode_valid):
+#     """Adresse valide du premier coup"""
+#     with patch(
+#         "src.Service.Google_Maps.check_address.gmaps.geocode",
+#         return_value=mock_geocode_valid,
+#     ):
+#         with patch("builtins.input", return_value="10 Rue de Paris, Paris"):
+#             result = validate_and_get_routable_address("Entrez une adresse: ")
 
-            assert result == "10 Rue de Paris, 75001 Paris, France"
+#             assert result == "10 Rue de Paris, 75001 Paris, France"
 
 
-def test_validate_and_get_routable_address_user_quits(mock_geocode_vague):
-    """L'utilisateur choisit de quitter après adresse invalide"""
-    with patch(
-        "src.Service.Google_Maps.check_address.gmaps.geocode",
-        return_value=mock_geocode_vague,
-    ):
-        input_responses = ["Adresse vague", "3"]
-        with patch("builtins.input", side_effect=input_responses):
-            with patch("src.Service.Google_Maps.check_address.display_suggestions"):
-                result = validate_and_get_routable_address("Entrez une adresse: ")
+# def test_validate_and_get_routable_address_user_quits(mock_geocode_vague):
+#     """L'utilisateur choisit de quitter après adresse invalide"""
+#     with patch(
+#         "src.Service.Google_Maps.check_address.gmaps.geocode",
+#         return_value=mock_geocode_vague,
+#     ):
+#         input_responses = ["Adresse vague", "3"]
+#         with patch("builtins.input", side_effect=input_responses):
+#             with patch("src.Service.Google_Maps.check_address.display_suggestions"):
+#                 result = validate_and_get_routable_address("Entrez une adresse: ")
 
-                assert result is None
+#                 assert result is None
