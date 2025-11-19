@@ -5,8 +5,6 @@ from src.Service.UserService import UserService
 from src.Model.User import User
 from utils.reset_database import ResetDatabase
 from unittest.mock import MagicMock, patch
-from src.Service.UserService import UserService
-from src.Model.User import User
 
 
 @pytest.fixture(autouse=True)
@@ -118,7 +116,7 @@ def test_change_password_ok(mock_validate):
     # update_user OK
     service.user_repo.update_user = MagicMock(return_value=True)
 
-    result = service.change_password("john", "old", "new123")
+    result = service.change_password("john", "old", "newPassword123")
 
     assert result is True
     mock_validate.assert_called_once_with(username="john", password="old", user_repo=service.user_repo)
@@ -165,6 +163,6 @@ def test_change_password_update_exception():
 
         # Vérifie que l’exception remonte
         with pytest.raises(Exception) as excinfo:
-            service.change_password("john", "old123", "new123")
+            service.change_password("john", "old123", "newPassword123")
 
         assert str(excinfo.value) == "DB error"

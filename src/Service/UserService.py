@@ -53,21 +53,36 @@ class UserService:
 
     @log
     def change_password(self, user_name, old_password, new_password):
-        """change the password
-        check the old password is correct
-        take all the info of the user
-        update the user with all the info + the new password"""
         user_repo = self.user_repo
-        old_password_correct = validate_username_password(username= user_name, password=old_password, user_repo= user_repo)
+
+        # Vérifie l'ancien mot de passe
+        old_password_correct = validate_username_password(
+            username=user_name, password=old_password, user_repo=user_repo
+        )
         if not old_password_correct:
             return False
-        user = user_repo.get_by_username(user_name= user_name)
-        new_user  = User(
-            first_name = user.first_name,
-            last_name = user.last_name,
-            user_name = user.user_name, 
-            password = new_password,
-            email = user.email,
-            salt = user.salt,
-            id = user.id)
+
+        # Vérifie la force du nouveau mot de passe
+        check_password_strength(new_password)
+
+        # Récupère l'utilisateur actuel
+        user = user_repo.get_by_username(user_name=user_name)
+
+        # Génère un nouveau sel et hash le nouveau mot de passe
+        new_salt = create_salt()
+        hashed_password = hash_password(new_password, new_salt)
+
+        # Crée un nouvel objet User
+        new_user = User(
+            first_name=user.first_name,
+            last_name=user.last_name,
+            user_name=user.user_name,
+            password=hashed_password,
+            salt=new_salt,
+            email=user.email,
+            id=user.id
+        )
+
+        # Met à jour l'utilisateur
         return user_repo.update_user(new_user)
+
