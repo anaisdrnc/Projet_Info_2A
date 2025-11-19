@@ -185,7 +185,7 @@ class PlaceOrderView(VueAbstraite):
         message += "Single products : \n"
         for i in range(len(list_choosen_products_names)):
             product = list_choosen_products_names[i]
-            quantity = quantities[i] - len([p for p in list_choosen_menu where p == product])
+            quantity = quantities[i] - len([p for p in list_choosen_menu if p == product])
             id_product = product_service.get_id_by_name(product)
             added = order_service.add_product_to_order(order_id=id_order, product_id=id_product, quantity=int(quantity), promotion = False)
             message += f"{product} quantity: {quantity} \n"
