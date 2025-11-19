@@ -1,8 +1,8 @@
 import pytest
-from src.DAO.DBConnector import DBConnector
-from src.DAO.UserRepo import UserRepo
-from src.Service.UserService import UserService
-from src.Model.User import User
+from DAO.DBConnector import DBConnector
+from DAO.UserRepo import UserRepo
+from Service.UserService import UserService
+from Model.User import User
 from utils.reset_database import ResetDatabase
 from unittest.mock import MagicMock, patch
 

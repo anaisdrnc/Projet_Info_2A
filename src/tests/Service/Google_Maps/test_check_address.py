@@ -2,7 +2,7 @@ from unittest.mock import patch
 
 import pytest
 
-from src.Service.Google_Maps.map import compute_itinerary, create_map
+from Service.Google_Maps.map import compute_itinerary, create_map
 
 
 @pytest.fixture

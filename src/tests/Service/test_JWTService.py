@@ -2,7 +2,7 @@ import datetime
 
 from freezegun import freeze_time
 
-from src.Service.JWTService import JwtService
+from Service.JWTService import JwtService
 
 jwt_service = JwtService("mysecret")
 

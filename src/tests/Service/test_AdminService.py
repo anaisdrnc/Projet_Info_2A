@@ -2,11 +2,11 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from src.DAO.AdminDAO import AdminDAO
-from src.DAO.DBConnector import DBConnector
-from src.Model.Admin import Admin
-from src.Model.User import User
-from src.Service.AdminService import AdminService
+from DAO.AdminDAO import AdminDAO
+from DAO.DBConnector import DBConnector
+from Model.Admin import Admin
+from Model.User import User
+from Service.AdminService import AdminService
 from utils.reset_database import ResetDatabase
 from utils.securite import hash_password
 
