@@ -36,6 +36,7 @@ def unique_username(base="admin"):
 
 
 def test_add_user_ok(dao):
+    """Test: Successfully add a new user to the database and return their user ID"""
     username = unique_username("user_test")
     salt = create_salt()
     user = User(
@@ -52,7 +53,7 @@ def test_add_user_ok(dao):
 
 
 def test_add_user_ko(dao):
-    "test if the user already exist"
+    """Test: Adding a user that already exists should fail and return None"""
     username = unique_username("user_test")
     salt = create_salt()
     user = User(
@@ -65,12 +66,12 @@ def test_add_user_ko(dao):
     )
     created = dao.add_user(user)
     assert created != None
-    # create a second type
     created2 = dao.add_user(user)
     assert created2 == None
 
 
 def test_get_by_id_ok(dao):
+    """Test: Retrieve an existing user by their ID and verify their details."""
     username = unique_username("user_test")
     salt = create_salt()
     user = User(
@@ -91,11 +92,13 @@ def test_get_by_id_ok(dao):
 
 
 def test_get_by_id_ko(dao):
+    """Test: Attempt to retrieve a non-existent user by ID should return None."""
     retrieved = dao.get_by_id(10000)
     assert retrieved == None
 
 
 def test_get_by_username_ok(dao):
+    """Test: Retrieve an existing user by their username successfully."""
     username = unique_username("user_test")
     salt = create_salt()
     user = User(
@@ -116,7 +119,7 @@ def test_get_by_username_ok(dao):
 
 
 def test_delete_user_ok(dao):
-    "test if we can delete user with their id"
+    """Test: Successfully delete a user by their ID and verify they no longer exist."""
     username = unique_username("user_test")
     salt = create_salt()
     user = User(
