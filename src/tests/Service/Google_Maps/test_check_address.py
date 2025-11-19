@@ -2,7 +2,7 @@ from unittest.mock import patch
 
 import pytest
 
-from src.Service.Google_Maps.map import calculer_itineraire, create_map
+from src.Service.Google_Maps.map import compute_itinerary, create_map
 
 
 @pytest.fixture
@@ -46,7 +46,7 @@ def test_calculer_itineraire_ok(mock_directions_valid):
         "src.Service.Google_Maps.map.gmaps.directions",
         return_value=mock_directions_valid,
     ):
-        result = calculer_itineraire("Paris", "Lyon", "driving")
+        result = compute_itinerary("Paris", "Lyon", "driving")
 
         assert result is not None
         assert result[0]["legs"][0]["duration"]["text"] == "20 mins"
@@ -58,7 +58,7 @@ def test_calculer_itineraire_ko(mock_directions_empty):
         "src.Service.Google_Maps.map.gmaps.directions",
         return_value=mock_directions_empty,
     ):
-        result = calculer_itineraire("Paris", "Adresse invalide", "driving")
+        result = compute_itinerary("Paris", "Adresse invalide", "driving")
 
         assert result is None
 
@@ -69,7 +69,7 @@ def test_calculer_itineraire_exception():
         "src.Service.Google_Maps.map.gmaps.directions",
         side_effect=Exception("API error"),
     ):
-        result = calculer_itineraire("Paris", "Lyon", "driving")
+        result = compute_itinerary("Paris", "Lyon", "driving")
 
         assert result is None
 
