@@ -40,8 +40,8 @@ distribution = false
 lint = "ruff check"
 format = "ruff format"
 test = "pytest tests --cov=src"
-start = "pdm run __main__.py"
-cli = "pdm run main_CLI.py"
+start = "pdm run src/__main__.py"
+cli = "pdm run src/main_CLI.py"
 typecheck = "pyrefly check"
 
 [tool.ruff]
