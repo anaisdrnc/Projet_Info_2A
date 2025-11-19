@@ -114,9 +114,10 @@ def test_create_order_ok(dao):
 
 
 def test_create_order_invalid_customer(dao):
+    """Test: Creating an order with a non-existent customer ID fails and returns None."""
     addr = create_test_address()
     order = Order(
-        id_customer=123456,  # inexistant
+        id_customer=123456,
         id_driver=999,
         id_address=addr.id_address,
         nb_items=1,
@@ -128,8 +129,7 @@ def test_create_order_invalid_customer(dao):
 
 
 def test_add_product_ok(dao, productdao):
-    """Vérifie que l'ajout de produit fonctionne et décrémente le stock"""
-    # Création produit de test
+    """Test: Adding a product to an order succeeds and decrements the product stock"""
     product = Product(
         name="Produit Test Add",
         price=5.0,
@@ -140,7 +140,6 @@ def test_add_product_ok(dao, productdao):
     )
     productdao.create_product(product)
 
-    # Création adresse et commande
     addr = create_test_address()
     order = Order(
         id_customer=999,
@@ -163,7 +162,7 @@ def test_add_product_ok(dao, productdao):
 
 
 def test_add_product_invalid_order(dao, productdao):
-    """Vérifie que l'ajout échoue pour un order inexistant"""
+    """Test: Adding a product fails for a non-existent order and stock remains unchanged."""
     product = Product(
         name="Produit Test Invalid",
         price=5.0,
@@ -184,7 +183,7 @@ def test_add_product_invalid_order(dao, productdao):
 
 
 def test_remove_product_ok(dao, productdao):
-    """Vérifie que la suppression d'un produit fonctionne et remet le stock"""
+    """Test: Removing a product from an order succeeds and restores the product's stock"""
     product = Product(
         name="Produit Test Remove",
         price=3.0,
@@ -217,12 +216,13 @@ def test_remove_product_ok(dao, productdao):
 
 
 def test_remove_product_invalid(dao):
-    """Vérifie que la suppression échoue pour un produit ou order inexistant"""
+    """Test: Removing a product from a non-existent order or with a non-existent product fails"""
     removed = dao.remove_product(order_id=123456, product_id=999)
     assert removed is False
 
 
 def test_get_order_products_ok(dao):
+    """Test: Retrieve all products associated with an existing order."""
     addr = create_test_address()
     order = Order(
         id_customer=999,
@@ -243,11 +243,14 @@ def test_get_order_products_ok(dao):
 
 
 def test_get_order_products_invalid(dao):
+    """Test: Attempt to retrieve products for a non-existent order returns an empty list"""
     products = dao.get_order_products(order_id=999999)
     assert products == []
 
 
 def test_cancel_order_ok(dao):
+    """Test: Successfully cancel an existing order and verify its status is Cancelled."""
+    addr = create_test_address()
     addr = create_test_address()
     order = Order(
         id_customer=999,
@@ -267,11 +270,13 @@ def test_cancel_order_ok(dao):
 
 
 def test_cancel_order_invalid(dao):
+    """Test: Attempt to cancel a non-existent order should return False"""
     cancelled = dao.cancel_order(987654)
     assert cancelled is False
 
 
 def test_mark_as_delivered_ok(dao):
+    """Test: Mark an existing order as delivered successfully"""
     addr = create_test_address()
     order = Order(
         id_customer=998,
@@ -287,11 +292,13 @@ def test_mark_as_delivered_ok(dao):
 
 
 def test_mark_as_delivered_invalid(dao):
+    """Test: Marking a non-existent order as delivered should fail"""
     delivered = dao.mark_as_delivered(999999)
     assert delivered is False
 
 
 def test_mark_as_ready_ok(dao):
+    """Test: Mark an existing order as Ready and verify its status"""
     addr = create_test_address()
     order = Order(
         id_customer=998,
@@ -311,11 +318,13 @@ def test_mark_as_ready_ok(dao):
 
 
 def test_mark_as_ready_invalid_order(dao):
-    marked = dao.mark_as_ready(999999)  # ID qui n'existe pas
+    """Test: Marking a non-existent order as ready should fail"""
+    marked = dao.mark_as_ready(999999)
     assert marked is False
 
 
 def test_mark_as_on_the_way_ok(dao):
+    """Test: Mark an existing order as On the way after being Ready and verify its status"""
     addr = create_test_address()
     order = Order(
         id_customer=998,
@@ -338,6 +347,7 @@ def test_mark_as_on_the_way_ok(dao):
 
 
 def test_mark_as_on_the_way_from_ready(dao):
+    """Test: Mark an order as 'On the way' and verify its status, even without explicitly marking it as 'Ready' first"""
     addr = create_test_address()
     order = Order(
         id_customer=998,
@@ -358,11 +368,13 @@ def test_mark_as_on_the_way_from_ready(dao):
 
 
 def test_mark_as_on_the_way_invalid_order(dao):
+    """Test: Marking a non-existent order as on the way should fail"""
     marked = dao.mark_as_on_the_way(999999)
     assert marked is False
 
 
 def test_mark_as_ready_twice(dao):
+    """Test: Mark an order as Ready twice and verify the status remains Ready."""
     addr = create_test_address()
     order = Order(
         id_customer=998,
@@ -384,6 +396,7 @@ def test_mark_as_ready_twice(dao):
 
 
 def test_mark_as_ready_updates_date(dao):
+    """Test: Marking an order as Ready updates its date to the current timestamp."""
     addr = create_test_address()
     order = Order(
         id_customer=998,
@@ -411,6 +424,7 @@ def test_mark_as_ready_updates_date(dao):
 
 
 def test_mark_multiple_status_changes(dao):
+    """Test: Verifies that an order can progress through multiple status changes (Ready to On the way to Delivered)."""
     addr = create_test_address()
     order = Order(
         id_customer=998,
@@ -442,6 +456,8 @@ def test_mark_multiple_status_changes(dao):
 
 
 def test_mark_as_ready_with_products(dao):
+    """Test: Verifies that an order with multiple products can be marked as Ready and retains all products."""
+    addr = create_test_address()
     addr = create_test_address()
     order = Order(
         id_customer=998,
@@ -466,7 +482,7 @@ def test_mark_as_ready_with_products(dao):
 
 
 def test_mark_status_sequence(dao):
-    """Test une séquence complète de statuts"""
+    """Test: Verifies a full sequence of order status updates from initial to Delivered."""
     addr = create_test_address()
     order = Order(
         id_customer=998,
@@ -493,6 +509,7 @@ def test_mark_status_sequence(dao):
 
 
 def test_get_by_id_ok(dao):
+    """Test: Retrieves an existing order with its address and products, verifying all data is returned correctly."""
     addr = create_test_address()
     order = Order(
         id_customer=999,
@@ -514,11 +531,13 @@ def test_get_by_id_ok(dao):
 
 
 def test_get_by_id_invalid(dao):
+    """Test: Attempt to retrieve a non-existent order by ID returns None."""
     data = dao.get_by_id(999999)
     assert data is None
 
 
 def test_list_all_orders(dao):
+    """Test: Retrieve all orders and verify each entry contains an order object and its products."""
     orders = dao.list_all_orders()
     assert isinstance(orders, list)
     for entry in orders:
@@ -528,10 +547,9 @@ def test_list_all_orders(dao):
 
 
 def test_list_all_orders_ready(dao):
-    # Créer une adresse de test
+    """Test: Verify that only orders marked as Ready are returned and include the correct order details."""
     addr = create_test_address()
 
-    # Créer une commande
     order = Order(
         id_customer=999,
         id_driver=None,
@@ -543,28 +561,24 @@ def test_list_all_orders_ready(dao):
     order_id = dao.create_order(order)
     assert order_id is not None
 
-    # Vérifier que la commande n'est pas dans les commandes "Ready" au départ
     ready_orders_before = dao.list_all_orders_ready()
     assert all(o["order"].id_order != order_id for o in ready_orders_before)
 
-    # Marquer la commande comme prête
     marked = dao.mark_as_ready(order_id)
     assert marked is True
 
-    # Récupérer les commandes prêtes
     ready_orders = dao.list_all_orders_ready()
     assert isinstance(ready_orders, list)
 
-    # Vérifier que notre commande est dans la liste
     assert any(o["order"].id_order == order_id for o in ready_orders)
 
-    # vérifier que le statut est bien "Ready"
     for o in ready_orders:
         if o["order"].id_order == order_id:
             assert o["order"].status == "Ready"
 
 
 def test_get_assigned_orders_ok(dao):
+    """Test: Verify that orders assigned to a specific driver are correctly returned, including their products."""
     addr = create_test_address()
     order = Order(
         id_customer=998,
@@ -583,20 +597,20 @@ def test_get_assigned_orders_ok(dao):
 
 
 def test_get_assigned_orders_empty(dao):
+    """Test: Verify that no orders are returned for a driver with no assigned orders."""
     assigned = dao.get_assigned_orders(driver_id=123456)
     assert assigned == []
 
 
 def test_assign_order_ok(dao):
-    """Test successful assignment of an order to a driver"""
-    # Create a test driver first
+    """Test: Successfully assign an existing order to a new driver"""
     driver_id = create_test_driver(user_name=f"driver1_{datetime.now().timestamp()}")
     assert driver_id is not None
 
     addr = create_test_address()
     order = Order(
         id_customer=999,
-        id_driver=driver_id,  # Use valid driver ID
+        id_driver=driver_id,
         id_address=addr.id_address,
         nb_items=2,
         total_amount=25.0,
@@ -606,7 +620,6 @@ def test_assign_order_ok(dao):
     order_id = dao.create_order(order)
     assert order_id is not None
 
-    # Create another driver for assignment
     new_driver_id = create_test_driver(
         user_name=f"newdriver_{datetime.now().timestamp()}",
         first_name="New",
@@ -614,11 +627,9 @@ def test_assign_order_ok(dao):
     )
     assert new_driver_id is not None
 
-    # Assign order to new driver
     assigned = dao.assign_order(new_driver_id, order_id)
     assert assigned is True
 
-    # Verify the assignment
     data = dao.get_by_id(order_id)
     assert data is not None
     assert data["order"].id_driver == new_driver_id

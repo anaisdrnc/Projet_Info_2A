@@ -1,17 +1,14 @@
-from typing import TYPE_CHECKING, Literal, Optional, Union
+from datetime import datetime
 
-from src.DAO.UserRepo import UserRepo
-
-
-from src.Model.User import User
-import os
 import pytest
 from dotenv import load_dotenv
+
+from src.DAO.DBConnector import DBConnector
+from src.DAO.UserRepo import UserRepo
+from src.Model.User import User
+from src.Service.PasswordService import create_salt
 from utils.reset_database import ResetDatabase
 from utils.securite import hash_password
-from datetime import datetime
-from src.DAO.DBConnector import DBConnector
-from src.Service.PasswordService import create_salt
 
 load_dotenv()
 
@@ -133,4 +130,3 @@ def test_delete_user_ok(dao):
     assert retrieved
     retrieved = dao.get_by_id(created)
     assert retrieved == None
-
