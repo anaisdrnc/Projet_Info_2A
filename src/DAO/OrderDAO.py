@@ -123,7 +123,7 @@ class OrderDAO:
                 new_quantity = quantity_before['quantity'] + quantity
 
                 self.db_connector.sql_query(
-                    """update order_products set quantity = %(quantity)s + 
+                    """update order_products set quantity = %(quantity)s
                     where id_order = %(order)s and id_product = %(product)s;""",
                     {"quantity" : new_quantity,
                     "order" : order_id,
