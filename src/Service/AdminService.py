@@ -1,5 +1,5 @@
 import logging
-
+from fastapi import HTTPException
 from DAO.AdminDAO import AdminDAO
 from DAO.DBConnector import DBConnector
 from Model.Admin import Admin
@@ -30,7 +30,7 @@ class AdminService:
         check_password_strength(password)
         salt = create_salt()
         hashed_password = hash_password(password, sel=salt)
-        new_user = Admin(  # j'ai changé le User en admin sinon les tests ne passent pas
+        new_user = Admin(
             user_name=username,
             password=hashed_password,
             first_name=first_name,
