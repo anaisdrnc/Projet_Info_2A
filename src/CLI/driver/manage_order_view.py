@@ -89,7 +89,6 @@ class ManageOrderView(VueAbstraite):
                 print("Error : driver not found in get_available_orders")
                 return []
 
-            print(f"Deliverer : {driver.first_name} {driver.last_name}")
             print(f"Mean of transport : {driver.mean_of_transport}")
 
             # Adresse d'origine fixe (dépôt)
