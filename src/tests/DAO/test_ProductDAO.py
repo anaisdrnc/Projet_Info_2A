@@ -1,9 +1,9 @@
 import pytest
 from dotenv import load_dotenv
 
-from src.DAO.DBConnector import DBConnector
-from src.DAO.ProductDAO import ProductDAO
-from src.Model.Product import Product
+from DAO.DBConnector import DBConnector
+from DAO.ProductDAO import ProductDAO
+from Model.Product import Product
 from utils.reset_database import ResetDatabase
 
 load_dotenv()
