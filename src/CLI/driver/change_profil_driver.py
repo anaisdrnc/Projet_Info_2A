@@ -1,13 +1,13 @@
 from InquirerPy import inquirer
 
-from src.CLI.driver.menu_driver import MenuDriver
-from src.CLI.session import Session
-from src.CLI.view_abstract import VueAbstraite
-from src.DAO.DBConnector import DBConnector
-from src.DAO.DriverDAO import DriverDAO
-from src.DAO.UserRepo import UserRepo
-from src.Service.DriverService import DriverService
-from src.Service.UserService import UserService
+from CLI.driver.menu_driver import MenuDriver
+from CLI.session import Session
+from CLI.view_abstract import VueAbstraite
+from DAO.DBConnector import DBConnector
+from DAO.DriverDAO import DriverDAO
+from DAO.UserRepo import UserRepo
+from Service.DriverService import DriverService
+from Service.UserService import UserService
 
 
 class ChangeProfilDriver(VueAbstraite):

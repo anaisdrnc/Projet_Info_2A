@@ -1,7 +1,7 @@
 from InquirerPy import inquirer
 
-from src.CLI.session import Session
-from src.CLI.view_abstract import VueAbstraite
+from CLI.session import Session
+from CLI.view_abstract import VueAbstraite
 
 
 class MenuDriver(VueAbstraite):
@@ -39,7 +39,7 @@ class MenuDriver(VueAbstraite):
 
         match choix:
             case "Log out":
-                from src.CLI.opening.openingview import OpeningView
+                from CLI.opening.openingview import OpeningView
 
                 Session.deconnexion()
 
@@ -47,11 +47,11 @@ class MenuDriver(VueAbstraite):
 
             case "Manage orders":
                 pass
-                from src.CLI.driver.manage_order_view import ManageOrderView
+                from CLI.driver.manage_order_view import ManageOrderView
 
                 return ManageOrderView()
 
             case "Update my information":
-                from src.CLI.driver.change_profil_driver import ChangeProfilDriver
+                from CLI.driver.change_profil_driver import ChangeProfilDriver
 
                 return ChangeProfilDriver()

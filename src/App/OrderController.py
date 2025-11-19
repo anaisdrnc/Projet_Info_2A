@@ -3,8 +3,8 @@ from typing import Annotated
 from fastapi.security import HTTPAuthorizationCredentials
 from fastapi import APIRouter, HTTPException, status, Depends
 from .JWTBearer import JWTBearer
-from src.DAO.DBConnector import DBConnector
-from src.Model.Order import Order  # ton modèle Pydantic pour les commandes
+from DAO.DBConnector import DBConnector
+from Model.Order import Order  # ton modèle Pydantic pour les commandes
 
 order_router = APIRouter(prefix="/Order", tags=["Orders"])
 db = DBConnector()

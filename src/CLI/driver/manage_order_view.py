@@ -21,7 +21,7 @@ try:
     from DAO.OrderDAO import OrderDAO
     from Service.Google_Maps.map import compute_itinerary, create_map, display_itinerary_details
     from Service.OrderService import OrderService
-    from src.CLI.session import Session
+    from CLI.session import Session
 except ImportError as e:
     print(f"Erreur d'import: {e}")
     print(f"Python path: {sys.path}")
@@ -203,7 +203,7 @@ class ManageOrderView(VueAbstraite):
         if not success:
             message = "Error during the assignement of the order"
             print(message)
-            from src.CLI.menu_driver import MenuDriver
+            from CLI.menu_driver import MenuDriver
 
             return MenuDriver(message=message)
 

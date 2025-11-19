@@ -3,16 +3,16 @@ from typing import TYPE_CHECKING, Annotated
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials
 
-from src.Model.APIUser import APIUser
-from src.Model.JWTResponse import JWTResponse
-from src.Service.AdminService import AdminService
+from Model.APIUser import APIUser
+from Model.JWTResponse import JWTResponse
+from Service.AdminService import AdminService
 
 from .init_app import jwt_service
 from .JWTBearer import JWTBearer
 
 
 if TYPE_CHECKING:
-    from src.Model.Admin import Admin
+    from Model.Admin import Admin
 
 from pydantic import BaseModel
 

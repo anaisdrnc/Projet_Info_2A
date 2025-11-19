@@ -25,4 +25,4 @@ async def redirect_to_docs():
 
 
 def run_app():
-    uvicorn.run("src.App.API:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("App.API:app", host="0.0.0.0", port=8000, reload=True)
