@@ -52,8 +52,8 @@ class ProductDAO:
         Returns
         -------
         bool
-            True if the product was successfully created and assigned an ID.
-            False if the insertion fails or an error occurs."""
+            the product with its new id if the product is successfully added
+            None if the insertion fails or an error occurs"""
         try:
             res = self.db_connector.sql_query(
                 """
@@ -74,11 +74,11 @@ class ProductDAO:
 
             if res and "id_product" in res:
                 product.id_product = res["id_product"]
-                return True
-            return False
+                return product
+            return None
         except Exception as e:
             logging.info(f"Erreur lors de l'insertion : {e}")
-            return False
+            return None
 
     @log
     def get_all_products(self):

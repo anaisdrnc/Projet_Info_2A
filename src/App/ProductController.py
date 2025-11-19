@@ -37,24 +37,12 @@ def create_product(
     credentials: Annotated[HTTPAuthorizationCredentials, Depends(JWTBearer())]  # admin connecté
 ):
     """Crée un nouveau produit (uniquement admin)."""
+    productdao = ProductDAO(DBConnector(test=False))
     try:
-        query = """
-            INSERT INTO product (name, price, production_cost, product_type, description, stock)
-            VALUES (%s, %s, %s, %s, %s, %s)
-            RETURNING id_product, name, price, production_cost, product_type, description, stock;
-        """
-        data = (
-            product.name,
-            product.price,
-            product.production_cost,
-            product.product_type,
-            product.description,
-            product.stock,
-        )
-        new_product = db.sql_query(query, data, return_type="one")
-        if not new_product:
+        new_product = productdao.create_product(product)
+        if new_product is None:
             raise HTTPException(status_code=500, detail="Product could not be created")
-        return Product(**new_product)
+        return new_product
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
 

@@ -31,8 +31,8 @@ class ProductService:
             stock=stock,
         )
 
-        success = self.productdao.create_product(new_product)
-        return new_product if success else None
+        new_product = self.productdao.create_product(new_product)
+        return new_product
 
     @log
     def delete(self, product_id: int) -> bool:
