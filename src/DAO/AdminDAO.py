@@ -114,8 +114,8 @@ class AdminDAO:
         try:
             return self.user_repo.update_user(admin)
         except Exception as e:
-            logging.info(e)
-            return False
+            logging.error("UPDATE_ADMIN DAO ERROR: %s", e)
+            raise
 
     @log
     def get_by_username(self, username: str) -> Optional[Admin]:

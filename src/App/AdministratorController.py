@@ -120,14 +120,18 @@ def update_admin_profile(
 
     if payload.password is not None:
         # Re-hash du mot de passe avec salt = username
-        from utils.securite import hash_password
+        check_password_strength(payload.password)
+
         admin.salt = admin.user_name
         admin.password = hash_password(payload.password, admin.salt)
 
     updated = admin_service.update_admin(admin)
-
-    if not updated:
-        raise HTTPException(status_code=500, detail="Unable to update admin")
+    try:
+        if not updated:
+            raise Exception("update_admin returned False")
+    except Exception as e:
+            print("ADMIN UPDATE ERROR:", e)
+            raise HTTPException(status_code=500, detail="Failed to update admin")
 
     return APIUser(
         id=admin.id_admin,

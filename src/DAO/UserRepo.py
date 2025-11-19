@@ -179,31 +179,32 @@ class UserRepo:
             logging.info("update_user: user.id is missing")
             return False
 
+        fields = {
+            "first_name": user.first_name,
+            "last_name": user.last_name,
+            "email": user.email,
+            "user_name": user.user_name,
+        }
+
+        # Mise à jour du password uniquement si fourni
+        if user.password:
+            fields["password"] = user.password
+            fields["salt"] = user.salt
+
+        set_clause = ", ".join([f"{key} = %({key})s" for key in fields.keys()])
+        fields["id_user"] = user.id
+
         try:
-            res = self.db_connector.sql_query(
-                """
+            query = f"""
                 UPDATE users
-                SET first_name = %(first_name)s,
-                    last_name = %(last_name)s,
-                    email = %(email)s,
-                    user_name = %(user_name)s,
-                    password = %(password)s,
-                    salt = %(salt)s
+                SET {set_clause}
                 WHERE id_user = %(id_user)s
                 RETURNING id_user;
-                """,
-                {
-                    "first_name": user.first_name,
-                    "last_name": user.last_name,
-                    "email": user.email,
-                    "user_name": user.user_name,
-                    "password": user.password,
-                    "salt": user.salt,
-                    "id_user": user.id,
-                },
-                "one",
-            )
+            """
+
+            res = self.db_connector.sql_query(query, fields, "one")
             return res is not None
+
         except Exception as e:
             logging.info(e)
             return False
