@@ -17,7 +17,7 @@ def setup_test_environment():
 
 @pytest.fixture
 def dao():
-    """DAO configuré pour le schéma test"""
+    """DAO configured for the test schema"""
     address_dao = AddressDAO(db_connector=DBConnector(test=True))
     address_dao.db_connector = DBConnector(test=True)
     return address_dao

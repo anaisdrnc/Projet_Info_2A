@@ -18,6 +18,7 @@ load_dotenv()
 
 @pytest.fixture(scope="session", autouse=True)
 def setup_test_environment():
+    """Reset DB before tests"""
     from utils.reset_database import ResetDatabase
 
     ResetDatabase(test=True).lancer()
@@ -25,6 +26,7 @@ def setup_test_environment():
 
 @pytest.fixture
 def db():
+    """DAO configured for the test schema"""
     return DBConnector(test=True)
 
 
