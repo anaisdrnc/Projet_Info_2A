@@ -15,7 +15,7 @@ from Service.UserService import UserService
 class ChangeProfil(VueAbstraite):
     """change the password of the customer"""
 
-    def change_profil_customer(self):
+    def choisir_menu(self):
 
         customerdao = CustomerDAO(DBConnector(test=False))
         customerservice = CustomerService(customerdao)
