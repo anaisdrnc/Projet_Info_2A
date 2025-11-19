@@ -130,10 +130,10 @@ def display_suggestions(adresse: str):
     suggestions = get_address_suggestions(adresse)
 
     if not suggestions:
-        print("Aucune suggestion trouvée pour cette adresse.")
+        print("No suggestions found for this address.")
         return
 
-    print(f"\nSuggestions pour '{adresse}':")
+    print(f"\nSuggestions for '{adresse}':")
     print("=" * 60)
 
     for i, suggestion in enumerate(suggestions, 1):
@@ -156,6 +156,6 @@ def display_suggestions(adresse: str):
             print("   " + " | ".join(details))
 
         if not suggestion["is_routable"]:
-            print("Cette adresse est trop imprécise pour calculer un itinéraire")
+            print("This address is not precise enough for computing an itinerary")
 
         print()
