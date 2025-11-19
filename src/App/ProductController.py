@@ -113,3 +113,21 @@ def update_product(
         raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
+
+
+@product_router.put("/{product_id}", response_model=Product, status_code=status.HTTP_200_OK)
+def update_stock(
+    product_id: int,
+    stock_added : int,
+    credentials: Annotated[HTTPAuthorizationCredentials, Depends(JWTBearer())]  # admin connecté
+    ):
+    productdao = ProductDAO(DBConnector(test = False))
+    product_service = ProductService(productdao)
+    try :
+        added = product_service.increment_stock(product_id=product_id, quantity=stock_added)
+        if added:
+            return {"message": f"[{stock_added}] was successfully added to the stock of product with id [{product_id}]"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
