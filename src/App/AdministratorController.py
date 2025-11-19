@@ -1,8 +1,8 @@
 from typing import TYPE_CHECKING, Annotated
-
+from utils.securite import hash_password
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials
-
+from Service.PasswordService import check_password_strength
 from Model.APIUser import APIUser
 from Model.JWTResponse import JWTResponse
 from Service.AdminService import AdminService
@@ -93,46 +93,52 @@ def create_new_admin(
     )
 
 @admin_router.put("/me", response_model=APIUser, status_code=status.HTTP_200_OK)
-def update_admin_profile(
-    payload: AdminUpdateRequest,
+def update_my_admin_profile(
+    username: str,
+    password: str,
+    first_name: str,
+    last_name: str,
+    email: str,
     credentials: Annotated[HTTPAuthorizationCredentials, Depends(JWTBearer())]
-):
+) -> APIUser:
     """
-    Update the authenticated admin profile.
+    Update the authenticated admin's profile.
+    All fields are optional, but follow the same structure as create_admin.
     """
     token = credentials.credentials
     admin_id = int(jwt_service.validate_user_jwt(token))
+
+    # Récupère l'admin actuel
     admin = admin_service.get_by_id(admin_id)
     if not admin:
         raise HTTPException(status_code=404, detail="Admin not found")
 
-    if payload.first_name is not None:
-        admin.first_name = payload.first_name
+    # Met à jour les champs si fournis
+    if username is not None:
+        admin.user_name = username
+    if first_name is not None:
+        admin.first_name = first_name
+    if last_name is not None:
+        admin.last_name = last_name
+    if email is not None:
+        admin.email = email
+    if password is not None:
+        check_password_strength(password)
+        admin.salt = admin.user_name  # utilise le username comme sel
+        admin.password = hash_password(password, admin.salt)
 
-    if payload.last_name is not None:
-        admin.last_name = payload.last_name
-
-    if payload.email is not None:
-        admin.email = payload.email
-
-    if payload.username is not None:
-        admin.user_name = payload.username
-
-    if payload.password is not None:
-        # Re-hash du mot de passe avec salt = username
-        check_password_strength(payload.password)
-
-        admin.salt = admin.user_name
-        admin.password = hash_password(payload.password, admin.salt)
-
-    updated = admin_service.update_admin(admin)
+    # Sauvegarde en DB
     try:
-        if not updated:
-            raise Exception("update_admin returned False")
+        updated = admin_service.update_admin(admin)
+    except HTTPException:
+        raise
     except Exception as e:
-            print("ADMIN UPDATE ERROR:", e)
-            raise HTTPException(status_code=500, detail="Failed to update admin")
+        raise HTTPException(status_code=500, detail=str(e))
 
+    if not updated:
+        raise HTTPException(status_code=500, detail="Unable to update admin")
+
+    # Retourne le nouvel état
     return APIUser(
         id=admin.id_admin,
         username=admin.user_name,
