@@ -173,7 +173,7 @@ class PlaceOrderView(VueAbstraite):
         for product in list_choosen_menu:
             if product in list_choosen_products_names:
                 i = list_choosen_products_names.index(product)
-                quantities[i] += 1
+                quantities[i] = str(int(quantities[i]) + 1)
             else :
                 id_product = product_service.get_id_by_name(product)
                 added = order_service.add_product_to_order(order_id=id_order, product_id = id_product, quantity= 1, promotion = True)
@@ -185,7 +185,7 @@ class PlaceOrderView(VueAbstraite):
         message += "Single products : \n"
         for i in range(len(list_choosen_products_names)):
             product = list_choosen_products_names[i]
-            quantity = quantities[i] - len([p for p in list_choosen_menu if p == product])
+            quantity = int(quantities[i]) - len([p for p in list_choosen_menu if p == product])
             id_product = product_service.get_id_by_name(product)
             added = order_service.add_product_to_order(order_id=id_order, product_id=id_product, quantity=int(quantity), promotion = False)
             message += f"{product} quantity: {quantity} \n"
