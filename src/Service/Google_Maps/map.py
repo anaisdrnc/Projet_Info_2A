@@ -8,38 +8,58 @@ from dotenv import load_dotenv
 load_dotenv()
 load_dotenv(".env")
 load_dotenv("/PROJET_INFO_2A/.env")
+#Importer la clef API de manière sécurisée
 API_KEY = os.getenv("API_KEY_GOOGLE_MAPS")
 
 # Initialiser le client Google Maps
 gmaps = googlemaps.Client(key=API_KEY)
 
 
-def calculer_itineraire(origin: str, destination: str, transport_mode: str) -> gmaps.directions:
-    """Calcule l'itinéraire entre deux adresses et renvoie l'objet 'directions' de Google Maps."""
+def compute_itinerary(origin: str, destination: str, transport_mode: str) -> gmaps.directions:
+    """
+    Computes the itinerary between two addresses.
+    ----------
+    Parameters:
+    origin: str
+    destination: str
+    transport_mode: str
+
+    Retuns:
+    googlemaps.directions: List[Dict]
+    """
     try:
         directions = gmaps.directions(origin=origin, destination=destination, mode=transport_mode, units="metric")
 
         if directions:
-            print("Itinéraire calculé avec succès!")
+            print("Itinerary successfully computed")
             return directions
         else:
-            print("Aucun itinéraire trouvé.")
+            print("No itinerary found.")
             return None
 
     except Exception as e:
-        print(f"Erreur lors du calcul de l'itinéraire: {e}")
+        print(f"Error computing the itinerary: {e}")
         return None
 
 
 def display_itinerary_details(directions):
-    """Affiche les détails de l'itinéraire dans la console"""
+    """
+    Displays the itinerary's details in the command line.
+    ----------
+    Parameters:
+    directions: googlemaps.directions
+
+    Returns:
+    str: Steps of the itinerary
+
+    """
     if not directions or not directions[0]["legs"]:
-        print("Aucun détail d'itinéraire disponible")
+        print("No available details about the itinerary")
         return
 
     leg = directions[0]["legs"][0]
 
-    print("\nÉtapes principales:")
+    print("\nMain steps:")
     for i, step in enumerate(leg["steps"], 1):  # Afficher toutes les étapes
         instruction = (
             step["html_instructions"]
@@ -53,6 +73,18 @@ def display_itinerary_details(directions):
 
 # Récupérer les directions
 def create_map(origin, destination, transport_mode):
+    """
+    Creates and saves an interactive map where we can see the starting and ending points of the path computed,
+    as well as the route path the deliverer has to take.
+    ----------
+    Parameters:
+    origin: str
+    destination: str
+    transport_mode: str
+
+    Returns:
+    output_path: str
+    """
     now = datetime.now()
     directions = gmaps.directions(
         origin,
@@ -87,7 +119,7 @@ def create_map(origin, destination, transport_mode):
         icon=folium.Icon(color="red"),
     ).add_to(m)
 
-    # Extraire les points du polyligne
+    # Extraire les points du polyline
     path = []
 
     for step in leg["steps"]:

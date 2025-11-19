@@ -5,7 +5,7 @@ from src.CLI.view_abstract import VueAbstraite
 
 
 class MenuDriver(VueAbstraite):
-    """Vue du menu du livreur
+    """Class defining the view of the driver's menu
 
     Attributes
     ----------
@@ -14,25 +14,25 @@ class MenuDriver(VueAbstraite):
     Returns
     ------
     view
-        retourne la prochaine vue, celle qui est choisie par l'utilisateur
+        Returns the next view chosen by the driver in the CLI
     """
 
     def choisir_menu(self):
-        """Choix du menu suivant de l'utilisateur
+        """Seleting the next menu
 
         Return
         ------
         vue
-            Retourne la vue choisie par l'utilisateur dans le terminal
+            Returns the next view chosen by the driver in the CLI
         """
 
-        print("\n" + "-" * 50 + "\nMenu Livreur\n" + "-" * 50 + "\n")
+        print("\n" + "-" * 50 + "\nDeliverer's menu\n" + "-" * 50 + "\n")
 
         choix = inquirer.select(
-            message="Faites votre choix : ",
+            message="Make your choice: ",
             choices=[
-                "Gérer les commandes",
-                "Changer mes informations",
+                "Manage orders",
+                "Update my information",
                 "Log out",
             ],
         ).execute()
@@ -45,13 +45,13 @@ class MenuDriver(VueAbstraite):
 
                 return OpeningView()
 
-            case "Gérer les commandes":
+            case "Manage orders":
                 pass
                 from src.CLI.driver.manage_order_view import ManageOrderView
 
                 return ManageOrderView()
 
-            case "Changer mes informations":
+            case "Update my information":
                 from src.CLI.driver.change_profil_driver import ChangeProfilDriver
 
                 return ChangeProfilDriver()

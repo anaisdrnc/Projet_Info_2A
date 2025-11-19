@@ -6,17 +6,18 @@ from src.CLI.view_abstract import VueAbstraite
 from src.DAO.DBConnector import DBConnector
 from src.DAO.DriverDAO import DriverDAO
 from src.DAO.UserRepo import UserRepo
-from src.Model.Driver import Driver
-from src.Model.User import User
 from src.Service.DriverService import DriverService
 from src.Service.UserService import UserService
 
 
 class ChangeProfilDriver(VueAbstraite):
+    """
+    Class that defines the view for changing the driver's information about his password or his mean of transport
+    """
     def choisir_menu(self):
         """Menu principal de modification du profil"""
         print("\n" + "="*50)
-        print("    MODIFICATION DU PROFIL LIVREUR")
+        print("    Changing driver's profile")
         print("="*50)
 
         return self.change_profil_driver()

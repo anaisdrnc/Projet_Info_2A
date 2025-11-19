@@ -1,0 +1,505 @@
+18/11/2025 10:31:03 - INFO     - --------------------------------------------------
+18/11/2025 10:31:03 - INFO     - Lancement Application                           
+18/11/2025 10:31:03 - INFO     - --------------------------------------------------
+18/11/2025 10:31:03 - INFO     - OpeningView
+18/11/2025 10:31:08 - INFO     - Fin de l'application
+18/11/2025 10:31:30 - INFO     - --------------------------------------------------
+18/11/2025 10:31:30 - INFO     - Lancement Application                           
+18/11/2025 10:31:30 - INFO     - --------------------------------------------------
+18/11/2025 10:31:30 - INFO     - OpeningView
+18/11/2025 10:31:31 - INFO     - LoginView
+18/11/2025 10:31:37 - INFO     -     UserRepo.get_by_username('EmmaDriver',) - DEBUT
+18/11/2025 10:31:38 - INFO     -     UserRepo.get_by_username('EmmaDriver',) - FIN
+18/11/2025 10:31:38 - INFO     -        └─> Sortie : id=4 user_name='EmmaDriver' password='f11b5649b0e3b97afae7b6db66b48f66407096f4771d599159ea7d0d7cd1d8de' first_name='Emma' last_name='Glorieux' email='emmadriver@project.com' salt='EmmaDriver'
+18/11/2025 10:31:38 - INFO     -     CustomerDAO.get_id_customer_by_id_user(4,) - DEBUT
+18/11/2025 10:31:38 - INFO     -     CustomerDAO.get_id_customer_by_id_user(4,) - FIN
+18/11/2025 10:31:38 - INFO     -        └─> Sortie : None
+18/11/2025 10:31:38 - INFO     -     DriverDAO.get_id_driver_by_id_user(4,) - DEBUT
+18/11/2025 10:31:38 - INFO     -     DriverDAO.get_id_driver_by_id_user(4,) - FIN
+18/11/2025 10:31:38 - INFO     -        └─> Sortie : 1
+18/11/2025 10:31:38 - INFO     -     Session.connexion("id=4 user_name='EmmaDriver' password='f11b5649b0e3b97afae7b6db66b48f66407096f4771d599159ea7d0d7cd1d8de' first_name='Emma' last_name='Glorieux' email='emmadriver@project.com' salt='EmmaDriver'", 1) - DEBUT
+18/11/2025 10:31:38 - INFO     -     Session.connexion("id=4 user_name='EmmaDriver' password='f11b5649b0e3b97afae7b6db66b48f66407096f4771d599159ea7d0d7cd1d8de' first_name='Emma' last_name='Glorieux' email='emmadriver@project.com' salt='EmmaDriver'", 1) - FIN
+18/11/2025 10:31:38 - INFO     -        └─> Sortie : None
+18/11/2025 10:31:38 - ERROR    - ModuleNotFoundError : No module named 'src.CLI.menu_driver'
+Traceback (most recent call last):
+  File "/home/onyxia/work/Projet_Info_2A/main_CLI.py", line 26, in <module>
+    vue_courante = vue_courante.choisir_menu()
+  File "/home/onyxia/work/Projet_Info_2A/src/CLI/opening/loginview.py", line 47, in choisir_menu
+    from src.CLI.menu_driver import MenuDriver
+ModuleNotFoundError: No module named 'src.CLI.menu_driver'
+18/11/2025 10:31:38 - INFO     - OpeningView
+18/11/2025 10:33:34 - INFO     - LoginView
+18/11/2025 10:33:42 - INFO     -     UserRepo.get_by_username('EmmaDriver',) - DEBUT
+18/11/2025 10:33:42 - INFO     -     UserRepo.get_by_username('EmmaDriver',) - FIN
+18/11/2025 10:33:42 - INFO     -        └─> Sortie : id=4 user_name='EmmaDriver' password='f11b5649b0e3b97afae7b6db66b48f66407096f4771d599159ea7d0d7cd1d8de' first_name='Emma' last_name='Glorieux' email='emmadriver@project.com' salt='EmmaDriver'
+18/11/2025 10:33:42 - INFO     -     CustomerDAO.get_id_customer_by_id_user(4,) - DEBUT
+18/11/2025 10:33:42 - INFO     -     CustomerDAO.get_id_customer_by_id_user(4,) - FIN
+18/11/2025 10:33:42 - INFO     -        └─> Sortie : None
+18/11/2025 10:33:42 - INFO     -     DriverDAO.get_id_driver_by_id_user(4,) - DEBUT
+18/11/2025 10:33:42 - INFO     -     DriverDAO.get_id_driver_by_id_user(4,) - FIN
+18/11/2025 10:33:42 - INFO     -        └─> Sortie : 1
+18/11/2025 10:33:42 - INFO     -     Session.connexion("id=4 user_name='EmmaDriver' password='f11b5649b0e3b97afae7b6db66b48f66407096f4771d599159ea7d0d7cd1d8de' first_name='Emma' last_name='Glorieux' email='emmadriver@project.com' salt='EmmaDriver'", 1) - DEBUT
+18/11/2025 10:33:42 - INFO     -     Session.connexion("id=4 user_name='EmmaDriver' password='f11b5649b0e3b97afae7b6db66b48f66407096f4771d599159ea7d0d7cd1d8de' first_name='Emma' last_name='Glorieux' email='emmadriver@project.com' salt='EmmaDriver'", 1) - FIN
+18/11/2025 10:33:42 - INFO     -        └─> Sortie : None
+18/11/2025 10:33:42 - ERROR    - ModuleNotFoundError : No module named 'src.CLI.menu_driver'
+Traceback (most recent call last):
+  File "/home/onyxia/work/Projet_Info_2A/main_CLI.py", line 26, in <module>
+    vue_courante = vue_courante.choisir_menu()
+  File "/home/onyxia/work/Projet_Info_2A/src/CLI/opening/loginview.py", line 47, in choisir_menu
+    from src.CLI.driver.menu_driver import MenuDriver
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'src.CLI.menu_driver'
+18/11/2025 10:33:42 - INFO     - OpeningView
+18/11/2025 10:35:30 - INFO     - LoginView
+18/11/2025 10:35:43 - INFO     -     UserRepo.get_by_username('PierreVelo',) - DEBUT
+18/11/2025 10:35:43 - INFO     -     UserRepo.get_by_username('PierreVelo',) - FIN
+18/11/2025 10:35:43 - INFO     -        └─> Sortie : id=6 user_name='PierreVelo' password='10375150ff7ed1ddc621c03c782438c3548069a4eb5a2819b41201a77951eb0b' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='PierreVelo'
+18/11/2025 10:35:43 - INFO     -     CustomerDAO.get_id_customer_by_id_user(6,) - DEBUT
+18/11/2025 10:35:43 - INFO     -     CustomerDAO.get_id_customer_by_id_user(6,) - FIN
+18/11/2025 10:35:43 - INFO     -        └─> Sortie : None
+18/11/2025 10:35:43 - INFO     -     DriverDAO.get_id_driver_by_id_user(6,) - DEBUT
+18/11/2025 10:35:43 - INFO     -     DriverDAO.get_id_driver_by_id_user(6,) - FIN
+18/11/2025 10:35:43 - INFO     -        └─> Sortie : 3
+18/11/2025 10:35:43 - INFO     -     Session.connexion("id=6 user_name='PierreVelo' password='10375150ff7ed1ddc621c03c782438c3548069a4eb5a2819b41201a77951eb0b' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='PierreVelo'", 3) - DEBUT
+18/11/2025 10:35:43 - INFO     -     Session.connexion("id=6 user_name='PierreVelo' password='10375150ff7ed1ddc621c03c782438c3548069a4eb5a2819b41201a77951eb0b' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='PierreVelo'", 3) - FIN
+18/11/2025 10:35:43 - INFO     -        └─> Sortie : None
+18/11/2025 10:35:43 - ERROR    - ModuleNotFoundError : No module named 'src.CLI.menu_driver'
+Traceback (most recent call last):
+  File "/home/onyxia/work/Projet_Info_2A/main_CLI.py", line 26, in <module>
+    vue_courante = vue_courante.choisir_menu()
+  File "/home/onyxia/work/Projet_Info_2A/src/CLI/opening/loginview.py", line 47, in choisir_menu
+    from src.CLI.driver.menu_driver import MenuDriver
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'src.CLI.menu_driver'
+18/11/2025 10:35:43 - INFO     - OpeningView
+18/11/2025 10:36:03 - INFO     - Fin de l'application
+18/11/2025 10:38:07 - INFO     - --------------------------------------------------
+18/11/2025 10:38:07 - INFO     - Lancement Application                           
+18/11/2025 10:38:07 - INFO     - --------------------------------------------------
+18/11/2025 10:38:07 - INFO     - OpeningView
+18/11/2025 10:38:09 - INFO     - LoginView
+18/11/2025 10:38:15 - INFO     -     UserRepo.get_by_username('PierreVelo',) - DEBUT
+18/11/2025 10:38:15 - INFO     -     UserRepo.get_by_username('PierreVelo',) - FIN
+18/11/2025 10:38:15 - INFO     -        └─> Sortie : id=6 user_name='PierreVelo' password='10375150ff7ed1ddc621c03c782438c3548069a4eb5a2819b41201a77951eb0b' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='PierreVelo'
+18/11/2025 10:38:15 - INFO     -     CustomerDAO.get_id_customer_by_id_user(6,) - DEBUT
+18/11/2025 10:38:15 - INFO     -     CustomerDAO.get_id_customer_by_id_user(6,) - FIN
+18/11/2025 10:38:15 - INFO     -        └─> Sortie : None
+18/11/2025 10:38:15 - INFO     -     DriverDAO.get_id_driver_by_id_user(6,) - DEBUT
+18/11/2025 10:38:15 - INFO     -     DriverDAO.get_id_driver_by_id_user(6,) - FIN
+18/11/2025 10:38:15 - INFO     -        └─> Sortie : 3
+18/11/2025 10:38:15 - INFO     -     Session.connexion("id=6 user_name='PierreVelo' password='10375150ff7ed1ddc621c03c782438c3548069a4eb5a2819b41201a77951eb0b' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='PierreVelo'", 3) - DEBUT
+18/11/2025 10:38:15 - INFO     -     Session.connexion("id=6 user_name='PierreVelo' password='10375150ff7ed1ddc621c03c782438c3548069a4eb5a2819b41201a77951eb0b' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='PierreVelo'", 3) - FIN
+18/11/2025 10:38:15 - INFO     -        └─> Sortie : None
+18/11/2025 10:38:15 - INFO     - MenuDriver
+18/11/2025 10:38:21 - ERROR    - ModuleNotFoundError : No module named 'src.CLI.manage_order_view'
+Traceback (most recent call last):
+  File "/home/onyxia/work/Projet_Info_2A/main_CLI.py", line 26, in <module>
+    vue_courante = vue_courante.choisir_menu()
+  File "/home/onyxia/work/Projet_Info_2A/src/CLI/driver/menu_driver.py", line 50, in choisir_menu
+    from src.CLI.manage_order_view import ManageOrderView
+ModuleNotFoundError: No module named 'src.CLI.manage_order_view'
+18/11/2025 10:38:21 - INFO     - OpeningView
+18/11/2025 10:39:22 - INFO     - LoginView
+18/11/2025 10:39:25 - INFO     -     UserRepo.get_by_username('',) - DEBUT
+18/11/2025 10:39:25 - INFO     -     UserRepo.get_by_username('',) - FIN
+18/11/2025 10:39:25 - INFO     -        └─> Sortie : None
+18/11/2025 10:39:25 - ERROR    - Exception : user with username  not found
+Traceback (most recent call last):
+  File "/home/onyxia/work/Projet_Info_2A/main_CLI.py", line 26, in <module>
+    vue_courante = vue_courante.choisir_menu()
+  File "/home/onyxia/work/Projet_Info_2A/src/CLI/opening/loginview.py", line 26, in choisir_menu
+    user = validate_username_password(
+        username=pseudo, password=mdp, user_repo=user_repo
+    )
+  File "/home/onyxia/work/Projet_Info_2A/src/Service/PasswordService.py", line 30, in validate_username_password
+    raise Exception(f"user with username {username} not found")
+Exception: user with username  not found
+18/11/2025 10:39:25 - INFO     - OpeningView
+18/11/2025 10:39:26 - INFO     - Fin de l'application
+18/11/2025 10:39:29 - INFO     - --------------------------------------------------
+18/11/2025 10:39:29 - INFO     - Lancement Application                           
+18/11/2025 10:39:29 - INFO     - --------------------------------------------------
+18/11/2025 10:39:29 - INFO     - OpeningView
+18/11/2025 10:40:45 - INFO     - LoginView
+18/11/2025 10:40:51 - INFO     -     UserRepo.get_by_username('PierreVelo',) - DEBUT
+18/11/2025 10:40:51 - INFO     -     UserRepo.get_by_username('PierreVelo',) - FIN
+18/11/2025 10:40:51 - INFO     -        └─> Sortie : id=6 user_name='PierreVelo' password='10375150ff7ed1ddc621c03c782438c3548069a4eb5a2819b41201a77951eb0b' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='PierreVelo'
+18/11/2025 10:40:51 - INFO     -     CustomerDAO.get_id_customer_by_id_user(6,) - DEBUT
+18/11/2025 10:40:51 - INFO     -     CustomerDAO.get_id_customer_by_id_user(6,) - FIN
+18/11/2025 10:40:51 - INFO     -        └─> Sortie : None
+18/11/2025 10:40:51 - INFO     -     DriverDAO.get_id_driver_by_id_user(6,) - DEBUT
+18/11/2025 10:40:51 - INFO     -     DriverDAO.get_id_driver_by_id_user(6,) - FIN
+18/11/2025 10:40:51 - INFO     -        └─> Sortie : 3
+18/11/2025 10:40:51 - INFO     -     Session.connexion("id=6 user_name='PierreVelo' password='10375150ff7ed1ddc621c03c782438c3548069a4eb5a2819b41201a77951eb0b' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='PierreVelo'", 3) - DEBUT
+18/11/2025 10:40:51 - INFO     -     Session.connexion("id=6 user_name='PierreVelo' password='10375150ff7ed1ddc621c03c782438c3548069a4eb5a2819b41201a77951eb0b' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='PierreVelo'", 3) - FIN
+18/11/2025 10:40:51 - INFO     -        └─> Sortie : None
+18/11/2025 10:40:51 - INFO     - MenuDriver
+18/11/2025 10:40:57 - INFO     - API queries_quota: 60
+18/11/2025 10:40:57 - INFO     - API queries_quota: 60
+18/11/2025 10:40:57 - INFO     - ManageOrderView
+18/11/2025 10:40:57 - INFO     -     DriverDAO.get_by_id(3,) - DEBUT
+18/11/2025 10:40:57 - INFO     -     DriverDAO.get_by_id(3,) - FIN
+18/11/2025 10:40:57 - INFO     -        └─> Sortie : id=6 user_name='PierreVelo' password='10375150ff7ed1ddc621c03c782438c3548069a4eb5a2819b41201a77951eb0b' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='PierreVelo' mean_of_transport='Bike' id_driver=3
+18/11/2025 10:40:57 - INFO     -     DriverDAO.get_by_id(3,) - DEBUT
+18/11/2025 10:40:57 - INFO     -     DriverDAO.get_by_id(3,) - FIN
+18/11/2025 10:40:57 - INFO     -        └─> Sortie : id=6 user_name='PierreVelo' password='10375150ff7ed1ddc621c03c782438c3548069a4eb5a2819b41201a77951eb0b' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='PierreVelo' mean_of_transport='Bike' id_driver=3
+18/11/2025 10:40:57 - INFO     -     OrderService.list_all_orders_ready() - DEBUT
+18/11/2025 10:40:57 - INFO     -         OrderDAO.list_all_orders_ready() - DEBUT
+18/11/2025 10:40:57 - INFO     -         OrderDAO.list_all_orders_ready() - FIN
+18/11/2025 10:40:57 - INFO     -            └─> Sortie : [] ... (0 elements)
+18/11/2025 10:40:57 - INFO     -     OrderService.list_all_orders_ready() - FIN
+18/11/2025 10:40:57 - INFO     -        └─> Sortie : [] ... (0 elements)
+18/11/2025 10:40:57 - ERROR    - ModuleNotFoundError : No module named 'CLI.menu_driver'
+Traceback (most recent call last):
+  File "/home/onyxia/work/Projet_Info_2A/src/CLI/driver/manage_order_view.py", line 154, in choisir_menu
+    from CLI.menu_driver import MenuDriver
+ModuleNotFoundError: No module named 'CLI.menu_driver'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/onyxia/work/Projet_Info_2A/main_CLI.py", line 26, in <module>
+    vue_courante = vue_courante.choisir_menu()
+  File "/home/onyxia/work/Projet_Info_2A/src/CLI/driver/manage_order_view.py", line 185, in choisir_menu
+    from CLI.menu_driver import MenuDriver
+ModuleNotFoundError: No module named 'CLI.menu_driver'
+18/11/2025 10:40:57 - INFO     - OpeningView
+18/11/2025 10:42:29 - INFO     - Fin de l'application
+18/11/2025 10:42:33 - INFO     - --------------------------------------------------
+18/11/2025 10:42:33 - INFO     - Lancement Application                           
+18/11/2025 10:42:33 - INFO     - --------------------------------------------------
+18/11/2025 10:42:33 - INFO     - OpeningView
+18/11/2025 10:42:34 - INFO     - LoginView
+18/11/2025 10:42:40 - INFO     -     UserRepo.get_by_username('PierreVelo',) - DEBUT
+18/11/2025 10:42:40 - INFO     -     UserRepo.get_by_username('PierreVelo',) - FIN
+18/11/2025 10:42:40 - INFO     -        └─> Sortie : id=6 user_name='PierreVelo' password='10375150ff7ed1ddc621c03c782438c3548069a4eb5a2819b41201a77951eb0b' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='PierreVelo'
+18/11/2025 10:42:40 - INFO     -     CustomerDAO.get_id_customer_by_id_user(6,) - DEBUT
+18/11/2025 10:42:40 - INFO     -     CustomerDAO.get_id_customer_by_id_user(6,) - FIN
+18/11/2025 10:42:40 - INFO     -        └─> Sortie : None
+18/11/2025 10:42:40 - INFO     -     DriverDAO.get_id_driver_by_id_user(6,) - DEBUT
+18/11/2025 10:42:40 - INFO     -     DriverDAO.get_id_driver_by_id_user(6,) - FIN
+18/11/2025 10:42:40 - INFO     -        └─> Sortie : 3
+18/11/2025 10:42:40 - INFO     -     Session.connexion("id=6 user_name='PierreVelo' password='10375150ff7ed1ddc621c03c782438c3548069a4eb5a2819b41201a77951eb0b' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='PierreVelo'", 3) - DEBUT
+18/11/2025 10:42:40 - INFO     -     Session.connexion("id=6 user_name='PierreVelo' password='10375150ff7ed1ddc621c03c782438c3548069a4eb5a2819b41201a77951eb0b' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='PierreVelo'", 3) - FIN
+18/11/2025 10:42:40 - INFO     -        └─> Sortie : None
+18/11/2025 10:42:40 - INFO     - MenuDriver
+18/11/2025 10:42:42 - INFO     - API queries_quota: 60
+18/11/2025 10:42:42 - INFO     - API queries_quota: 60
+18/11/2025 10:42:42 - INFO     - ManageOrderView
+18/11/2025 10:42:42 - INFO     -     DriverDAO.get_by_id(3,) - DEBUT
+18/11/2025 10:42:42 - INFO     -     DriverDAO.get_by_id(3,) - FIN
+18/11/2025 10:42:42 - INFO     -        └─> Sortie : id=6 user_name='PierreVelo' password='10375150ff7ed1ddc621c03c782438c3548069a4eb5a2819b41201a77951eb0b' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='PierreVelo' mean_of_transport='Bike' id_driver=3
+18/11/2025 10:42:42 - INFO     -     DriverDAO.get_by_id(3,) - DEBUT
+18/11/2025 10:42:42 - INFO     -     DriverDAO.get_by_id(3,) - FIN
+18/11/2025 10:42:42 - INFO     -        └─> Sortie : id=6 user_name='PierreVelo' password='10375150ff7ed1ddc621c03c782438c3548069a4eb5a2819b41201a77951eb0b' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='PierreVelo' mean_of_transport='Bike' id_driver=3
+18/11/2025 10:42:42 - INFO     -     OrderService.list_all_orders_ready() - DEBUT
+18/11/2025 10:42:42 - INFO     -         OrderDAO.list_all_orders_ready() - DEBUT
+18/11/2025 10:42:42 - INFO     -         OrderDAO.list_all_orders_ready() - FIN
+18/11/2025 10:42:42 - INFO     -            └─> Sortie : [] ... (0 elements)
+18/11/2025 10:42:42 - INFO     -     OrderService.list_all_orders_ready() - FIN
+18/11/2025 10:42:42 - INFO     -        └─> Sortie : [] ... (0 elements)
+18/11/2025 10:42:42 - INFO     - MenuDriver
+18/11/2025 10:42:49 - ERROR    - ModuleNotFoundError : No module named 'src.CLI.menu_driver'
+Traceback (most recent call last):
+  File "/home/onyxia/work/Projet_Info_2A/main_CLI.py", line 26, in <module>
+    vue_courante = vue_courante.choisir_menu()
+  File "/home/onyxia/work/Projet_Info_2A/src/CLI/driver/menu_driver.py", line 55, in choisir_menu
+    from src.CLI.driver.change_profil_driver import ChangeProfilDriver
+  File "/home/onyxia/work/Projet_Info_2A/src/CLI/driver/change_profil_driver.py", line 3, in <module>
+    from src.CLI.menu_driver import MenuDriver
+ModuleNotFoundError: No module named 'src.CLI.menu_driver'
+18/11/2025 10:42:49 - INFO     - OpeningView
+18/11/2025 10:43:38 - INFO     - Fin de l'application
+18/11/2025 10:43:49 - INFO     - --------------------------------------------------
+18/11/2025 10:43:49 - INFO     - Lancement Application                           
+18/11/2025 10:43:49 - INFO     - --------------------------------------------------
+18/11/2025 10:43:49 - INFO     - OpeningView
+18/11/2025 10:43:52 - INFO     - LoginView
+18/11/2025 10:43:57 - INFO     -     UserRepo.get_by_username('PierreVelo',) - DEBUT
+18/11/2025 10:43:57 - INFO     -     UserRepo.get_by_username('PierreVelo',) - FIN
+18/11/2025 10:43:57 - INFO     -        └─> Sortie : id=6 user_name='PierreVelo' password='10375150ff7ed1ddc621c03c782438c3548069a4eb5a2819b41201a77951eb0b' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='PierreVelo'
+18/11/2025 10:43:57 - INFO     -     CustomerDAO.get_id_customer_by_id_user(6,) - DEBUT
+18/11/2025 10:43:57 - INFO     -     CustomerDAO.get_id_customer_by_id_user(6,) - FIN
+18/11/2025 10:43:57 - INFO     -        └─> Sortie : None
+18/11/2025 10:43:57 - INFO     -     DriverDAO.get_id_driver_by_id_user(6,) - DEBUT
+18/11/2025 10:43:57 - INFO     -     DriverDAO.get_id_driver_by_id_user(6,) - FIN
+18/11/2025 10:43:57 - INFO     -        └─> Sortie : 3
+18/11/2025 10:43:57 - INFO     -     Session.connexion("id=6 user_name='PierreVelo' password='10375150ff7ed1ddc621c03c782438c3548069a4eb5a2819b41201a77951eb0b' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='PierreVelo'", 3) - DEBUT
+18/11/2025 10:43:57 - INFO     -     Session.connexion("id=6 user_name='PierreVelo' password='10375150ff7ed1ddc621c03c782438c3548069a4eb5a2819b41201a77951eb0b' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='PierreVelo'", 3) - FIN
+18/11/2025 10:43:57 - INFO     -        └─> Sortie : None
+18/11/2025 10:43:57 - INFO     - MenuDriver
+18/11/2025 10:44:00 - INFO     - API queries_quota: 60
+18/11/2025 10:44:00 - INFO     - API queries_quota: 60
+18/11/2025 10:44:00 - INFO     - ManageOrderView
+18/11/2025 10:44:00 - INFO     -     DriverDAO.get_by_id(3,) - DEBUT
+18/11/2025 10:44:00 - INFO     -     DriverDAO.get_by_id(3,) - FIN
+18/11/2025 10:44:00 - INFO     -        └─> Sortie : id=6 user_name='PierreVelo' password='10375150ff7ed1ddc621c03c782438c3548069a4eb5a2819b41201a77951eb0b' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='PierreVelo' mean_of_transport='Bike' id_driver=3
+18/11/2025 10:44:00 - INFO     -     DriverDAO.get_by_id(3,) - DEBUT
+18/11/2025 10:44:00 - INFO     -     DriverDAO.get_by_id(3,) - FIN
+18/11/2025 10:44:00 - INFO     -        └─> Sortie : id=6 user_name='PierreVelo' password='10375150ff7ed1ddc621c03c782438c3548069a4eb5a2819b41201a77951eb0b' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='PierreVelo' mean_of_transport='Bike' id_driver=3
+18/11/2025 10:44:00 - INFO     -     OrderService.list_all_orders_ready() - DEBUT
+18/11/2025 10:44:00 - INFO     -         OrderDAO.list_all_orders_ready() - DEBUT
+18/11/2025 10:44:00 - INFO     -         OrderDAO.list_all_orders_ready() - FIN
+18/11/2025 10:44:00 - INFO     -            └─> Sortie : [] ... (0 elements)
+18/11/2025 10:44:00 - INFO     -     OrderService.list_all_orders_ready() - FIN
+18/11/2025 10:44:00 - INFO     -        └─> Sortie : [] ... (0 elements)
+18/11/2025 10:44:00 - INFO     - MenuDriver
+18/11/2025 10:44:06 - ERROR    - TypeError : Can't instantiate abstract class ChangeProfilDriver without an implementation for abstract method 'choisir_menu'
+Traceback (most recent call last):
+  File "/home/onyxia/work/Projet_Info_2A/main_CLI.py", line 26, in <module>
+    vue_courante = vue_courante.choisir_menu()
+  File "/home/onyxia/work/Projet_Info_2A/src/CLI/driver/menu_driver.py", line 57, in choisir_menu
+    return ChangeProfilDriver()
+TypeError: Can't instantiate abstract class ChangeProfilDriver without an implementation for abstract method 'choisir_menu'
+18/11/2025 10:44:06 - INFO     - OpeningView
+18/11/2025 10:45:20 - INFO     - LoginView
+18/11/2025 10:45:26 - INFO     -     UserRepo.get_by_username('EmmaDriver',) - DEBUT
+18/11/2025 10:45:26 - INFO     -     UserRepo.get_by_username('EmmaDriver',) - FIN
+18/11/2025 10:45:26 - INFO     -        └─> Sortie : id=4 user_name='EmmaDriver' password='f11b5649b0e3b97afae7b6db66b48f66407096f4771d599159ea7d0d7cd1d8de' first_name='Emma' last_name='Glorieux' email='emmadriver@project.com' salt='EmmaDriver'
+18/11/2025 10:45:26 - INFO     -     CustomerDAO.get_id_customer_by_id_user(4,) - DEBUT
+18/11/2025 10:45:26 - INFO     -     CustomerDAO.get_id_customer_by_id_user(4,) - FIN
+18/11/2025 10:45:26 - INFO     -        └─> Sortie : None
+18/11/2025 10:45:26 - INFO     -     DriverDAO.get_id_driver_by_id_user(4,) - DEBUT
+18/11/2025 10:45:26 - INFO     -     DriverDAO.get_id_driver_by_id_user(4,) - FIN
+18/11/2025 10:45:26 - INFO     -        └─> Sortie : 1
+18/11/2025 10:45:26 - INFO     -     Session.connexion("id=4 user_name='EmmaDriver' password='f11b5649b0e3b97afae7b6db66b48f66407096f4771d599159ea7d0d7cd1d8de' first_name='Emma' last_name='Glorieux' email='emmadriver@project.com' salt='EmmaDriver'", 1) - DEBUT
+18/11/2025 10:45:26 - INFO     -     Session.connexion("id=4 user_name='EmmaDriver' password='f11b5649b0e3b97afae7b6db66b48f66407096f4771d599159ea7d0d7cd1d8de' first_name='Emma' last_name='Glorieux' email='emmadriver@project.com' salt='EmmaDriver'", 1) - FIN
+18/11/2025 10:45:26 - INFO     -        └─> Sortie : None
+18/11/2025 10:45:26 - INFO     - MenuDriver
+18/11/2025 10:45:29 - INFO     - ManageOrderView
+18/11/2025 10:45:29 - INFO     -     DriverDAO.get_by_id(1,) - DEBUT
+18/11/2025 10:45:29 - INFO     -     DriverDAO.get_by_id(1,) - FIN
+18/11/2025 10:45:29 - INFO     -        └─> Sortie : id=4 user_name='EmmaDriver' password='f11b5649b0e3b97afae7b6db66b48f66407096f4771d599159ea7d0d7cd1d8de' first_name='Emma' last_name='Glorieux' email='emmadriver@project.com' salt='EmmaDriver' mean_of_transport='Car' id_driver=1
+18/11/2025 10:45:29 - INFO     -     DriverDAO.get_by_id(1,) - DEBUT
+18/11/2025 10:45:29 - INFO     -     DriverDAO.get_by_id(1,) - FIN
+18/11/2025 10:45:29 - INFO     -        └─> Sortie : id=4 user_name='EmmaDriver' password='f11b5649b0e3b97afae7b6db66b48f66407096f4771d599159ea7d0d7cd1d8de' first_name='Emma' last_name='Glorieux' email='emmadriver@project.com' salt='EmmaDriver' mean_of_transport='Car' id_driver=1
+18/11/2025 10:45:29 - INFO     -     OrderService.list_all_orders_ready() - DEBUT
+18/11/2025 10:45:29 - INFO     -         OrderDAO.list_all_orders_ready() - DEBUT
+18/11/2025 10:45:29 - INFO     -         OrderDAO.list_all_orders_ready() - FIN
+18/11/2025 10:45:29 - INFO     -            └─> Sortie : [] ... (0 elements)
+18/11/2025 10:45:29 - INFO     -     OrderService.list_all_orders_ready() - FIN
+18/11/2025 10:45:29 - INFO     -        └─> Sortie : [] ... (0 elements)
+18/11/2025 10:45:29 - INFO     - MenuDriver
+18/11/2025 10:45:38 - ERROR    - TypeError : Can't instantiate abstract class ChangeProfilDriver without an implementation for abstract method 'choisir_menu'
+Traceback (most recent call last):
+  File "/home/onyxia/work/Projet_Info_2A/main_CLI.py", line 26, in <module>
+    vue_courante = vue_courante.choisir_menu()
+  File "/home/onyxia/work/Projet_Info_2A/src/CLI/driver/menu_driver.py", line 57, in choisir_menu
+    return ChangeProfilDriver()
+TypeError: Can't instantiate abstract class ChangeProfilDriver without an implementation for abstract method 'choisir_menu'
+18/11/2025 10:45:38 - INFO     - OpeningView
+18/11/2025 10:45:40 - INFO     - Fin de l'application
+18/11/2025 10:59:06 - INFO     - --------------------------------------------------
+18/11/2025 10:59:06 - INFO     - Lancement Application                           
+18/11/2025 10:59:06 - INFO     - --------------------------------------------------
+18/11/2025 10:59:06 - INFO     - OpeningView
+18/11/2025 10:59:07 - INFO     - LoginView
+18/11/2025 10:59:14 - INFO     -     UserRepo.get_by_username('PierreVelo',) - DEBUT
+18/11/2025 10:59:14 - INFO     -     UserRepo.get_by_username('PierreVelo',) - FIN
+18/11/2025 10:59:14 - INFO     -        └─> Sortie : id=6 user_name='PierreVelo' password='10375150ff7ed1ddc621c03c782438c3548069a4eb5a2819b41201a77951eb0b' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='PierreVelo'
+18/11/2025 10:59:14 - INFO     -     CustomerDAO.get_id_customer_by_id_user(6,) - DEBUT
+18/11/2025 10:59:14 - INFO     -     CustomerDAO.get_id_customer_by_id_user(6,) - FIN
+18/11/2025 10:59:14 - INFO     -        └─> Sortie : None
+18/11/2025 10:59:14 - INFO     -     DriverDAO.get_id_driver_by_id_user(6,) - DEBUT
+18/11/2025 10:59:14 - INFO     -     DriverDAO.get_id_driver_by_id_user(6,) - FIN
+18/11/2025 10:59:14 - INFO     -        └─> Sortie : 3
+18/11/2025 10:59:14 - INFO     -     Session.connexion("id=6 user_name='PierreVelo' password='10375150ff7ed1ddc621c03c782438c3548069a4eb5a2819b41201a77951eb0b' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='PierreVelo'", 3) - DEBUT
+18/11/2025 10:59:14 - INFO     -     Session.connexion("id=6 user_name='PierreVelo' password='10375150ff7ed1ddc621c03c782438c3548069a4eb5a2819b41201a77951eb0b' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='PierreVelo'", 3) - FIN
+18/11/2025 10:59:14 - INFO     -        └─> Sortie : None
+18/11/2025 10:59:14 - INFO     - MenuDriver
+18/11/2025 10:59:17 - INFO     - API queries_quota: 60
+18/11/2025 10:59:17 - INFO     - API queries_quota: 60
+18/11/2025 10:59:17 - INFO     - ManageOrderView
+18/11/2025 10:59:17 - INFO     -     DriverDAO.get_by_id(3,) - DEBUT
+18/11/2025 10:59:17 - INFO     -     DriverDAO.get_by_id(3,) - FIN
+18/11/2025 10:59:17 - INFO     -        └─> Sortie : id=6 user_name='PierreVelo' password='10375150ff7ed1ddc621c03c782438c3548069a4eb5a2819b41201a77951eb0b' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='PierreVelo' mean_of_transport='Bike' id_driver=3
+18/11/2025 10:59:17 - INFO     -     DriverDAO.get_by_id(3,) - DEBUT
+18/11/2025 10:59:17 - INFO     -     DriverDAO.get_by_id(3,) - FIN
+18/11/2025 10:59:17 - INFO     -        └─> Sortie : id=6 user_name='PierreVelo' password='10375150ff7ed1ddc621c03c782438c3548069a4eb5a2819b41201a77951eb0b' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='PierreVelo' mean_of_transport='Bike' id_driver=3
+18/11/2025 10:59:17 - INFO     -     OrderService.list_all_orders_ready() - DEBUT
+18/11/2025 10:59:17 - INFO     -         OrderDAO.list_all_orders_ready() - DEBUT
+18/11/2025 10:59:17 - INFO     -             OrderDAO.get_by_id(3,) - DEBUT
+18/11/2025 10:59:17 - INFO     -                 OrderDAO.get_order_products(3,) - DEBUT
+18/11/2025 10:59:17 - INFO     -                 OrderDAO.get_order_products(3,) - FIN
+18/11/2025 10:59:17 - INFO     -                    └─> Sortie : ["RealDictRow({'id_product': 2, 'name': 'Indian Panini', 'price': Decimal('3.00'), 'product_type': 'lunch', 'quantity': 1})"] ... (1 elements)
+18/11/2025 10:59:17 - INFO     -             OrderDAO.get_by_id(3,) - FIN
+18/11/2025 10:59:17 - INFO     -                └─> Sortie : [('order', "id_order=3 id_customer=3 id_driver=3 id_address=3 date=datetime.datetime(2025, 11, 18, 10, 45, 49, 584761) status='Ready' nb_items=1 total_amount=3.0 payment_method='Cash'"), ('address', "id_address=3 address='1 Rue Duguesclin' postal_code=35000 city='Rennes'"), ('products', "[RealDictRow({'id_product': 2, 'name': 'Indian Panini', 'price': Decimal('3.00'), 'product_type': 'lunch', 'quantity': 1})]"), ' ', '.', '.', '.', ' ', '(', '3', ' ', 'e', 'l', 'e', 'm', 'e', 'n', 't', 's', ')']
+18/11/2025 10:59:17 - INFO     -         OrderDAO.list_all_orders_ready() - FIN
+18/11/2025 10:59:17 - INFO     -            └─> Sortie : ["{'order': Order(id_order=3, id_customer=3, id_driver=3, id_address=3, date=datetime.datetime(2025, 11, 18, 10, 45, 49, 584761), status='Ready', nb_items=1, total_amount=3.0, payment_method='Cash'), 'address': Address(id_address=3, address='1 Rue Duguesclin', postal_code=35000, city='Rennes'), 'products': [RealDictRow({'id_product': 2, 'name': 'Indian Panini', 'price': Decimal('3.00'), 'product_type': 'lunch', 'quantity': 1})]}"] ... (1 elements)
+18/11/2025 10:59:17 - INFO     -     OrderService.list_all_orders_ready() - FIN
+18/11/2025 10:59:17 - INFO     -        └─> Sortie : ["{'order': Order(id_order=3, id_customer=3, id_driver=3, id_address=3, date=datetime.datetime(2025, 11, 18, 10, 45, 49, 584761), status='Ready', nb_items=1, total_amount=3.0, payment_method='Cash'), 'address': Address(id_address=3, address='1 Rue Duguesclin', postal_code=35000, city='Rennes'), 'products': [RealDictRow({'id_product': 2, 'name': 'Indian Panini', 'price': Decimal('3.00'), 'product_type': 'lunch', 'quantity': 1})]}"] ... (1 elements)
+18/11/2025 10:59:17 - INFO     - MenuDriver
+18/11/2025 10:59:25 - INFO     - ChangeProfilDriver
+18/11/2025 10:59:39 - INFO     -     DriverService.update_driver('PierreVelo', '<InquirerPy.prompts.list.ListPrompt object at 0x7fd05c66e990>') - DEBUT
+18/11/2025 10:59:39 - ERROR    - AssertionError : 
+Traceback (most recent call last):
+  File "/home/onyxia/work/Projet_Info_2A/main_CLI.py", line 26, in <module>
+    vue_courante = vue_courante.choisir_menu()
+  File "/home/onyxia/work/Projet_Info_2A/src/CLI/driver/change_profil_driver.py", line 22, in choisir_menu
+    return self.change_profil_driver()
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/home/onyxia/work/Projet_Info_2A/src/CLI/driver/change_profil_driver.py", line 67, in change_profil_driver
+    works = driverservice.update_driver(username, new_locomotion)
+  File "/home/onyxia/work/Projet_Info_2A/utils/log_decorator.py", line 63, in wrapper
+    result = func(*args, **kwargs)
+  File "/home/onyxia/work/Projet_Info_2A/src/Service/DriverService.py", line 68, in update_driver
+    assert locomotion in ["Bike", "Car"]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
+18/11/2025 10:59:39 - INFO     - OpeningView
+18/11/2025 11:01:24 - INFO     - Fin de l'application
+18/11/2025 11:01:28 - INFO     - --------------------------------------------------
+18/11/2025 11:01:28 - INFO     - Lancement Application                           
+18/11/2025 11:01:28 - INFO     - --------------------------------------------------
+18/11/2025 11:01:28 - INFO     - OpeningView
+18/11/2025 11:02:36 - INFO     - LoginView
+18/11/2025 11:02:41 - INFO     -     UserRepo.get_by_username('PierreVelo',) - DEBUT
+18/11/2025 11:02:41 - INFO     -     UserRepo.get_by_username('PierreVelo',) - FIN
+18/11/2025 11:02:41 - INFO     -        └─> Sortie : id=6 user_name='PierreVelo' password='10375150ff7ed1ddc621c03c782438c3548069a4eb5a2819b41201a77951eb0b' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='PierreVelo'
+18/11/2025 11:02:41 - INFO     -     CustomerDAO.get_id_customer_by_id_user(6,) - DEBUT
+18/11/2025 11:02:41 - INFO     -     CustomerDAO.get_id_customer_by_id_user(6,) - FIN
+18/11/2025 11:02:41 - INFO     -        └─> Sortie : None
+18/11/2025 11:02:41 - INFO     -     DriverDAO.get_id_driver_by_id_user(6,) - DEBUT
+18/11/2025 11:02:41 - INFO     -     DriverDAO.get_id_driver_by_id_user(6,) - FIN
+18/11/2025 11:02:41 - INFO     -        └─> Sortie : 3
+18/11/2025 11:02:41 - INFO     -     Session.connexion("id=6 user_name='PierreVelo' password='10375150ff7ed1ddc621c03c782438c3548069a4eb5a2819b41201a77951eb0b' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='PierreVelo'", 3) - DEBUT
+18/11/2025 11:02:41 - INFO     -     Session.connexion("id=6 user_name='PierreVelo' password='10375150ff7ed1ddc621c03c782438c3548069a4eb5a2819b41201a77951eb0b' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='PierreVelo'", 3) - FIN
+18/11/2025 11:02:41 - INFO     -        └─> Sortie : None
+18/11/2025 11:02:41 - INFO     - MenuDriver
+18/11/2025 11:02:44 - INFO     - API queries_quota: 60
+18/11/2025 11:02:44 - INFO     - API queries_quota: 60
+18/11/2025 11:02:44 - INFO     - ManageOrderView
+18/11/2025 11:02:44 - INFO     -     DriverDAO.get_by_id(3,) - DEBUT
+18/11/2025 11:02:44 - INFO     -     DriverDAO.get_by_id(3,) - FIN
+18/11/2025 11:02:44 - INFO     -        └─> Sortie : id=6 user_name='PierreVelo' password='10375150ff7ed1ddc621c03c782438c3548069a4eb5a2819b41201a77951eb0b' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='PierreVelo' mean_of_transport='Bike' id_driver=3
+18/11/2025 11:02:44 - INFO     -     DriverDAO.get_by_id(3,) - DEBUT
+18/11/2025 11:02:44 - INFO     -     DriverDAO.get_by_id(3,) - FIN
+18/11/2025 11:02:44 - INFO     -        └─> Sortie : id=6 user_name='PierreVelo' password='10375150ff7ed1ddc621c03c782438c3548069a4eb5a2819b41201a77951eb0b' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='PierreVelo' mean_of_transport='Bike' id_driver=3
+18/11/2025 11:02:44 - INFO     -     OrderService.list_all_orders_ready() - DEBUT
+18/11/2025 11:02:44 - INFO     -         OrderDAO.list_all_orders_ready() - DEBUT
+18/11/2025 11:02:44 - INFO     -             OrderDAO.get_by_id(3,) - DEBUT
+18/11/2025 11:02:44 - INFO     -                 OrderDAO.get_order_products(3,) - DEBUT
+18/11/2025 11:02:44 - INFO     -                 OrderDAO.get_order_products(3,) - FIN
+18/11/2025 11:02:44 - INFO     -                    └─> Sortie : ["RealDictRow({'id_product': 2, 'name': 'Indian Panini', 'price': Decimal('3.00'), 'product_type': 'lunch', 'quantity': 1})"] ... (1 elements)
+18/11/2025 11:02:44 - INFO     -             OrderDAO.get_by_id(3,) - FIN
+18/11/2025 11:02:44 - INFO     -                └─> Sortie : [('order', "id_order=3 id_customer=3 id_driver=3 id_address=3 date=datetime.datetime(2025, 11, 18, 10, 45, 49, 584761) status='Ready' nb_items=1 total_amount=3.0 payment_method='Cash'"), ('address', "id_address=3 address='1 Rue Duguesclin' postal_code=35000 city='Rennes'"), ('products', "[RealDictRow({'id_product': 2, 'name': 'Indian Panini', 'price': Decimal('3.00'), 'product_type': 'lunch', 'quantity': 1})]"), ' ', '.', '.', '.', ' ', '(', '3', ' ', 'e', 'l', 'e', 'm', 'e', 'n', 't', 's', ')']
+18/11/2025 11:02:44 - INFO     -         OrderDAO.list_all_orders_ready() - FIN
+18/11/2025 11:02:44 - INFO     -            └─> Sortie : ["{'order': Order(id_order=3, id_customer=3, id_driver=3, id_address=3, date=datetime.datetime(2025, 11, 18, 10, 45, 49, 584761), status='Ready', nb_items=1, total_amount=3.0, payment_method='Cash'), 'address': Address(id_address=3, address='1 Rue Duguesclin', postal_code=35000, city='Rennes'), 'products': [RealDictRow({'id_product': 2, 'name': 'Indian Panini', 'price': Decimal('3.00'), 'product_type': 'lunch', 'quantity': 1})]}"] ... (1 elements)
+18/11/2025 11:02:44 - INFO     -     OrderService.list_all_orders_ready() - FIN
+18/11/2025 11:02:44 - INFO     -        └─> Sortie : ["{'order': Order(id_order=3, id_customer=3, id_driver=3, id_address=3, date=datetime.datetime(2025, 11, 18, 10, 45, 49, 584761), status='Ready', nb_items=1, total_amount=3.0, payment_method='Cash'), 'address': Address(id_address=3, address='1 Rue Duguesclin', postal_code=35000, city='Rennes'), 'products': [RealDictRow({'id_product': 2, 'name': 'Indian Panini', 'price': Decimal('3.00'), 'product_type': 'lunch', 'quantity': 1})]}"] ... (1 elements)
+18/11/2025 11:02:44 - INFO     - MenuDriver
+18/11/2025 11:02:48 - INFO     - ChangeProfilDriver
+18/11/2025 11:02:53 - INFO     -     DriverService.update_driver('PierreVelo', 'Bike') - DEBUT
+18/11/2025 11:02:53 - INFO     -         DriverService.get_by_username('PierreVelo',) - DEBUT
+18/11/2025 11:02:53 - INFO     -             DriverDAO.list_all() - DEBUT
+18/11/2025 11:02:54 - INFO     -             DriverDAO.list_all() - FIN
+18/11/2025 11:02:54 - INFO     -                └─> Sortie : ["id=4 user_name='EmmaDriver' password='f11b5649b0e3b97afae7b6db66b48f66407096f4771d599159ea7d0d7cd1d8de' first_name='Emma' last_name='Glorieux' email='emmadriver@project.com' salt='EmmaDriver' mean_of_transport='Car' id_driver=1", "id=5 user_name='PresidentEnsai' password='118adf271202feab0f44fb1a53285c72ab1857e8d49ca2c930cfee09da4555bf' first_name='JF' last_name='Lapitre' email='jf@project.com' salt='PresidentEnsai' mean_of_transport='Car' id_driver=2", "id=6 user_name='PierreVelo' password='10375150ff7ed1ddc621c03c782438c3548069a4eb5a2819b41201a77951eb0b' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='PierreVelo' mean_of_transport='Bike' id_driver=3"] ... (3 elements)
+18/11/2025 11:02:54 - INFO     -         DriverService.get_by_username('PierreVelo',) - FIN
+18/11/2025 11:02:54 - INFO     -            └─> Sortie : id=6 user_name='PierreVelo' password='10375150ff7ed1ddc621c03c782438c3548069a4eb5a2819b41201a77951eb0b' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='PierreVelo' mean_of_transport='Bike' id_driver=3
+18/11/2025 11:02:54 - INFO     -         DriverDAO.update("id=6 user_name='PierreVelo' password='10375150ff7ed1ddc621c03c782438c3548069a4eb5a2819b41201a77951eb0b' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt=None mean_of_transport='Bike' id_driver=3",) - DEBUT
+18/11/2025 11:02:54 - INFO     -         DriverDAO.update("id=6 user_name='PierreVelo' password='10375150ff7ed1ddc621c03c782438c3548069a4eb5a2819b41201a77951eb0b' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt=None mean_of_transport='Bike' id_driver=3",) - FIN
+18/11/2025 11:02:54 - INFO     -            └─> Sortie : True
+18/11/2025 11:02:54 - INFO     -     DriverService.update_driver('PierreVelo', 'Bike') - FIN
+18/11/2025 11:02:54 - INFO     -        └─> Sortie : True
+18/11/2025 11:02:54 - INFO     - MenuDriver
+18/11/2025 11:02:56 - INFO     - ChangeProfilDriver
+18/11/2025 11:03:02 - INFO     -     UserService.change_password('PierreVelo', '0000', '0000') - DEBUT
+18/11/2025 11:03:02 - INFO     -         UserRepo.get_by_username('PierreVelo',) - DEBUT
+18/11/2025 11:03:03 - INFO     -         UserRepo.get_by_username('PierreVelo',) - FIN
+18/11/2025 11:03:03 - INFO     -            └─> Sortie : id=6 user_name='PierreVelo' password='10375150ff7ed1ddc621c03c782438c3548069a4eb5a2819b41201a77951eb0b' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='PierreVelo'
+18/11/2025 11:03:03 - INFO     -         UserRepo.get_by_username('PierreVelo',) - DEBUT
+18/11/2025 11:03:03 - INFO     -         UserRepo.get_by_username('PierreVelo',) - FIN
+18/11/2025 11:03:03 - INFO     -            └─> Sortie : id=6 user_name='PierreVelo' password='10375150ff7ed1ddc621c03c782438c3548069a4eb5a2819b41201a77951eb0b' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='PierreVelo'
+18/11/2025 11:03:03 - INFO     -         UserRepo.update_user("id=6 user_name='PierreVelo' password='0000' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='PierreVelo'",) - DEBUT
+18/11/2025 11:03:03 - INFO     -         UserRepo.update_user("id=6 user_name='PierreVelo' password='0000' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='PierreVelo'",) - FIN
+18/11/2025 11:03:03 - INFO     -            └─> Sortie : True
+18/11/2025 11:03:03 - INFO     -     UserService.change_password('PierreVelo', '0000', '0000') - FIN
+18/11/2025 11:03:03 - INFO     -        └─> Sortie : True
+18/11/2025 11:03:03 - INFO     - MenuDriver
+18/11/2025 11:03:06 - INFO     -     .deconnexion() - DEBUT
+18/11/2025 11:03:06 - ERROR    - TypeError : Session.deconnexion() missing 1 required positional argument: 'self'
+Traceback (most recent call last):
+  File "/home/onyxia/work/Projet_Info_2A/main_CLI.py", line 26, in <module>
+    vue_courante = vue_courante.choisir_menu()
+  File "/home/onyxia/work/Projet_Info_2A/src/CLI/driver/menu_driver.py", line 44, in choisir_menu
+    Session.deconnexion()
+    ~~~~~~~~~~~~~~~~~~~^^
+  File "/home/onyxia/work/Projet_Info_2A/utils/log_decorator.py", line 63, in wrapper
+    result = func(*args, **kwargs)
+TypeError: Session.deconnexion() missing 1 required positional argument: 'self'
+18/11/2025 11:03:06 - INFO     - OpeningView
+18/11/2025 11:03:07 - INFO     - LoginView
+18/11/2025 11:03:12 - INFO     -         UserRepo.get_by_username('EmmaDriver',) - DEBUT
+18/11/2025 11:03:12 - INFO     -         UserRepo.get_by_username('EmmaDriver',) - FIN
+18/11/2025 11:03:12 - INFO     -            └─> Sortie : id=4 user_name='EmmaDriver' password='f11b5649b0e3b97afae7b6db66b48f66407096f4771d599159ea7d0d7cd1d8de' first_name='Emma' last_name='Glorieux' email='emmadriver@project.com' salt='EmmaDriver'
+18/11/2025 11:03:12 - INFO     -         CustomerDAO.get_id_customer_by_id_user(4,) - DEBUT
+18/11/2025 11:03:12 - INFO     -         CustomerDAO.get_id_customer_by_id_user(4,) - FIN
+18/11/2025 11:03:12 - INFO     -            └─> Sortie : None
+18/11/2025 11:03:12 - INFO     -         DriverDAO.get_id_driver_by_id_user(4,) - DEBUT
+18/11/2025 11:03:12 - INFO     -         DriverDAO.get_id_driver_by_id_user(4,) - FIN
+18/11/2025 11:03:12 - INFO     -            └─> Sortie : 1
+18/11/2025 11:03:12 - INFO     -         Session.connexion("id=4 user_name='EmmaDriver' password='f11b5649b0e3b97afae7b6db66b48f66407096f4771d599159ea7d0d7cd1d8de' first_name='Emma' last_name='Glorieux' email='emmadriver@project.com' salt='EmmaDriver'", 1) - DEBUT
+18/11/2025 11:03:12 - INFO     -         Session.connexion("id=4 user_name='EmmaDriver' password='f11b5649b0e3b97afae7b6db66b48f66407096f4771d599159ea7d0d7cd1d8de' first_name='Emma' last_name='Glorieux' email='emmadriver@project.com' salt='EmmaDriver'", 1) - FIN
+18/11/2025 11:03:12 - INFO     -            └─> Sortie : None
+18/11/2025 11:03:12 - INFO     - MenuDriver
+18/11/2025 11:03:14 - INFO     - ManageOrderView
+18/11/2025 11:03:14 - INFO     -         DriverDAO.get_by_id(1,) - DEBUT
+18/11/2025 11:03:14 - INFO     -         DriverDAO.get_by_id(1,) - FIN
+18/11/2025 11:03:14 - INFO     -            └─> Sortie : id=4 user_name='EmmaDriver' password='f11b5649b0e3b97afae7b6db66b48f66407096f4771d599159ea7d0d7cd1d8de' first_name='Emma' last_name='Glorieux' email='emmadriver@project.com' salt='EmmaDriver' mean_of_transport='Car' id_driver=1
+18/11/2025 11:03:14 - INFO     -         DriverDAO.get_by_id(1,) - DEBUT
+18/11/2025 11:03:14 - INFO     -         DriverDAO.get_by_id(1,) - FIN
+18/11/2025 11:03:14 - INFO     -            └─> Sortie : id=4 user_name='EmmaDriver' password='f11b5649b0e3b97afae7b6db66b48f66407096f4771d599159ea7d0d7cd1d8de' first_name='Emma' last_name='Glorieux' email='emmadriver@project.com' salt='EmmaDriver' mean_of_transport='Car' id_driver=1
+18/11/2025 11:03:14 - INFO     -         OrderService.list_all_orders_ready() - DEBUT
+18/11/2025 11:03:14 - INFO     -             OrderDAO.list_all_orders_ready() - DEBUT
+18/11/2025 11:03:14 - INFO     -                 OrderDAO.get_by_id(3,) - DEBUT
+18/11/2025 11:03:14 - INFO     -                     OrderDAO.get_order_products(3,) - DEBUT
+18/11/2025 11:03:14 - INFO     -                     OrderDAO.get_order_products(3,) - FIN
+18/11/2025 11:03:14 - INFO     -                        └─> Sortie : ["RealDictRow({'id_product': 2, 'name': 'Indian Panini', 'price': Decimal('3.00'), 'product_type': 'lunch', 'quantity': 1})"] ... (1 elements)
+18/11/2025 11:03:14 - INFO     -                 OrderDAO.get_by_id(3,) - FIN
+18/11/2025 11:03:14 - INFO     -                    └─> Sortie : [('order', "id_order=3 id_customer=3 id_driver=3 id_address=3 date=datetime.datetime(2025, 11, 18, 10, 45, 49, 584761) status='Ready' nb_items=1 total_amount=3.0 payment_method='Cash'"), ('address', "id_address=3 address='1 Rue Duguesclin' postal_code=35000 city='Rennes'"), ('products', "[RealDictRow({'id_product': 2, 'name': 'Indian Panini', 'price': Decimal('3.00'), 'product_type': 'lunch', 'quantity': 1})]"), ' ', '.', '.', '.', ' ', '(', '3', ' ', 'e', 'l', 'e', 'm', 'e', 'n', 't', 's', ')']
+18/11/2025 11:03:14 - INFO     -             OrderDAO.list_all_orders_ready() - FIN
+18/11/2025 11:03:14 - INFO     -                └─> Sortie : ["{'order': Order(id_order=3, id_customer=3, id_driver=3, id_address=3, date=datetime.datetime(2025, 11, 18, 10, 45, 49, 584761), status='Ready', nb_items=1, total_amount=3.0, payment_method='Cash'), 'address': Address(id_address=3, address='1 Rue Duguesclin', postal_code=35000, city='Rennes'), 'products': [RealDictRow({'id_product': 2, 'name': 'Indian Panini', 'price': Decimal('3.00'), 'product_type': 'lunch', 'quantity': 1})]}"] ... (1 elements)
+18/11/2025 11:03:14 - INFO     -         OrderService.list_all_orders_ready() - FIN
+18/11/2025 11:03:14 - INFO     -            └─> Sortie : ["{'order': Order(id_order=3, id_customer=3, id_driver=3, id_address=3, date=datetime.datetime(2025, 11, 18, 10, 45, 49, 584761), status='Ready', nb_items=1, total_amount=3.0, payment_method='Cash'), 'address': Address(id_address=3, address='1 Rue Duguesclin', postal_code=35000, city='Rennes'), 'products': [RealDictRow({'id_product': 2, 'name': 'Indian Panini', 'price': Decimal('3.00'), 'product_type': 'lunch', 'quantity': 1})]}"] ... (1 elements)
+18/11/2025 11:03:17 - INFO     - MenuDriver
+18/11/2025 11:03:19 - INFO     - ChangeProfilDriver
+18/11/2025 11:03:23 - INFO     -         DriverService.update_driver('EmmaDriver', 'Car') - DEBUT
+18/11/2025 11:03:23 - INFO     -             DriverService.get_by_username('EmmaDriver',) - DEBUT
+18/11/2025 11:03:23 - INFO     -                 DriverDAO.list_all() - DEBUT
+18/11/2025 11:03:23 - INFO     -                 DriverDAO.list_all() - FIN
+18/11/2025 11:03:23 - INFO     -                    └─> Sortie : ["id=4 user_name='EmmaDriver' password='f11b5649b0e3b97afae7b6db66b48f66407096f4771d599159ea7d0d7cd1d8de' first_name='Emma' last_name='Glorieux' email='emmadriver@project.com' salt='EmmaDriver' mean_of_transport='Car' id_driver=1", "id=5 user_name='PresidentEnsai' password='118adf271202feab0f44fb1a53285c72ab1857e8d49ca2c930cfee09da4555bf' first_name='JF' last_name='Lapitre' email='jf@project.com' salt='PresidentEnsai' mean_of_transport='Car' id_driver=2", "id=6 user_name='PierreVelo' password='0000' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='PierreVelo' mean_of_transport='Bike' id_driver=3"] ... (3 elements)
+18/11/2025 11:03:23 - INFO     -             DriverService.get_by_username('EmmaDriver',) - FIN
+18/11/2025 11:03:23 - INFO     -                └─> Sortie : id=4 user_name='EmmaDriver' password='f11b5649b0e3b97afae7b6db66b48f66407096f4771d599159ea7d0d7cd1d8de' first_name='Emma' last_name='Glorieux' email='emmadriver@project.com' salt='EmmaDriver' mean_of_transport='Car' id_driver=1
+18/11/2025 11:03:23 - INFO     -             DriverDAO.update("id=4 user_name='EmmaDriver' password='f11b5649b0e3b97afae7b6db66b48f66407096f4771d599159ea7d0d7cd1d8de' first_name='Emma' last_name='Glorieux' email='emmadriver@project.com' salt=None mean_of_transport='Car' id_driver=1",) - DEBUT
+18/11/2025 11:03:23 - INFO     -             DriverDAO.update("id=4 user_name='EmmaDriver' password='f11b5649b0e3b97afae7b6db66b48f66407096f4771d599159ea7d0d7cd1d8de' first_name='Emma' last_name='Glorieux' email='emmadriver@project.com' salt=None mean_of_transport='Car' id_driver=1",) - FIN
+18/11/2025 11:03:23 - INFO     -                └─> Sortie : True
+18/11/2025 11:03:23 - INFO     -         DriverService.update_driver('EmmaDriver', 'Car') - FIN
+18/11/2025 11:03:23 - INFO     -            └─> Sortie : True
+18/11/2025 11:03:23 - INFO     - MenuDriver
+18/11/2025 11:03:29 - INFO     - ChangeProfilDriver
+18/11/2025 11:03:35 - INFO     -         UserService.change_password('EmmaDriver', 'aaabbb', 'aaabbb') - DEBUT
+18/11/2025 11:03:35 - INFO     -             UserRepo.get_by_username('EmmaDriver',) - DEBUT
+18/11/2025 11:03:35 - INFO     -             UserRepo.get_by_username('EmmaDriver',) - FIN
+18/11/2025 11:03:35 - INFO     -                └─> Sortie : id=4 user_name='EmmaDriver' password='f11b5649b0e3b97afae7b6db66b48f66407096f4771d599159ea7d0d7cd1d8de' first_name='Emma' last_name='Glorieux' email='emmadriver@project.com' salt='EmmaDriver'
+18/11/2025 11:03:35 - INFO     -             UserRepo.get_by_username('EmmaDriver',) - DEBUT
+18/11/2025 11:03:35 - INFO     -             UserRepo.get_by_username('EmmaDriver',) - FIN
+18/11/2025 11:03:35 - INFO     -                └─> Sortie : id=4 user_name='EmmaDriver' password='f11b5649b0e3b97afae7b6db66b48f66407096f4771d599159ea7d0d7cd1d8de' first_name='Emma' last_name='Glorieux' email='emmadriver@project.com' salt='EmmaDriver'
+18/11/2025 11:03:35 - INFO     -             UserRepo.update_user("id=4 user_name='EmmaDriver' password='aaabbb' first_name='Emma' last_name='Glorieux' email='emmadriver@project.com' salt='EmmaDriver'",) - DEBUT
+18/11/2025 11:03:35 - INFO     -             UserRepo.update_user("id=4 user_name='EmmaDriver' password='aaabbb' first_name='Emma' last_name='Glorieux' email='emmadriver@project.com' salt='EmmaDriver'",) - FIN
+18/11/2025 11:03:35 - INFO     -                └─> Sortie : True
+18/11/2025 11:03:35 - INFO     -         UserService.change_password('EmmaDriver', 'aaabbb', 'aaabbb') - FIN
+18/11/2025 11:03:35 - INFO     -            └─> Sortie : True
+18/11/2025 11:03:35 - INFO     - MenuDriver
+18/11/2025 11:03:36 - INFO     -         .deconnexion() - DEBUT
+18/11/2025 11:03:36 - ERROR    - TypeError : Session.deconnexion() missing 1 required positional argument: 'self'
+Traceback (most recent call last):
+  File "/home/onyxia/work/Projet_Info_2A/main_CLI.py", line 26, in <module>
+    vue_courante = vue_courante.choisir_menu()
+  File "/home/onyxia/work/Projet_Info_2A/src/CLI/driver/menu_driver.py", line 44, in choisir_menu
+    Session.deconnexion()
+    ~~~~~~~~~~~~~~~~~~~^^
+  File "/home/onyxia/work/Projet_Info_2A/utils/log_decorator.py", line 63, in wrapper
+    result = func(*args, **kwargs)
+TypeError: Session.deconnexion() missing 1 required positional argument: 'self'
+18/11/2025 11:03:36 - INFO     - OpeningView
+18/11/2025 11:03:37 - INFO     - Fin de l'application
