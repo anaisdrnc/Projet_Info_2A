@@ -33,8 +33,8 @@ def test_create_ok(service):
     admin = service.create_admin(
         username="JulDjrdn",
         password="Caraibe35",
-        firstname="Julie",
-        lastname="Dujardin",
+        first_name="Julie",
+        last_name="Dujardin",
         email="julie.dujardin@gmail.com",
     )
 
@@ -58,8 +58,8 @@ def test_create_admin_weak_password(service):
         service.create_admin(
             username="WeakAdmin",
             password="123",  # trop court
-            firstname="Jean",
-            lastname="Dupont",
+            first_name="Jean",
+            last_name="Dupont",
             email="jean.dupont@example.com",
         )
 
@@ -75,8 +75,8 @@ def test_get_by_username_ok(service, dao):
     service.create_admin(
         username="JulDjrdn",
         password="Caraibe35",
-        firstname="Julie",
-        lastname="Dujardin",
+        first_name="Julie",
+        last_name="Dujardin",
         email="julie.dujardin@gmail.com",
     )
 
