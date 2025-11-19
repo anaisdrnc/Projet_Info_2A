@@ -39,7 +39,7 @@ class OrderDAO:
                 """
                 INSERT INTO orders (id_customer, id_driver, id_address, date, status,
                                     total_amount, payment_method, nb_items)
-                VALUES (%(id_customer)s, %(id_driver)s, %(id_address)s, %(date)s, 
+                VALUES (%(id_customer)s, %(id_driver)s, %(id_address)s, %(date)s,
                         %(status)s, %(total_amount)s, %(payment_method)s, %(nb_items)s)
                 RETURNING id_order;
                 """,
