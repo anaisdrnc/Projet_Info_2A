@@ -3,12 +3,12 @@ from InquirerPy import inquirer
 from InquirerPy.validator import EmptyInputValidator, PasswordValidator
 from prompt_toolkit.validation import ValidationError, Validator
 
-from src.Service.UserService import UserService
-from src.Service.CustomerService import CustomerService
-from src.CLI.view_abstract import VueAbstraite
-from src.DAO.UserRepo import UserRepo
-from src.DAO.CustomerDAO import CustomerDAO
-from src.DAO.DBConnector import DBConnector
+from Service.UserService import UserService
+from Service.CustomerService import CustomerService
+from CLI.view_abstract import VueAbstraite
+from DAO.UserRepo import UserRepo
+from DAO.CustomerDAO import CustomerDAO
+from DAO.DBConnector import DBConnector
 
 
 class InscriptionView(VueAbstraite):
@@ -23,7 +23,7 @@ class InscriptionView(VueAbstraite):
         customer_service = CustomerService(customerdao=customerdao)
 
         if user_service.is_username_taken(user_name=pseudo):
-            from src.CLI.opening.openingview import OpeningView
+            from CLI.opening.openingview import OpeningView
 
             return OpeningView(f"The username {pseudo} is already used.")
 
@@ -60,7 +60,7 @@ class InscriptionView(VueAbstraite):
         else:
             message = "Connection error (invalid username or password)"
 
-        from src.CLI.opening.openingview import OpeningView
+        from CLI.opening.openingview import OpeningView
 
         return OpeningView(message)
 
