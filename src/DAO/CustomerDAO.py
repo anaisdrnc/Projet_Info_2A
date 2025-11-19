@@ -180,3 +180,4 @@ class CustomerDAO:
         if raw_customer is None:
             return None
         return raw_customer["id_customer"]
+

@@ -8,6 +8,7 @@ from src.Model.Admin import Admin
 from src.Model.User import User
 from src.Service.AdminService import AdminService
 from utils.reset_database import ResetDatabase
+from utils.securite import hash_password
 
 
 @pytest.fixture(autouse=True)
@@ -102,3 +103,55 @@ def test_get_by_username_ko(service):
 
     # Assert
     assert result is None
+
+def test_get_by_id_ok(service):
+    """
+    Test OK : récupération d'un admin par son id_admin.
+    """
+    created = service.create_admin(
+        username="TestAdmin",
+        password="StrongPass1",
+        first_name="Alice",
+        last_name="Durand",
+        email="aliced@example.com",
+    )
+
+    admin = service.get_by_id(created.id_admin)
+
+    assert admin is not None
+    assert isinstance(admin, Admin)
+    assert admin.id_admin == created.id_admin
+    assert admin.user_name == "TestAdmin"
+
+
+def test_get_by_id_ko(service):
+    """
+    Test KO : le DAO lève une erreur → le service doit retourner None.
+    """
+    service.admindao.get_by_id = MagicMock(side_effect=Exception("DB error"))
+
+    result = service.get_by_id(999)
+
+    assert result is None
+
+
+def test_verify_password_ok(service):
+    """
+    Test OK : verify_password retourne True quand le mot de passe est correct.
+    """
+    pwd = "StrongPass1"
+    salt = "selDeTest"
+    hashed = hash_password(pwd, salt)
+
+    assert service.verify_password(pwd, hashed, salt) is True
+
+
+def test_verify_password_ko(service):
+    """
+    Test KO : verify_password retourne False quand le mot de passe est incorrect.
+    """
+    pwd = "StrongPass1"
+    salt = "selDeTest"
+    hashed = hash_password(pwd, salt)
+
+    assert service.verify_password("WrongPassword", hashed, salt) is False

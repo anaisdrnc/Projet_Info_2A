@@ -41,7 +41,6 @@ class UserService:
         return new_user_id
 
 
-
     @log
     def get_user(self, user_id: int) -> User | None:
         return self.user_repo.get_by_id(user_id)
@@ -51,7 +50,7 @@ class UserService:
         user_repo = self.user_repo
         answer = user_repo.is_username_taken(username=user_name)
         return answer
-    
+
     @log
     def change_password(self, user_name, old_password, new_password):
         """change the password
