@@ -1,6 +1,6 @@
 from typing import Literal, Optional
 
-from src.Model.User import User
+from Model.User import User
 
 
 class Driver(User):

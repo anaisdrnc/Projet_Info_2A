@@ -1,9 +1,9 @@
 from InquirerPy import inquirer
 
-from src.CLI.session import Session
-from src.CLI.view_abstract import VueAbstraite
-from src.Service.CustomerService import CustomerService
-from src.Service.UserService import UserService
+from CLI.session import Session
+from CLI.view_abstract import VueAbstraite
+from Service.CustomerService import CustomerService
+from Service.UserService import UserService
 
 
 class MenuView(VueAbstraite):
@@ -44,7 +44,7 @@ class MenuView(VueAbstraite):
 
         match choix:
             case "Log out":
-                from src.CLI.opening.openingview import OpeningView
+                from CLI.opening.openingview import OpeningView
 
                 Session().deconnexion()
 
@@ -52,21 +52,21 @@ class MenuView(VueAbstraite):
 
             case "Place an order":
                 pass
-                from src.CLI.customer.place_order_view import PlaceOrderView
+                from CLI.customer.place_order_view import PlaceOrderView
 
                 return PlaceOrderView()
 
             case "Get menu":
-                from src.CLI.customer.products_view import ProductView
+                from CLI.customer.products_view import ProductView
 
                 return ProductView()
 
             case "Change profil":
-                from src.CLI.customer.change_profil import ChangeProfil
+                from CLI.customer.change_profil import ChangeProfil
 
                 return ChangeProfil()
 
             case "Get my orders history":
-                from src.CLI.customer.orders_history import OrdersHistory
+                from CLI.customer.orders_history import OrdersHistory
 
                 return OrdersHistory()

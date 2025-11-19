@@ -1,25 +1,37 @@
 import logging
 from typing import Optional
 
-from src.DAO.DBConnector import DBConnector
-from src.DAO.UserRepo import UserRepo
-from src.Model.Admin import Admin
+from DAO.DBConnector import DBConnector
+from DAO.UserRepo import UserRepo
+from Model.Admin import Admin
+from utils.log_decorator import log
 from utils.securite import hash_password
 
 
 class AdminDAO:
-    """DAO pour gérer les admins dans la base de données."""
+    """Class providing access to the Administrator table of the database"""
 
     def __init__(self, db_connector=None):
-        """Initialise AdminDAO avec un connecteur DB."""
+        """Initialize AdminDAO with a DB connector."""
         self.db_connector = db_connector or DBConnector()
         self.user_repo = UserRepo(self.db_connector)
 
+    @log
     def add_admin(self, admin: Admin):
-        """
-        Ajoute un admin dans la base de données.
-        1) Crée l'utilisateur dans la table users.
-        2) Ajoute l'admin dans la table administrator.
+        """Add an administrator to the database.
+
+        1) Creates the user in the users table.
+        2) Adds the admin to the administrator table.
+
+
+        Parameters
+        ----------
+        admin : Admin
+
+        Returns
+        -------
+        bool :
+        - True if the administrator was successfully created, otherwise False.
         """
         id_user = self.user_repo.add_user(admin)
         if not id_user:
@@ -40,10 +52,21 @@ class AdminDAO:
 
         return False
 
+    @log
     def login(self, username: str, password: str):
-        """
-        Authentifie un admin à partir du username et mot de passe.
-        Retourne un objet Admin si correct, None sinon.
+        """Authenticates an admin based on username and password.
+
+        Parameters
+        ----------
+        username : str
+            the administrator's username
+        password : str
+            the administrator's password
+
+        Returns
+        -------
+        Admin or None :
+            Admin if authentication was successful, otherwise None
         """
         try:
             query = """
@@ -56,7 +79,6 @@ class AdminDAO:
             if not res:
                 return None
 
-            # Vérifie le mot de passe
             hashed_input = hash_password(password, res["salt"])
             if hashed_input != res["password"]:
                 return None
@@ -76,19 +98,40 @@ class AdminDAO:
             logging.info(e)
             return None
 
-
+    @log
     def update_admin(self, admin: Admin) -> bool:
-        """Permet au client de mettre à jour ses informations."""
+        """Update an administrator's user information.
+
+        Parameters
+        ----------
+        admin : Admin
+
+        Returns
+        -------
+        bool :
+            True if the update succeeds, False otherwise.
+        """
         try:
-        # On met à jour les infos dans users
             return self.user_repo.update_user(admin)
         except Exception as e:
             logging.error("UPDATE_ADMIN DAO ERROR: %s", e)
             raise
 
-
+    @log
     def get_by_username(self, username: str) -> Optional[Admin]:
-        """Récupérer un administrateur à partir de son nom d'utilisateur."""
+        """Retrieve an administrator from the database using their username.
+
+        Parameters
+        ----------
+        username : str
+            The username of the administrator to look up.
+
+        Returns
+        -------
+        Admin or None
+            An Admin object if a matching administrator is found.
+            None if no result is found or an error occurs.
+        """
         try:
             res = self.db_connector.sql_query(
                 """
@@ -117,13 +160,23 @@ class AdminDAO:
             )
 
         except Exception as e:
-            logging.error(
-                f"[AdminDAO] Erreur lors de la récupération de l'admin '{username}': {e}"
-            )
+            logging.error(f"[AdminDAO] Erreur lors de la récupération de l'admin '{username}': {e}")
             return None
 
+    @log
     def get_by_id(self, admin_id: int) -> Optional[Admin]:
-        """Récupérer un administrateur à partir de son id_admin."""
+        """Retrieve an administrator from the database using their administrator ID.
+
+        Parameters
+        ----------
+        admin_id : int
+            The id of the administrator to retrieve.
+
+        Returns
+        -------
+        Admin or None
+            The corresponding Admin object if found,
+            or None if no administrator exists with this ID or if an error occurs."""
         try:
             res = self.db_connector.sql_query(
                 """
@@ -152,7 +205,5 @@ class AdminDAO:
             )
 
         except Exception as e:
-            logging.error(
-                f"[AdminDAO] Erreur lors de la récupération de l'admin id={admin_id}: {e}"
-            )
+            logging.error(f"[AdminDAO] Erreur lors de la récupération de l'admin id={admin_id}: {e}")
             return None

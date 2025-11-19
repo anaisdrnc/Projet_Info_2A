@@ -1,4 +1,4 @@
-from src.Model.Address import Address
+from Model.Address import Address
 from utils.log_decorator import log
 
 ALLOWED_ADDRESSES = {

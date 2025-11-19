@@ -1,9 +1,6 @@
 from InquirerPy import inquirer
 
-from src.CLI.view_abstract import VueAbstraite
-from utils.reset_database import ResetDatabase
-
-# from src.CLI.session import Session
+from CLI.view_abstract import VueAbstraite
 
 
 class OpeningView(VueAbstraite):
@@ -34,11 +31,11 @@ class OpeningView(VueAbstraite):
                 pass
 
             case "Login":
-                from src.CLI.opening.loginview import LoginView
+                from CLI.opening.loginview import LoginView
 
                 return LoginView("Log into the application")
 
             case "Create account":
-                from src.CLI.opening.inscriptionview import InscriptionView
+                from CLI.opening.inscriptionview import InscriptionView
 
                 return InscriptionView("Create a customer account")

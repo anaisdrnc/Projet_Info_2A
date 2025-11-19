@@ -1,12 +1,12 @@
 from InquirerPy import inquirer
 
-from src.CLI.session import Session
-from src.CLI.view_abstract import VueAbstraite
-from src.DAO.CustomerDAO import CustomerDAO
-from src.DAO.DBConnector import DBConnector
-from src.DAO.DriverDAO import DriverDAO
-from src.DAO.UserRepo import UserRepo
-from src.Service.PasswordService import validate_username_password
+from CLI.session import Session
+from CLI.view_abstract import VueAbstraite
+from DAO.CustomerDAO import CustomerDAO
+from DAO.DBConnector import DBConnector
+from DAO.DriverDAO import DriverDAO
+from DAO.UserRepo import UserRepo
+from Service.PasswordService import validate_username_password
 
 
 class LoginView(VueAbstraite):
@@ -36,7 +36,7 @@ class LoginView(VueAbstraite):
                 message = f"You are connected on the customer account {user.user_name}"
                 Session().connexion(user, id_customer)
 
-                from src.CLI.customer.menu_customer import MenuView
+                from CLI.customer.menu_customer import MenuView
                 return MenuView(message)
 
             elif id_customer is None and id_driver is not None:
@@ -44,10 +44,10 @@ class LoginView(VueAbstraite):
                 message = f"You are connected on the driver account {user.user_name}"
                 Session().connexion(user, id_driver)
 
-                from src.CLI.menu_driver import MenuDriver
+                from CLI.driver.menu_driver import MenuDriver
                 return MenuDriver(message)
 
         message = "Erreur de connexion (pseudo ou mot de passe invalide)"
-        from src.CLI.opening.openingview import OpeningView
+        from CLI.opening.openingview import OpeningView
 
         return OpeningView(message)

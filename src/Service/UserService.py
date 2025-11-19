@@ -1,15 +1,15 @@
-from typing import Optional
-import logging
+from DAO.DBConnector import DBConnector
+from DAO.UserRepo import UserRepo
+from Model.User import User
+from Service.PasswordService import check_password_strength, create_salt, validate_username_password
 from utils.log_decorator import log
-from src.DAO.UserRepo import UserRepo
-from src.Model.User import User
-from src.Service.PasswordService import check_password_strength, create_salt, validate_username_password
 from utils.securite import hash_password
-from src.DAO.DBConnector import DBConnector
 
 
 class UserService:
-    def __init__(self, user_repo=UserRepo(DBConnector)):
+    def __init__(self, user_repo=None):
+        if user_repo is None:
+            user_repo = UserRepo(DBConnector)
         self.user_repo = user_repo
 
     @log
@@ -41,7 +41,6 @@ class UserService:
         return new_user_id
 
 
-
     @log
     def get_user(self, user_id: int) -> User | None:
         return self.user_repo.get_by_id(user_id)
@@ -51,24 +50,39 @@ class UserService:
         user_repo = self.user_repo
         answer = user_repo.is_username_taken(username=user_name)
         return answer
-    
+
     @log
     def change_password(self, user_name, old_password, new_password):
-        """change the password
-        check the old password is correct
-        take all the info of the user
-        update the user with all the info + the new password"""
         user_repo = self.user_repo
-        old_password_correct = validate_username_password(username= user_name, password=old_password, user_repo= user_repo)
+
+        # Vérifie l'ancien mot de passe
+        old_password_correct = validate_username_password(
+            username=user_name, password=old_password, user_repo=user_repo
+        )
         if not old_password_correct:
             return False
-        user = user_repo.get_by_username(user_name= user_name)
-        new_user  = User(
-            first_name = user.first_name,
-            last_name = user.last_name,
-            user_name = user.user_name, 
-            password = new_password,
-            email = user.email,
-            salt = user.salt,
-            id = user.id)
+
+        # Vérifie la force du nouveau mot de passe
+        check_password_strength(new_password)
+
+        # Récupère l'utilisateur actuel
+        user = user_repo.get_by_username(user_name=user_name)
+
+        # Génère un nouveau sel et hash le nouveau mot de passe
+        new_salt = create_salt()
+        hashed_password = hash_password(new_password, new_salt)
+
+        # Crée un nouvel objet User
+        new_user = User(
+            first_name=user.first_name,
+            last_name=user.last_name,
+            user_name=user.user_name,
+            password=hashed_password,
+            salt=new_salt,
+            email=user.email,
+            id=user.id
+        )
+
+        # Met à jour l'utilisateur
         return user_repo.update_user(new_user)
+

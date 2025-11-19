@@ -35,7 +35,7 @@ class Order(BaseModel):
     id_driver: Optional[int] = None
     id_address: int
     date: datetime = Field(default_factory=datetime.now)
-    status: Literal["Delivered", "Preparing", "Ready", "On the way", "Cancelled"] = "Preparing"
+    status: Literal["Delivered", "Ready", "On the way"] = "Ready"
     nb_items: int = Field(..., ge=0)
     total_amount: float = Field(default=0.0, ge=0)
     payment_method: Literal["Card", "Cash"] = "Card"

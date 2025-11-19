@@ -4,7 +4,7 @@ import time
 import jwt
 from jwt import ExpiredSignatureError
 
-from src.Model.JWTResponse import JWTResponse
+from Model.JWTResponse import JWTResponse
 
 
 class JwtService:

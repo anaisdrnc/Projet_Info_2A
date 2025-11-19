@@ -1,23 +1,30 @@
 import logging
 
-from psycopg2 import IntegrityError
-
-from src.DAO.DBConnector import DBConnector
-from src.Model.Address import Address
+from Model.Address import Address
 from utils.log_decorator import log
-
-from .DBConnector import DBConnector
 
 
 class AddressDAO:
-    """class providing access to the address table of the database"""
+    """Class providing access to the address table of the database"""
 
     def __init__(self, db_connector):
+        """Initialize AddressDAO with a DB connector."""
         self.db_connector = db_connector
 
     @log
     def add_address(self, address: Address):
-        """Add an address to the database"""
+        """Add an address to the database
+
+        Parameters
+        ----------
+        address : Address
+
+        Returns
+        -------
+        Address or None :
+        The Address object with its id_address set if creation succeeds.
+        None if the insertion fails or an error occurs.
+        """
         try:
             res = self.db_connector.sql_query(
                 """

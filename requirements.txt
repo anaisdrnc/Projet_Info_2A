@@ -1,0 +1,15 @@
+coverage
+inquirerPy
+fastapi
+psycopg2-binary
+psycopg2
+pylint
+pytest
+python-dotenv
+PyYAML
+regex
+requests
+tabulate
+uvicorn
+folium
+googlemaps

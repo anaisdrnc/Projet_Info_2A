@@ -1,7 +1,7 @@
 from typing import Any, Dict, List, Optional
 
-from src.DAO.OrderDAO import OrderDAO
-from src.Model.Order import Order
+from DAO.OrderDAO import OrderDAO
+from Model.Order import Order
 from utils.log_decorator import log
 
 
@@ -20,7 +20,7 @@ class OrderService:
             nb_items=nb_items,
             total_amount=total_amount,
             payment_method=payment_method,
-            status="Preparing",
+            status="Ready",
         )
         order.id_order = self.orderdao.create_order(order)
         if order.id_order:

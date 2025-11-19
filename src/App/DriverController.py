@@ -3,10 +3,10 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials
 
-from src.Service.PasswordService import check_password_strength, create_salt
-from src.Service.DriverService import DriverService
-from src.Model.Driver import Driver
-from src.Model.APIUser import APIUser
+from Service.PasswordService import check_password_strength, create_salt
+from Service.DriverService import DriverService
+from Model.Driver import Driver
+from Model.APIUser import APIUser
 
 from .JWTBearer import JWTBearer
 from .init_app import jwt_service

@@ -1,8 +1,8 @@
 import secrets
 from typing import Optional
 
-from src.DAO.UserRepo import UserRepo
-from src.Model.User import User
+from DAO.UserRepo import UserRepo
+from Model.User import User
 from utils.securite import hash_password
 
 
