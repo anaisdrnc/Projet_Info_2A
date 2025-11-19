@@ -1,7 +1,7 @@
 import pytest
 from pydantic import ValidationError
 
-from src.Model.Product import Product
+from Model.Product import Product
 
 
 def test_product_constructor_ok():

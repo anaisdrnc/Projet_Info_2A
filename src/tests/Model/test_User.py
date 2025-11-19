@@ -1,7 +1,7 @@
 import pytest
 from pydantic_core import ValidationError
 
-from src.Model.User import User
+from Model.User import User
 
 
 def test_user_constructor_ok():

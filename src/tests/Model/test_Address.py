@@ -1,7 +1,7 @@
 import pytest
 from pydantic_core import ValidationError
 
-from src.Model.Address import Address
+from Model.Address import Address
 
 
 def test_address_constructor_ok():

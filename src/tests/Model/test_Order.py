@@ -3,7 +3,7 @@ from datetime import datetime
 import pytest
 from pydantic import ValidationError
 
-from src.Model.Order import Order
+from Model.Order import Order
 
 
 def test_order_constructor_ok():
