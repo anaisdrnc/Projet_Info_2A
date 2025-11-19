@@ -33,7 +33,7 @@ def dao():
 
 
 def test_create_ok(dao):
-    """Successful product creation"""
+    """Test: Successfully create a new product in the database"""
     product = Product(
         id_product=23,
         name="Test Galette Saucisse",
@@ -50,7 +50,7 @@ def test_create_ok(dao):
 
 
 def test_create_ko(dao):
-    """DAO should reject adding a duplicate product"""
+    """Test: DAO should reject creation of a duplicate product"""
 
     product1 = Product(
         name="Galette Saucisse",
@@ -77,6 +77,7 @@ def test_create_ko(dao):
 
 
 def test_delete_ok(dao):
+    """Test: Successfully delete a product from the database"""
     product = Product(
         name="Test Croque Monsieur",
         price=3.00,
@@ -108,6 +109,7 @@ def test_delete_ok(dao):
 
 
 def test_delete_ko(dao):
+    """Test: Deleting a non-existent product should fail"""
     non_existent_id = 99999
     delete_ok = dao.deleting_product(non_existent_id)
 
@@ -115,6 +117,7 @@ def test_delete_ko(dao):
 
 
 def test_get_all_products(dao):
+    """Test: Retrieve all products from the database"""
     p1 = Product(
         name="Prod1",
         price=1.0,
@@ -142,7 +145,7 @@ def test_get_all_products(dao):
 
 
 def test_get_all_product_names(dao):
-    """Vérifie que les noms des produits sont récupérés correctement"""
+    """Test: Verify that all product names are retrieved correctly"""
     products = [
         Product(
             name="Café",
@@ -170,7 +173,7 @@ def test_get_all_product_names(dao):
 
 
 def test_get_all_product_names_descriptions(dao):
-    """Vérifie que les noms et descriptions des produits sont récupérés correctement"""
+    """Test: Verify that all product names and descriptions are retrieved correctly"""
     products_to_add = [
         Product(
             name="Café",
@@ -202,7 +205,7 @@ def test_get_all_product_names_descriptions(dao):
 
 
 def test_decrement_stock(dao):
-    """Vérifie que le stock diminue correctement et bloque si insuffisant"""
+    """Test: Verify that stock decreases correctly and prevents decrement if insufficient"""
     product = Product(
         name="decrement",
         price=5.0,
@@ -224,7 +227,7 @@ def test_decrement_stock(dao):
 
 
 def test_increment_stock(dao):
-    """Vérifie que le stock augmente correctement"""
+    """Test: Verify that stock increases correctly when incrementing"""
     product = Product(
         name="increment",
         price=5.0,
@@ -243,7 +246,7 @@ def test_increment_stock(dao):
 
 
 def test_get_available_products(dao):
-    """Vérifie que seuls les produits avec stock > 0 sont retournés"""
+    """Test: Only products with stock greater than 0 are returned."""
     product1 = Product(
         name="Disponible",
         price=2.0,
@@ -270,6 +273,7 @@ def test_get_available_products(dao):
 
 
 def test_get_id_by_productname(dao):
+    """Test: Retrieve the product ID by its name"""
     product = Product(
         name="test_id",
         price=5.0,
