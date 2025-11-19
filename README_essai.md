@@ -1,58 +1,113 @@
-# ENSAI-2A-projet-info-template
+# ENSAI-2A IT Project Ub'EJR Eats 
 
-Template for the ENSAI 2nd year IT project.
+## 1. Introduction
+Ub'EJR Eats is a simplified application designed to simulate a food ordering and delivery management system.
 
-This very simple application includes a few elements that may help with the info 2A project:
+### 1.1 Software and tools used 
+The following software is required to run the Ub'EJR Eats application:
+* Python 3.13
+* A PostGreSQL database
+* Visual Studio Code
+* Git 
 
-- Layer programming (DAO, service, view, business_object)
-- Connection to a database
-- Terminal interface (view layer) with [inquirerPy](https://inquirerpy.readthedocs.io/en/latest/)
-- Calling a Webservice
-- Creating a webservice
+### 1.2 How to clone the repository ? 
+> **Clone the repository**
+- Open VSCode
+- Open Git Bash
+- Clone the repo
+    - git clone https://github.com/anaisdrnc/Projet_Info_2A.git
 
-
-## :arrow_forward: Software and tools
-
-- [Visual Studio Code](https://code.visualstudio.com/)
-- [Python 3.13](https://www.python.org/)
-- [Git](https://git-scm.com/)
-- A [PostgreSQL](https://www.postgresql.org/) database
-
-
-## Clone the repository
-
-- [ ] Open VSCode
-- [ ] Open **Git Bash**
-- [ ] Clone the repo
-  - `git clone https://github.com/ludo2ne/ENSAI-2A-projet-info-template.git`
+> **Open Folder**
+- Open Visual Studio Code
+- File > Open Folder
+- Select folder PROJET_INFO_2A
+    - PROJET_INFO_2A should be the root of your Explorer️
+    - if not the application will not launch. Retry open folder
 
 
-### Open Folder
+## 2. Repository Files Overview
 
-- [ ] Open **Visual Studio Code**
-- [ ] File > Open Folder
-- [ ] Select folder *ENSAI-2A-projet-info-template*
-  - *ENSAI-2A-projet-info-template* should be the root of your Explorer
-  - :warning: if not the application will not launch. Retry open folder
+| Item | Description |
+| :--- | :--- |
+| `README.md` | Provides useful information to present, install, and use the application. |
+| `LICENSE` | Specifies the usage rights and licensing terms for the repository. |
 
-
-## Repository Files Overview
-
-
-| Item                       | Description                                                              |
-| -------------------------- | ------------------------------------------------------------------------ |
-| `README.md`                | Provides useful information to present, install, and use the application |
-| `LICENSE`                  | Specifies the usage rights and licensing terms for the repository        |
-
-### Configuration files
+### 2.1 Configuration files
 
 This repository contains a large number of configuration files for setting the parameters of the various tools used.
 
-Normally, for the purposes of your project, you won't need to modify these files, except for `.env` and `requirements.txt`.
+Normally, you won't need to modify these files, except for .env and requirements.txt.
 
 
-| Item                       | Description                                                              |
-| -------------------------- | ------------------------------------------------------------------------ |
-| `.github/workflows/ci.yml` | Automated workflow that runs predefined tasks (like testing, linting, or deploying) |
-| `.vscode/settings.json`    | Contains VS Code settings specific to this project                       |
-| `.coveragerc`              | Setup
+| Item | Description |
+|------|------------|
+| `.vscode/settings.json` | Contains VS Code settings specific to this project |
+| `.gitignore` | Lists the files and folders that should not be tracked by Git |
+| `logging_config.yml` | Setup for logging |
+| `requirements.txt` | Lists the required Python packages for the project |
+| `.env` | You will also need a `.env` file. See below. |
+
+### 2.2 Folders
+
+| Item | Description |
+|------|------------|
+| `data` | SQL script containing data sets |
+| `doc` | diagrams, weekly reports |
+|  `src`| Folder containing Python files organized using a layered architecture |
+| `utils` | Utility functions and helpers used across the project|
+
+### 2.3 Settings files
+
+This repository contains a large number of configuration files for setting the parameters of the various tools used.
+
+Normally, you won't need to modify these files, except for .env and requirements.txt.
+
+
+## 3. How to use our application ? 
+
+### 3.1 Install required packages 
+
+In Git Bash, run the following commands to:
+- install all packages from file requirements.txt
+- list all packages
+
+```bash
+pip install -r requirements.txt
+pip list
+```
+
+### 3.2 Environnement Variables
+
+At the root of the project :
+- Create a file called .env
+- Paste in and complete the elements below
+
+```
+POSTGRES_HOST = postgresql-497164.user-id****
+POSTGRES_PORT = 5432
+POSTGRES_DATABASE = defaultdb
+POSTGRES_USER = user-id****
+POSTGRES_PASSWORD = ******
+POSTGRES_SCHEMA = default_schema
+POSTGRES_SCHEMA_TEST = test
+JWT_SECRET = ****
+
+```
+
+### 3.3 Units tests 
+- In Git Bash: pytest -v
+- or python -m pytest -v if pytest has not been added to PATH
+
+> **Tests Units DAO**
+To ensure tests are repeatable, safe, and do not interfere with the real database, we use a dedicated schema for unit testing.
+
+The DAO unit tests use data from the data/db_test.sql file.
+
+This data is loaded into a separate schema (test) so as not to pollute the other data.
+
+### 3.4 Launch the CLI application
+
+This application provides a very basic graphical interface for navigating between different menus.
+
+In Git Bash : python src/main_CLI.py
+
