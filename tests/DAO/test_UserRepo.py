@@ -21,15 +21,18 @@ def setup_test_environment():
 
 @pytest.fixture
 def dao():
-    """DAO configuré pour le schéma test"""
+    """DAO configured for the test schema"""
     user_dao = UserRepo(db_connector=DBConnector(test=True))
     user_dao.db_connector = DBConnector(test=True)
     return user_dao
 
 
 def unique_username(base="admin"):
-    """Générer un username unique pour éviter les collisions entre tests"""
+    """Generate a unique username to avoid collisions between tests."""
     return f"{base}_{datetime.utcnow().timestamp()}"
+
+
+# --- Tests ---
 
 
 def test_add_user_ok(dao):

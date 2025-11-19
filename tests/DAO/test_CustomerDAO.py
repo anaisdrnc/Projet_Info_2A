@@ -21,6 +21,7 @@ def setup_test_environment():
 
 @pytest.fixture
 def dao():
+    """DAO configured for the test schema"""
     customer_dao = CustomerDAO()
     customer_dao.db_connector = DBConnector(test=True)
     customer_dao.user_repo = UserRepo(customer_dao.db_connector)
