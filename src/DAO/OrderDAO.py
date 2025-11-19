@@ -95,14 +95,41 @@ class OrderDAO:
                 logging.warning(f"Stock insuffisant pour le produit {product_id}")
                 return False
 
-            self.db_connector.sql_query(
+            already_here = self.db_connector.sql_query(
                 """
-                INSERT INTO order_products (id_order, id_product, quantity)
-                VALUES (%s, %s, %s)
-                """,
-                [order_id, product_id, quantity],
-                return_type=None,
+                SELECT * FROM order_products WHERE id_order == %(order)s and id_product == %(product)s""",
+                ["order" : order_id, "product" : product_id],
+                "one"
             )
+
+            if already_here is None :
+
+                self.db_connector.sql_query(
+                    """
+                    INSERT INTO order_products (id_order, id_product, quantity)
+                    VALUES (%s, %s, %s)
+                    """,
+                    [order_id, product_id, quantity],
+                    return_type=None,
+                )
+
+            else :
+                quantity_before = self.db_connector.sql_query(
+                    """select quantity from order_products where id_order = %(order)s and id_product = %(product)s;""",
+                    ["order" : order_id, "product" : product_id],
+                    "one"
+                )
+
+                new_quantity = quantity_before['quantity'] + quantity
+
+                self.db_connector.sql_query(
+                    """update order_products set quantity = %(quantity)s + 
+                    where id_order = %(order)s and id_product = %(product)s;""",
+                    ["quantity" : new_quantity,
+                    "order" : order_id,
+                    "product" : product_id],
+                    return_type = None
+                )
 
             product = self.db_connector.sql_query(
                 "SELECT price FROM product WHERE id_product = %s",
