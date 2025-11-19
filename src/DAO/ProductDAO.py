@@ -246,3 +246,24 @@ class ProductDAO:
         if raw_id is None:
             return None
         return raw_id["id_product"]
+
+    @log
+    def get_product_by_id(self, product_id : int):
+        """Returns product where id_product = product_id"""
+        raw_product = self.db_connector.sql_query(
+            """select * from product where id_product = %s;""",
+            [product_id],
+            "one"
+        )
+        if raw_product == None:
+            return None
+        product = Product(
+            id_product = product_id,
+            name = raw_product['name'],
+            price = raw_product['price'],
+            production_cost = raw_product['production_cost'],
+            product_type = raw_product['product_type'],
+            description = raw_product['description'],
+            stock = raw_product['stock']
+        )
+        return product

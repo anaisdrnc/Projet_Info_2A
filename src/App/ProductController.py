@@ -4,6 +4,8 @@ from typing import Annotated
 
 from Model.Product import Product
 from DAO.DBConnector import DBConnector
+from DAO.ProductDAO import ProductDAO
+from Service.ProductService import ProductService
 from .JWTBearer import JWTBearer  # ton middleware pour vérifier JWT
 
 product_router = APIRouter(prefix="/Product", tags=["Products"])
@@ -15,23 +17,12 @@ def get_product_by_id(
     product_id: int,
     credentials: Annotated[HTTPAuthorizationCredentials, Depends(JWTBearer())]):
     """Récupère un produit à partir de son ID (accessible à tous)."""
+    productdao = ProductDAO(DBConnector(test = False))
     try:
-        query = """
-            SELECT 
-                id_product,
-                name,
-                price,
-                production_cost,
-                product_type,
-                description,
-                stock
-            FROM product
-            WHERE id_product = %s;
-        """
-        product_data = db.sql_query(query, (product_id,), return_type="one")
-        if not product_data:
+        product = productdao.get_product_by_id(product_id)
+        if product is None:
             raise HTTPException(status_code=404, detail=f"Product with id [{product_id}] not found")
-        return Product(**product_data)
+        return product
     except HTTPException:
         raise
     except Exception as e:
