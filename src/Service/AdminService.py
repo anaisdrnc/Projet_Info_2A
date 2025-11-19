@@ -1,5 +1,5 @@
 import logging
-
+from fastapi import HTTPException
 from utils.securite import hash_password
 
 from src.DAO.AdminDAO import AdminDAO
@@ -10,7 +10,7 @@ from src.Model.Admin import Admin
 from src.Model.User import User
 from src.Service.PasswordService import check_password_strength, create_salt
 from utils.log_decorator import log
-from utils.securite import hash_password
+
 
 
 class AdminService:
@@ -49,24 +49,21 @@ class AdminService:
 
     def update_admin(self, admin: Admin) -> bool:
         """
-        Met à jour les informations d'un administrateur.
-        Si le mot de passe est fourni, il sera vérifié et hashé.
+        Met à jour un administrateur.
+        La validation du mot de passe se fait AVANT hash dans le controller !
+        Ici on ne fait QUE sauvegarder en base.
         """
         try:
-            # Vérifie et hash le mot de passe si nécessaire
-            if admin.password:
-                check_password_strength(admin.password)
-                print("hello")
-                admin.salt = create_salt()
-                admin.password = hash_password(admin.password, admin.salt)
-
-
-            # Appelle le DAO pour mettre à jour
-            return self.admindao.update_admin(admin)
-
+            updated = self.admindao.update_admin(admin)
+            if not updated:
+                raise HTTPException(status_code=500, detail="Failed to update admin")
+            return True
+        except HTTPException:
+            raise
         except Exception as e:
-            logging.error(f"[AdminService] Erreur lors de la mise à jour de l'admin {admin.id_admin}: {e}")
-            return False
+            logging.error(f"[AdminService] Erreur lors de la mise à jour de l'admin {admin.id}: {e}")
+            raise HTTPException(status_code=500, detail=str(e))
+
 
     def get_by_username(self, username: str) -> Admin | None:
         """Récupère un administrateur à partir de son nom d'utilisateur."""

@@ -2,11 +2,11 @@ from typing import TYPE_CHECKING, Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials
-
+from src.Service.PasswordService import check_password_strength, create_salt
 from src.Model.APIUser import APIUser
 from src.Model.JWTResponse import JWTResponse
 from src.Service.AdminService import AdminService
-
+from utils.securite import hash_password
 from .init_app import jwt_service
 from .JWTBearer import JWTBearer
 
@@ -120,14 +120,18 @@ def update_admin_profile(
 
     if payload.password is not None:
         # Re-hash du mot de passe avec salt = username
-        from utils.securite import hash_password
+        check_password_strength(payload.password)
+
         admin.salt = admin.user_name
         admin.password = hash_password(payload.password, admin.salt)
 
     updated = admin_service.update_admin(admin)
-
-    if not updated:
-        raise HTTPException(status_code=500, detail="Unable to update admin")
+    try:
+        if not updated:
+            raise Exception("update_admin returned False")
+    except Exception as e:
+            print("ADMIN UPDATE ERROR:", e)
+            raise HTTPException(status_code=500, detail="Failed to update admin")
 
     return APIUser(
         id=admin.id_admin,
