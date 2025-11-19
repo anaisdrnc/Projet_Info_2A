@@ -2,6 +2,7 @@ import logging
 
 import dotenv
 
+
 from CLI.opening.openingview import OpeningView
 from utils.log_init import initialiser_logs
 
