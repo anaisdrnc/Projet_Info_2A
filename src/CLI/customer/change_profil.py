@@ -1,15 +1,15 @@
 from InquirerPy import inquirer
 
-from src.CLI.customer.menu_customer import MenuView
-from src.CLI.session import Session
-from src.CLI.view_abstract import VueAbstraite
-from src.DAO.DBConnector import DBConnector
-from src.DAO.CustomerDAO import CustomerDAO
-from src.DAO.UserRepo import UserRepo
-from src.Model.Customer import Customer
-from src.Model.User import User
-from src.Service.CustomerService import CustomerService
-from src.Service.UserService import UserService
+from CLI.customer.menu_customer import MenuView
+from CLI.session import Session
+from CLI.view_abstract import VueAbstraite
+from DAO.DBConnector import DBConnector
+from DAO.CustomerDAO import CustomerDAO
+from DAO.UserRepo import UserRepo
+from Model.Customer import Customer
+from Model.User import User
+from Service.CustomerService import CustomerService
+from Service.UserService import UserService
 
 
 class ChangeProfil(VueAbstraite):

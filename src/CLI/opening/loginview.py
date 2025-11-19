@@ -36,7 +36,7 @@ class LoginView(VueAbstraite):
                 message = f"You are connected on the customer account {user.user_name}"
                 Session().connexion(user, id_customer)
 
-                from src.CLI.customer.menu_customer import MenuView
+                from CLI.customer.menu_customer import MenuView
                 return MenuView(message)
 
             elif id_customer is None and id_driver is not None:
@@ -44,10 +44,10 @@ class LoginView(VueAbstraite):
                 message = f"You are connected on the driver account {user.user_name}"
                 Session().connexion(user, id_driver)
 
-                from src.CLI.driver.menu_driver import MenuDriver
+                from CLI.driver.menu_driver import MenuDriver
                 return MenuDriver(message)
 
         message = "Erreur de connexion (pseudo ou mot de passe invalide)"
-        from src.CLI.opening.openingview import OpeningView
+        from CLI.opening.openingview import OpeningView
 
         return OpeningView(message)
