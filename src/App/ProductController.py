@@ -31,15 +31,23 @@ def get_product_by_id(
 
 # --- Les endpoints protégés par JWT (admin connecté) ---
 
-@product_router.post("/", response_model=Product, status_code=status.HTTP_201_CREATED)
+@product_router.post("/", response_model= Product, status_code=status.HTTP_201_CREATED)
 def create_product(
-    product: Product,
+    name, price, description, production_cost, product_type, stock,
     credentials: Annotated[HTTPAuthorizationCredentials, Depends(JWTBearer())]  # admin connecté
 ):
     """Crée un nouveau produit (uniquement admin)."""
     productdao = ProductDAO(DBConnector(test=False))
+    product_service = ProductService(productdao)
     try:
-        new_product = productdao.create_product(product)
+        new_product = product_service.create(
+            name = name,
+            price = price,
+            production_cost = production_cost,
+            product_type = product_type, 
+            description= description,
+            stock = stock
+        )
         if new_product is None:
             raise HTTPException(status_code=500, detail="Product could not be created")
         return new_product
