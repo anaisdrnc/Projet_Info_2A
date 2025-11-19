@@ -2,7 +2,7 @@ import logging
 
 import dotenv
 
-from src.CLI.opening.openingview import OpeningView
+from CLI.opening.openingview import OpeningView
 from utils.log_init import initialiser_logs
 
 if __name__ == "__main__":
