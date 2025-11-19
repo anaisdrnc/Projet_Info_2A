@@ -155,7 +155,7 @@ def test_update_driver_ok(service):
     driver.mean_of_transport = "Bike"
 
     # Act
-    updated = service.update_driver(driver)
+    updated = service.update_driver(driver.user_name, "Bike")
 
     # Assert
     assert updated is True
