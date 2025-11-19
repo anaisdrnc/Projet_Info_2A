@@ -1,7 +1,7 @@
 import logging
 
 import dotenv
-from utils.log_init import initialiser_logs
+
 
 from CLI.opening.openingview import OpeningView
 from utils.log_init import initialiser_logs
