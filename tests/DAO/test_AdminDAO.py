@@ -12,8 +12,6 @@ from utils.securite import hash_password
 
 load_dotenv()
 
-# --- Fixtures ---
-
 
 @pytest.fixture(scope="session", autouse=True)
 def setup_test_environment():
@@ -28,9 +26,6 @@ def dao():
     return admin_dao
 
 
-# --- Utilitaire ---
-
-
 def unique_username(base="admin"):
     return f"{base}_{datetime.utcnow().timestamp()}"
 
@@ -39,6 +34,7 @@ def unique_username(base="admin"):
 
 
 def test_add_admin_ok(dao):
+    """Test : Verify that a new admin can be successfully added to the database."""
     username = unique_username("add_admin")
     salt = unique_username("salt")
     admin = Admin(
@@ -56,6 +52,7 @@ def test_add_admin_ok(dao):
 
 
 def test_add_admin_duplicate(dao):
+    """Test :Verify that adding an administrator with a duplicate username fails."""
     username = unique_username("dup_admin")
     salt = unique_username("saltdup")
     admin1 = Admin(
@@ -81,6 +78,7 @@ def test_add_admin_duplicate(dao):
 
 
 def test_login_admin_ok(dao):
+    """Test: An administrator can successfully log in with correct login details"""
     username = unique_username("login_admin")
     password = "secret"
     salt = unique_username("saltlogin")
@@ -102,6 +100,7 @@ def test_login_admin_ok(dao):
 
 
 def test_login_admin_wrong_password(dao):
+    """Test: Administrator login fails with an incorrect password."""
     username = unique_username("login_wrong")
     password = "secret"
     salt = unique_username("saltwrong")
@@ -121,6 +120,7 @@ def test_login_admin_wrong_password(dao):
 
 
 def test_login_admin_nonexistent_user(dao):
+    """Test: Login fails for a non-existent administrator."""
     logged = dao.login("nonexistent_admin_xyz", "anypass")
     assert logged is None
 

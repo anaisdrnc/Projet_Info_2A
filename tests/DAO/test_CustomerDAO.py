@@ -13,9 +13,6 @@ from utils.securite import hash_password
 load_dotenv()
 
 
-# --- Fixtures ---
-
-
 @pytest.fixture(scope="session", autouse=True)
 def setup_test_environment():
     """Reset DB before tests"""
@@ -30,9 +27,6 @@ def dao():
     return customer_dao
 
 
-# --- Utilitaire ---
-
-
 def unique_username(base="customer"):
     return f"{base}_{datetime.utcnow().timestamp()}"
 
@@ -41,6 +35,7 @@ def unique_username(base="customer"):
 
 
 def test_add_customer_ok(dao):
+    """Test : Verify that a new customer can be successfully added to the database."""
     username = unique_username("add_ok")
     salt = unique_username("salt")
     customer = Customer(
@@ -57,6 +52,7 @@ def test_add_customer_ok(dao):
 
 
 def test_add_customer_duplicate(dao):
+    """Test :Verify that adding an customer with a duplicate username fails."""
     username = unique_username("dup_customer")
     salt = unique_username("saltdup")
     customer1 = Customer(
@@ -82,6 +78,7 @@ def test_add_customer_duplicate(dao):
 
 
 def test_get_by_id_ok(dao):
+    """Test: Retrieve a customer by their ID successfully."""
     username = unique_username("get_customer")
     salt = unique_username("saltget")
     customer = Customer(
@@ -99,11 +96,13 @@ def test_get_by_id_ok(dao):
 
 
 def test_get_by_id_ko(dao):
+    """Test: Retrieving a customer with a non-existent ID returns None."""
     retrieved = dao.get_by_id(999999)
     assert retrieved is None
 
 
 def test_update_customer_ok(dao):
+    """Test: Successfully update a customer's information."""
     username = unique_username("update_customer")
     salt = unique_username("saltupdate")
     customer = Customer(
@@ -116,7 +115,6 @@ def test_update_customer_ok(dao):
     )
     dao.add_customer(customer)
 
-    # Update info
     customer.first_name = "Updated"
     customer.last_name = "CustomerUpdated"
     customer.email = f"updated_{username}@test.com"
@@ -124,14 +122,14 @@ def test_update_customer_ok(dao):
     updated = dao.update_customer(customer)
     assert updated
 
-    # Retrieve again to check
     retrieved = dao.get_by_id(customer.id_customer)
     assert retrieved.first_name == "Updated"
     assert retrieved.last_name == "CustomerUpdated"
     assert retrieved.email == f"updated_{username}@test.com"
 
 
-def test_update_customer_nonexistent(dao):
+def test_update_customer_ko(dao):
+    """Test: Updating a non-existent customer fails."""
     fake_customer = Customer(
         id=999999,
         user_name="nonexist",
@@ -146,6 +144,7 @@ def test_update_customer_nonexistent(dao):
 
 
 def test_delete_customer_ok(dao):
+    """Test: Successfully delete an existing customer"""
     username = unique_username("delete_ok")
     salt = unique_username("saltdel")
     customer = Customer(
@@ -163,16 +162,16 @@ def test_delete_customer_ok(dao):
 
 
 def test_delete_customer_ko(dao):
+    """Test: Attempting to delete a non-existent customer returns False."""
     deleted = dao.delete_customer(999999)
     assert not deleted
 
 
 def test_get_id_customer_by_id_user(dao):
-    # --- Arrange ---
+    """Test: Retrieve an existing customer's ID by their user ID."""
     username = unique_username("get_id_customer")
     salt = unique_username("salt_customer")
 
-    # On crée un customer complet
     customer = Customer(
         user_name=username,
         password=hash_password("secret", salt),
@@ -182,20 +181,18 @@ def test_get_id_customer_by_id_user(dao):
         email=f"{username}@test.com",
     )
 
-    # Création en DB via DAO
     created = dao.add_customer(customer)
     assert created is not None
     assert customer.id > 0
     assert customer.id_customer > 0
 
-    # --- Act ---
     retrieved_id_customer = dao.get_id_customer_by_id_user(customer.id)
 
-    # --- Assert ---
     assert retrieved_id_customer == customer.id_customer
 
 
 def test_get_id_customer_by_id_user_not_found(dao):
+    """Test: Retrieve a customer's ID by their non-existent user id."""
     retrieved = dao.get_id_customer_by_id_user(999999)
     assert retrieved is None
 

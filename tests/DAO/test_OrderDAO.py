@@ -18,7 +18,6 @@ load_dotenv()
 
 @pytest.fixture(scope="session", autouse=True)
 def setup_test_environment():
-    """Réinitialise la base de test avant la session."""
     from utils.reset_database import ResetDatabase
 
     ResetDatabase(test=True).lancer()
@@ -26,24 +25,20 @@ def setup_test_environment():
 
 @pytest.fixture
 def db():
-    """Connexion unique à la base de test."""
     return DBConnector(test=True)
 
 
 @pytest.fixture
 def dao(db):
-    """DAO commandes utilisant la même connexion que les produits."""
     return OrderDAO(db)
 
 
 @pytest.fixture
 def productdao(db):
-    """DAO produits utilisant la même connexion que les commandes."""
     return ProductDAO(db)
 
 
 def create_test_address(address="15 Rue du Test", city="Rennes", postal_code="35000"):
-    """Insère une adresse de test dans la base et la renvoie."""
     db = DBConnector(test=True)
     res = db.sql_query(
         """
@@ -70,7 +65,6 @@ def create_test_driver(
     password="password",
     mean_of_transport="Bike",
 ):
-    """Crée un driver de test en utilisant DriverDAO et retourne son ID."""
     if email is None:
         email = f"driver_{datetime.now().timestamp()}@test.com"
 
@@ -100,10 +94,11 @@ def create_test_driver(
     return None
 
 
-# TESTS
+# --- Tests ---
 
 
 def test_create_order_ok(dao):
+    """Test: Creating a new order with a valid address succeeds and returns the order ID."""
     addr = create_test_address()
     order = Order(
         id_customer=999,
@@ -158,15 +153,13 @@ def test_add_product_ok(dao, productdao):
     order_id = dao.create_order(order)
     assert order_id is not None
 
-    # Ajouter produit
     added = dao.add_product(order_id, product_id=product.id_product, quantity=3)
     assert added is True
 
-    # Vérifier que le stock a diminué
     raw = productdao.db_connector.sql_query(
         "SELECT stock FROM product WHERE id_product = %s", [product.id_product], "one"
     )
-    assert raw["stock"] == 7  # 10 - 3
+    assert raw["stock"] == 7
 
 
 def test_add_product_invalid_order(dao, productdao):
@@ -184,7 +177,6 @@ def test_add_product_invalid_order(dao, productdao):
     added = dao.add_product(order_id=999999, product_id=product.id_product, quantity=1)
     assert added is False
 
-    # Vérifier que le stock n'a pas été décrémenté
     raw = productdao.db_connector.sql_query(
         "SELECT stock FROM product WHERE id_product = %s", [product.id_product], "one"
     )
@@ -218,7 +210,6 @@ def test_remove_product_ok(dao, productdao):
     removed = dao.remove_product(order_id, product_id=product.id_product, quantity=2)
     assert removed is True
 
-    # Vérifier que le stock est revenu
     raw = productdao.db_connector.sql_query(
         "SELECT stock FROM product WHERE id_product = %s", [product.id_product], "one"
     )

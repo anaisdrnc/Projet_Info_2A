@@ -6,8 +6,6 @@ from src.DAO.DBConnector import DBConnector
 from src.Model.Address import Address
 from utils.reset_database import ResetDatabase
 
-# --- Fixtures ---
-
 load_dotenv()
 
 
@@ -25,8 +23,11 @@ def dao():
     return address_dao
 
 
+# --- Tests ---
+
+
 def test_add_address_ok(dao):
-    """Successful adding address"""
+    """Test : Verify that a new address can be successfully added to the database."""
     address = Address(address="14 Rue du Chapitre", postal_code=35000, city="Rennes")
 
     result = dao.add_address(address)
@@ -36,7 +37,7 @@ def test_add_address_ok(dao):
 
 
 def test_add_address_ko_invalid_postal_db(dao):
-    """Postal code valid for Pydantic but invalid for DB constraint"""
+    """Test : Verify that a new address can be unsuccessfully added to the database with a wrong postalcode."""
     address = Address(address="Rue test", postal_code=9999999, city="Rennes")
 
     result = dao.add_address(address)

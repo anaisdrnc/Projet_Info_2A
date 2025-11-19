@@ -12,8 +12,6 @@ from utils.securite import hash_password
 
 load_dotenv()
 
-# --- Fixtures ---
-
 
 @pytest.fixture(scope="session", autouse=True)
 def setup_test_environment():
@@ -28,9 +26,6 @@ def dao():
     return driver_dao
 
 
-# --- Utilitaire ---
-
-
 def unique_username(base="driver"):
     return f"{base}_{datetime.utcnow().timestamp()}"
 
@@ -39,6 +34,7 @@ def unique_username(base="driver"):
 
 
 def test_create_driver_ok(dao):
+    """Test : Verify that a new driver can be successfully added to the database."""
     username = unique_username("create_ok")
     salt = unique_username("salt")
     driver = Driver(
@@ -57,6 +53,7 @@ def test_create_driver_ok(dao):
 
 
 def test_create_driver_duplicate(dao):
+    """Test :Verify that adding a driver with a duplicate username fails."""
     username = unique_username("dup_driver")
     salt = unique_username("saltdup")
     driver1 = Driver(
@@ -84,6 +81,7 @@ def test_create_driver_duplicate(dao):
 
 
 def test_get_by_id_ok(dao):
+    """Test: Retrieve a driver by their ID successfully."""
     username = unique_username("get_driver")
     salt = unique_username("saltget")
     driver = Driver(
@@ -102,11 +100,13 @@ def test_get_by_id_ok(dao):
 
 
 def test_get_by_id_ko(dao):
+    """Test: Retrieving a driver with a non-existent ID returns None."""
     retrieved = dao.get_by_id(999999)
     assert retrieved is None
 
 
 def test_list_all_drivers(dao):
+    """Test: Verify that all drivers are correctly listed from the database."""
     username1 = unique_username("list1")
     username2 = unique_username("list2")
     salt1 = unique_username("salt1")
@@ -139,6 +139,7 @@ def test_list_all_drivers(dao):
 
 
 def test_update_driver_ok(dao):
+    """Test: Successfully update a driver's information."""
     username = unique_username("update_driver")
     salt = unique_username("saltupdate")
     driver = Driver(
@@ -160,6 +161,7 @@ def test_update_driver_ok(dao):
 
 
 def test_update_driver_ko(dao):
+    """Test: Updating a non-existent driver fails."""
     driver = Driver(
         id=999999,
         user_name="nonexist",
@@ -175,6 +177,7 @@ def test_update_driver_ko(dao):
 
 
 def test_login_driver_ok(dao):
+    """Test: A driver can successfully log in with correct login details."""
     username = unique_username("login_ok")
     password = "secret"
     salt = unique_username("saltlogin")
@@ -198,6 +201,7 @@ def test_login_driver_ok(dao):
 
 
 def test_login_driver_wrong_password(dao):
+    """Test: Driver login fails with an incorrect password."""
     username = unique_username("login_wrong")
     password = "secret"
     salt = unique_username("saltwrong")
@@ -214,17 +218,18 @@ def test_login_driver_wrong_password(dao):
     )
     dao.create(driver)
 
-    # Mauvais mot de passe en clair
     logged = dao.login(username, "wrongpass")
     assert logged is None
 
 
 def test_login_driver_nonexistent_user(dao):
+    """Test: Login fails for a non-existent driver."""
     logged = dao.login("nonexistent_user_xyz", "anypass")
     assert logged is None
 
 
 def test_delete_driver_ok(dao):
+    """Test: Verify that a driver can be successfully deleted from the database."""
     username = unique_username("delete_ok")
     salt = unique_username("saltdel")
     driver = Driver(
@@ -243,11 +248,13 @@ def test_delete_driver_ok(dao):
 
 
 def test_delete_driver_ko(dao):
+    """Test: Attempting to delete a non-existent driver returns False."""
     deleted = dao.delete(999999)
     assert not deleted
 
 
 def test_get_id_driver_by_id_user(dao):
+    """Test: Retrieve an existing driver's ID by their user ID."""
     username = unique_username("get_id_by_user")
     salt = unique_username("salt_driver")
 
@@ -272,6 +279,7 @@ def test_get_id_driver_by_id_user(dao):
 
 
 def test_get_id_driver_by_id_user_ko(dao):
+    """Test: Retrieve a driver's ID by their non-existent user id."""
     retrieved = dao.get_id_driver_by_id_user(999999)
     assert retrieved is None
 
