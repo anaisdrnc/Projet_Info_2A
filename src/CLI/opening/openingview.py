@@ -1,10 +1,6 @@
 from InquirerPy import inquirer
 
-from CLI.view_abstract import VueAbstraite
-
-from utils.reset_database import ResetDatabase
-
-# from src.CLI.session import Session
+from src.CLI.view_abstract import VueAbstraite
 
 
 class OpeningView(VueAbstraite):
