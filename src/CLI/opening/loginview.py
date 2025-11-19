@@ -1,12 +1,12 @@
 from InquirerPy import inquirer
 
-from src.CLI.session import Session
-from src.CLI.view_abstract import VueAbstraite
-from src.DAO.CustomerDAO import CustomerDAO
-from src.DAO.DBConnector import DBConnector
-from src.DAO.DriverDAO import DriverDAO
-from src.DAO.UserRepo import UserRepo
-from src.Service.PasswordService import validate_username_password
+from CLI.session import Session
+from CLI.view_abstract import VueAbstraite
+from DAO.CustomerDAO import CustomerDAO
+from DAO.DBConnector import DBConnector
+from DAO.DriverDAO import DriverDAO
+from DAO.UserRepo import UserRepo
+from Service.PasswordService import validate_username_password
 
 
 class LoginView(VueAbstraite):
