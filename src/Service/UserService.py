@@ -1,15 +1,15 @@
-from typing import Optional
-import logging
-from utils.log_decorator import log
+from src.DAO.DBConnector import DBConnector
 from src.DAO.UserRepo import UserRepo
 from src.Model.User import User
 from src.Service.PasswordService import check_password_strength, create_salt, validate_username_password
+from utils.log_decorator import log
 from utils.securite import hash_password
-from src.DAO.DBConnector import DBConnector
 
 
 class UserService:
-    def __init__(self, user_repo=UserRepo(DBConnector)):
+    def __init__(self, user_repo=None):
+        if user_repo is None:
+            user_repo = UserRepo(DBConnector)
         self.user_repo = user_repo
 
     @log
