@@ -41,7 +41,7 @@ class MenuDriver(VueAbstraite):
             case "Log out":
                 from CLI.opening.openingview import OpeningView
 
-                Session.deconnexion()
+                Session().deconnexion()
 
                 return OpeningView()
 

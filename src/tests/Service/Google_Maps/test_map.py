@@ -2,12 +2,7 @@ from unittest.mock import patch
 
 import pytest
 
-from Service.Google_Maps.check_address import (
-    check_address,
-    get_address_suggestions,
-    is_address_sufficient_for_routing,
-    #validate_and_get_routable_address,
-)
+from Service.Google_Maps.check_address import check_address, get_address_suggestions, is_address_sufficient_for_routing
 
 
 @pytest.fixture
