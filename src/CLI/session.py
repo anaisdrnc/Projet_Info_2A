@@ -5,33 +5,33 @@ from src.utils.singleton import Singleton
 
 
 class Session(metaclass=Singleton):
-    """Stocke les données liées à une session.
-    Cela permet par exemple de connaitre le joueur connecté à tout moment
-    depuis n'importe quelle classe.
-    Sans cela, il faudrait transmettre ce joueur entre les différentes vues.
+    """Stores session-related data.
+    This allows, for example, to know the currently logged-in user
+    from any class.
+    Without this, the user would need to be passed between views.
     """
 
     def __init__(self):
-        """Création de la session"""
+        """Create a new session"""
         self.username = None
         self.id_role = None
-        self.debut_connexion = None
+        self.login_start = None
 
     @log
-    def connexion(self, user, id_role):
-        """Enregistement des données en session"""
+    def login(self, user, id_role):
+        """Store user data in the session"""
         self.username = user.user_name
         self.id_role = id_role
-        self.debut_connexion = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+        self.login_start = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
 
     @log
-    def deconnexion(self):
-        """Suppression des données de la session"""
+    def logout(self):
+        """Clear the session data"""
         self.username = None
         self.id_role = None
-        self.debut_connexion = None
+        self.login_start = None
 
     @log
     def get_id_role(self):
-        """return the id of the connected user"""
+        """Return the id of the connected user"""
         return self.id_role

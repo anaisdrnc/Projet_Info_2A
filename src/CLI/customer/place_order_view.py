@@ -2,7 +2,7 @@ from InquirerPy import inquirer
 
 from src.CLI.customer.menu_customer import MenuView
 from src.CLI.session import Session
-from src.CLI.view_abstract import VueAbstraite
+from src.CLI.view_abstract import AbstractView
 from src.DAO.AddressDAO import AddressDAO
 from src.DAO.DBConnector import DBConnector
 from src.DAO.OrderDAO import OrderDAO
@@ -13,8 +13,8 @@ from src.Service.OrderService import OrderService
 from src.Service.ProductService import ProductService
 
 
-class PlaceOrderView(VueAbstraite):
-    def choisir_menu(self):
+class PlaceOrderView(AbstractView):
+    def choose_menu(self):
         """Place an order"""
         productdao = ProductDAO(DBConnector())
         orderdao = OrderDAO(DBConnector())

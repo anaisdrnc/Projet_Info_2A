@@ -1,24 +1,25 @@
 from InquirerPy import inquirer
 
-from src.CLI.view_abstract import VueAbstraite
+from src.CLI.view_abstract import AbstractView
 
 
-class OpeningView(VueAbstraite):
-    """View when first opening the application"""
+class OpeningView(AbstractView):
+    """View displayed when the application is first opened."""
 
-    def choisir_menu(self):
-        """Choix du menu suivant
+    def choose_menu(self):
+        """
+        Prompt the user to select the next menu.
 
-        Return
-        ------
+        Returns
+        -------
         view
-            Retourne la vue choisie par l'utilisateur dans le terminal
+            Returns the view chosen by the user in the terminal.
         """
 
-        print("\n" + "-" * 50 + "\nAccueil\n" + "-" * 50 + "\n")
+        print("\n" + "-" * 50 + "\nHome\n" + "-" * 50 + "\n")
 
-        choix = inquirer.select(
-            message="Faites votre choix : ",
+        choice = inquirer.select(
+            message="Please make your choice: ",
             choices=[
                 "Login",
                 "Create account",
@@ -26,7 +27,7 @@ class OpeningView(VueAbstraite):
             ],
         ).execute()
 
-        match choix:
+        match choice:
             case "Exit":
                 pass
 

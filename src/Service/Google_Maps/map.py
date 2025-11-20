@@ -98,21 +98,21 @@ def create_map(origin, destination, transport_mode):
     start_location = leg["start_location"]
     end_location = leg["end_location"]
 
-    print(f" Itinéraire de {origin} à {destination}")
+    print(f" Itinerary from {origin} to {destination}")
     print(f" Distance : {distance}")
-    print(f" Durée estimée : {duration}")
+    print(f" Estimated Duration : {duration}")
 
     m = folium.Map(location=[start_location["lat"], start_location["lng"]], zoom_start=6)
 
     folium.Marker(
         [start_location["lat"], start_location["lng"]],
-        popup=f"Départ : {origin}",
+        popup=f"Departure : {origin}",
         icon=folium.Icon(color="green"),
     ).add_to(m)
 
     folium.Marker(
         [end_location["lat"], end_location["lng"]],
-        popup=f"Arrivée : {destination}",
+        popup=f"Arrival : {destination}",
         icon=folium.Icon(color="red"),
     ).add_to(m)
 

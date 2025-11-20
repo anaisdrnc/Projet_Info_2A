@@ -3,36 +3,31 @@ import logging
 import dotenv
 
 from src.CLI.opening.openingview import OpeningView
-from src.utils.log_init import initialiser_logs
+from src.utils.log_init import initialize_logs
 
 if __name__ == "__main__":
-    # On charge les variables d'envionnement
     dotenv.load_dotenv(override=True)
 
-    initialiser_logs("Application")
+    initialize_logs("Application")
 
-    vue_courante = OpeningView("Bienvenue")
-    nb_erreurs = 0
+    current_view = OpeningView("Welcome")
+    error_count = 0
 
-    while vue_courante:
-        if nb_erreurs > 100:
-            print("Le programme recense trop d'erreurs et va s'arrêter")
+    while current_view:
+        if error_count > 100:
+            print("The program has encountered too many errors and will stop.")
             break
         try:
-            # Affichage du menu
-            vue_courante.afficher()
-
-            # Affichage des choix possibles
-            vue_courante = vue_courante.choisir_menu()
+            current_view.display()
+            current_view = current_view.choose_menu()
         except Exception as e:
             logging.error(f"{type(e).__name__} : {e}", exc_info=True)
-            nb_erreurs += 1
-            vue_courante = OpeningView(
-                "Une erreur est survenue, retour au menu principal.\nConsultez les logs pour plus d'informations."
+            error_count += 1
+            current_view = OpeningView(
+                "An error occurred, returning to the main menu.\nCheck the logs for more information."
             )
 
-    # Lorsque l on quitte l application
     print("----------------------------------")
-    print("Au revoir")
+    print("Goodbye")
 
-    logging.info("Fin de l'application")
+    logging.info("End of application")

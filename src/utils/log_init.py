@@ -5,20 +5,18 @@ import os
 import yaml
 
 
-def initialiser_logs(nom):
-    """Initialiser les logs à partir du fichier de config"""
+def initialize_logs(name):
+    """Initialize logging using the configuration file."""
 
-    # print current working directory
-    # print(os.getcwd())
-    # os.chdir('ENSAI-2A-projet-info-template')
-
-    # Création du dossier logs à la racine si non existant
+    # Create the 'logs' folder at the project root if it doesn't exist
     os.makedirs("logs", exist_ok=True)
 
+    # Load logging configuration from YAML file
     stream = open("logging_config.yml", encoding="utf-8")
     config = yaml.load(stream, Loader=yaml.FullLoader)
     logging.config.dictConfig(config)
 
+    # Log the start of the program
     logging.info("-" * 50)
-    logging.info(f"Lancement {nom}                           ")
+    logging.info(f"Starting {name}")
     logging.info("-" * 50)

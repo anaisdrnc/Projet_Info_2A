@@ -2,26 +2,26 @@ import logging
 from abc import ABC, abstractmethod
 
 
-class VueAbstraite(ABC):
-    """Modèle de Vue"""
+class AbstractView(ABC):
+    """Base model for a View"""
 
     def __init__(self, message=""):
         self.message = message
         logging.info(type(self).__name__)
 
-    def nettoyer_console(self):
-        """Insérer des lignes vides pour simuler un nettoyage"""
+    def clear_console(self):
+        """Insert empty lines to simulate clearing the console"""
         for _ in range(30):
             print("")
 
-    def afficher(self) -> None:
-        """Echappe un grand espace dans le terminal pour simuler
-        le changement de page de l'application"""
-        self.nettoyer_console()
+    def display(self) -> None:
+        """Add a large space in the terminal to simulate
+        a page change in the application"""
+        self.clear_console()
         print(self.message)
         print()
 
     @abstractmethod
-    def choisir_menu(self):
-        """Choix du menu suivant de l'utilisateur"""
+    def choose_menu(self):
+        """Prompt the user to choose the next menu"""
         pass

@@ -20,6 +20,7 @@ def check_password_strength(password: str):
         raise Exception("Password must contain at least one lowercase letter")
     if not any(c.isdigit() for c in password):
         raise Exception("Password must contain at least one number")
+print(check_password_strength("Anais2003"))
 
 
 def validate_username_password(

@@ -1,15 +1,15 @@
-from src.CLI.view_abstract import VueAbstraite
+from src.CLI.view_abstract import AbstractView
 from src.DAO.DBConnector import DBConnector
 from src.DAO.ProductDAO import ProductDAO
 from src.Service.ProductService import ProductService
 
 
-class ProductView(VueAbstraite):
+class ProductView(AbstractView):
     """View that shows :
     - the list of products available with description
     """
 
-    def choisir_menu(self):
+    def choose_menu(self):
         productdao = ProductDAO(DBConnector(test=False))
         productservice = ProductService(productdao)
 

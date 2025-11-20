@@ -3,7 +3,7 @@ from InquirerPy import inquirer
 from InquirerPy.validator import PasswordValidator
 from prompt_toolkit.validation import ValidationError, Validator
 
-from src.CLI.view_abstract import VueAbstraite
+from src.CLI.view_abstract import AbstractView
 from src.DAO.CustomerDAO import CustomerDAO
 from src.DAO.DBConnector import DBConnector
 from src.DAO.UserRepo import UserRepo
@@ -12,10 +12,14 @@ from src.Service.PasswordService import check_password_strength
 from src.Service.UserService import UserService
 
 
-class InscriptionView(VueAbstraite):
-    def choisir_menu(self):
-        # Demande à l'utilisateur de saisir pseudo, mot de passe...
-        pseudo = inquirer.text(message="Enter your username : ").execute()
+class InscriptionView(AbstractView):
+    """Customer account registration view"""
+
+    def choose_menu(self):
+        """Prompt the user to enter registration details"""
+
+        # Ask user to enter username
+        username = inquirer.text(message="Enter your username: ").execute()
 
         user_repo = UserRepo(DBConnector(test=False))
         customerdao = CustomerDAO(DBConnector(test=False))
@@ -23,56 +27,61 @@ class InscriptionView(VueAbstraite):
         user_service = UserService(user_repo)
         customer_service = CustomerService(customerdao=customerdao)
 
-        if user_service.is_username_taken(user_name=pseudo):
+        if user_service.is_username_taken(user_name=username):
             from CLI.opening.openingview import OpeningView
+            return OpeningView(f"The username {username} is already taken.")
 
-            return OpeningView(f"The username {pseudo} is already used.")
-
-        mdp = inquirer.secret(
-            message="Enter your password : ",
+        # Ask user to enter password
+        password = inquirer.secret(
+            message="Enter your password: ",
             validate=PasswordValidator(
                 length=8,
                 cap=True,
                 number=True,
-                message="Au moins 8 caractères, incluant une majuscule, une minuscule et un chiffre",
+                message="At least 8 characters including uppercase, lowercase, and a number",
             ),
         ).execute()
 
-        if not check_password_strength(mdp):
-            message = "password not strong enough"
+        try:
+            check_password_strength(password)
+        except Exception as e:
+            message = str(e)
+            from CLI.opening.openingview import OpeningView
             return OpeningView(message)
 
-        first_name = inquirer.text(message="Enter your firstname : ").execute()
+        # Ask for first and last name
+        first_name = inquirer.text(message="Enter your first name: ").execute()
+        last_name = inquirer.text(message="Enter your last name: ").execute()
 
-        last_name = inquirer.text(message="Enter your lastname : ").execute()
+        # Ask for email with validation
+        email = inquirer.text(message="Enter your email: ", validate=MailValidator()).execute()
 
-        mail = inquirer.text(message="Entrez votre mail : ", validate=MailValidator()).execute()
-
-        # Appel du service pour créer le joueur
+        # Create the customer account
         customer = customer_service.create_customer(
-            username=pseudo,
-            password=mdp,
+            username=username,
+            password=password,
             firstname=first_name,
             lastname=last_name,
-            email=mail,
+            email=email,
         )
 
-        # Si le joueur a été créé
+        # Display success or error message
         if customer:
-            message = f"Your account {customer.user_name} was successfully created, you can now log in the application"
+            message = f"Your account {customer.user_name} was successfully created. You can now log in."
         else:
             message = "Connection error (invalid username or password)"
 
         from CLI.opening.openingview import OpeningView
-
         return OpeningView(message)
 
 
 class MailValidator(Validator):
-    """la classe MailValidator verifie si la chaine de caractères
-    que l'on entre correspond au format de l'email"""
+    """MailValidator checks if the entered string matches a valid email format"""
 
     def validate(self, document) -> None:
         ok = regex.match(r"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$", document.text)
         if not ok:
-            raise ValidationError(message="Please enter a valid mail", cursor_position=len(document.text))
+            raise ValidationError(
+                message="Please enter a valid email",
+                cursor_position=len(document.text),
+            )
