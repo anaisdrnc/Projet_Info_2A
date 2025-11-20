@@ -1,10 +1,10 @@
 import os
+import sys
 import time
 
 import jwt
 from jwt import ExpiredSignatureError
 
-import sys
 current_dir = os.path.dirname(os.path.abspath(__file__))
 project_root = os.path.dirname(current_dir)
 sys.path.insert(0, project_root)

@@ -13,3 +13,6 @@ tabulate
 uvicorn
 folium
 googlemaps
+freezegun 
+PyJWT
+jwt
