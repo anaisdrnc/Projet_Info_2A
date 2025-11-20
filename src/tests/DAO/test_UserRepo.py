@@ -27,112 +27,107 @@ def dao():
     return user_dao
 
 
-def unique_username(base="admin"):
+def unique_username(base="user"):
     """Generate a unique username to avoid collisions between tests."""
     return f"{base}_{datetime.utcnow().timestamp()}"
 
 
-# --- Tests ---
+class TestUserRepo:
+    """Tests for the UserRepo DAO"""
 
+    def test_add_user_ok(self, dao):
+        """Successfully add a new user to the database"""
+        username = unique_username("user_test")
+        salt = create_salt()
+        user = User(
+            user_name=username,
+            first_name="User",
+            last_name="Test",
+            password=hash_password("1234password", salt),
+            email="user.test1@gmail.com",
+            salt=salt,
+        )
+        created = dao.add_user(user)
+        assert created is not None
+        assert created > 0
 
-def test_add_user_ok(dao):
-    """Test: Successfully add a new user to the database and return their user ID"""
-    username = unique_username("user_test")
-    salt = create_salt()
-    user = User(
-        user_name=username,
-        first_name="User",
-        last_name="Test",
-        password=hash_password("1234password", salt),
-        email="user.test1@gmail.com",
-        salt=salt,
-    )
-    created = dao.add_user(user)
-    assert created is not None
-    assert created > 0
+    def test_add_user_ko(self, dao):
+        """Adding a user that already exists should fail"""
+        username = unique_username("user_test")
+        salt = create_salt()
+        user = User(
+            user_name=username,
+            first_name="User",
+            last_name="Test",
+            password="1234password",
+            email="user.test2@gmail.com",
+            salt=salt,
+        )
+        created = dao.add_user(user)
+        assert created is not None
+        created2 = dao.add_user(user)
+        assert created2 is None
 
+    def test_get_by_id_ok(self, dao):
+        """Retrieve an existing user by their ID"""
+        username = unique_username("user_test")
+        salt = create_salt()
+        user = User(
+            user_name=username,
+            first_name="User",
+            last_name="Test",
+            password="1234password",
+            email="user.test3@gmail.com",
+            salt=salt,
+        )
+        created = dao.add_user(user=user)
+        assert created is not None
+        user2 = dao.get_by_id(created)
+        assert user2 is not None
+        assert user2.user_name == username
+        assert user2.first_name == "User"
+        assert user2.last_name == "Test"
 
-def test_add_user_ko(dao):
-    """Test: Adding a user that already exists should fail and return None"""
-    username = unique_username("user_test")
-    salt = create_salt()
-    user = User(
-        user_name=username,
-        first_name="User",
-        last_name="Test",
-        password="1234password",
-        email="user.test2@gmail.com",
-        salt=salt,
-    )
-    created = dao.add_user(user)
-    assert created is not None
-    created2 = dao.add_user(user)
-    assert created2 is None
+    def test_get_by_id_ko(self, dao):
+        """Attempt to retrieve a non-existent user by ID should return None"""
+        retrieved = dao.get_by_id(10000)
+        assert retrieved is None
 
+    def test_get_by_username_ok(self, dao):
+        """Retrieve an existing user by their username successfully"""
+        username = unique_username("user_test")
+        salt = create_salt()
+        user = User(
+            user_name=username,
+            first_name="User",
+            last_name="Test",
+            password="1234password",
+            email="user.test4@gmail.com",
+            salt=salt,
+        )
+        created = dao.add_user(user)
+        assert created is not None
+        user2 = dao.get_by_username(username)
+        assert user2 is not None
+        assert user2.user_name == username
+        assert user2.first_name == "User"
+        assert user2.last_name == "Test"
 
-def test_get_by_id_ok(dao):
-    """Test: Retrieve an existing user by their ID and verify their details."""
-    username = unique_username("user_test")
-    salt = create_salt()
-    user = User(
-        user_name=username,
-        first_name="User",
-        last_name="Test",
-        password="1234password",
-        email="user.test3@gmail.com",
-        salt=salt,
-    )
-    created = dao.add_user(user=user)
-    assert created is not None
-    user2 = dao.get_by_id(created)
-    assert user2 is not None
-    assert user2.user_name == username
-    assert user2.first_name == "User"
-    assert user2.last_name == "Test"
-
-
-def test_get_by_id_ko(dao):
-    """Test: Attempt to retrieve a non-existent user by ID should return None."""
-    retrieved = dao.get_by_id(10000)
-    assert retrieved is None
-
-
-def test_get_by_username_ok(dao):
-    """Test: Retrieve an existing user by their username successfully."""
-    username = unique_username("user_test")
-    salt = create_salt()
-    user = User(
-        user_name=username,
-        first_name="User",
-        last_name="Test",
-        password="1234password",
-        email="user.test4@gmail.com",
-        salt=salt,
-    )
-    created = dao.add_user(user)
-    assert created is not None
-    user2 = dao.get_by_username(username)
-    assert user2 is not None
-    assert user2.user_name == username
-    assert user2.first_name == "User"
-    assert user2.last_name == "Test"
-
-
-def test_delete_user_ok(dao):
-    """Test: Successfully delete a user by their ID and verify they no longer exist."""
-    username = unique_username("user_test")
-    salt = create_salt()
-    user = User(
-        user_name=username,
-        first_name="User",
-        last_name="Test",
-        password="1234password",
-        email="user.test5@gmail.com",
-        salt=salt,
-    )
-    created = dao.add_user(user)
-    assert created is not None
-    retrieved = dao.delete_user(created)
-    assert retrieved
-    retrieved = dao.get_by_id(created)
-    assert retrieved is None
+    def test_delete_user_ok(self, dao):
+        """Successfully delete a user by their ID"""
+        username = unique_username("user_test")
+        salt = create_salt()
+        user = User(
+            user_name=username,
+            first_name="User",
+            last_name="Test",
+            password="1234password",
+            email="user.test5@gmail.com",
+            salt=salt,
+        )
+        created = dao.add_user(user)
+        assert created is not None
+        deleted = dao.delete_user(created)
+        assert deleted
+        retrieved = dao.get_by_id(created)
+        assert retrieved is None

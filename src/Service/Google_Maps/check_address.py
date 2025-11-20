@@ -7,7 +7,6 @@ from dotenv import load_dotenv
 load_dotenv()
 load_dotenv(".env")
 load_dotenv("/PROJET_INFO_2A/.env")
-# Importe la clef API de manière sécurisée
 API_KEY = os.getenv("API_KEY_GOOGLE_MAPS")
 gmaps = googlemaps.Client(key=API_KEY)
 
@@ -46,7 +45,6 @@ def is_address_sufficient_for_routing(adresse: str) -> Tuple[bool, str]:
     if not results:
         return False, ""
 
-    # Prendre le premier résultat
     best_result = results[0]
     formatted_address = best_result.get("formatted_address", "")
     address_components = best_result.get("address_components", [])

@@ -23,24 +23,19 @@ def dao():
     return address_dao
 
 
-# --- Tests ---
+class TestAddressDAO:
+    """Tests for AddressDAO"""
 
+    def test_add_address_ok(self, dao):
+        """Test: Verify that a new address can be successfully added to the database."""
+        address = Address(address="14 Rue du Chapitre", postal_code=35000, city="Rennes")
+        result = dao.add_address(address)
+        assert result
+        assert result.id_address > 0
 
-def test_add_address_ok(dao):
-    """Test : Verify that a new address can be successfully added to the database."""
-    address = Address(address="14 Rue du Chapitre", postal_code=35000, city="Rennes")
-
-    result = dao.add_address(address)
-
-    assert result
-    assert result.id_address > 0
-
-
-def test_add_address_ko_invalid_postal_db(dao):
-    """Test : Verify that a new address can be unsuccessfully added to the database with a wrong postalcode."""
-    address = Address(address="Rue test", postal_code=9999999, city="Rennes")
-
-    result = dao.add_address(address)
-
-    assert result is None
-    assert address.id_address is None
+    def test_add_address_ko_invalid_postal_db(self, dao):
+        """Test: Verify that a new address cannot be added with an invalid postal code."""
+        address = Address(address="Rue test", postal_code=9999999, city="Rennes")
+        result = dao.add_address(address)
+        assert result is None
+        assert address.id_address is None

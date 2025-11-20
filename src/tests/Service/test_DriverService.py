@@ -9,179 +9,135 @@ from src.utils.reset_database import ResetDatabase
 
 @pytest.fixture(autouse=True)
 def reset_db():
-    """Reset la base de test avant chaque test."""
+    """Reset the test database before each test."""
     ResetDatabase(test=True).lancer()
 
 
 @pytest.fixture
 def dao():
-    """DAO Driver pour les tests."""
+    """Driver DAO for testing."""
     return DriverDAO(DBConnector(test=True))
 
 
 @pytest.fixture
 def service(dao):
-    """Service basé sur le DAO."""
+    """Service based on the DAO."""
     return DriverService(driverdao=dao)
 
 
-# ---------------------------------------------------------------------------
-# CREATE
-# ---------------------------------------------------------------------------
+class TestDriverService:
+    """Tests for DriverService"""
 
-def test_create_ok(service):
-    # Act
-    driver = service.create_driver(
-        username="DriverTest",
-        password="SecurePass123",
-        firstname="John",
-        lastname="Doe",
-        email="john.doe@test.com",
-        mean_of_transport="Car"
-    )
-
-    # Assert
-    assert driver is not None
-    assert isinstance(driver, Driver)
-    assert driver.id_driver is not None
-    assert driver.user_name == "DriverTest"
-    assert driver.email == "john.doe@test.com"
-
-    # Le mot de passe doit être hashé
-    assert driver.password != "SecurePass123"
-    assert driver.salt is not None
-
-
-def test_create_driver_weak_password(service):
-    """
-    Mot de passe trop faible → doit lever une exception.
-    """
-    with pytest.raises(Exception) as excinfo:
-        service.create_driver(
-            username="WeakDriver",
-            password="123",  # trop court
-            firstname="Tim",
-            lastname="Short",
-            email="tim.short@test.com",
-            mean_of_transport="Bike"
+    def test_create_ok(self, service):
+        """Test: Successfully create a new driver"""
+        driver = service.create_driver(
+            username="DriverTest",
+            password="SecurePass123",
+            firstname="John",
+            lastname="Doe",
+            email="john.doe@test.com",
+            mean_of_transport="Car",
         )
 
-    assert "password" in str(excinfo.value).lower()
-    assert "8" in str(excinfo.value).lower()
+        assert driver is not None
+        assert isinstance(driver, Driver)
+        assert driver.id_driver is not None
+        assert driver.user_name == "DriverTest"
+        assert driver.email == "john.doe@test.com"
+        assert driver.password != "SecurePass123"
+        assert driver.salt is not None
 
+    def test_create_driver_weak_password(self, service):
+        """Test: Creating a driver with a weak password should raise Exception"""
+        with pytest.raises(Exception) as excinfo:
+            service.create_driver(
+                username="WeakDriver",
+                password="123",  # too short
+                firstname="Tim",
+                lastname="Short",
+                email="tim.short@test.com",
+                mean_of_transport="Bike",
+            )
 
-# ---------------------------------------------------------------------------
-# GET BY USERNAME
-# ---------------------------------------------------------------------------
+        assert "password" in str(excinfo.value).lower()
+        assert "8" in str(excinfo.value).lower()
 
-def test_get_by_username_ok(service):
-    # Arrange
-    service.create_driver(
-        username="DriverUser",
-        password="MyPassword99",
-        firstname="Alice",
-        lastname="Moran",
-        email="alice2@test.com",
-        mean_of_transport="Car"
-    )
+    def test_get_by_username_ok(self, service):
+        """Test: Retrieve an existing driver by username"""
+        service.create_driver(
+            username="DriverUser",
+            password="MyPassword99",
+            firstname="Alice",
+            lastname="Moran",
+            email="alice2@test.com",
+            mean_of_transport="Car",
+        )
 
-    # Act
-    driver = service.get_by_username("DriverUser")
+        driver = service.get_by_username("DriverUser")
+        assert driver is not None
+        assert isinstance(driver, Driver)
+        assert driver.user_name == "DriverUser"
+        assert driver.email == "alice2@test.com"
 
-    # Assert
-    assert driver is not None
-    assert isinstance(driver, Driver)
-    assert driver.user_name == "DriverUser"
-    assert driver.email == "alice2@test.com"
+    def test_login_ok(self, service):
+        """Test: Successfully log in with correct credentials"""
+        service.create_driver(
+            username="LoginDriver",
+            password="StrongPass88",
+            firstname="Laura",
+            lastname="Sky",
+            email="laura@test.com",
+            mean_of_transport="Car",
+        )
 
+        logged = service.login("LoginDriver", "StrongPass88")
+        assert logged is not None
+        assert isinstance(logged, Driver)
+        assert logged.user_name == "LoginDriver"
 
-# ---------------------------------------------------------------------------
-# LOGIN
-# ---------------------------------------------------------------------------
+    def test_login_wrong_password(self, service):
+        """Test: Login fails with incorrect password"""
+        service.create_driver(
+            username="WrongPassDriver",
+            password="CorrectPass123",
+            firstname="Mark",
+            lastname="Stone",
+            email="mark@test.com",
+            mean_of_transport="Bike",
+        )
 
-def test_login_ok(service):
-    # Arrange
-    service.create_driver(
-        username="LoginDriver",
-        password="StrongPass88",
-        firstname="Laura",
-        lastname="Sky",
-        email="laura@test.com",
-        mean_of_transport="Car"
-    )
+        logged = service.login("WrongPassDriver", "badpass")
+        assert logged is None
 
-    # Act
-    logged = service.login("LoginDriver", "StrongPass88")
+    def test_update_driver_ok(self, service):
+        """Test: Successfully update a driver's transport method"""
+        driver = service.create_driver(
+            username="UpdateDriver",
+            password="SafePassword777",
+            firstname="Paul",
+            lastname="Rex",
+            email="paul@test.com",
+            mean_of_transport="Car",
+        )
 
-    # Assert
-    assert logged is not None
-    assert isinstance(logged, Driver)
-    assert logged.user_name == "LoginDriver"
+        driver.mean_of_transport = "Bike"
+        updated = service.update_driver(driver.user_name, "Bike")
+        assert updated is True
 
+        refreshed = service.get_by_username("UpdateDriver")
+        assert refreshed.mean_of_transport == "Bike"
 
-def test_login_wrong_password(service):
-    # Arrange
-    service.create_driver(
-        username="WrongPassDriver",
-        password="CorrectPass123",
-        firstname="Mark",
-        lastname="Stone",
-        email="mark@test.com",
-        mean_of_transport="Bike"
-    )
+    def test_delete_driver_ok(self, service):
+        """Test: Successfully delete an existing driver"""
+        driver = service.create_driver(
+            username="DeleteDriver",
+            password="RemovePass55",
+            firstname="Lola",
+            lastname="Briggs",
+            email="lola@test.com",
+            mean_of_transport="Bike",
+        )
 
-    # Act
-    logged = service.login("WrongPassDriver", "badpass")
-
-    # Assert
-    assert logged is None
-
-
-# ---------------------------------------------------------------------------
-# UPDATE
-# ---------------------------------------------------------------------------
-
-def test_update_driver_ok(service):
-    # Arrange
-    driver = service.create_driver(
-        username="UpdateDriver",
-        password="SafePassword777",
-        firstname="Paul",
-        lastname="Rex",
-        email="paul@test.com",
-        mean_of_transport="Car"
-    )
-
-    driver.mean_of_transport = "Bike"
-
-    # Act
-    updated = service.update_driver(driver.user_name, "Bike")
-
-    # Assert
-    assert updated is True
-
-    refreshed = service.get_by_username("UpdateDriver")
-    assert refreshed.mean_of_transport == "Bike"
-
-
-# ---------------------------------------------------------------------------
-# DELETE
-# ---------------------------------------------------------------------------
-
-def test_delete_driver_ok(service):
-    # Arrange
-    driver = service.create_driver(
-        username="DeleteDriver",
-        password="RemovePass55",
-        firstname="Lola",
-        lastname="Briggs",
-        email="lola@test.com",
-        mean_of_transport="Bike"
-    )
-
-    # Act
-    deleted = service.delete_driver(driver.id_driver)
-
-    # Assert
-    assert deleted is True
-    assert service.get_by_username("DeleteDriver") is None
+        deleted = service.delete_driver(driver.id_driver)
+        assert deleted is True
+        assert service.get_by_username("DeleteDriver") is None

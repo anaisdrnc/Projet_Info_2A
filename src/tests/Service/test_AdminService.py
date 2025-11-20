@@ -13,145 +13,108 @@ from src.utils.securite import hash_password
 
 @pytest.fixture(autouse=True)
 def reset_db():
-    """Reset the test database avant chaque test"""
+    """Reset the database before each test"""
     ResetDatabase(test=True).lancer()
 
 
 @pytest.fixture
 def dao():
-    """DAO pour tests"""
+    """DAO configured for testing"""
     return AdminDAO(DBConnector(test=True))
 
 
 @pytest.fixture
 def service(dao):
-    """Service basé sur le DAO"""
+    """Service based on the DAO"""
     return AdminService(admindao=dao)
 
 
-def test_create_ok(service):
-    # Act
-    admin = service.create_admin(
-        username="JulDjrdn",
-        password="Caraibe35",
-        first_name="Julie",
-        last_name="Dujardin",
-        email="julie.dujardin@gmail.com",
-    )
+class TestAdminService:
+    """Tests for AdminService"""
 
-    # Assert
-    assert admin is not None
-    assert isinstance(admin, Admin) or isinstance(admin, User)
-    assert admin.id_admin is not None  # id généré
-    assert admin.user_name == "JulDjrdn"
-    assert admin.email == "julie.dujardin@gmail.com"
-
-    # Vérifie que le mot de passe a bien été hashé et qu’il y a un salt
-    assert admin.password != "Caraibe35"
-    assert admin.salt is not None
-
-
-def test_create_admin_weak_password(service):
-    """
-    Test KO : le mot de passe est trop faible -> doit lever une Exception.
-    """
-    with pytest.raises(Exception) as excinfo:
-        service.create_admin(
-            username="WeakAdmin",
-            password="123",  # trop court
-            first_name="Jean",
-            last_name="Dupont",
-            email="jean.dupont@example.com",
+    def test_create_ok(self, service):
+        """Test: Successfully create a new admin with a strong password"""
+        admin = service.create_admin(
+            username="JulDjrdn",
+            password="Caraibe35",
+            first_name="Julie",
+            last_name="Dujardin",
+            email="julie.dujardin@gmail.com",
         )
 
-    assert "password" in str(excinfo.value).lower()
-    assert "8" in str(excinfo.value)  # pour vérifier le message d'erreur
+        assert admin is not None
+        assert isinstance(admin, (Admin, User))
+        assert admin.id_admin is not None
+        assert admin.user_name == "JulDjrdn"
+        assert admin.email == "julie.dujardin@gmail.com"
+        assert admin.password != "Caraibe35"
+        assert admin.salt is not None
 
+    def test_create_admin_weak_password(self, service):
+        """Test: Creating an admin with weak password should raise Exception"""
+        with pytest.raises(Exception) as excinfo:
+            service.create_admin(
+                username="WeakAdmin",
+                password="123",
+                first_name="Jean",
+                last_name="Dupont",
+                email="jean.dupont@example.com",
+            )
+        assert "password" in str(excinfo.value).lower()
+        assert "8" in str(excinfo.value)
 
-def test_get_by_username_ok(service, dao):
-    """
-    Test OK : le DAO retourne un Admin valide.
-    """
-    # Arrange : on crée un admin dans la base
-    service.create_admin(
-        username="JulDjrdn",
-        password="Caraibe35",
-        first_name="Julie",
-        last_name="Dujardin",
-        email="julie.dujardin@gmail.com",
-    )
+    def test_get_by_username_ok(self, service):
+        """Test: Retrieve an existing admin by username"""
+        service.create_admin(
+            username="JulDjrdn",
+            password="Caraibe35",
+            first_name="Julie",
+            last_name="Dujardin",
+            email="julie.dujardin@gmail.com",
+        )
+        admin = service.get_by_username("JulDjrdn")
+        assert admin is not None
+        assert isinstance(admin, Admin)
+        assert admin.user_name == "JulDjrdn"
+        assert admin.email == "julie.dujardin@gmail.com"
 
-    # Act : on tente de le récupérer
-    admin = service.get_by_username("JulDjrdn")
+    def test_get_by_username_ko(self, service):
+        """Test: Retrieving a non-existent admin should return None"""
+        service.admindao.get_by_username = MagicMock(side_effect=Exception("DB error"))
+        result = service.get_by_username("inexistant")
+        assert result is None
 
-    # Assert
-    assert admin is not None
-    assert isinstance(admin, Admin)
-    assert admin.user_name == "JulDjrdn"
-    assert admin.email == "julie.dujardin@gmail.com"
+    def test_get_by_id_ok(self, service):
+        """Test: Retrieve an existing admin by ID"""
+        created = service.create_admin(
+            username="TestAdmin",
+            password="StrongPass1",
+            first_name="Alice",
+            last_name="Durand",
+            email="aliced@example.com",
+        )
+        admin = service.get_by_id(created.id_admin)
+        assert admin is not None
+        assert isinstance(admin, Admin)
+        assert admin.id_admin == created.id_admin
+        assert admin.user_name == "TestAdmin"
 
+    def test_get_by_id_ko(self, service):
+        """Test: Retrieving non-existent admin by ID should return None"""
+        service.admindao.get_by_id = MagicMock(side_effect=Exception("DB error"))
+        result = service.get_by_id(999)
+        assert result is None
 
-def test_get_by_username_ko(service):
-    """
-    Test KO : le DAO lève une exception, le service doit retourner None.
-    """
-    # Arrange : on force une exception dans le DAO
-    service.admindao.get_by_username = MagicMock(side_effect=Exception("DB error"))
+    def test_verify_password_ok(self, service):
+        """Test: verify_password returns True when the password is correct"""
+        pwd = "StrongPass1"
+        salt = "selDeTest"
+        hashed = hash_password(pwd, salt)
+        assert service.verify_password(pwd, hashed, salt) is True
 
-    # Act
-    result = service.get_by_username("inexistant")
-
-    # Assert
-    assert result is None
-
-def test_get_by_id_ok(service):
-    """
-    Test OK : récupération d'un admin par son id_admin.
-    """
-    created = service.create_admin(
-        username="TestAdmin",
-        password="StrongPass1",
-        first_name="Alice",
-        last_name="Durand",
-        email="aliced@example.com",
-    )
-
-    admin = service.get_by_id(created.id_admin)
-
-    assert admin is not None
-    assert isinstance(admin, Admin)
-    assert admin.id_admin == created.id_admin
-    assert admin.user_name == "TestAdmin"
-
-
-def test_get_by_id_ko(service):
-    """
-    Test KO : le DAO lève une erreur → le service doit retourner None.
-    """
-    service.admindao.get_by_id = MagicMock(side_effect=Exception("DB error"))
-
-    result = service.get_by_id(999)
-
-    assert result is None
-
-
-def test_verify_password_ok(service):
-    """
-    Test OK : verify_password retourne True quand le mot de passe est correct.
-    """
-    pwd = "StrongPass1"
-    salt = "selDeTest"
-    hashed = hash_password(pwd, salt)
-
-    assert service.verify_password(pwd, hashed, salt) is True
-
-
-def test_verify_password_ko(service):
-    """
-    Test KO : verify_password retourne False quand le mot de passe est incorrect.
-    """
-    pwd = "StrongPass1"
-    salt = "selDeTest"
-    hashed = hash_password(pwd, salt)
-
-    assert service.verify_password("WrongPassword", hashed, salt) is False
+    def test_verify_password_ko(self, service):
+        """Test: verify_password returns False when the password is incorrect"""
+        pwd = "StrongPass1"
+        salt = "selDeTest"
+        hashed = hash_password(pwd, salt)
+        assert service.verify_password("WrongPassword", hashed, salt) is False

@@ -8,10 +8,8 @@ from dotenv import load_dotenv
 load_dotenv()
 load_dotenv(".env")
 load_dotenv("/PROJET_INFO_2A/.env")
-#Importer la clef API de manière sécurisée
 API_KEY = os.getenv("API_KEY_GOOGLE_MAPS")
 
-# Initialiser le client Google Maps
 gmaps = googlemaps.Client(key=API_KEY)
 
 
@@ -60,7 +58,7 @@ def display_itinerary_details(directions):
     leg = directions[0]["legs"][0]
 
     print("\nMain steps:")
-    for i, step in enumerate(leg["steps"], 1):  # Afficher toutes les étapes
+    for i, step in enumerate(leg["steps"], 1):
         instruction = (
             step["html_instructions"]
             .replace("<b>", "")
@@ -73,7 +71,6 @@ def display_itinerary_details(directions):
         print(f"   {i}. {instruction} ({step['distance']['text']})")
 
 
-# Récupérer les directions
 def create_map(origin, destination, transport_mode):
     """
     Creates and saves an interactive map where we can see the starting and ending points of the path computed,
@@ -105,10 +102,8 @@ def create_map(origin, destination, transport_mode):
     print(f" Distance : {distance}")
     print(f" Durée estimée : {duration}")
 
-    # Carte créée avec Folium
     m = folium.Map(location=[start_location["lat"], start_location["lng"]], zoom_start=6)
 
-    # Ajouter un marqueur pour le point de départ et d’arrivée
     folium.Marker(
         [start_location["lat"], start_location["lng"]],
         popup=f"Départ : {origin}",
@@ -121,7 +116,6 @@ def create_map(origin, destination, transport_mode):
         icon=folium.Icon(color="red"),
     ).add_to(m)
 
-    # Extraire les points du polyline
     path = []
 
     for step in leg["steps"]:
@@ -130,7 +124,6 @@ def create_map(origin, destination, transport_mode):
         for point in decoded_points:
             path.append((point["lat"], point["lng"]))
 
-    # Trace une ligne détaillée sur la carte
     folium.PolyLine(path, color="blue", weight=5, opacity=0.7).add_to(m)
 
     script_dir = os.path.dirname(os.path.abspath(__file__))
