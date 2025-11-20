@@ -2,9 +2,8 @@ import logging
 
 import dotenv
 
-
-from CLI.opening.openingview import OpeningView
-from utils.log_init import initialiser_logs
+from src.CLI.opening.openingview import OpeningView
+from src.utils.log_init import initialiser_logs
 
 if __name__ == "__main__":
     # On charge les variables d'envionnement

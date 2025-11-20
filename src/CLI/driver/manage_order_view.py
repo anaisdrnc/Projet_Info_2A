@@ -16,12 +16,12 @@ sys.path.insert(0, src_dir)
 sys.path.insert(0, utils_dir)
 
 try:
-    from CLI.view_abstract import VueAbstraite
-    from DAO.DriverDAO import DriverDAO
-    from DAO.OrderDAO import OrderDAO
-    from Service.Google_Maps.map import compute_itinerary, create_map, display_itinerary_details
-    from Service.OrderService import OrderService
-    from CLI.session import Session
+    from src.CLI.view_abstract import VueAbstraite
+    from src.DAO.DriverDAO import DriverDAO
+    from src.DAO.OrderDAO import OrderDAO
+    from src.Service.Google_Maps.map import compute_itinerary, create_map, display_itinerary_details
+    from src.Service.OrderService import OrderService
+    from src.CLI.session import Session
 except ImportError as e:
     print(f"Erreur d'import: {e}")
     print(f"Python path: {sys.path}")

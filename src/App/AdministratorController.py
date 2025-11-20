@@ -1,18 +1,18 @@
 from typing import TYPE_CHECKING, Annotated
-from utils.securite import hash_password
+from src.utils.securite import hash_password
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials
-from Service.PasswordService import check_password_strength, create_salt
-from Model.APIUser import APIUser
-from Model.JWTResponse import JWTResponse
-from Service.AdminService import AdminService
-from .init_app import jwt_service
-from .JWTBearer import JWTBearer
-from DAO.AdminDAO import AdminDAO
-from DAO.DBConnector import DBConnector
+from src.Service.PasswordService import check_password_strength, create_salt
+from src.Model.APIUser import APIUser
+from src.Model.JWTResponse import JWTResponse
+from src.Service.AdminService import AdminService
+from src.App.init_app import jwt_service
+from src.App.JWTBearer import JWTBearer
+from src.DAO.AdminDAO import AdminDAO
+from src.DAO.DBConnector import DBConnector
 
 if TYPE_CHECKING:
-    from Model.Admin import Admin
+    from src.Model.Admin import Admin
 
 from pydantic import BaseModel
 

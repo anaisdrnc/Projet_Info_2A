@@ -2,13 +2,13 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.responses import RedirectResponse
 
-from .AdministratorController import admin_router
-from .OrderController import order_router
-from .DriverController import driver_router
+from src.App.AdministratorController import admin_router
+from src.App.OrderController import order_router
+from src.App.DriverController import driver_router
 
 # from .MovieController import movie_router
 # from .UserController import user_router
-from .ProductController import product_router
+from src.App.ProductController import product_router
 
 app = FastAPI(title="Projet Info 2A", description="UB'EJR")
 # app.include_router(user_router)
@@ -25,4 +25,4 @@ async def redirect_to_docs():
 
 
 def run_app():
-    uvicorn.run("App.API:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("src.App.API:app", host="0.0.0.0", port=8000, reload=True)

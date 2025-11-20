@@ -31,18 +31,19 @@ testpaths = [
     "tests",
 ]
 
-
 [tool.pdm]
-distribution = false
-
+packages = [
+    { include = "src" }
+]
 
 [tool.pdm.scripts]
 lint = "ruff check"
 format = "ruff format"
 test = "pytest tests --cov=src"
-start = "pdm run src/__main__.py"
-cli = "pdm run src/main_CLI.py"
+start = "python -m src.__main__"
+cli = "python -m src.main_CLI"
 typecheck = "pyrefly check"
+
 
 [tool.ruff]
 line-length = 120
