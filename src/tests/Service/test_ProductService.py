@@ -1,8 +1,9 @@
 import pytest
+
 from src.DAO.DBConnector import DBConnector
 from src.DAO.ProductDAO import ProductDAO
-from src.Service.ProductService import ProductService
 from src.Model.Product import Product
+from src.Service.ProductService import ProductService
 from src.utils.reset_database import ResetDatabase
 
 
@@ -125,9 +126,7 @@ def test_get_list_products_descriptions(service):
         service.productdao.create_product(p)
 
     result = service.get_list_products_descriptions()
-    result_list = [
-        [r["name"], r["description"]] if isinstance(r, dict) else r for r in result
-    ]
+    result_list = [[r["name"], r["description"]] if isinstance(r, dict) else r for r in result]
 
     for p in products_to_add:
         assert [p.name, p.description] in result_list

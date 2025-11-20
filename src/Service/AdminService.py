@@ -1,12 +1,13 @@
 import logging
+
 from fastapi import HTTPException
+
 from src.DAO.AdminDAO import AdminDAO
 from src.DAO.DBConnector import DBConnector
 from src.Model.Admin import Admin
 from src.Service.PasswordService import check_password_strength, create_salt
 from src.utils.log_decorator import log
 from src.utils.securite import hash_password
-
 
 
 class AdminService:
@@ -16,9 +17,7 @@ class AdminService:
         self.admindao = admindao or AdminDAO(DBConnector())
 
     @log
-    def create_admin(
-        self, username: str, password: str, first_name: str, last_name: str, email: str
-    ) -> Admin:
+    def create_admin(self, username: str, password: str, first_name: str, last_name: str, email: str) -> Admin:
         """
         Crée un nouveau admin :
         - Vérifie la force du mot de passe
@@ -58,28 +57,22 @@ class AdminService:
             raise
         except Exception as e:
             logging.error(f"[AdminService] Erreur lors de la mise à jour de l'admin {admin.id}: {e}")
-            raise HTTPException(status_code=500, detail=str(e))
-
+            raise HTTPException(status_code=500, detail=str(e)) from e
 
     def get_by_username(self, username: str) -> Admin | None:
         """Récupère un administrateur à partir de son nom d'utilisateur."""
         try:
             return self.admindao.get_by_username(username)
         except Exception as e:
-            logging.error(
-                f"[AdminService] Erreur lors de la récupération de l'admin {username}: {e}"
-            )
+            logging.error(f"[AdminService] Erreur lors de la récupération de l'admin {username}: {e}")
             return None
-
 
     def get_by_id(self, admin_id: int) -> Admin | None:
         """Récupère un administrateur à partir de son id_admin."""
         try:
             return self.admindao.get_by_id(admin_id)
         except Exception as e:
-            logging.error(
-                f"[AdminService] Erreur lors de la récupération de l'admin id={admin_id}: {e}"
-            )
+            logging.error(f"[AdminService] Erreur lors de la récupération de l'admin id={admin_id}: {e}")
             return None
 
     def verify_password(self, plain_password: str, hashed_password: str, salt: str) -> bool:

@@ -3,15 +3,14 @@ from typing import TYPE_CHECKING, Annotated
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials
 
+from src.App.init_app import jwt_service, user_repo, user_service
+from src.App.JWTBearer import JWTBearer
 from src.Model.APIUser import APIUser
 from src.Model.JWTResponse import JWTResponse
 from src.Service.PasswordService import (
     check_password_strength,
     validate_username_password,
 )
-
-from src.App.init_app import jwt_service, user_repo, user_service
-from src.App.JWTBearer import JWTBearer
 
 if TYPE_CHECKING:
     from src.Model.User import User
@@ -31,9 +30,7 @@ def create_user(username: str, password: str) -> APIUser:
     try:
         user: User = user_service.create_user(username=username, password=password)
     except Exception as error:
-        raise HTTPException(
-            status_code=409, detail="Username already exists"
-        ) from error
+        raise HTTPException(status_code=409, detail="Username already exists") from error
 
     return APIUser(id=user.id, username=user.username)
 
@@ -44,13 +41,9 @@ def login(username: str, password: str) -> JWTResponse:
     Authenticate with username and password and obtain a token
     """
     try:
-        user = validate_username_password(
-            username=username, password=password, user_repo=user_repo
-        )
+        user = validate_username_password(username=username, password=password, user_repo=user_repo)
     except Exception as error:
-        raise HTTPException(
-            status_code=403, detail="Invalid username and password combination"
-        ) from error
+        raise HTTPException(status_code=403, detail="Invalid username and password combination") from error
 
     return jwt_service.encode_jwt(user.id)
 

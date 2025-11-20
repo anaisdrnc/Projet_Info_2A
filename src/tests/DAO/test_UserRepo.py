@@ -65,9 +65,9 @@ def test_add_user_ko(dao):
         salt=salt,
     )
     created = dao.add_user(user)
-    assert created != None
+    assert created is not None
     created2 = dao.add_user(user)
-    assert created2 == None
+    assert created2 is None
 
 
 def test_get_by_id_ok(dao):
@@ -83,7 +83,7 @@ def test_get_by_id_ok(dao):
         salt=salt,
     )
     created = dao.add_user(user=user)
-    assert created != None
+    assert created is not None
     user2 = dao.get_by_id(created)
     assert user2 is not None
     assert user2.user_name == username
@@ -94,7 +94,7 @@ def test_get_by_id_ok(dao):
 def test_get_by_id_ko(dao):
     """Test: Attempt to retrieve a non-existent user by ID should return None."""
     retrieved = dao.get_by_id(10000)
-    assert retrieved == None
+    assert retrieved is None
 
 
 def test_get_by_username_ok(dao):
@@ -110,7 +110,7 @@ def test_get_by_username_ok(dao):
         salt=salt,
     )
     created = dao.add_user(user)
-    assert created != None
+    assert created is not None
     user2 = dao.get_by_username(username)
     assert user2 is not None
     assert user2.user_name == username
@@ -131,8 +131,8 @@ def test_delete_user_ok(dao):
         salt=salt,
     )
     created = dao.add_user(user)
-    assert created != None
+    assert created is not None
     retrieved = dao.delete_user(created)
     assert retrieved
     retrieved = dao.get_by_id(created)
-    assert retrieved == None
+    assert retrieved is None

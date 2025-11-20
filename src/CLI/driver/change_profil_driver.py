@@ -49,7 +49,8 @@ class ChangeProfilDriver(VueAbstraite):
                 username = Session().username
                 old_password = inquirer.secret(message="Enter your current password : ").execute()
                 new_password = inquirer.secret(message= "Enter your new password :").execute()
-                works = userservice.change_password(user_name=username, old_password=old_password, new_password=new_password)
+                works = userservice.change_password(user_name=username, old_password=old_password,
+                new_password=new_password)
 
                 if works :
                     message = "Success"

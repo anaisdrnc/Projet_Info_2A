@@ -1,5 +1,3 @@
-import logging
-
 from src.DAO.DriverDAO import DriverDAO
 from src.Model.Driver import Driver
 from src.Service.PasswordService import check_password_strength, create_salt

@@ -1,15 +1,15 @@
 import regex
 from InquirerPy import inquirer
-from InquirerPy.validator import EmptyInputValidator, PasswordValidator
+from InquirerPy.validator import PasswordValidator
 from prompt_toolkit.validation import ValidationError, Validator
 
-from src.Service.UserService import UserService
-from src.Service.CustomerService import CustomerService
 from src.CLI.view_abstract import VueAbstraite
-from src.DAO.UserRepo import UserRepo
 from src.DAO.CustomerDAO import CustomerDAO
 from src.DAO.DBConnector import DBConnector
+from src.DAO.UserRepo import UserRepo
+from src.Service.CustomerService import CustomerService
 from src.Service.PasswordService import check_password_strength
+from src.Service.UserService import UserService
 
 
 class InscriptionView(VueAbstraite):
@@ -46,9 +46,7 @@ class InscriptionView(VueAbstraite):
 
         last_name = inquirer.text(message="Enter your lastname : ").execute()
 
-        mail = inquirer.text(
-            message="Entrez votre mail : ", validate=MailValidator()
-        ).execute()
+        mail = inquirer.text(message="Entrez votre mail : ", validate=MailValidator()).execute()
 
         # Appel du service pour créer le joueur
         customer = customer_service.create_customer(
@@ -77,6 +75,4 @@ class MailValidator(Validator):
     def validate(self, document) -> None:
         ok = regex.match(r"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$", document.text)
         if not ok:
-            raise ValidationError(
-                message="Please enter a valid mail", cursor_position=len(document.text)
-            )
+            raise ValidationError(message="Please enter a valid mail", cursor_position=len(document.text))

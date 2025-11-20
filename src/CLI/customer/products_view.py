@@ -1,5 +1,3 @@
-from InquirerPy import inquirer
-
 from src.CLI.view_abstract import VueAbstraite
 from src.DAO.DBConnector import DBConnector
 from src.DAO.ProductDAO import ProductDAO
@@ -25,7 +23,7 @@ class ProductView(VueAbstraite):
 
         from CLI.customer.menu_customer import MenuView
 
-        products_str = f"List of available products : \n\n"
+        products_str = "List of available products : \n\n"
         for product in list_products:
             products_str += (
                 f" {product[0]}, ingredients : {product[1]}, price : {product[2]} \n"

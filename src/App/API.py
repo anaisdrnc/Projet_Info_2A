@@ -3,16 +3,11 @@ from fastapi import FastAPI
 from fastapi.responses import RedirectResponse
 
 from src.App.AdministratorController import admin_router
-from src.App.OrderController import order_router
 from src.App.DriverController import driver_router
-
-# from .MovieController import movie_router
-# from .UserController import user_router
+from src.App.OrderController import order_router
 from src.App.ProductController import product_router
 
 app = FastAPI(title="Projet Info 2A", description="UB'EJR")
-# app.include_router(user_router)
-# app.include_router(movie_router)
 app.include_router(product_router)
 app.include_router(order_router)
 app.include_router(admin_router)

@@ -2,8 +2,6 @@ from InquirerPy import inquirer
 
 from src.CLI.session import Session
 from src.CLI.view_abstract import VueAbstraite
-from src.Service.CustomerService import CustomerService
-from src.Service.UserService import UserService
 
 
 class MenuView(VueAbstraite):

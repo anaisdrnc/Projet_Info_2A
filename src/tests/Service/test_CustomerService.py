@@ -1,12 +1,12 @@
-import pytest
 from unittest.mock import MagicMock
+
+import pytest
 
 from src.DAO.CustomerDAO import CustomerDAO
 from src.DAO.DBConnector import DBConnector
 from src.Model.Customer import Customer
 from src.Service.CustomerService import CustomerService
 from src.utils.reset_database import ResetDatabase
-from src.utils.securite import hash_password
 
 
 @pytest.fixture(autouse=True)
@@ -59,6 +59,7 @@ def test_create_customer_weak_password(service):
             email="weak@example.com",
         )
 
+
 def test_get_by_id_ok(service):
     customer = service.create_customer(
         username="johnDoe",
@@ -105,7 +106,6 @@ def test_update_customer_ok(service):
     assert updated.email == "new@example.com"
 
 
-
 def test_update_customer_ko(service):
     """KO : le DAO lève une exception → le service doit retourner False"""
     customer = Customer(
@@ -123,5 +123,3 @@ def test_update_customer_ko(service):
     result = service.update_customer(customer)
 
     assert result is False
-
-

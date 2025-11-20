@@ -8,10 +8,6 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 project_root = os.path.dirname(current_dir)
 sys.path.insert(0, project_root)
 
-
-#permet d'avoir le même nombre de tests qui fonctionnent dans pytest ou dans testing
-
-
 from DAO.DBConnector import DBConnector
 
 dotenv.load_dotenv()

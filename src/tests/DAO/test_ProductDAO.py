@@ -9,12 +9,6 @@ from src.utils.reset_database import ResetDatabase
 load_dotenv()
 
 
-# @pytest.fixture(autouse=True)
-# def setup_test_environment():
-# """Reset the test database before each test function"""
-# ResetDatabase(test=True).lancer()
-
-
 @pytest.fixture(scope="session", autouse=True)
 def setup_test_environment():
     """Initialize the test database environment"""

@@ -1,23 +1,22 @@
-from fastapi import APIRouter, HTTPException, status, Depends
-from fastapi.security import HTTPAuthorizationCredentials
 from typing import Annotated
 
-from src.Model.Product import Product
+from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.security import HTTPAuthorizationCredentials
+
+from src.App.JWTBearer import JWTBearer
 from src.DAO.DBConnector import DBConnector
 from src.DAO.ProductDAO import ProductDAO
+from src.Model.Product import Product
 from src.Service.ProductService import ProductService
-from src.App.JWTBearer import JWTBearer  # ton middleware pour vérifier JWT
 
 product_router = APIRouter(prefix="/Product", tags=["Products"])
 db = DBConnector()
 
 
 @product_router.get("/{product_id}", response_model=Product, status_code=status.HTTP_200_OK)
-def get_product_by_id(
-    product_id: int,
-    credentials: Annotated[HTTPAuthorizationCredentials, Depends(JWTBearer())]):
+def get_product_by_id(product_id: int, credentials: Annotated[HTTPAuthorizationCredentials, Depends(JWTBearer())]):
     """Récupère un produit à partir de son ID (accessible à tous)."""
-    productdao = ProductDAO(DBConnector(test = False))
+    productdao = ProductDAO(DBConnector(test=False))
     try:
         product = productdao.get_product_by_id(product_id)
         if product is None:
@@ -31,34 +30,40 @@ def get_product_by_id(
 
 # --- Les endpoints protégés par JWT (admin connecté) ---
 
-@product_router.get("/id/{product_name}", status_code= status.HTTP_200_OK)
-def get_all_products( product_name,
-    credentials: Annotated[HTTPAuthorizationCredentials, Depends(JWTBearer())]):
+
+@product_router.get("/id/{product_name}", status_code=status.HTTP_200_OK)
+def get_all_products(product_name, credentials: Annotated[HTTPAuthorizationCredentials, Depends(JWTBearer())]):
     """Gives all products with id so that the admin can use the others endpoints"""
-    productdao = ProductDAO(DBConnector(test = False))
+    productdao = ProductDAO(DBConnector(test=False))
     product_service = ProductService(productdao)
-    try : 
+    try:
         id_product = product_service.get_id_by_name(product_name)
         return id_product
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
 
-@product_router.post("/", response_model= Product, status_code=status.HTTP_201_CREATED)
+
+@product_router.post("/", response_model=Product, status_code=status.HTTP_201_CREATED)
 def create_product(
-    name, price, description, production_cost, product_type, stock,
-    credentials: Annotated[HTTPAuthorizationCredentials, Depends(JWTBearer())]  # admin connecté
+    name,
+    price,
+    description,
+    production_cost,
+    product_type,
+    stock,
+    credentials: Annotated[HTTPAuthorizationCredentials, Depends(JWTBearer())],  # admin connecté
 ):
     """Crée un nouveau produit (uniquement admin)."""
     productdao = ProductDAO(DBConnector(test=False))
     product_service = ProductService(productdao)
     try:
         new_product = product_service.create(
-            name = name,
-            price = price,
-            production_cost = production_cost,
-            product_type = product_type, 
-            description= description,
-            stock = stock
+            name=name,
+            price=price,
+            production_cost=production_cost,
+            product_type=product_type,
+            description=description,
+            stock=stock,
         )
         if new_product is None:
             raise HTTPException(status_code=500, detail="Product could not be created")
@@ -70,10 +75,10 @@ def create_product(
 @product_router.delete("/{product_id}", status_code=status.HTTP_200_OK)
 def delete_product(
     product_id: int,
-    credentials: Annotated[HTTPAuthorizationCredentials, Depends(JWTBearer())]  # admin connecté
+    credentials: Annotated[HTTPAuthorizationCredentials, Depends(JWTBearer())],  # admin connecté
 ):
     """Supprime un produit (uniquement admin)."""
-    productdao = ProductDAO(DBConnector(test = False))
+    productdao = ProductDAO(DBConnector(test=False))
     product_service = ProductService(productdao)
     try:
         deleted = product_service.delete(product_id)
@@ -89,7 +94,7 @@ def delete_product(
 def update_product(
     product_id: int,
     updated_product: Product,
-    credentials: Annotated[HTTPAuthorizationCredentials, Depends(JWTBearer())]  # admin connecté
+    credentials: Annotated[HTTPAuthorizationCredentials, Depends(JWTBearer())],  # admin connecté
 ):
     """Met à jour un produit existant (uniquement admin)."""
     try:
@@ -130,12 +135,12 @@ def update_product(
 @product_router.put("/update_stock/product_id={product_id}&stock_added={stock_added}", status_code=status.HTTP_200_OK)
 def update_stock(
     product_id: int,
-    stock_added : int,
-    credentials: Annotated[HTTPAuthorizationCredentials, Depends(JWTBearer())]  # admin connecté
-    ):
-    productdao = ProductDAO(DBConnector(test = False))
+    stock_added: int,
+    credentials: Annotated[HTTPAuthorizationCredentials, Depends(JWTBearer())],  # admin connecté
+):
+    productdao = ProductDAO(DBConnector(test=False))
     product_service = ProductService(productdao)
-    try :
+    try:
         added = product_service.increment_stock(product_id=product_id, quantity=stock_added)
         if added:
             return {"message": f"[{stock_added}] was successfully added to the stock of product with id [{product_id}]"}

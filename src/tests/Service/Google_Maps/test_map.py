@@ -2,7 +2,11 @@ from unittest.mock import patch
 
 import pytest
 
-from src.Service.Google_Maps.check_address import check_address, get_address_suggestions, is_address_sufficient_for_routing
+from src.Service.Google_Maps.check_address import (
+    check_address,
+    get_address_suggestions,
+    is_address_sufficient_for_routing,
+)
 
 
 @pytest.fixture
@@ -84,9 +88,7 @@ def test_is_address_sufficient_for_routing_with_street_and_city(mock_geocode_val
         "src.Service.Google_Maps.check_address.gmaps.geocode",
         return_value=mock_geocode_valid,
     ):
-        is_routable, complete_address = is_address_sufficient_for_routing(
-            "10 Rue de Paris, Paris"
-        )
+        is_routable, complete_address = is_address_sufficient_for_routing("10 Rue de Paris, Paris")
 
         assert is_routable is True
         assert complete_address == "10 Rue de Paris, 75001 Paris, France"

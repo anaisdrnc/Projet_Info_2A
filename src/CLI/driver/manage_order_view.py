@@ -16,12 +16,12 @@ sys.path.insert(0, src_dir)
 sys.path.insert(0, utils_dir)
 
 try:
+    from src.CLI.session import Session
     from src.CLI.view_abstract import VueAbstraite
     from src.DAO.DriverDAO import DriverDAO
     from src.DAO.OrderDAO import OrderDAO
     from src.Service.Google_Maps.map import compute_itinerary, create_map, display_itinerary_details
     from src.Service.OrderService import OrderService
-    from src.CLI.session import Session
 except ImportError as e:
     print(f"Erreur d'import: {e}")
     print(f"Python path: {sys.path}")
@@ -39,6 +39,7 @@ class ManageOrderView(VueAbstraite):
     """
     Class that defines the view for managing an order from the deliverer's side.
     """
+
     def __init__(self, message="", driver_id=None):
         try:
             super().__init__(message)
@@ -62,11 +63,12 @@ class ManageOrderView(VueAbstraite):
                         if driver:
                             self.driver_id = driver.id_driver
                             print(f"ID found via username: {self.driver_id}")
-                    except:
+                    except Exception as e:
                         # Sinon chercher dans tous les drivers
+                        print(f"Error fetching driver by username: {e}")
                         all_drivers = self.driver_dao.get_all()
                         for driver in all_drivers:
-                            if hasattr(driver, 'user_name') and driver.user_name == session.username:
+                            if hasattr(driver, "user_name") and driver.user_name == session.username:
                                 self.driver_id = driver.id_driver
                                 break
 
@@ -75,8 +77,6 @@ class ManageOrderView(VueAbstraite):
         except Exception as e:
             print(f"Error: {e}")
             self.driver_id = None
-
-
 
     def get_available_orders(self):
         """
@@ -131,9 +131,9 @@ class ManageOrderView(VueAbstraite):
         except Exception as e:
             print(f"Error in get_available_orders: {e}")
             import traceback
+
             traceback.print_exc()
             return []
-
 
     def choisir_menu(self):
         """Main menu for managing orders"""
@@ -147,6 +147,7 @@ class ManageOrderView(VueAbstraite):
             if not driver:
                 print("Driver not found")
                 from CLI.driver.menu_driver import MenuDriver
+
                 return MenuDriver(message="Driver found")
 
             print(f"Deliverer : {driver.first_name} {driver.last_name}")
@@ -157,6 +158,7 @@ class ManageOrderView(VueAbstraite):
             if not available_orders:
                 print("No available orders")
                 from CLI.driver.menu_driver import MenuDriver
+
                 return MenuDriver(message="No available orders")
 
             # Afficher la commande
@@ -168,11 +170,7 @@ class ManageOrderView(VueAbstraite):
 
             choice = inquirer.select(
                 message="Do you accept the delivery ?",
-                choices=[
-                    "Accept the delivery",
-                    "Refuse the delivery",
-                    "Return to the main menu"
-                ],
+                choices=["Accept the delivery", "Refuse the delivery", "Return to the main menu"],
             ).execute()
 
             if choice == "Accept the delivery":
@@ -180,16 +178,18 @@ class ManageOrderView(VueAbstraite):
             elif choice == "Refuse the delivery":
                 print("Order refused")
                 from CLI.driver.menu_driver import MenuDriver
+
                 return MenuDriver(message="Order refused")
             else:
                 from CLI.driver.menu_driver import MenuDriver
+
                 return MenuDriver()
 
         except Exception as e:
             print(f"Error: {e}")
             from CLI.driver.menu_driver import MenuDriver
-            return MenuDriver()
 
+            return MenuDriver()
 
     def accept_delivery(self, order_data):
         """Handles the acceptation of an order"""
@@ -232,7 +232,10 @@ class ManageOrderView(VueAbstraite):
             map_path = create_map(origin, destination, transport_mode)
             if map_path:
                 print(f"Map saved: {map_path}")
-                print("You can now open the map path by downloading the file delivery_path.html in the Google_Maps service")
+                print(
+                    "You can now open the map path by downloading the file delivery_path.html"
+                    "in the Google_Maps service"
+                )
             else:
                 print("Impossible to compute a map")
         else:
@@ -250,21 +253,19 @@ class ManageOrderView(VueAbstraite):
                 print("invalid answer")
 
         choice = inquirer.select(
-                message="What do you want to do now ?",
-                choices=[
-                    "Check other orders",
-                    "Return to the driver's menu"
-                ],
-            ).execute()
+            message="What do you want to do now ?",
+            choices=["Check other orders", "Return to the driver's menu"],
+        ).execute()
         try:
             if choice == "Check other orders":
-                    # On rappelle choisir_menu pour voir d'autres commandes
-                    return self.choisir_menu()
+                # On rappelle choisir_menu pour voir d'autres commandes
+                return self.choisir_menu()
             else:
-                    # On retourne au menu driver
-                    print("Returning to the driver's menu...")
-                    from CLI.driver.menu_driver import MenuDriver
-                    return MenuDriver(message=message)
+                # On retourne au menu driver
+                print("Returning to the driver's menu...")
+                from CLI.driver.menu_driver import MenuDriver
+
+                return MenuDriver(message=message)
 
         except Exception as e:
             print(f"Error in accept_delivery: {e}")

@@ -8,9 +8,9 @@ from src.DAO.DBConnector import DBConnector
 from src.DAO.OrderDAO import OrderDAO
 from src.DAO.ProductDAO import ProductDAO
 from src.Service.AddressService import AddressService
+from src.Service.Google_Maps.check_address import check_address
 from src.Service.OrderService import OrderService
 from src.Service.ProductService import ProductService
-from src.Service.Google_Maps.check_address import check_address
 
 
 class PlaceOrderView(VueAbstraite):
@@ -54,12 +54,10 @@ class PlaceOrderView(VueAbstraite):
             elif type_product == "dessert":
                 list_dessert.append(name)
 
-
         choice = inquirer.select(
-            message= "Choose :",
-            choices = ["Get a menu (10 percent discount)", "choose a product"]
+            message="Choose :", choices=["Get a menu (10 percent discount)", "choose a product"]
         ).execute()
-        
+
         if choice == "choose a product":
             product = inquirer.select(
                 message="Choose a product : ",
@@ -76,20 +74,11 @@ class PlaceOrderView(VueAbstraite):
             total_amount += prices[product] * int(quantity)
 
         if choice == "Get a menu (10 percent discount)":
-            lunch = inquirer.select(
-                message="Choose your lunch item :",
-                choices= list_lunch
-            ).execute()
+            lunch = inquirer.select(message="Choose your lunch item :", choices=list_lunch).execute()
             list_choosen_menu.append(lunch)
-            drink = inquirer.select(
-                message= "Choose your drink :",
-                choices= list_drink
-            ).execute()
+            drink = inquirer.select(message="Choose your drink :", choices=list_drink).execute()
             list_choosen_menu.append(drink)
-            dessert = inquirer.select(
-                message= "Choose your dessert :",
-                choices = list_dessert
-            ).execute()
+            dessert = inquirer.select(message="Choose your dessert :", choices=list_dessert).execute()
             list_choosen_menu.append(dessert)
             total_amount += (prices[lunch] + prices[drink] + prices[dessert]) * 0.9
 
@@ -114,27 +103,18 @@ class PlaceOrderView(VueAbstraite):
                 quantities.append(quantity)
                 total_amount += prices[product] * int(quantity)
 
-            else :
-                lunch = inquirer.select(
-                    message="Choose your lunch item :",
-                    choices= list_lunch
-                ).execute()
+            else:
+                lunch = inquirer.select(message="Choose your lunch item :", choices=list_lunch).execute()
                 list_choosen_menu.append(lunch)
-                drink = inquirer.select(
-                    message= "Choose your drink :",
-                    choices= list_drink
-                ).execute()
+                drink = inquirer.select(message="Choose your drink :", choices=list_drink).execute()
                 list_choosen_menu.append(drink)
-                dessert = inquirer.select(
-                    message= "Choose your dessert :",
-                    choices = list_dessert
-                ).execute()
+                dessert = inquirer.select(message="Choose your dessert :", choices=list_dessert).execute()
                 list_choosen_menu.append(dessert)
                 total_amount += (prices[lunch] + prices[drink] + prices[dessert]) * 0.9
 
             choice = inquirer.select(
                 message="choose : ",
-                choices=["add a product to the order",  "get a menu", "finish the order"],
+                choices=["add a product to the order", "get a menu", "finish the order"],
             ).execute()
             nb_iterations += 1
 
@@ -150,7 +130,7 @@ class PlaceOrderView(VueAbstraite):
         address_order = address_service.add_address(address=address, city=city, postal_code=postal_code)
         address_valid = check_address(address + city + postal_code) and address_service.validate_address(address_order)
         if address_order is None or not address_valid:
-            return MenuView(f"Your address is incorrect. Please try again.")
+            return MenuView("Your address is incorrect. Please try again.")
         else:
             id_address = address_order.id_address
 
@@ -172,21 +152,25 @@ class PlaceOrderView(VueAbstraite):
         # putting choosen products into the order
         for product in list_choosen_menu:
             id_product = product_service.get_id_by_name(product)
-            added = order_service.add_product_to_order(order_id=id_order, product_id = id_product, quantity= 1, promotion = True)
+            added = order_service.add_product_to_order(
+                order_id=id_order, product_id=id_product, quantity=1, promotion=True
+            )
             message += f"{product}"
             if product in list_dessert:
-                message += f" \n"
+                message += " \n"
             else:
-                message += f" and "
+                message += " and "
         message += "Single products : \n"
         for i in range(len(list_choosen_products_names)):
             product = list_choosen_products_names[i]
             quantity = int(quantities[i])
             id_product = product_service.get_id_by_name(product)
-            added = order_service.add_product_to_order(order_id=id_order, product_id=id_product, quantity=int(quantity), promotion = False)
+            added = order_service.add_product_to_order(
+                order_id=id_order, product_id=id_product, quantity=int(quantity), promotion=False
+            )
             message += f"{product} quantity: {quantity} \n"
 
         message += "total price : " + str(total_amount) + " euros \n"
         message += "address to be delivered : " + address + " " + city + " " + postal_code + " \n"
-        
+
         return MenuView(message=message)

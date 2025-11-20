@@ -1,10 +1,12 @@
+from unittest.mock import MagicMock, patch
+
 import pytest
+
 from src.DAO.DBConnector import DBConnector
 from src.DAO.UserRepo import UserRepo
-from src.Service.UserService import UserService
 from src.Model.User import User
+from src.Service.UserService import UserService
 from src.utils.reset_database import ResetDatabase
-from unittest.mock import MagicMock, patch
 
 
 @pytest.fixture(autouse=True)
@@ -81,14 +83,12 @@ def test_get_user(service):
     assert user.user_name == "TestUser"
 
 
-
 def test_is_username_taken(service):
     """Test du check sur les usernames"""
     service.create_user("UserX", "StrongPass1", "A", "B", "a@b.com")
 
     assert service.is_username_taken("UserX") is True
     assert service.is_username_taken("UnknownUser") is False
-
 
 
 @patch("src.Service.UserService.validate_username_password", return_value=True)

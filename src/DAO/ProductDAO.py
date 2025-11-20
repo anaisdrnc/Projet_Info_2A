@@ -260,7 +260,7 @@ class ProductDAO:
             [product_id],
             "one"
         )
-        if raw_product == None:
+        if raw_product is None:
             return None
         product = Product(
             id_product = product_id,

@@ -1,7 +1,7 @@
-import jwt
 import os
-import sys
 import time
+
+import jwt
 from jwt import ExpiredSignatureError
 
 from src.Model.JWTResponse import JWTResponse

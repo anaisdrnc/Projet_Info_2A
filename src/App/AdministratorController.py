@@ -1,20 +1,23 @@
 from typing import TYPE_CHECKING, Annotated
-from src.utils.securite import hash_password
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials
-from src.Service.PasswordService import check_password_strength, create_salt
-from src.Model.APIUser import APIUser
-from src.Model.JWTResponse import JWTResponse
-from src.Service.AdminService import AdminService
+
 from src.App.init_app import jwt_service
 from src.App.JWTBearer import JWTBearer
 from src.DAO.AdminDAO import AdminDAO
 from src.DAO.DBConnector import DBConnector
+from src.Model.APIUser import APIUser
+from src.Model.JWTResponse import JWTResponse
+from src.Service.AdminService import AdminService
+from src.Service.PasswordService import check_password_strength, create_salt
+from src.utils.securite import hash_password
 
 if TYPE_CHECKING:
     from src.Model.Admin import Admin
 
 from pydantic import BaseModel
+
 
 class AdminUpdateRequest(BaseModel):
     first_name: str | None = None
@@ -38,9 +41,7 @@ def login_admin(username: str, password: str) -> JWTResponse:
         if not admin or not admin_service.verify_password(password, admin.password, admin.salt):
             raise Exception("Invalid username or password")
     except Exception as error:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN, detail=str(error)
-        ) from error
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(error)) from error
 
     # Encode JWT pour l'admin
     return jwt_service.encode_jwt(admin.id_admin)
@@ -63,7 +64,7 @@ def create_new_admin(
     first_name: str,
     last_name: str,
     email: str,
-    credentials: Annotated[HTTPAuthorizationCredentials, Depends(JWTBearer())]
+    credentials: Annotated[HTTPAuthorizationCredentials, Depends(JWTBearer())],
 ) -> APIUser:
     """
     Create a new admin account (requires JWT authentication).
@@ -74,11 +75,7 @@ def create_new_admin(
 
     # Appelle le service
     admin = admin_service.create_admin(
-        username=username,
-        password=password,
-        first_name=first_name,
-        last_name=last_name,
-        email=email
+        username=username, password=password, first_name=first_name, last_name=last_name, email=email
     )
 
     if not admin:
@@ -89,8 +86,9 @@ def create_new_admin(
         username=admin.user_name,
         first_name=admin.first_name,
         last_name=admin.last_name,
-        email=admin.email
+        email=admin.email,
     )
+
 
 @admin_router.put("/me", response_model=APIUser, status_code=status.HTTP_200_OK)
 def update_my_admin_profile(
@@ -99,7 +97,7 @@ def update_my_admin_profile(
     first_name: str,
     last_name: str,
     email: str,
-    credentials: Annotated[HTTPAuthorizationCredentials, Depends(JWTBearer())]
+    credentials: Annotated[HTTPAuthorizationCredentials, Depends(JWTBearer())],
 ) -> APIUser:
     """
     Update the authenticated admin's profile.
@@ -145,12 +143,9 @@ def update_my_admin_profile(
 
     # Retourne le nouvel état
     return APIUser(
-        id=admin.id,
-        username=admin.user_name,
-        first_name=admin.first_name,
-        last_name=admin.last_name,
-        email=admin.email
+        id=admin.id, username=admin.user_name, first_name=admin.first_name, last_name=admin.last_name, email=admin.email
     )
+
 
 def get_admin_from_credentials(
     credentials: HTTPAuthorizationCredentials,
@@ -162,5 +157,10 @@ def get_admin_from_credentials(
     admin = admin_service.get_by_id(admin_id)
     if not admin:
         raise HTTPException(status_code=404, detail="Admin not found")
-    return APIUser(id=admin.id_admin, username=admin.user_name, first_name=admin.first_name,
-    last_name=admin.last_name, email=admin.email)
+    return APIUser(
+        id=admin.id_admin,
+        username=admin.user_name,
+        first_name=admin.first_name,
+        last_name=admin.last_name,
+        email=admin.email,
+    )
