@@ -31,11 +31,11 @@ class OpeningView(VueAbstraite):
                 pass
 
             case "Login":
-                from CLI.opening.loginview import LoginView
+                from src.CLI.opening.loginview import LoginView
 
                 return LoginView("Log into the application")
 
             case "Create account":
-                from CLI.opening.inscriptionview import InscriptionView
+                from src.CLI.opening.inscriptionview import InscriptionView
 
                 return InscriptionView("Create a customer account")
