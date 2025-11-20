@@ -13,3 +13,4 @@ tabulate
 uvicorn
 folium
 googlemaps
+freezegun 

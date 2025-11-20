@@ -52,7 +52,6 @@ Normally, you won't need to modify these files, except for .env and requirements
 | `pyproject.toml` |  main configuration file for a Python project, allowing you to define its settings, dependencies, and overall organization. |
 
 
-
 ### 2.2 Folders
 
 | Item | Description |
