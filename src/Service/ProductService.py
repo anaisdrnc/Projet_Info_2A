@@ -5,23 +5,45 @@ from src.utils.log_decorator import log
 
 
 class ProductService:
-    """Classe contenant les méthodes de services des produits"""
+    """Class containing service methods for managing products."""
 
     def __init__(self, productdao: ProductDAO | None = None):
-        """Initialise le service avec un DAO fourni ou par défaut."""
+        """
+        Initialize the ProductService with a DAO.
+
+        Parameters
+        ----------
+        productdao : ProductDAO, optional
+            The DAO to use for database operations. If None, a default ProductDAO is created.
+        """
         self.productdao = productdao or ProductDAO(DBConnector())
 
     @log
-    def create(
-        self,
-        name: str,
-        price: float,
-        production_cost: float,
-        product_type: str,
-        description: str,
-        stock: int,
-    ) -> Product | None:
-        """Création d'un produit à partir de ses attributs."""
+    def create(self, name: str, price: float, production_cost: float, product_type: str, description: str,
+        stock: int ) -> Product | None:
+        """
+        Create a new product and store it via the DAO.
+
+        Parameters
+        ----------
+        name : str
+            The product's name.
+        price : float
+            The selling price of the product.
+        production_cost : float
+            The cost to produce the product.
+        product_type : str
+            The type of the product (e.g., lunch, drink, dessert).
+        description : str
+            A short description of the product.
+        stock : int
+            Initial stock quantity.
+
+        Returns
+        -------
+        Product or None
+            The created Product object if successful, otherwise None.
+        """
         new_product = Product(
             name=name,
             price=price,
@@ -31,40 +53,112 @@ class ProductService:
             stock=stock,
         )
 
-        new_product = self.productdao.create_product(new_product)
-        return new_product
+        return self.productdao.create_product(new_product)
 
     @log
     def delete(self, product_id: int) -> bool:
-        """Supprime un produit par son ID."""
+        """
+        Delete a product by its ID.
+
+        Parameters
+        ----------
+        product_id : int
+            The ID of the product to delete.
+
+        Returns
+        -------
+        bool
+            True if deletion succeeded, False otherwise.
+        """
         return self.productdao.deleting_product(product_id)
 
     @log
-    def get_list_products_names(self):
-        """Retourne la liste des noms et id de tous les produits."""
+    def get_list_products_names(self) -> list[dict]:
+        """
+        Retrieve the list of all products' names and IDs.
+
+        Returns
+        -------
+        list of dict
+            Each dict contains 'id' and 'name' keys.
+        """
         return self.productdao.get_all_product_names()
 
     @log
     def get_list_products_descriptions(self) -> list[dict]:
-        """Retourne les noms et descriptions de tous les produits."""
+        """
+        Retrieve the list of products' names and descriptions.
+
+        Returns
+        -------
+        list of dict
+            Each dict contains 'name' and 'description' keys.
+        """
         return self.productdao.get_all_product_names_descriptions()
 
     @log
     def get_available_products(self) -> list[dict]:
-        """Retourne uniquement les produits dont le stock est supérieur à 0."""
+        """
+        Retrieve products with stock greater than zero.
+
+        Returns
+        -------
+        list of dict
+            Each dict contains product details.
+        """
         return self.productdao.get_available_products()
 
     @log
     def decrement_stock(self, product_id: int, quantity: int = 1) -> bool:
-        """Diminue le stock d’un produit."""
+        """
+        Decrease the stock of a product.
+
+        Parameters
+        ----------
+        product_id : int
+            ID of the product.
+        quantity : int, optional
+            Amount to decrement (default is 1).
+
+        Returns
+        -------
+        bool
+            True if successful, False otherwise.
+        """
         return self.productdao.decrement_stock(product_id, quantity)
 
     @log
     def increment_stock(self, product_id: int, quantity: int = 1) -> bool:
-        """Augmente le stock d’un produit (par exemple après annulation)."""
+        """
+        Increase the stock of a product (e.g., after order cancellation).
+
+        Parameters
+        ----------
+        product_id : int
+            ID of the product.
+        quantity : int, optional
+            Amount to increment (default is 1).
+
+        Returns
+        -------
+        bool
+            True if successful, False otherwise.
+        """
         return self.productdao.increment_stock(product_id, quantity)
 
     @log
     def get_id_by_name(self, product_name: str) -> int:
-        """Get the id from the name of a product"""
+        """
+        Get a product's ID using its name.
+
+        Parameters
+        ----------
+        product_name : str
+            The name of the product.
+
+        Returns
+        -------
+        int
+            The corresponding product ID.
+        """
         return self.productdao.get_id_by_productname(product_name)

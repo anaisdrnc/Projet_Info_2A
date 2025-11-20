@@ -9,19 +9,50 @@ from src.utils.securite import hash_password
 
 
 class CustomerService:
-    """Class containing customers service methods"""
+    """Service class providing business logic related to customers."""
 
     def __init__(self, customerdao=None):
+        """Initialize the CustomerService with its DAO.
+
+        Parameters
+        ----------
+        customerdao : CustomerDAO, optional
+            The DAO responsible for persistence of customer data.
+            If None, a default CustomerDAO with DBConnector is created.
+        """
         self.customerdao = customerdao or CustomerDAO(DBConnector())
 
     @log
-    def create_customer(
-        self, username: str, password: str, firstname: str, lastname: str, email: str
-    ) -> Customer:
-        """Crée un nouveau client."""
+    def create_customer(self, username: str, password: str, firstname: str, lastname: str, email: str, ) -> Customer:
+        """Create a new customer.
+
+        This method:
+        1) Validates password strength
+        2) Generates a salt
+        3) Hashes the password
+        4) Creates and stores the customer via CustomerDAO
+
+        Parameters
+        ----------
+        username : str
+            Customer's username.
+        password : str
+            Raw password to validate and hash.
+        firstname : str
+            Customer's first name.
+        lastname : str
+            Customer's last name.
+        email : str
+            Customer's email.
+
+        Returns
+        -------
+        Customer
+            The created Customer object if successful.
+        """
         customerdao = self.customerdao
 
-        # Vérifie force du password
+        # Vérifie la force du mot de passe
         check_password_strength(password)
 
         # Génère sel + hash
@@ -40,7 +71,18 @@ class CustomerService:
         return customerdao.add_customer(new_customer)
 
     def get_by_id(self, customer_id: int) -> Customer | None:
-        """Récupère un customer depuis son id_customer."""
+        """Retrieve a customer using their customer ID.
+
+        Parameters
+        ----------
+        customer_id : int
+            ID of the customer to retrieve.
+
+        Returns
+        -------
+        Customer or None
+            The corresponding Customer object if found, otherwise None.
+        """
         try:
             return self.customerdao.get_by_id(customer_id)
         except Exception as e:
@@ -48,12 +90,25 @@ class CustomerService:
             return None
 
     def update_customer(self, customer: Customer) -> bool:
-        """
-        Met à jour un customer.
-        Si un nouveau mot de passe est fourni, il est contrôlé + hashé.
+        """Update customer information.
+
+        If a **new password is provided**, this method:
+        1) Validates its strength
+        2) Generates a new salt
+        3) Hashes the updated password
+
+        Parameters
+        ----------
+        customer : Customer
+            Customer object containing updated fields.
+
+        Returns
+        -------
+        bool
+            True if update succeeded, False otherwise.
         """
         try:
-            if customer.password and len(customer.password) < 50:  # si update inclut un mot de passe
+            if customer.password and len(customer.password) < 50:
                 check_password_strength(customer.password)
                 customer.salt = create_salt()
                 customer.password = hash_password(customer.password, sel=customer.salt)
@@ -61,11 +116,26 @@ class CustomerService:
             return self.customerdao.update_customer(customer)
 
         except Exception as e:
-            logging.error(f"[CustomerService] Erreur update_customer({customer.id_customer}) : {e}")
+            logging.error(
+                f"[CustomerService] Erreur update_customer({customer.id_customer}) : {e}"
+            )
             return False
 
     def verify_password(self, plain_password: str, hashed_password: str, salt: str) -> bool:
-        """
-        Vérifie si un mot de passe correspond au hash + sel.
+        """Verify whether a raw password matches a stored salted hash.
+
+        Parameters
+        ----------
+        plain_password : str
+            Raw password entered by the user.
+        hashed_password : str
+            Stored hashed password.
+        salt : str
+            Salt used for hashing.
+
+        Returns
+        -------
+        bool
+            True if the password matches, otherwise False.
         """
         return hash_password(plain_password, sel=salt) == hashed_password

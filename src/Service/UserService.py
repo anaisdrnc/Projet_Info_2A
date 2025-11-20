@@ -7,24 +7,46 @@ from src.utils.securite import hash_password
 
 
 class UserService:
-    def __init__(self, user_repo=None):
-        if user_repo is None:
-            user_repo = UserRepo(DBConnector)
-        self.user_repo = user_repo
+    """Class containing service methods for managing users."""
+
+    def __init__(self, user_repo: UserRepo | None = None):
+        """
+        Initialize UserService with a UserRepo.
+
+        Parameters
+        ----------
+        user_repo : UserRepo, optional
+            The repository to use for database operations. If None, a default UserRepo is created.
+        """
+        self.user_repo = user_repo or UserRepo(DBConnector)
 
     @log
-    def create_user(
-        self, username: str, password: str, firstname: str, lastname: str, email: str
-    ) -> int:
+    def create_user(self, username: str, password: str, firstname: str, lastname: str, email: str) -> int:
         """
-        Crée un nouvel utilisateur et retourne son ID (int).
+        Create a new user and return its ID.
+
+        Parameters
+        ----------
+        username : str
+            The username of the new user.
+        password : str
+            The password of the new user (will be hashed and salted).
+        firstname : str
+            First name of the user.
+        lastname : str
+            Last name of the user.
+        email : str
+            Email of the user.
+
+        Returns
+        -------
+        int
+            The ID of the newly created user in the database.
         """
-        user_repo = self.user_repo
         check_password_strength(password)
         salt = create_salt()
         hashed_password = hash_password(password, sel=salt)
 
-        # Crée l'objet User
         new_user = User(
             id=None,
             user_name=username,
@@ -35,29 +57,64 @@ class UserService:
             salt=salt,
         )
 
-        # Insert en base → retourne un ID
-        new_user_id = user_repo.add_user(new_user)
-
-        return new_user_id
-
+        return self.user_repo.add_user(new_user)
 
     @log
     def get_user(self, user_id: int) -> User | None:
+        """
+        Retrieve a user by its ID.
+
+        Parameters
+        ----------
+        user_id : int
+            The ID of the user.
+
+        Returns
+        -------
+        User or None
+            The User object if found, else None.
+        """
         return self.user_repo.get_by_id(user_id)
 
     @log
-    def is_username_taken(self, user_name):
-        user_repo = self.user_repo
-        answer = user_repo.is_username_taken(username=user_name)
-        return answer
+    def is_username_taken(self, user_name: str) -> bool:
+        """
+        Check if a username is already taken.
+
+        Parameters
+        ----------
+        user_name : str
+            The username to check.
+
+        Returns
+        -------
+        bool
+            True if the username is taken, False otherwise.
+        """
+        return self.user_repo.is_username_taken(username=user_name)
 
     @log
-    def change_password(self, user_name, old_password, new_password):
-        user_repo = self.user_repo
+    def change_password(self, user_name: str, old_password: str, new_password: str) -> bool:
+        """
+        Change the password of a user after verifying the old password.
 
+        Parameters
+        ----------
+        user_name : str
+            The username of the user.
+        old_password : str
+            The current password of the user.
+        new_password : str
+            The new password to set (will be hashed and salted).
+
+        Returns
+        -------
+        bool
+            True if the password was successfully changed, False otherwise.
+        """
         # Vérifie l'ancien mot de passe
         old_password_correct = validate_username_password(
-            username=user_name, password=old_password, user_repo=user_repo
+            username=user_name, password=old_password, user_repo=self.user_repo
         )
         if not old_password_correct:
             return False
@@ -66,7 +123,7 @@ class UserService:
         check_password_strength(new_password)
 
         # Récupère l'utilisateur actuel
-        user = user_repo.get_by_username(user_name=user_name)
+        user = self.user_repo.get_by_username(user_name=user_name)
 
         # Génère un nouveau sel et hash le nouveau mot de passe
         new_salt = create_salt()
@@ -84,5 +141,4 @@ class UserService:
         )
 
         # Met à jour l'utilisateur
-        return user_repo.update_user(new_user)
-
+        return self.user_repo.update_user(new_user)
