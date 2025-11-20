@@ -1,8 +1,8 @@
 from typing import Any, Dict, List, Optional
 
-from DAO.OrderDAO import OrderDAO
-from Model.Order import Order
-from utils.log_decorator import log
+from src.DAO.OrderDAO import OrderDAO
+from src.Model.Order import Order
+from src.utils.log_decorator import log
 
 
 class OrderService:

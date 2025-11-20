@@ -3,15 +3,16 @@ from datetime import datetime
 import pytest
 from dotenv import load_dotenv
 
-from DAO.DBConnector import DBConnector
-from DAO.DriverDAO import DriverDAO
-from DAO.OrderDAO import OrderDAO
-from DAO.ProductDAO import ProductDAO
-from DAO.UserRepo import UserRepo
-from Model.Address import Address
-from Model.Driver import Driver
-from Model.Order import Order
-from Model.Product import Product
+from src.DAO.DBConnector import DBConnector
+from src.DAO.DriverDAO import DriverDAO
+from src.DAO.OrderDAO import OrderDAO
+from src.DAO.ProductDAO import ProductDAO
+from src.DAO.UserRepo import UserRepo
+from src.Model.Address import Address
+from src.Model.Driver import Driver
+from src.Model.Order import Order
+from src.Model.Product import Product
+
 
 load_dotenv()
 
