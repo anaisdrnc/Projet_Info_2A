@@ -5,26 +5,24 @@ from fastapi import APIRouter, HTTPException, status, Depends
 from .JWTBearer import JWTBearer
 from DAO.DBConnector import DBConnector
 from Model.Order import Order  # ton modèle Pydantic pour les commandes
+from DAO.OrderDAO import OrderDAO
+from Service.OrderService import OrderService
 
 order_router = APIRouter(prefix="/Order", tags=["Orders"])
 db = DBConnector()
 
 
-@order_router.get("/", response_model=List[Order], status_code=status.HTTP_200_OK)
+@order_router.get("/", status_code=status.HTTP_200_OK)
 def get_all_orders(credentials: Annotated[HTTPAuthorizationCredentials, Depends(JWTBearer())]):
     
     """
     Récupère toutes les commandes depuis la base PostgreSQL.
     """
+    orderdao = OrderDAO(DBConnector(test = False))
+    order_service = OrderService(orderdao)
     try:
-        query = 'SELECT * FROM "orders";'  # ou 'SELECT * FROM orders;' selon ton schéma
-        orders_data = db.sql_query(query, return_type="all")
-
-        if not orders_data:
-            return []  # retourne une liste vide plutôt que None
-
-        # Conversion explicite en objets Pydantic
-        return [Order(**order) for order in orders_data]
+        orders = order_service.list_all_orders()
+        return orders
 
     except Exception as e:
         print("DEBUG ERROR:", str(e))

@@ -425,7 +425,7 @@ class OrderDAO:
             return {"order": order_obj, "address": address, "products": products}
 
         except Exception as e:
-            print(f"Error fetching order: {e}")
+            print(f"Error fetching order: get by id {e}")
             return None
 
     @log
@@ -445,12 +445,13 @@ class OrderDAO:
             raw_orders = self.db_connector.sql_query("SELECT * FROM orders", [], "all")
             result = []
             for o in raw_orders:
-                order_data = self.get_by_id(o["id_order"])
+                order_id = o['id_order']
+                order_data = self.get_by_id(order_id)
                 if order_data:
                     result.append(order_data)
             return result
         except Exception as e:
-            print(f"Error listing all orders: {e}")
+            print(f"Error listing all orders: list all orders {e}")
             return []
 
     @log
