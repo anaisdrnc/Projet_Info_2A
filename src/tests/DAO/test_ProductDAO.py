@@ -168,8 +168,10 @@ def test_get_all_product_names(dao):
         dao.create_product(p)
 
     names = dao.get_all_product_names()
+    names_only = [n[0] for n in names]
+
     for p in products:
-        assert p.name in names
+        assert p.name in names_only
 
 
 def test_get_all_product_names_descriptions(dao):
