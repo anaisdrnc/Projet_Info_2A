@@ -1,9 +1,9 @@
 import pytest
-from DAO.DBConnector import DBConnector
-from DAO.ProductDAO import ProductDAO
-from Service.ProductService import ProductService
-from Model.Product import Product
-from utils.reset_database import ResetDatabase
+from src.DAO.DBConnector import DBConnector
+from src.DAO.ProductDAO import ProductDAO
+from src.Service.ProductService import ProductService
+from src.Model.Product import Product
+from src.utils.reset_database import ResetDatabase
 
 
 @pytest.fixture(autouse=True)
@@ -40,7 +40,7 @@ def test_create_ok(service):
 
 def test_create_ko(service, monkeypatch):
     # On force la création à échouer
-    monkeypatch.setattr(service.productdao, "create_product", lambda p: False)
+    monkeypatch.setattr(service.productdao, "create_product", lambda p: None)
     product = service.create(
         name="Test Panini KO",
         price=3.0,
@@ -95,9 +95,10 @@ def test_get_list_products_names(service):
     for p in products:
         service.productdao.create_product(p)
 
-    names = service.get_list_products_names()
+    names_id = service.get_list_products_names()
+    names_only = [n[0] for n in names_id]
     for p in products:
-        assert p.name in names
+        assert p.name in names_only
 
 
 def test_get_list_products_descriptions(service):

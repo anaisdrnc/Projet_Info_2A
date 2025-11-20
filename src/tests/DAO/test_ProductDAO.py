@@ -1,10 +1,10 @@
 import pytest
 from dotenv import load_dotenv
 
-from DAO.DBConnector import DBConnector
-from DAO.ProductDAO import ProductDAO
-from Model.Product import Product
-from utils.reset_database import ResetDatabase
+from src.DAO.DBConnector import DBConnector
+from src.DAO.ProductDAO import ProductDAO
+from src.Model.Product import Product
+from src.utils.reset_database import ResetDatabase
 
 load_dotenv()
 
@@ -168,8 +168,10 @@ def test_get_all_product_names(dao):
         dao.create_product(p)
 
     names = dao.get_all_product_names()
+    names_only = [n[0] for n in names]
+
     for p in products:
-        assert p.name in names
+        assert p.name in names_only
 
 
 def test_get_all_product_names_descriptions(dao):

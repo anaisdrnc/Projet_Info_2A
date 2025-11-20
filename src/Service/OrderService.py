@@ -45,34 +45,11 @@ class OrderService:
         return self.orderdao.remove_product(id_order, id_product, quantity)
 
     @log
-    def cancel_order(self, order_id: int) -> bool:
-        """Annule une commande et remet les produits en stock"""
-        if order_id <= 0:
-            return False
-
-        order_data = self.orderdao.get_by_id(order_id)
-        if not order_data:
-            return False
-
-        # Remettre les produits en stock
-        for p in order_data["products"]:
-            self.orderdao.productdao.increment_stock(p["id_product"], p["quantity"])
-
-        return self.orderdao.cancel_order(order_id)
-
-    @log
     def mark_as_delivered(self, id_order: int) -> bool:
         """Marquer une commande comme livrée"""
         if id_order <= 0:
             return False
         return self.orderdao.mark_as_delivered(id_order)
-
-    @log
-    def mark_as_ready(self, id_order: int) -> bool:
-        """Marquer une commande comme prête"""
-        if id_order <= 0:
-            return False
-        return self.orderdao.mark_as_ready(id_order)
 
     @log
     def mark_as_on_the_way(self, id_order: int) -> bool:
