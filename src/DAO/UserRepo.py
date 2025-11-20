@@ -1,8 +1,16 @@
+import sys
+import os
+
 import logging
 from typing import Optional
 
-from src.Model.User import User
-from src.utils.log_decorator import log
+current_dir = os.path.dirname(os.path.abspath(__file__))
+project_root = os.path.dirname(current_dir)
+sys.path.insert(0, project_root)
+
+
+from Model.User import User
+from utils.log_decorator import log
 
 from .DBConnector import DBConnector
 
