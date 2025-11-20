@@ -112,12 +112,12 @@ This data is loaded into a separate schema (test) so as not to pollute the other
 
 ### 3.4 Launch the CLI application
 
-This application provides a very basic graphical interface for navigating between different menus.
+This application provides the interface for delivery drivers and customers. 
 
-In Git Bash : python src/main_CLI.py
+- In Git Bash : python src/main_CLI.py or pdm cli
 
 ### 3.4 Launch the API application 
 
+This application provides the administrator interface. 
 
-In Git Bash : python src/__main__.py
-
+- In Git Bash : python src/__main__.py or pdm start
