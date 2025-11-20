@@ -9,6 +9,7 @@ from src.CLI.view_abstract import VueAbstraite
 from src.DAO.UserRepo import UserRepo
 from src.DAO.CustomerDAO import CustomerDAO
 from src.DAO.DBConnector import DBConnector
+from src.Service.PasswordService import check_password_strength
 
 
 class InscriptionView(VueAbstraite):
@@ -33,9 +34,13 @@ class InscriptionView(VueAbstraite):
                 length=8,
                 cap=True,
                 number=True,
-                message="Au moins 8 caractères, incluant une majuscule et un chiffre",
+                message="Au moins 8 caractères, incluant une majuscule, une minuscule et un chiffre",
             ),
         ).execute()
+
+        if not check_password_strength(mdp):
+            message = "password not strong enough"
+            return OpeningView(message)
 
         first_name = inquirer.text(message="Enter your firstname : ").execute()
 
