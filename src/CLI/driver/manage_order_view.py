@@ -241,6 +241,14 @@ class ManageOrderView(VueAbstraite):
         message = f"Delivery {order_id} accepted. Itinerary computed."
         print(message)
 
+        while True:
+            answer = input("Have you delivered the order ? (y/n): ")
+            if answer == "y":
+                self.order_service.mark_as_delivered(order_id)
+                break
+            else:
+                print("invalid answer")
+
         choice = inquirer.select(
                 message="What do you want to do now ?",
                 choices=[
