@@ -108,9 +108,6 @@ class OrderService:
                     order_d['products_quantity'] += [quantity]
                 orders.append(order_d)
         return orders
-            
-
-
 
 
     @log
