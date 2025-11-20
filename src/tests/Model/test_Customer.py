@@ -1,7 +1,7 @@
 import pytest
 
-from Model.Address import Address
-from Model.Customer import Customer
+from src.Model.Address import Address
+from src.Model.Customer import Customer
 
 
 def test_create_customer_with_address():

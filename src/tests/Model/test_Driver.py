@@ -1,6 +1,6 @@
 import pytest
 
-from Model.Driver import Driver
+from src.Model.Driver import Driver
 
 
 def test_create_valid_driver():
