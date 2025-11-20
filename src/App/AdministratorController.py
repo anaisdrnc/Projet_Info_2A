@@ -113,7 +113,7 @@ def update_my_admin_profile(
 
     # Récupère l'admin actuel
     admin = admin_service.get_by_id(admin_id)
-    print(admin.id)
+    print(admin)
     if not admin:
         raise HTTPException(status_code=404, detail="Admin not found")
 
