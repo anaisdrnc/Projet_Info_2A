@@ -12,6 +12,7 @@ from src.Model.Address import Address
 from src.Model.Driver import Driver
 from src.Model.Order import Order
 from src.Model.Product import Product
+from src.utils.reset_database import ResetDatabase
 
 
 load_dotenv()
@@ -20,8 +21,6 @@ load_dotenv()
 @pytest.fixture(scope="session", autouse=True)
 def setup_test_environment():
     """Reset DB before tests"""
-    from utils.reset_database import ResetDatabase
-
     ResetDatabase(test=True).lancer()
 
 
