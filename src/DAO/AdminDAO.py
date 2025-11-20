@@ -180,9 +180,9 @@ class AdminDAO:
         try:
             res = self.db_connector.sql_query(
                 """
-                SELECT a.id_administrator AS id_admin, u.id_user, u.user_name, u.password, u.salt,
+                SELECT a.id_administrator, u.id_user, u.user_name, u.password, u.salt,
                     u.first_name, u.last_name, u.email
-                FROM administrator a
+                FROM administrator AS a
                 JOIN users u ON a.id_user = u.id_user
                 WHERE a.id_administrator = %(admin_id)s;
                 """,
@@ -194,8 +194,8 @@ class AdminDAO:
                 return None
 
             return Admin(
-                id_admin=res["id_admin"],
-                id_user=res["id_user"],
+                id_admin=res["id_administrator"],
+                id=res["id_user"],
                 user_name=res["user_name"],
                 password=res["password"],
                 salt=res["salt"],

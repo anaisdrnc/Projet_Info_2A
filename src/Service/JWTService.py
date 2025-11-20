@@ -1,5 +1,6 @@
 import jwt
 import os
+import sys
 import time
 from jwt import ExpiredSignatureError
 
@@ -20,9 +21,9 @@ class JwtService:
 
     def encode_jwt(self, user_id: int) -> JWTResponse:
         """
-        Creates a token with a 10 minutes expiry time
+        Creates a token with a 20 minutes expiry time
         """
-        payload = {"user_id": user_id, "expiry_timestamp": time.time() + 600}
+        payload = {"user_id": user_id, "expiry_timestamp": time.time() + 1200}
         token = jwt.encode(payload, self.secret, algorithm=self.algorithm)
 
         return JWTResponse(access_token=token)

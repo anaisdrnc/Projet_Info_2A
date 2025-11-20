@@ -148,7 +148,7 @@ class PlaceOrderView(VueAbstraite):
         city = inquirer.text(message="Enter your city (ex: Bruz):").execute()
         postal_code = inquirer.text(message="Enter your postal code (ex: 35 170) :").execute()
         address_order = address_service.add_address(address=address, city=city, postal_code=postal_code)
-        address_valid = check_address(address + city + postal_code)
+        address_valid = check_address(address + city + postal_code) and address_service.validate_address(address_order)
         if address_order is None or not address_valid:
             return MenuView(f"Your address is incorrect. Please try again.")
         else:

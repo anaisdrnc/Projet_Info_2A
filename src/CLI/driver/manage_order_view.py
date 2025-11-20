@@ -232,16 +232,7 @@ class ManageOrderView(VueAbstraite):
             map_path = create_map(origin, destination, transport_mode)
             if map_path:
                 print(f"Map saved: {map_path}")
-
-                # Proposer d'ouvrir la carte
-                open_map = inquirer.confirm(
-                    message="Voulez-vous ouvrir la carte dans le navigateur?", default=True
-                ).execute()
-
-                if open_map:
-                    import webbrowser
-
-                    webbrowser.open(f"file://{os.path.abspath(map_path)}")
+                print("You can now open the map path by downloading the file delivery_path.html in the Google_Maps service")
             else:
                 print("Impossible to compute a map")
         else:
