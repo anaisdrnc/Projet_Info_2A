@@ -16,7 +16,7 @@ db = DBConnector()
 def get_all_orders(credentials: Annotated[HTTPAuthorizationCredentials, Depends(JWTBearer())]):
     
     """
-    Récupère toutes les commandes depuis la base PostgreSQL.
+    Retrieves all orders from the PostgreSQL database.
     """
     orderdao = OrderDAO(DBConnector(test = False))
     order_service = OrderService(orderdao)
