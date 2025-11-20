@@ -40,7 +40,7 @@ def test_create_ok(service):
 
 def test_create_ko(service, monkeypatch):
     # On force la création à échouer
-    monkeypatch.setattr(service.productdao, "create_product", lambda p: False)
+    monkeypatch.setattr(service.productdao, "create_product", lambda p: None)
     product = service.create(
         name="Test Panini KO",
         price=3.0,
@@ -95,9 +95,10 @@ def test_get_list_products_names(service):
     for p in products:
         service.productdao.create_product(p)
 
-    names = service.get_list_products_names()
+    names_id = service.get_list_products_names()
+    names_only = [n[0] for n in names_id]
     for p in products:
-        assert p.name in names
+        assert p.name in names_only
 
 
 def test_get_list_products_descriptions(service):
