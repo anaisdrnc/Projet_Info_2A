@@ -2,14 +2,14 @@ from typing import TYPE_CHECKING, Annotated
 from utils.securite import hash_password
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials
-from Service.PasswordService import check_password_strength
+from Service.PasswordService import check_password_strength, create_salt
 from Model.APIUser import APIUser
 from Model.JWTResponse import JWTResponse
 from Service.AdminService import AdminService
-
 from .init_app import jwt_service
 from .JWTBearer import JWTBearer
-
+from DAO.AdminDAO import AdminDAO
+from DAO.DBConnector import DBConnector
 
 if TYPE_CHECKING:
     from Model.Admin import Admin
@@ -105,11 +105,15 @@ def update_my_admin_profile(
     Update the authenticated admin's profile.
     All fields are optional, but follow the same structure as create_admin.
     """
+    admindao = AdminDAO(DBConnector(test=False))
+    admin_service = AdminService(admindao=admindao)
     token = credentials.credentials
     admin_id = int(jwt_service.validate_user_jwt(token))
+    print(admin_id)
 
     # Récupère l'admin actuel
     admin = admin_service.get_by_id(admin_id)
+    print(admin.id)
     if not admin:
         raise HTTPException(status_code=404, detail="Admin not found")
 
@@ -124,7 +128,7 @@ def update_my_admin_profile(
         admin.email = email
     if password is not None:
         check_password_strength(password)
-        admin.salt = admin.user_name  # utilise le username comme sel
+        admin.salt = create_salt()
         admin.password = hash_password(password, admin.salt)
 
     # Sauvegarde en DB
@@ -133,6 +137,7 @@ def update_my_admin_profile(
     except HTTPException:
         raise
     except Exception as e:
+        print("hello")
         raise HTTPException(status_code=500, detail=str(e))
 
     if not updated:
@@ -140,7 +145,7 @@ def update_my_admin_profile(
 
     # Retourne le nouvel état
     return APIUser(
-        id=admin.id_admin,
+        id=admin.id,
         username=admin.user_name,
         first_name=admin.first_name,
         last_name=admin.last_name,
