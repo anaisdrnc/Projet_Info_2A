@@ -31,15 +31,15 @@ def get_product_by_id(
 
 # --- Les endpoints protégés par JWT (admin connecté) ---
 
-@product_router.get("/all_products", status_code= status.HTTP_200_OK)
-def get_all_products(
+@product_router.get("/id/{product_name}", status_code= status.HTTP_200_OK)
+def get_all_products( product_name,
     credentials: Annotated[HTTPAuthorizationCredentials, Depends(JWTBearer())]):
     """Gives all products with id so that the admin can use the others endpoints"""
     productdao = ProductDAO(DBConnector(test = False))
     product_service = ProductService(productdao)
     try : 
-        list_products = product_service.get_list_products_names()
-        return list_products
+        id_product = product_service.get_id_by_name(product_name)
+        return id_product
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
 

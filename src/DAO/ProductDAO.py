@@ -120,7 +120,12 @@ class ProductDAO:
         """
         try:
             raw = self.db_connector.sql_query("SELECT name, id_product FROM product", None, "all")
-            return [[r["name"], r['id_product']] for r in raw]
+            answer = []
+            for r in raw:
+                name = r["name"]
+                id_product = r["id_product"]
+                answer.append([name, id_product])
+            return answer
         except Exception as e:
             logging.info(f"Erreur get_all_product_names: {e}")
             return []
