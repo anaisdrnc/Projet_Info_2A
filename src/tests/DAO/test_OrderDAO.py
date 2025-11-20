@@ -443,3 +443,32 @@ def test_assign_order_ok(dao):
     data = dao.get_by_id(order_id)
     assert data is not None
     assert data["order"].id_driver == new_driver_id
+
+def test_list_all_orders_ready(dao):
+    """Test: Verify that only orders marked as 'Ready' are returned and include the correct order details."""
+
+    addr = create_test_address()
+
+    order = Order(
+        id_customer=999,
+        id_driver=None,
+        id_address=addr.id_address,
+        nb_items=2,
+        total_amount=20.0,
+        payment_method="Cash",
+    )
+
+    order_id = dao.create_order(order)
+    assert order_id is not None
+
+    ready_orders = dao.list_all_orders_ready()
+
+    found = any(entry["order"].id_order == order_id for entry in ready_orders)
+    assert found, "La commande créée doit apparaître dans les commandes prêtes"
+
+    for entry in ready_orders:
+        assert isinstance(entry, dict)
+        assert "order" in entry and "address" in entry and "products" in entry
+        assert isinstance(entry["order"], Order)
+
+

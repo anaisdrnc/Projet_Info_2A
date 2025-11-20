@@ -494,3 +494,32 @@ class OrderDAO:
         except Exception as e:
             print(f"Error listing all orders: {e}")
             return []
+
+
+    def list_all_orders_ready(self) -> List[Dict[str, Any]]:
+        """Retrieve all orders that are marked as 'Ready' along with their associated addresses and products.
+
+        Returns
+        -------
+        List[Dict[str, Any]]
+            A list of dictionaries, each containing:
+                - "order": Order object representing the order details.
+                - "address": Address object associated with the order (or None if not found).
+                - "products": List of dictionaries with product details and quantities.
+            Returns an empty list if no orders are found or an error occurs.
+        """
+        try:
+            # On récupère uniquement les commandes avec le statut 'Ready'
+            raw_orders = self.db_connector.sql_query(
+                "SELECT * FROM orders WHERE status = 'Ready'", [], "all"
+            )
+            result = []
+            for o in raw_orders:
+                order_data = self.get_by_id(o["id_order"])
+                if order_data:
+                    result.append(order_data)
+            return result
+        except Exception as e:
+            print(f"Error listing all orders ready: {e}")
+            return []
+
