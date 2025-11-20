@@ -1,5 +1,5 @@
-from Model.Address import Address
-from utils.log_decorator import log
+from src.Model.Address import Address
+from src.utils.log_decorator import log
 
 ALLOWED_ADDRESSES = {
     35000: "Rennes",
