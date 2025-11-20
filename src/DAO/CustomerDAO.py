@@ -1,10 +1,10 @@
 import logging
 from typing import Optional
 
-from DAO.DBConnector import DBConnector
-from DAO.UserRepo import UserRepo
-from Model.Customer import Customer
-from utils.log_decorator import log
+from src.DAO.DBConnector import DBConnector
+from src.DAO.UserRepo import UserRepo
+from src.Model.Customer import Customer
+from src.utils.log_decorator import log
 
 
 class CustomerDAO:

@@ -2,9 +2,9 @@ from pprint import pprint
 
 import pytest
 
-from DAO.DBConnector import DBConnector
-from DAO.OrderDAO import OrderDAO
-from Service.OrderService import OrderService
+from src.DAO.DBConnector import DBConnector
+from src.DAO.OrderDAO import OrderDAO
+from src.Service.OrderService import OrderService
 
 ADDRESS_ID = 999
 

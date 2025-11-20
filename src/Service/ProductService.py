@@ -1,7 +1,7 @@
-from DAO.DBConnector import DBConnector
-from DAO.ProductDAO import ProductDAO
-from Model.Product import Product
-from utils.log_decorator import log
+from src.DAO.DBConnector import DBConnector
+from src.DAO.ProductDAO import ProductDAO
+from src.Model.Product import Product
+from src.utils.log_decorator import log
 
 
 class ProductService:

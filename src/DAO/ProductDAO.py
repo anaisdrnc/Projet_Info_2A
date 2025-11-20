@@ -1,7 +1,7 @@
 import logging
 
-from Model.Product import Product
-from utils.log_decorator import log
+from src.Model.Product import Product
+from src.utils.log_decorator import log
 
 
 class ProductDAO:
