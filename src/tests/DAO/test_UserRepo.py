@@ -3,12 +3,12 @@ from datetime import datetime
 import pytest
 from dotenv import load_dotenv
 
-from DAO.DBConnector import DBConnector
-from DAO.UserRepo import UserRepo
-from Model.User import User
-from Service.PasswordService import create_salt
-from utils.reset_database import ResetDatabase
-from utils.securite import hash_password
+from src.DAO.DBConnector import DBConnector
+from src.DAO.UserRepo import UserRepo
+from src.Model.User import User
+from src.Service.PasswordService import create_salt
+from src.utils.reset_database import ResetDatabase
+from src.utils.securite import hash_password
 
 load_dotenv()
 

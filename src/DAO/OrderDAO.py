@@ -2,11 +2,11 @@ import logging
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
-from DAO.DBConnector import DBConnector
-from DAO.ProductDAO import ProductDAO
-from Model.Address import Address
-from Model.Order import Order
-from utils.log_decorator import log
+from src.DAO.DBConnector import DBConnector
+from src.DAO.ProductDAO import ProductDAO
+from src.Model.Address import Address
+from src.Model.Order import Order
+from src.utils.log_decorator import log
 
 
 class OrderDAO:
@@ -240,32 +240,6 @@ class OrderDAO:
             return False
 
     @log
-    def cancel_order(self, id_order: int) -> bool:
-        """Cancel an existing order by updating its status to 'Cancelled'.
-
-        Parameters
-        ----------
-        id_order : int
-            The ID of the order to cancel.
-
-        Returns
-        -------
-        bool
-            True if the order status was successfully updated.
-            False if the order does not exist or an error occurs.
-        """
-        try:
-            res = self.db_connector.sql_query(
-                "UPDATE orders SET status='Cancelled' WHERE id_order=%s RETURNING id_order",
-                [id_order],
-                return_type="one",
-            )
-            return res is not None
-        except Exception as e:
-            print(f"Error cancelling order: {e}")
-            return False
-
-    @log
     def mark_as_delivered(self, id_order: int) -> bool:
         """Mark an existing order as delivered and update its delivery date.
 
@@ -289,32 +263,6 @@ class OrderDAO:
             return res is not None
         except Exception as e:
             print(f"Error marking order delivered: {e}")
-            return False
-
-    @log
-    def mark_as_ready(self, id_order: int) -> bool:
-        """Mark an existing order as ready for delivery and update its date.
-
-        Parameters
-        ----------
-        id_order : int
-            The ID of the order to mark as ready.
-
-        Returns
-        -------
-        bool
-            True if the order status was successfully updated to 'Ready' and the date set.
-            False if the order does not exist or an error occurs.
-        """
-        try:
-            res = self.db_connector.sql_query(
-                "UPDATE orders SET status='Ready', date=%s WHERE id_order=%s RETURNING id_order",
-                [datetime.now(), id_order],
-                return_type="one",
-            )
-            return res is not None
-        except Exception as e:
-            print(f"Error marking order ready: {e}")
             return False
 
     @log
@@ -425,7 +373,7 @@ class OrderDAO:
             return {"order": order_obj, "address": address, "products": products}
 
         except Exception as e:
-            print(f"Error fetching order: {e}")
+            print(f"Error fetching order: get by id {e}")
             return None
 
     @log
@@ -445,53 +393,18 @@ class OrderDAO:
             raw_orders = self.db_connector.sql_query("SELECT * FROM orders", [], "all")
             result = []
             for o in raw_orders:
-                order_data = self.get_by_id(o["id_order"])
+                order_id = o['id_order']
+                order_data = self.get_by_id(order_id)
                 if order_data:
                     result.append(order_data)
             return result
         except Exception as e:
-            print(f"Error listing all orders: {e}")
-            return []
-
-    @log
-    def list_all_orders_ready(self) -> List[Dict[str, Any]]:
-        """Retrieve all orders with status 'Ready', including their products and full address.
-
-        Returns
-        -------
-        List[Dict[str, Any]]
-            A list of dictionaries, each containing:
-                - "order": Order object representing the order details.
-                - "address": Address object associated with the order.
-                - "products": List of dictionaries with product details and quantities.
-            Returns an empty list if no ready orders are found or an error occurs.
-        """
-        try:
-            raw_orders = self.db_connector.sql_query(
-                """
-                SELECT o.id_order, o.date, a.address, a.city, a.postal_code
-                FROM orders o
-                JOIN address a ON o.id_address = a.id_address
-                WHERE o.status = 'Ready'
-                ORDER BY o.date
-                """,
-                None,
-                "all",
-            )
-
-            result = []
-            for o in raw_orders:
-                order_data = self.get_by_id(o["id_order"])
-                if order_data:
-                    result.append(order_data)
-            return result
-        except Exception as e:
-            print(f"Error listing all ready orders: {e}")
+            print(f"Error listing all orders: list all orders {e}")
             return []
 
     @log
     def get_assigned_orders(self, driver_id: int) -> List[Dict[str, Any]]:
-        """Retrieve all orders currently being prepared that are assigned to a specific driver.
+        """Retrieve all orders ready that are assigned to a specific driver.
 
         Parameters
         ----------
@@ -509,7 +422,7 @@ class OrderDAO:
         """
         try:
             raw_orders = self.db_connector.sql_query(
-                "SELECT * FROM orders WHERE id_driver = %s AND status = 'Preparing'",
+                "SELECT * FROM orders WHERE id_driver = %s AND status = 'Ready'",
                 [driver_id],
                 "all",
             )
@@ -582,3 +495,32 @@ class OrderDAO:
         except Exception as e:
             print(f"Error listing all orders: {e}")
             return []
+
+
+    def list_all_orders_ready(self) -> List[Dict[str, Any]]:
+        """Retrieve all orders that are marked as 'Ready' along with their associated addresses and products.
+
+        Returns
+        -------
+        List[Dict[str, Any]]
+            A list of dictionaries, each containing:
+                - "order": Order object representing the order details.
+                - "address": Address object associated with the order (or None if not found).
+                - "products": List of dictionaries with product details and quantities.
+            Returns an empty list if no orders are found or an error occurs.
+        """
+        try:
+            # On récupère uniquement les commandes avec le statut 'Ready'
+            raw_orders = self.db_connector.sql_query(
+                "SELECT * FROM orders WHERE status = 'Ready'", [], "all"
+            )
+            result = []
+            for o in raw_orders:
+                order_data = self.get_by_id(o["id_order"])
+                if order_data:
+                    result.append(order_data)
+            return result
+        except Exception as e:
+            print(f"Error listing all orders ready: {e}")
+            return []
+

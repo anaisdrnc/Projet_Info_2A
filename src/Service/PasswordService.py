@@ -1,6 +1,12 @@
 import secrets
 from typing import Optional
 
+import os
+import sys
+current_dir = os.path.dirname(os.path.abspath(__file__))
+project_root = os.path.dirname(current_dir)
+sys.path.insert(0, project_root)
+
 from DAO.UserRepo import UserRepo
 from Model.User import User
 from utils.securite import hash_password

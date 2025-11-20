@@ -1,10 +1,10 @@
 import pytest
 
-from DAO.DBConnector import DBConnector
-from DAO.DriverDAO import DriverDAO
-from Model.Driver import Driver
-from Service.DriverService import DriverService
-from utils.reset_database import ResetDatabase
+from src.DAO.DBConnector import DBConnector
+from src.DAO.DriverDAO import DriverDAO
+from src.Model.Driver import Driver
+from src.Service.DriverService import DriverService
+from src.utils.reset_database import ResetDatabase
 
 
 @pytest.fixture(autouse=True)

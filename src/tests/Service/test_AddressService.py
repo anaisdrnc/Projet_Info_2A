@@ -1,10 +1,10 @@
 import pytest
 
-from DAO.AddressDAO import AddressDAO
-from DAO.DBConnector import DBConnector
-from Model.Address import Address
-from Service.AddressService import AddressService
-from utils.reset_database import ResetDatabase
+from src.DAO.AddressDAO import AddressDAO
+from src.DAO.DBConnector import DBConnector
+from src.Model.Address import Address
+from src.Service.AddressService import AddressService
+from src.utils.reset_database import ResetDatabase
 
 
 # Réinitialisation de la base avant chaque test

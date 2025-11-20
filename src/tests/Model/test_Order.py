@@ -3,7 +3,7 @@ from datetime import datetime
 import pytest
 from pydantic import ValidationError
 
-from Model.Order import Order
+from src.Model.Order import Order
 
 
 def test_order_constructor_ok():
@@ -14,7 +14,7 @@ def test_order_constructor_ok():
         id_driver=2,
         id_address=1,
         date="2025-10-23 12:30:00",
-        status="Preparing",
+        status="Ready",
         total_amount=45.3,
         payment_method="Cash",
         nb_items=2,
@@ -24,7 +24,7 @@ def test_order_constructor_ok():
     assert order.id_driver == 2
     assert order.id_address == 1
     assert order.date == datetime(2025, 10, 23, 12, 30, 0)
-    assert order.status == "Preparing"
+    assert order.status == "Ready"
     assert order.total_amount == 45.3
     assert order.payment_method == "Cash"
     assert order.nb_items == 2
@@ -41,7 +41,7 @@ def test_order_constructor_on_incorrect_id():
             total_amount=45.3,
             payment_method="Cash",
             nb_items=2,
-            status="Preparing",
+            status="Ready",
         )
     assert "id_order" in str(exc.value)
 
@@ -58,7 +58,7 @@ def test_order_constructor_on_incorrect_date():
             total_amount=45.3,
             payment_method="Cash",
             nb_items=2,
-            status="Preparing",
+            status="Ready",
         )
     assert "date" in str(exc.value)
 
@@ -91,7 +91,7 @@ def test_order_constructor_on_incorrect_total_amount():
             total_amount="quarante",
             payment_method="Cash",
             nb_items=2,
-            status="Preparing",
+            status="Ready",
         )
     assert "total_amount" in str(exc.value)
 
@@ -107,7 +107,7 @@ def test_order_constructor_on_negative_total_amount():
             total_amount=-14.67,
             payment_method="Cash",
             nb_items=2,
-            status="Preparing",
+            status="Ready",
         )
     assert "greater_than" in str(exc.value)
 
@@ -123,7 +123,7 @@ def test_order_constructor_on_incorrect_payment_method():
             total_amount=43.5,
             payment_method="change",
             nb_items=2,
-            status="Preparing",
+            status="Ready",
         )
     assert "payment_method" in str(exc.value)
 
@@ -139,6 +139,6 @@ def test_order_constructor_on_negative_nb_items():
             total_amount=43.5,
             payment_method="Cash",
             nb_items=-1,
-            status="Preparing",
+            status="Ready",
         )
     assert "greater_than_equal" in str(exc.value)

@@ -1,12 +1,12 @@
 import pytest
 from unittest.mock import MagicMock
 
-from DAO.CustomerDAO import CustomerDAO
-from DAO.DBConnector import DBConnector
-from Model.Customer import Customer
-from Service.CustomerService import CustomerService
-from utils.reset_database import ResetDatabase
-from utils.securite import hash_password
+from src.DAO.CustomerDAO import CustomerDAO
+from src.DAO.DBConnector import DBConnector
+from src.Model.Customer import Customer
+from src.Service.CustomerService import CustomerService
+from src.utils.reset_database import ResetDatabase
+from src.utils.securite import hash_password
 
 
 @pytest.fixture(autouse=True)

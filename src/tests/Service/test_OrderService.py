@@ -2,9 +2,10 @@ from pprint import pprint
 
 import pytest
 
-from DAO.DBConnector import DBConnector
-from DAO.OrderDAO import OrderDAO
-from Service.OrderService import OrderService
+from src.DAO.DBConnector import DBConnector
+from src.DAO.OrderDAO import OrderDAO
+from src.Service.OrderService import OrderService
+from src.utils.reset_database import ResetDatabase
 
 ADDRESS_ID = 999
 
@@ -12,8 +13,6 @@ ADDRESS_ID = 999
 @pytest.fixture(autouse=True)
 def reset_db():
     """Reset la base de test avant chaque test"""
-    from utils.reset_database import ResetDatabase
-
     ResetDatabase(test=True).lancer()
 
 
@@ -49,16 +48,9 @@ def test_remove_product(service):
     assert result is True
 
 
-def test_cancel_order(service):
+def test_mark_as_on_the_way_and_delivered(service):
     order = service.create(999, ADDRESS_ID, 0, 0.0, "Cash")
-    service.add_product_to_order(order.id_order, 999, 2)
-    result = service.cancel_order(order.id_order)
-    assert result is True
-
-
-def test_mark_as_ready_and_delivered(service):
-    order = service.create(999, ADDRESS_ID, 0, 0.0, "Cash")
-    assert service.mark_as_ready(order.id_order) is True
+    assert service.mark_as_on_the_way(order.id_order) is True
     assert service.mark_as_delivered(order.id_order) is True
 
 
@@ -80,7 +72,6 @@ def test_list_all_orders(service):
 
 def test_list_all_orders_ready(service):
     order = service.create(999, ADDRESS_ID, 0, 0.0, "Cash")
-    service.mark_as_ready(order.id_order)
     orders_ready = service.list_all_orders_ready()
     assert any(o["order"].id_order == order.id_order for o in orders_ready)
 

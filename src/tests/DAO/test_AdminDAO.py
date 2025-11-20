@@ -3,12 +3,12 @@ from datetime import datetime
 import pytest
 from dotenv import load_dotenv
 
-from DAO.AdminDAO import AdminDAO
-from DAO.DBConnector import DBConnector
-from DAO.UserRepo import UserRepo
-from Model.Admin import Admin
-from utils.reset_database import ResetDatabase
-from utils.securite import hash_password
+from src.DAO.AdminDAO import AdminDAO
+from src.DAO.DBConnector import DBConnector
+from src.DAO.UserRepo import UserRepo
+from src.Model.Admin import Admin
+from src.utils.reset_database import ResetDatabase
+from src.utils.securite import hash_password
 
 load_dotenv()
 

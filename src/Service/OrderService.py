@@ -1,6 +1,9 @@
 from typing import Any, Dict, List, Optional
 
 from DAO.OrderDAO import OrderDAO
+from DAO.CustomerDAO import CustomerDAO
+from DAO.DriverDAO import DriverDAO
+from Service.CustomerService import CustomerService
 from Model.Order import Order
 from utils.log_decorator import log
 
@@ -42,34 +45,11 @@ class OrderService:
         return self.orderdao.remove_product(id_order, id_product, quantity)
 
     @log
-    def cancel_order(self, order_id: int) -> bool:
-        """Annule une commande et remet les produits en stock"""
-        if order_id <= 0:
-            return False
-
-        order_data = self.orderdao.get_by_id(order_id)
-        if not order_data:
-            return False
-
-        # Remettre les produits en stock
-        for p in order_data["products"]:
-            self.orderdao.productdao.increment_stock(p["id_product"], p["quantity"])
-
-        return self.orderdao.cancel_order(order_id)
-
-    @log
     def mark_as_delivered(self, id_order: int) -> bool:
         """Marquer une commande comme livrée"""
         if id_order <= 0:
             return False
         return self.orderdao.mark_as_delivered(id_order)
-
-    @log
-    def mark_as_ready(self, id_order: int) -> bool:
-        """Marquer une commande comme prête"""
-        if id_order <= 0:
-            return False
-        return self.orderdao.mark_as_ready(id_order)
 
     @log
     def mark_as_on_the_way(self, id_order: int) -> bool:
@@ -93,9 +73,46 @@ class OrderService:
         return self.orderdao.get_by_id(id_order)["order"]
 
     @log
-    def list_all_orders(self) -> List[Dict[str, Any]]:
+    def list_all_orders(self):
         """Retourne toutes les commandes avec leurs produits"""
-        return self.orderdao.list_all_orders()
+        #customerdao = CustomerDAO(self.orderdao.db_connector)
+        #customerservice = CustomerService(customerdao)
+        #driverdao = DriverDAO(self.orderdao.db_connector)
+        raw_orders = self.orderdao.list_all_orders()
+        orders = []
+        for order_dict in raw_orders:
+            order = {}
+            raw_order = order_dict['order']
+            if raw_order is not None:
+                raw_address = order_dict['address']
+                order['id_order'] = raw_order.id_order
+                order['status'] = raw_order.status
+                order['total_amount'] = raw_order.total_amount
+                order['nb_items'] = raw_order.nb_items
+                order['date'] = raw_order.date
+                order['id_customer'] = raw_order.id_customer
+                #customer = customerservice.get_by_id(raw_order.id_customer)
+                #order['username_customer'] = customer.user_name
+                order['address'] = raw_address.address + " " + raw_address.city + " " + str(raw_address.postal_code)
+                order['id_driver'] = raw_order.id_driver
+                #if order['id_driver'] is None:
+                #    order['username_driver'] = None
+                #else :
+                #    driver = driverdao.get_by_id(raw_order.id_driver)
+                #    order['username_driver'] = driver.user_name
+                order['products_name'] = []
+                order['products_quantity'] = []
+                for raw_product in raw_order['products']:
+                    product_name = raw_product['name']
+                    quantity = raw_product['quantity']
+                    order['products_name'] += [product_name]
+                    order['products_quantity'] += [quantity]
+                orders.append(order)
+        return orders
+            
+
+
+
 
     @log
     def list_all_orders_ready(self) -> List[Dict[str, Any]]:
