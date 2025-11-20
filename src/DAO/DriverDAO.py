@@ -1,11 +1,17 @@
 import logging
 from typing import List, Optional
+import os
+import sys
 
-from src.DAO.DBConnector import DBConnector
-from src.DAO.UserRepo import UserRepo
-from src.Model.Driver import Driver
-from src.utils.log_decorator import log
-from src.utils.securite import hash_password
+current_dir = os.path.dirname(os.path.abspath(__file__))
+project_root = os.path.dirname(current_dir)
+sys.path.insert(0, project_root)
+
+from DAO.DBConnector import DBConnector
+from DAO.UserRepo import UserRepo
+from Model.Driver import Driver
+from utils.log_decorator import log
+from utils.securite import hash_password
 
 
 class DriverDAO:
