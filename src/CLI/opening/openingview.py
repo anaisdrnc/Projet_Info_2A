@@ -1,6 +1,6 @@
 from InquirerPy import inquirer
 
-from CLI.view_abstract import VueAbstraite
+from src.CLI.view_abstract import VueAbstraite
 
 
 class OpeningView(VueAbstraite):

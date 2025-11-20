@@ -3,14 +3,14 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials
 
-from Service.PasswordService import check_password_strength, create_salt
-from Service.DriverService import DriverService
-from Model.Driver import Driver
-from Model.APIUser import APIUser
+from src.Service.PasswordService import check_password_strength, create_salt
+from src.Service.DriverService import DriverService
+from src.Model.Driver import Driver
+from src.Model.APIUser import APIUser
 
-from .JWTBearer import JWTBearer
-from .init_app import jwt_service
-from .AdministratorController import get_admin_from_credentials
+from src.App.JWTBearer import JWTBearer
+from src.App.init_app import jwt_service
+from src.App.AdministratorController import get_admin_from_credentials
 
 driver_router = APIRouter(prefix="/driver", tags=["Driver"])
 driver_service = DriverService()

@@ -3,12 +3,12 @@ from InquirerPy import inquirer
 from InquirerPy.validator import EmptyInputValidator, PasswordValidator
 from prompt_toolkit.validation import ValidationError, Validator
 
-from Service.UserService import UserService
-from Service.CustomerService import CustomerService
-from CLI.view_abstract import VueAbstraite
-from DAO.UserRepo import UserRepo
-from DAO.CustomerDAO import CustomerDAO
-from DAO.DBConnector import DBConnector
+from src.Service.UserService import UserService
+from src.Service.CustomerService import CustomerService
+from src.CLI.view_abstract import VueAbstraite
+from src.DAO.UserRepo import UserRepo
+from src.DAO.CustomerDAO import CustomerDAO
+from src.DAO.DBConnector import DBConnector
 
 
 class InscriptionView(VueAbstraite):

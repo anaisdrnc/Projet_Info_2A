@@ -1,13 +1,7 @@
 import logging
-import os
-import sys
 
-current_dir = os.path.dirname(os.path.abspath(__file__))
-project_root = os.path.dirname(current_dir)
-sys.path.insert(0, project_root)
-
-from Model.Product import Product
-from utils.log_decorator import log
+from src.Model.Product import Product
+from src.utils.log_decorator import log
 
 
 class ProductDAO:

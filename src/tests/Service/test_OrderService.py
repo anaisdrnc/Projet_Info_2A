@@ -60,20 +60,24 @@ def test_get_order_products(service):
     products = service.get_order_products(order.id_order)
     assert any(p["id_product"] == 999 for p in products)
 
+
 def test_get_by_id(service):
     order = service.create(999, ADDRESS_ID, 0, 0.0, "Cash")
     fetched_order = service.get_by_id(order.id_order)
     assert fetched_order.id_order == order.id_order
 
+
 def test_list_all_orders(service):
     order = service.create(999, ADDRESS_ID, 0, 0.0, "Cash")
     orders = service.list_all_orders()
-    assert any(o["order"].id_order == order.id_order for o in orders)
+    assert any(o["id_order"] == order.id_order for o in orders)
+
 
 def test_list_all_orders_ready(service):
     order = service.create(999, ADDRESS_ID, 0, 0.0, "Cash")
     orders_ready = service.list_all_orders_ready()
     assert any(o["order"].id_order == order.id_order for o in orders_ready)
+
 
 def test_assign_and_get_assigned_orders(service):
     order = service.create(999, ADDRESS_ID, 0, 0.0, "Cash")

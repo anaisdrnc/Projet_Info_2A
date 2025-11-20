@@ -1,16 +1,10 @@
 import logging
 from typing import Optional
-import os
-import sys
 
-current_dir = os.path.dirname(os.path.abspath(__file__))
-project_root = os.path.dirname(current_dir)
-sys.path.insert(0, project_root)
-
-from DAO.DBConnector import DBConnector
-from DAO.UserRepo import UserRepo
-from Model.Customer import Customer
-from utils.log_decorator import log
+from src.DAO.DBConnector import DBConnector
+from src.DAO.UserRepo import UserRepo
+from src.Model.Customer import Customer
+from src.utils.log_decorator import log
 
 
 class CustomerDAO:
