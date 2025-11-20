@@ -250,33 +250,6 @@ def test_get_order_products_invalid(dao):
     assert products == []
 
 
-def test_cancel_order_ok(dao):
-    """Test: Successfully cancel an existing order and verify its status is Cancelled."""
-    addr = create_test_address()
-    addr = create_test_address()
-    order = Order(
-        id_customer=999,
-        id_driver=998,
-        id_address=addr.id_address,
-        nb_items=1,
-        total_amount=7.0,
-        payment_method="Card",
-    )
-    order_id = dao.create_order(order)
-    cancelled = dao.cancel_order(order_id)
-    assert cancelled is True
-
-    data = dao.get_by_id(order_id)
-    assert data is not None
-    assert data["order"].status == "Cancelled"
-
-
-def test_cancel_order_invalid(dao):
-    """Test: Attempt to cancel a non-existent order should return False"""
-    cancelled = dao.cancel_order(987654)
-    assert cancelled is False
-
-
 def test_mark_as_delivered_ok(dao):
     """Test: Mark an existing order as delivered successfully"""
     addr = create_test_address()
@@ -299,32 +272,6 @@ def test_mark_as_delivered_invalid(dao):
     assert delivered is False
 
 
-def test_mark_as_ready_ok(dao):
-    """Test: Mark an existing order as Ready and verify its status"""
-    addr = create_test_address()
-    order = Order(
-        id_customer=998,
-        id_driver=999,
-        id_address=addr.id_address,
-        nb_items=1,
-        total_amount=9.0,
-        payment_method="Card",
-    )
-    order_id = dao.create_order(order)
-    marked = dao.mark_as_ready(order_id)
-    assert marked is True
-
-    data = dao.get_by_id(order_id)
-    assert data is not None
-    assert data["order"].status == "Ready"
-
-
-def test_mark_as_ready_invalid_order(dao):
-    """Test: Marking a non-existent order as ready should fail"""
-    marked = dao.mark_as_ready(999999)
-    assert marked is False
-
-
 def test_mark_as_on_the_way_ok(dao):
     """Test: Mark an existing order as On the way after being Ready and verify its status"""
     addr = create_test_address()
@@ -337,8 +284,6 @@ def test_mark_as_on_the_way_ok(dao):
         payment_method="Card",
     )
     order_id = dao.create_order(order)
-
-    dao.mark_as_ready(order_id)
 
     marked = dao.mark_as_on_the_way(order_id)
     assert marked is True
@@ -375,56 +320,6 @@ def test_mark_as_on_the_way_invalid_order(dao):
     assert marked is False
 
 
-def test_mark_as_ready_twice(dao):
-    """Test: Mark an order as Ready twice and verify the status remains Ready."""
-    addr = create_test_address()
-    order = Order(
-        id_customer=998,
-        id_driver=999,
-        id_address=addr.id_address,
-        nb_items=1,
-        total_amount=9.0,
-        payment_method="Card",
-    )
-    order_id = dao.create_order(order)
-
-    marked1 = dao.mark_as_ready(order_id)
-    assert marked1 is True
-
-    marked2 = dao.mark_as_ready(order_id)
-    assert marked2 is True
-    data = dao.get_by_id(order_id)
-    assert data["order"].status == "Ready"
-
-
-def test_mark_as_ready_updates_date(dao):
-    """Test: Marking an order as Ready updates its date to the current timestamp."""
-    addr = create_test_address()
-    order = Order(
-        id_customer=998,
-        id_driver=999,
-        id_address=addr.id_address,
-        nb_items=1,
-        total_amount=9.0,
-        payment_method="Card",
-    )
-    order_id = dao.create_order(order)
-
-    data_before = dao.get_by_id(order_id)
-    before_date = data_before["order"].date
-
-    import time
-
-    time.sleep(1)
-
-    dao.mark_as_ready(order_id)
-
-    data_after = dao.get_by_id(order_id)
-    after_date = data_after["order"].date
-
-    assert after_date >= before_date
-
-
 def test_mark_multiple_status_changes(dao):
     """Test: Verifies that an order can progress through multiple status changes (Ready to On the way to Delivered)."""
     addr = create_test_address()
@@ -437,9 +332,6 @@ def test_mark_multiple_status_changes(dao):
         payment_method="Card",
     )
     order_id = dao.create_order(order)
-
-    ready = dao.mark_as_ready(order_id)
-    assert ready is True
 
     data = dao.get_by_id(order_id)
     assert data["order"].status == "Ready"
@@ -455,59 +347,6 @@ def test_mark_multiple_status_changes(dao):
 
     data = dao.get_by_id(order_id)
     assert data["order"].status == "Delivered"
-
-
-def test_mark_as_ready_with_products(dao):
-    """Test: Verifies that an order with multiple products can be marked as Ready and retains all products."""
-    addr = create_test_address()
-    addr = create_test_address()
-    order = Order(
-        id_customer=998,
-        id_driver=999,
-        id_address=addr.id_address,
-        nb_items=2,
-        total_amount=15.0,
-        payment_method="Card",
-    )
-    order_id = dao.create_order(order)
-
-    dao.add_product(order_id, product_id=997, quantity=1)
-    dao.add_product(order_id, product_id=998, quantity=2)
-
-    marked = dao.mark_as_ready(order_id)
-    assert marked is True
-
-    data = dao.get_by_id(order_id)
-    assert data is not None
-    assert data["order"].status == "Ready"
-    assert len(data["products"]) == 2
-
-
-def test_mark_status_sequence(dao):
-    """Test: Verifies a full sequence of order status updates from initial to Delivered."""
-    addr = create_test_address()
-    order = Order(
-        id_customer=998,
-        id_driver=999,
-        id_address=addr.id_address,
-        nb_items=1,
-        total_amount=9.0,
-        payment_method="Card",
-    )
-    order_id = dao.create_order(order)
-
-    data = dao.get_by_id(order_id)
-    initial_status = data["order"].status
-    assert initial_status in ["Preparing", "Ready"]
-
-    assert dao.mark_as_ready(order_id) is True
-    assert dao.get_by_id(order_id)["order"].status == "Ready"
-
-    assert dao.mark_as_on_the_way(order_id) is True
-    assert dao.get_by_id(order_id)["order"].status == "On the way"
-
-    assert dao.mark_as_delivered(order_id) is True
-    assert dao.get_by_id(order_id)["order"].status == "Delivered"
 
 
 def test_get_by_id_ok(dao):
@@ -548,36 +387,6 @@ def test_list_all_orders(dao):
         assert isinstance(entry["order"], Order)
 
 
-def test_list_all_orders_ready(dao):
-    """Test: Verify that only orders marked as Ready are returned and include the correct order details."""
-    addr = create_test_address()
-
-    order = Order(
-        id_customer=999,
-        id_driver=None,
-        id_address=addr.id_address,
-        nb_items=2,
-        total_amount=20.0,
-        payment_method="Cash",
-    )
-    order_id = dao.create_order(order)
-    assert order_id is not None
-
-    ready_orders_before = dao.list_all_orders_ready()
-    assert all(o["order"].id_order != order_id for o in ready_orders_before)
-
-    marked = dao.mark_as_ready(order_id)
-    assert marked is True
-
-    ready_orders = dao.list_all_orders_ready()
-    assert isinstance(ready_orders, list)
-
-    assert any(o["order"].id_order == order_id for o in ready_orders)
-
-    for o in ready_orders:
-        if o["order"].id_order == order_id:
-            assert o["order"].status == "Ready"
-
 
 def test_get_assigned_orders_ok(dao):
     """Test: Verify that orders assigned to a specific driver are correctly returned, including their products."""
@@ -617,7 +426,6 @@ def test_assign_order_ok(dao):
         nb_items=2,
         total_amount=25.0,
         payment_method="Cash",
-        status="Preparing",
     )
     order_id = dao.create_order(order)
     assert order_id is not None
