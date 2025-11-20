@@ -5,7 +5,7 @@ from src.DAO.DBConnector import DBConnector
 from src.Model.Customer import Customer
 from src.Service.PasswordService import check_password_strength, create_salt
 from src.utils.log_decorator import log
-from src.tils.securite import hash_password
+from src.utils.securite import hash_password
 
 
 class CustomerService:

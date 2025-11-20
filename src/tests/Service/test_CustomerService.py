@@ -3,7 +3,7 @@ from unittest.mock import MagicMock
 
 from src.DAO.CustomerDAO import CustomerDAO
 from src.DAO.DBConnector import DBConnector
-from src.src.Model.Customer import Customer
+from src.Model.Customer import Customer
 from src.Service.CustomerService import CustomerService
 from src.utils.reset_database import ResetDatabase
 from src.utils.securite import hash_password
