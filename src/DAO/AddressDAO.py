@@ -1,7 +1,7 @@
 import logging
 
-from Model.Address import Address
-from utils.log_decorator import log
+from src.Model.Address import Address
+from src.utils.log_decorator import log
 
 
 class AddressDAO:
