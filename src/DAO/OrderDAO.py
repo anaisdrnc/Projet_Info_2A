@@ -1,12 +1,18 @@
 import logging
 from datetime import datetime
 from typing import Any, Dict, List, Optional
+import os
+import sys
 
-from src.DAO.DBConnector import DBConnector
-from src.DAO.ProductDAO import ProductDAO
-from src.Model.Address import Address
-from src.Model.Order import Order
-from src.utils.log_decorator import log
+current_dir = os.path.dirname(os.path.abspath(__file__))
+project_root = os.path.dirname(current_dir)
+sys.path.insert(0, project_root)
+
+from DAO.DBConnector import DBConnector
+from DAO.ProductDAO import ProductDAO
+from Model.Address import Address
+from Model.Order import Order
+from utils.log_decorator import log
 
 
 class OrderDAO:
