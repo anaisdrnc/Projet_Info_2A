@@ -1,3 +1,6 @@
+import os
+import sys
+
 import dotenv
 from psycopg2 import connect, sql
 
