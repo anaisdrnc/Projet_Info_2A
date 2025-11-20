@@ -81,39 +81,39 @@ class OrderService:
     @log
     def list_all_orders(self):
         """Retourne toutes les commandes avec leurs produits"""
-        #customerdao = CustomerDAO(self.orderdao.db_connector)
-        #customerservice = CustomerService(customerdao)
-        #driverdao = DriverDAO(self.orderdao.db_connector)
+        customerdao = CustomerDAO(self.orderdao.db_connector)
+        customerservice = CustomerService(customerdao)
+        driverdao = DriverDAO(self.orderdao.db_connector)
         raw_orders = self.orderdao.list_all_orders()
         orders = []
         for order_dict in raw_orders:
-            order = {}
+            order_d = {}
             raw_order = order_dict['order']
             if raw_order is not None:
                 raw_address = order_dict['address']
-                order['id_order'] = raw_order.id_order
-                order['status'] = raw_order.status
-                order['total_amount'] = raw_order.total_amount
-                order['nb_items'] = raw_order.nb_items
-                order['date'] = raw_order.date
-                order['id_customer'] = raw_order.id_customer
-                #customer = customerservice.get_by_id(raw_order.id_customer)
-                #order['username_customer'] = customer.user_name
-                order['address'] = raw_address.address + " " + raw_address.city + " " + str(raw_address.postal_code)
-                order['id_driver'] = raw_order.id_driver
-                #if order['id_driver'] is None:
-                #    order['username_driver'] = None
-                #else :
-                #    driver = driverdao.get_by_id(raw_order.id_driver)
-                #    order['username_driver'] = driver.user_name
-                order['products_name'] = []
-                order['products_quantity'] = []
-                for raw_product in raw_order['products']:
+                order_d['id_order'] = raw_order.id_order
+                order_d['status'] = raw_order.status
+                order_d['total_amount'] = raw_order.total_amount
+                order_d['nb_items'] = raw_order.nb_items
+                order_d['date'] = raw_order.date
+                order_d['id_customer'] = raw_order.id_customer
+                customer = customerservice.get_by_id(raw_order.id_customer)
+                order_d['username_customer'] = customer.user_name
+                order_d['address'] = raw_address.address + " " + raw_address.city + " " + str(raw_address.postal_code)
+                order_d['id_driver'] = raw_order.id_driver
+                if order_d['id_driver'] is None:
+                    order_d['username_driver'] = None
+                else :
+                    driver = driverdao.get_by_id(raw_order.id_driver)
+                    order_d['username_driver'] = driver.user_name
+                order_d['products_name'] = []
+                order_d['products_quantity'] = []
+                for raw_product in order_dict['products']:
                     product_name = raw_product['name']
                     quantity = raw_product['quantity']
-                    order['products_name'] += [product_name]
-                    order['products_quantity'] += [quantity]
-                orders.append(order)
+                    order_d['products_name'] += [product_name]
+                    order_d['products_quantity'] += [quantity]
+                orders.append(order_d)
         return orders
             
 

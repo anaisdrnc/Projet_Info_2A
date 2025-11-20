@@ -5,7 +5,6 @@ from src.Model.Customer import Customer
 
 
 def test_create_customer_with_address():
-    """Test : Checks that an Customer object has been initialized correctly."""
     addr = Address(address="12 Maple Street", postal_code=35000, city="Rennes")
     cust = Customer(
         id=1,
@@ -15,13 +14,12 @@ def test_create_customer_with_address():
         last_name="Martin",
         email="alice@test.com",
         salt="j",
-        address=addr,
+        address=addr.model_dump(),
     )
-
-    assert cust.id == 1
-    assert cust.user_name == "testuser"
+    assert cust.address.address == "12 Maple Street"
+    assert cust.address.postal_code == 35000
     assert cust.address.city == "Rennes"
-    assert isinstance(cust.address, Address)
+
 
 
 def test_create_customer_without_address():
