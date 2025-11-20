@@ -2,11 +2,11 @@ from fastapi import APIRouter, HTTPException, status, Depends
 from fastapi.security import HTTPAuthorizationCredentials
 from typing import Annotated
 
-from Model.Product import Product
-from DAO.DBConnector import DBConnector
-from DAO.ProductDAO import ProductDAO
-from Service.ProductService import ProductService
-from .JWTBearer import JWTBearer  # ton middleware pour vérifier JWT
+from src.Model.Product import Product
+from src.DAO.DBConnector import DBConnector
+from src.DAO.ProductDAO import ProductDAO
+from src.Service.ProductService import ProductService
+from src.App.JWTBearer import JWTBearer  # ton middleware pour vérifier JWT
 
 product_router = APIRouter(prefix="/Product", tags=["Products"])
 db = DBConnector()

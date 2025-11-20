@@ -16,12 +16,12 @@ sys.path.insert(0, src_dir)
 sys.path.insert(0, utils_dir)
 
 try:
-    from CLI.view_abstract import VueAbstraite
-    from DAO.DriverDAO import DriverDAO
-    from DAO.OrderDAO import OrderDAO
-    from Service.Google_Maps.map import compute_itinerary, create_map, display_itinerary_details
-    from Service.OrderService import OrderService
-    from CLI.session import Session
+    from src.CLI.view_abstract import VueAbstraite
+    from src.DAO.DriverDAO import DriverDAO
+    from src.DAO.OrderDAO import OrderDAO
+    from src.Service.Google_Maps.map import compute_itinerary, create_map, display_itinerary_details
+    from src.Service.OrderService import OrderService
+    from src.CLI.session import Session
 except ImportError as e:
     print(f"Erreur d'import: {e}")
     print(f"Python path: {sys.path}")
@@ -232,16 +232,7 @@ class ManageOrderView(VueAbstraite):
             map_path = create_map(origin, destination, transport_mode)
             if map_path:
                 print(f"Map saved: {map_path}")
-
-                # Proposer d'ouvrir la carte
-                open_map = inquirer.confirm(
-                    message="Voulez-vous ouvrir la carte dans le navigateur?", default=True
-                ).execute()
-
-                if open_map:
-                    import webbrowser
-
-                    webbrowser.open(f"file://{os.path.abspath(map_path)}")
+                print("You can now open the map path by downloading the file delivery_path.html in the Google_Maps service")
             else:
                 print("Impossible to compute a map")
         else:
@@ -249,6 +240,14 @@ class ManageOrderView(VueAbstraite):
 
         message = f"Delivery {order_id} accepted. Itinerary computed."
         print(message)
+
+        while True:
+            answer = input("Have you delivered the order ? (y/n): ")
+            if answer == "y":
+                self.order_service.mark_as_delivered(order_id)
+                break
+            else:
+                print("invalid answer")
 
         choice = inquirer.select(
                 message="What do you want to do now ?",

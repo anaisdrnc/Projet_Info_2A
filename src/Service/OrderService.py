@@ -1,17 +1,10 @@
-import os
-import sys
-current_dir = os.path.dirname(os.path.abspath(__file__))
-project_root = os.path.dirname(current_dir)
-sys.path.insert(0, project_root)
-
-
 from typing import Any, Dict, List, Optional
-from DAO.OrderDAO import OrderDAO
-from DAO.CustomerDAO import CustomerDAO
-from DAO.DriverDAO import DriverDAO
-from Service.CustomerService import CustomerService
-from Model.Order import Order
-from utils.log_decorator import log
+from src.DAO.OrderDAO import OrderDAO
+from src.DAO.CustomerDAO import CustomerDAO
+from src.DAO.DriverDAO import DriverDAO
+from src.Service.CustomerService import CustomerService
+from src.Model.Order import Order
+from src.utils.log_decorator import log
 
 
 class OrderService:
@@ -115,9 +108,6 @@ class OrderService:
                     order_d['products_quantity'] += [quantity]
                 orders.append(order_d)
         return orders
-            
-
-
 
 
     @log

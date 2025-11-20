@@ -1,9 +1,9 @@
 from InquirerPy import inquirer
 
-from CLI.view_abstract import VueAbstraite
-from DAO.DBConnector import DBConnector
-from DAO.ProductDAO import ProductDAO
-from Service.ProductService import ProductService
+from src.CLI.view_abstract import VueAbstraite
+from src.DAO.DBConnector import DBConnector
+from src.DAO.ProductDAO import ProductDAO
+from src.Service.ProductService import ProductService
 
 
 class ProductView(VueAbstraite):

@@ -14,7 +14,6 @@ from src.Model.Order import Order
 from src.Model.Product import Product
 from src.utils.reset_database import ResetDatabase
 
-
 load_dotenv()
 
 

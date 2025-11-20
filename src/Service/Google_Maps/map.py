@@ -67,6 +67,8 @@ def display_itinerary_details(directions):
             .replace("</b>", "")
             .replace('<div style="font-size:0.9em">', " - ")
             .replace("</div>", "")
+            .replace("/<wbr/>", "/")
+            .replace("<wbr/>", " ")
         )
         print(f"   {i}. {instruction} ({step['distance']['text']})")
 

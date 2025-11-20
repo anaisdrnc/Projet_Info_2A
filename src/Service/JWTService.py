@@ -1,15 +1,10 @@
+import jwt
 import os
 import sys
 import time
-
-import jwt
 from jwt import ExpiredSignatureError
 
-current_dir = os.path.dirname(os.path.abspath(__file__))
-project_root = os.path.dirname(current_dir)
-sys.path.insert(0, project_root)
-
-from Model.JWTResponse import JWTResponse
+from src.Model.JWTResponse import JWTResponse
 
 
 class JwtService:

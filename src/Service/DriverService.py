@@ -1,16 +1,10 @@
-import os
-import sys
-current_dir = os.path.dirname(os.path.abspath(__file__))
-project_root = os.path.dirname(current_dir)
-sys.path.insert(0, project_root)
-
 import logging
 
-from DAO.DriverDAO import DriverDAO
-from Model.Driver import Driver
-from Service.PasswordService import check_password_strength, create_salt
-from utils.log_decorator import log
-from utils.securite import hash_password
+from src.DAO.DriverDAO import DriverDAO
+from src.Model.Driver import Driver
+from src.Service.PasswordService import check_password_strength, create_salt
+from src.utils.log_decorator import log
+from src.utils.securite import hash_password
 
 
 class DriverService:

@@ -1,15 +1,9 @@
-import os
-import sys
-current_dir = os.path.dirname(os.path.abspath(__file__))
-project_root = os.path.dirname(current_dir)
-sys.path.insert(0, project_root)
-
-from DAO.DBConnector import DBConnector
-from DAO.UserRepo import UserRepo
-from Model.User import User
-from Service.PasswordService import check_password_strength, create_salt, validate_username_password
-from utils.log_decorator import log
-from utils.securite import hash_password
+from src.DAO.DBConnector import DBConnector
+from src.DAO.UserRepo import UserRepo
+from src.Model.User import User
+from src.Service.PasswordService import check_password_strength, create_salt, validate_username_password
+from src.utils.log_decorator import log
+from src.utils.securite import hash_password
 
 
 class UserService:
