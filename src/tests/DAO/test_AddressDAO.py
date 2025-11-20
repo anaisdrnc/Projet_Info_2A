@@ -1,10 +1,10 @@
 import pytest
 from dotenv import load_dotenv
 
-from DAO.AddressDAO import AddressDAO
-from DAO.DBConnector import DBConnector
-from Model.Address import Address
-from utils.reset_database import ResetDatabase
+from src.DAO.AddressDAO import AddressDAO
+from src.DAO.DBConnector import DBConnector
+from src.Model.Address import Address
+from src.utils.reset_database import ResetDatabase
 
 load_dotenv()
 
