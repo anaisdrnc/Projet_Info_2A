@@ -1,5 +1,11 @@
-from typing import Any, Dict, List, Optional
+import os
+import sys
+current_dir = os.path.dirname(os.path.abspath(__file__))
+project_root = os.path.dirname(current_dir)
+sys.path.insert(0, project_root)
 
+
+from typing import Any, Dict, List, Optional
 from DAO.OrderDAO import OrderDAO
 from DAO.CustomerDAO import CustomerDAO
 from DAO.DriverDAO import DriverDAO

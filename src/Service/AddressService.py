@@ -1,5 +1,11 @@
-from src.Model.Address import Address
-from src.utils.log_decorator import log
+import os
+import sys
+current_dir = os.path.dirname(os.path.abspath(__file__))
+project_root = os.path.dirname(current_dir)
+sys.path.insert(0, project_root)
+
+from Model.Address import Address
+from utils.log_decorator import log
 
 ALLOWED_ADDRESSES = {
     35000: "Rennes",
