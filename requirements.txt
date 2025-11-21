@@ -9,7 +9,6 @@ python-dotenv
 PyYAML
 regex
 requests
-tabulate
 uvicorn
 folium
 googlemaps
