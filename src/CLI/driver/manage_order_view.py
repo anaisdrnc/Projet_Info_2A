@@ -1,31 +1,15 @@
 import os
-import sys
 
 import googlemaps
 from dotenv import load_dotenv
 from InquirerPy import inquirer
 
-current_dir = os.path.dirname(os.path.abspath(__file__))
-src_dir = os.path.dirname(current_dir)
-project_root = os.path.dirname(src_dir)
-utils_dir = os.path.join(project_root, "utils")
-
-# Add necessary paths
-sys.path.insert(0, project_root)
-sys.path.insert(0, src_dir)
-sys.path.insert(0, utils_dir)
-
-try:
-    from src.CLI.session import Session
-    from src.CLI.view_abstract import AbstractView
-    from src.DAO.DriverDAO import DriverDAO
-    from src.DAO.OrderDAO import OrderDAO
-    from src.Service.Google_Maps.map import compute_itinerary, create_map, display_itinerary_details
-    from src.Service.OrderService import OrderService
-except ImportError as e:
-    print(f"Import error: {e}")
-    print(f"Python path: {sys.path}")
-    raise
+from src.CLI.session import Session
+from src.CLI.view_abstract import AbstractView
+from src.DAO.DriverDAO import DriverDAO
+from src.DAO.OrderDAO import OrderDAO
+from src.Service.Google_Maps.map import compute_itinerary, create_map, display_itinerary_details
+from src.Service.OrderService import OrderService
 
 # Load environment variables
 load_dotenv()
@@ -46,6 +30,7 @@ class ManageOrderView(AbstractView):
             self.driver_dao = DriverDAO()
             self.order_service = OrderService(OrderDAO())
 
+            # Retrieving driver's id
             if driver_id is not None:
                 self.driver_id = driver_id
             else:
@@ -88,6 +73,7 @@ class ManageOrderView(AbstractView):
             print(f"Transport type: {driver.mean_of_transport}")
             origin = "ENSAI, Rennes, France"
 
+            # If the deliverer uses a bike, he can only deliver orders that are less than 30 minutes away
             if driver.mean_of_transport == "Bike":
                 max_bike_time = 30 * 60
                 all_ready_orders = self.order_service.list_all_orders_ready()
@@ -114,6 +100,8 @@ class ManageOrderView(AbstractView):
                         continue
 
                 return filtered_orders
+
+            # For the other drivers, they can deliver all orders
             else:
                 return self.order_service.list_all_orders_ready()
 
@@ -130,12 +118,14 @@ class ManageOrderView(AbstractView):
             print("        Managing Orders")
             print("=" * 50)
 
+            # Retrieving driver's id
             driver = self.driver_dao.get_by_id(self.driver_id)
             if not driver:
                 print("Driver not found")
                 from CLI.driver.menu_driver import MenuDriver
                 return MenuDriver(message="Driver not found")
 
+            # Showing driver's main info
             print(f"Deliverer: {driver.first_name} {driver.last_name}")
             available_orders = self.get_available_orders()
 
@@ -144,6 +134,7 @@ class ManageOrderView(AbstractView):
                 from CLI.driver.menu_driver import MenuDriver
                 return MenuDriver(message="No available orders")
 
+            # Showing the first order's main info
             oldest_order = available_orders[0]
             print("\nAvailable order:")
             print(f"   ID: {oldest_order['order'].id_order}")
@@ -213,16 +204,19 @@ class ManageOrderView(AbstractView):
 
         print(f"Delivery {order_id} accepted. Itinerary computed.")
 
+        # As long as the driver has not delivered the order, he cannot accept an other one
         while True:
             answer = input("Have you delivered the order? (y/n): ")
             if answer == "y":
                 self.order_service.mark_as_delivered(order_id)
                 break
+            elif answer == "n":
+                print("Please deliver the order")
             else:
                 print("Invalid answer")
 
         choice = inquirer.select(
-            message="What do you want to do now?",
+            message="What do you want to do now ?",
             choices=["Check other orders", "Return to the driver's menu"],
         ).execute()
 

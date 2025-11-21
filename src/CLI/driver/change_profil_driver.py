@@ -48,6 +48,7 @@ class ChangeProfilDriver(AbstractView):
                 old_password = inquirer.secret(message="Enter your current password: ").execute()
                 new_password = inquirer.secret(message="Enter your new password: ").execute()
 
+                # Checks if the new password is valid
                 success = user_service.change_password(
                     user_name=username,
                     old_password=old_password,
