@@ -42,7 +42,7 @@ class MenuDriver(AbstractView):
             case "Log out":
                 from CLI.opening.openingview import OpeningView
 
-                Session().deconnexion()
+                Session().logout()
                 return OpeningView()
 
             case "Manage orders":
