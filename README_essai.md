@@ -59,7 +59,7 @@ Normally, you won't need to modify these files, except for .env and requirements
 |------|------------|
 | `data` | SQL script containing data sets |
 | `doc` | diagrams, weekly reports |
-|  `src`| Folder containing Python files organized using a layered architecture |
+| `src`| Folder containing Python files organized using a layered architecture |
 
 ### 2.3 Settings files
 
@@ -107,6 +107,8 @@ API_KEY_GOOGLE_MAPS = "*****"
 - In the guide on the left, select Configure API Route and follow the steps to configure API Route to create the API key
 - Then copy and paste it into the .env file 
 
+> **Create a new JWT SECRET**
+- Please generate your own secure JWT secret and never share it
 
 ### 3.3 Units tests 
 - In Git Bash: pytest -v
@@ -121,12 +123,18 @@ This data is loaded into a separate schema (test) so as not to pollute the other
 
 ### 3.4 Launch the CLI application
 
+If you want to use the pdm shortcut, you must install it using the following command: install pdm
+
 This application provides the interface for delivery drivers and customers. 
 
-- In Git Bash : python src/main_CLI.py or pdm cli
+- In Git Bash : pdm cli
+- In python src/main_CLI.py 
 
 ### 3.4 Launch the API application 
 
+If you want to use the pdm shortcut, you must install it using the following command: install pdm
+
 This application provides the administrator interface. 
 
-- In Git Bash : python src/__main__.py or pdm start
+- In Git Bash : python src/__main__.py 
+- In Python :  pdm start
