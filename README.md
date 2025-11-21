@@ -123,7 +123,11 @@ This data is loaded into a separate schema (test) so as not to pollute the other
 
 ### 3.4 Launch the CLI application
 
-If you want to use the pdm shortcut, you must install it using the following command: install pdm
+If you want to use the pdm shortcut, you must install it using the following commands: 
+```bash
+pip install pdm
+install pdm
+```
 
 This application provides the interface for delivery drivers and customers. 
 
@@ -132,7 +136,11 @@ This application provides the interface for delivery drivers and customers.
 
 ### 3.4 Launch the API application 
 
-If you want to use the pdm shortcut, you must install it using the following command: install pdm
+If you want to use the pdm shortcut, you must install it using the following commands:
+```bash
+pip install pdm
+install pdm
+```
 
 This application provides the administrator interface. 
 
