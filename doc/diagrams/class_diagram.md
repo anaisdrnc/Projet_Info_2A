@@ -18,7 +18,6 @@ class Admin {
 
 class Customer {
     +id_customer: int?
-    +address: Address?
 }
 
 class Driver {
