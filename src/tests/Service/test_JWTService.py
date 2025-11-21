@@ -8,7 +8,6 @@ from src.Service.JWTService import JwtService
 
 jwt_service = JwtService("mysecret")
 
-
 @freeze_time("2024-08-26 12:00:00")
 @patch("src.Service.JWTService.time.time", return_value=datetime.datetime(2024, 8, 26, 12, 0, 0).timestamp())
 def test_encode_jwt(mock_time):

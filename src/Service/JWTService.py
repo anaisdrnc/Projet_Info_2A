@@ -2,7 +2,6 @@ import os
 import time
 
 import jwt
-from jwt import ExpiredSignatureError
 
 from src.Model.JWTResponse import JWTResponse
 
@@ -41,5 +40,5 @@ class JwtService:
         """
         decoded_jwt = self.decode_jwt(token)
         if decoded_jwt["expiry_timestamp"] < time.time():
-            raise ExpiredSignatureError("Expired JWT")
+            raise jwt.ExpiredSignatureError("Expired JWT")
         return decoded_jwt["user_id"]

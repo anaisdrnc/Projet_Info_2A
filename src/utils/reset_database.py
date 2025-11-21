@@ -1,7 +1,7 @@
 import dotenv
 from psycopg2 import connect, sql
 
-from DAO.DBConnector import DBConnector
+from src.DAO.DBConnector import DBConnector
 
 dotenv.load_dotenv()
 
