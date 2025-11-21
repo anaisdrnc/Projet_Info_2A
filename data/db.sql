@@ -25,9 +25,6 @@ CREATE TABLE default_schema.users (
 CREATE TABLE default_schema.customer (
     id_customer    SERIAL PRIMARY KEY,
     id_user        INT NOT NULL,
-    address        VARCHAR(100),
-    city           VARCHAR(50),
-    postal_code    VARCHAR(5) CHECK (char_length(postal_code) = 5),
     CONSTRAINT fk_customer_user FOREIGN KEY (id_user) REFERENCES users(id_user) ON DELETE CASCADE
 );
 
@@ -107,21 +104,21 @@ CREATE TABLE default_schema.order_products (
 -- INSERT INTO USERS
 -----------------------
 INSERT INTO users (first_name, last_name, user_name, password, email, salt) VALUES
-('Admin', 'System', 'admin', '69371091eb0f9aec7e61b7421cf3044529167e979cd975201909eb8ae33887ba', 'admin@project.com', 'admin'),
+('Admin', 'System', 'admin', 'a0026a5261e3992ae50c2b5711679e92c3ec5700a4095bd66ca204d89c7d6493', 'admin@project.com', 'admin'),
 ('Neo', 'Gandhaye', 'SecretNeo', '671ac9d528b52b5d47f8ab43c74d4584fba7af774cd8f376d96bf6c45b01b796', 'secretneo@project.com','SecretNeo'),
 ('Emma', 'Boisse', 'EmmaMache', '8d3a5fcc03ea32df25e905dc47b27c4d8a5fabf9f77bbec1a305a59af5ab9143', 'emmamache@project.com','EmmaMache'),
 ('Emma', 'Glorieux', 'EmmaDriver', 'f11b5649b0e3b97afae7b6db66b48f66407096f4771d599159ea7d0d7cd1d8de', 'emmadriver@project.com','EmmaDriver'),
 ('JF', 'Lapitre', 'PresidentEnsai', '118adf271202feab0f44fb1a53285c72ab1857e8d49ca2c930cfee09da4555bf', 'jf@project.com','PresidentEnsai'),
-('Pierre', 'Cycliste', 'PierreVelo', '10375150ff7ed1ddc621c03c782438c3548069a4eb5a2819b41201a77951eb0b', 'pierre.velo@project.com', 'PierreVelo'),
+('Pierre', 'Cycliste', 'PierreVelo', '443ec806e9af0519558062ecb471c5e736fc1addca19d8e60c805e2186b71fbf', 'pierre.velo@project.com', 'PierreVelo'),
 ('Vincent', 'Dupont', 'Vincdupont', '300b78480c76415739fcb4b608ab4ef5cf65682a96d739f47e9137afb04b3d3e', 'v.dupont@project.com', 'Vincdupont');
 
 -----------------------
 -- INSERT INTO CUSTOMER
 -----------------------
-INSERT INTO customer (id_user, address, city, postal_code) VALUES
-(2, '12 Yvonne Jean-Haffen Street', 'Rennes', '35000'),
-(3, '1 Rohan Street', 'Rennes', '35000'),
-(7, '1 Rue Duguesclin', 'Rennes', '35000');
+INSERT INTO customer (id_user) VALUES
+(2),
+(3),
+(7);
 
 -----------------------
 -- INSERT INTO ADDRESS
@@ -129,7 +126,7 @@ INSERT INTO customer (id_user, address, city, postal_code) VALUES
 INSERT INTO address (address, city, postal_code) VALUES
 ('12 Yvonne Jean-Haffen Street', 'Rennes', '35000'),
 ('1 Rohan Street', 'Rennes', '35000'),
-('1 Rue Duguesclin', 'Rennes', '35000');
+('1 Duguesclin Street', 'Rennes', '35000');
 
 -----------------------
 -- INSERT INTO DRIVER

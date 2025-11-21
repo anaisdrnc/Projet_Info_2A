@@ -25,9 +25,6 @@ CREATE TABLE test.users (
 CREATE TABLE test.customer (
     id_customer    SERIAL PRIMARY KEY,
     id_user        INT NOT NULL,
-    address        VARCHAR(100),
-    city           VARCHAR(50),
-    postal_code    VARCHAR(5) CHECK (char_length(postal_code) = 5),
     CONSTRAINT fk_customer_user FOREIGN KEY (id_user) REFERENCES users(id_user) ON DELETE CASCADE
 );
 
@@ -107,7 +104,7 @@ CREATE TABLE test.order_products (
 -- USERS
 -----------------------
 INSERT INTO users (id_user, first_name, last_name, user_name, password, email, salt) VALUES
-(999, 'Admin', 'System', 'admin', '69371091eb0f9aec7e61b7421cf3044529167e979cd975201909eb8ae33887ba', 'admin@project.com', 'admin'),
+(999, 'Admin', 'System', 'admin', 'a0026a5261e3992ae50c2b5711679e92c3ec5700a4095bd66ca204d89c7d6493', 'admin@project.com', 'admin'),
 (998, 'Alice', 'Martin', 'AliceM', 'eb03c057f2207cc124b4cda1e0959b72d220a33916b5e638705e3d6525a01dbf', 'alice@test.com','AliceM'), 
 (997, 'Bob', 'Durand', 'BobD', '0cfae64be65ba050f9ec04146962114f3a550bf7b7ebad28179e543b47068132', 'bob@test.com', 'BobD'), 
 (996, 'Charlie', 'Dupont','ChaCha', 'fef0cbb48e4c82a6bdcd62b27bc4c73fef56ead5bc148cc210e5b87148c12009', 'charlie@test.com', 'ChaCha'),
@@ -117,9 +114,9 @@ INSERT INTO users (id_user, first_name, last_name, user_name, password, email, s
 -----------------------
 -- CUSTOMER
 -----------------------
-INSERT INTO customer (id_customer, id_user, address, city, postal_code) VALUES
-(999, 998, '10 Maple Street', 'Rennes', '35000'),
-(998, 997, '22 Oak Avenue', 'Rennes', '35000');
+INSERT INTO customer (id_customer, id_user) VALUES
+(999, 998),
+(998, 997);
 
 -----------------------
 -- ADDRESS

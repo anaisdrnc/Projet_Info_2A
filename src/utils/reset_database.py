@@ -49,5 +49,5 @@ class ResetDatabase:
 
 if __name__ == "__main__":
     # Exemples d’utilisation
-    ResetDatabase(test=False).lancer()  # pour le schéma "default_schema"
-    ResetDatabase(test=True).lancer()  # pour le schéma "test"
+    ResetDatabase(test=False).lancer()  # for "default_schema"
+    ResetDatabase(test=True).lancer()  # for "test"
