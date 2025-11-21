@@ -64,11 +64,18 @@ class PlaceOrderView(AbstractView):
                 choices=list_products,
             ).execute()
             stock = stocks[product]
-            quantity = inquirer.number(
-                message="Quantity :",
-                min_allowed=0,
-                max_allowed=stock,
-            ).execute()
+
+            while True:
+                quantity = inquirer.number(
+                    message=f"Quantity (Available: {int(stock)}):",
+                    min_allowed=1,
+                ).execute()
+                quantity = int(quantity)
+                if quantity > stock:
+                    print(f"Sorry, you requested {quantity} units but only {int(stock)} are available. Please enter a lower quantity.\n")
+                else:
+                    break
+
             list_choosen_products_names.append(product)
             quantities.append(quantity)
             total_amount += prices[product] * int(quantity)

@@ -8,6 +8,7 @@ from src.DAO.DriverDAO import DriverDAO
 from src.DAO.UserRepo import UserRepo
 from src.Service.DriverService import DriverService
 from src.Service.UserService import UserService
+from src.Service.PasswordService import check_password_strength, validate_username_password
 
 
 class ChangeProfilDriver(AbstractView):
@@ -45,16 +46,36 @@ class ChangeProfilDriver(AbstractView):
 
             case "Change password":
                 username = Session().username
-                old_password = inquirer.secret(message="Enter your current password: ").execute()
-                new_password = inquirer.secret(message="Enter your new password: ").execute()
 
-                success = user_service.change_password(
-                    user_name=username,
-                    old_password=old_password,
-                    new_password=new_password,
-                )
+                while True:
+                    old_password = inquirer.secret(message="Enter your current password:").execute()
 
-                message = "Password successfully changed." if success else "Operation failed, please try again."
+                    try:
+                        validate_username_password(username, old_password, user_service.user_repo)
+                    except Exception:
+                        print("Current password is incorrect. Please try again.\n")
+                        continue
+
+                    new_password = inquirer.secret(message="Enter your new password:").execute()
+
+                    try:
+                        check_password_strength(new_password)
+                    except Exception:
+                        print("Password invalid. At least 8 characters including uppercase, lowercase, and a number.\n")
+                        continue
+
+                    success = user_service.change_password(
+                        user_name=username,
+                        old_password=old_password,
+                        new_password=new_password,
+                    )
+
+                    if success:
+                        message = "Password successfully changed."
+                        break
+                    else:
+                        print("Operation failed. Please try again.\n")
+
                 return MenuDriver(message)
 
             case "Change means of transport":
