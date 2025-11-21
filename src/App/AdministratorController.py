@@ -128,7 +128,7 @@ def update_my_admin_profile(
         raise
     except Exception as e:
         print("hello")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
     if not updated:
         raise HTTPException(status_code=500, detail="Unable to update admin")

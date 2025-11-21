@@ -131,8 +131,7 @@ def create_map(origin, destination, transport_mode):
     for step in leg["steps"]:
         polyline = step["polyline"]["points"]
         decoded_points = googlemaps.convert.decode_polyline(polyline)
-        for point in decoded_points:
-            path.append((point["lat"], point["lng"]))
+        path.extend((point["lat"], point["lng"]) for point in decoded_points)
 
     folium.PolyLine(path, color="blue", weight=5, opacity=0.7).add_to(m)
 

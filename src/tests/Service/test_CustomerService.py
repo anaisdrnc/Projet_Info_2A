@@ -50,7 +50,7 @@ class TestCustomerService:
 
     def test_create_customer_weak_password(self, service):
         """Test: Creating a customer with a weak password should raise Exception"""
-        with pytest.raises(Exception):
+        with pytest.raises(ValueError):
             service.create_customer(
                 username="weak",
                 password="123",

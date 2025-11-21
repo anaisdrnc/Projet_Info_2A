@@ -25,7 +25,7 @@ def get_product_by_id(product_id: int, credentials: Annotated[HTTPAuthorizationC
     except HTTPException:
         raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Database error: {str(e)}") from e
 
 
 @product_router.get("/id/{product_name}", status_code=status.HTTP_200_OK)
@@ -37,7 +37,7 @@ def get_all_products(product_name, credentials: Annotated[HTTPAuthorizationCrede
         id_product = product_service.get_id_by_name(product_name)
         return id_product
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Database error: {str(e)}") from e
 
 
 @product_router.post("/", response_model=Product, status_code=status.HTTP_201_CREATED)
@@ -66,7 +66,7 @@ def create_product(
             raise HTTPException(status_code=500, detail="Product could not be created")
         return new_product
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Database error: {str(e)}") from e
 
 
 @product_router.delete("/{product_id}", status_code=status.HTTP_200_OK)
@@ -84,7 +84,7 @@ def delete_product(
     except HTTPException:
         raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Database error: {str(e)}") from e
 
 
 @product_router.put("/{product_id}", response_model=Product, status_code=status.HTTP_200_OK)
@@ -126,7 +126,7 @@ def update_product(
     except HTTPException:
         raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Database error: {str(e)}") from e
 
 
 @product_router.put("/update_stock/product_id={product_id}&stock_added={stock_added}", status_code=status.HTTP_200_OK)
@@ -145,4 +145,4 @@ def update_stock(
     except HTTPException:
         raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Database error: {str(e)}") from e

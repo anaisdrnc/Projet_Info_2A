@@ -3,10 +3,8 @@ from InquirerPy import inquirer
 from src.CLI.customer.menu_customer import MenuView
 from src.CLI.session import Session
 from src.CLI.view_abstract import AbstractView
-from src.DAO.CustomerDAO import CustomerDAO
 from src.DAO.DBConnector import DBConnector
 from src.DAO.UserRepo import UserRepo
-from src.Service.CustomerService import CustomerService
 from src.Service.UserService import UserService
 
 
@@ -14,8 +12,6 @@ class ChangeProfileView(AbstractView):
     """Change the customer's password"""
 
     def choose_menu(self):
-        customer_dao = CustomerDAO(DBConnector(test=False))
-        customer_service = CustomerService(customer_dao)
         user_repo = UserRepo(DBConnector(test=False))
         user_service = UserService(user_repo)
 

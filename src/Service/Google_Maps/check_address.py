@@ -49,8 +49,10 @@ def is_address_sufficient_for_routing(adresse: str) -> Tuple[bool, str]:
         return False, ""
 
     best_result = results[0]
-    formatted_address = best_result.get("formatted_address", "")    # Formatted address obtained from Google Maps
-    address_components = best_result.get("address_components", [])  # Components detected in the address (city, street...)
+    # Formatted address obtained from Google Maps
+    formatted_address = best_result.get("formatted_address", "")
+    # Components detected in the address (city, street...)
+    address_components = best_result.get("address_components", [])
     best_result.get("types", [])
 
     # Checks if "locality" is in the address components

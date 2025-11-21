@@ -125,23 +125,26 @@ class DriverDAO:
                 None,
                 "all",
             )
-            drivers = []
             if res:
-                for row in res:
-                    drivers.append(
-                        Driver(
-                            id=row["id_user"],
-                            id_driver=row["id_driver"],
-                            user_name=row["user_name"],
-                            password=row["password"],
-                            salt=row["salt"],
-                            first_name=row["first_name"],
-                            last_name=row["last_name"],
-                            email=row["email"],
-                            mean_of_transport=row["mean_of_transport"],
-                        )
+                drivers = [
+                    Driver(
+                        id=row["id_user"],
+                        id_driver=row["id_driver"],
+                        user_name=row["user_name"],
+                        password=row["password"],
+                        salt=row["salt"],
+                        first_name=row["first_name"],
+                        last_name=row["last_name"],
+                        email=row["email"],
+                        mean_of_transport=row["mean_of_transport"],
                     )
+                    for row in res
+                ]
+            else:
+                drivers = []
+
             return drivers
+
         except Exception as e:
             logging.info(e)
             return []

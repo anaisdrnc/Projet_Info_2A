@@ -53,7 +53,7 @@ class TestUserService:
 
     def test_create_user_weak_password(self, service):
         """Test: Creating a user with a weak password raises Exception."""
-        with pytest.raises(Exception):
+        with pytest.raises(ValueError):
             service.create_user(
                 username="Weak",
                 password="123",

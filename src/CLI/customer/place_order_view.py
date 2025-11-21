@@ -121,7 +121,7 @@ class PlaceOrderView(AbstractView):
         if nb_iterations == 50:
             print("You exceed the maximal number of products ordered")
 
-        nb_items = sum([int(quantity) for quantity in quantities]) + len(list_choosen_menu)
+        sum([int(quantity) for quantity in quantities]) + len(list_choosen_menu)
 
         # get the address where the order is to be delivered
         address = inquirer.text(message="Enter your address (ex : 51 rue Blaise Pascal) :").execute()
@@ -152,7 +152,7 @@ class PlaceOrderView(AbstractView):
         # putting choosen products into the order
         for product in list_choosen_menu:
             id_product = product_service.get_id_by_name(product)
-            added = order_service.add_product_to_order(
+            order_service.add_product_to_order(
                 order_id=id_order, product_id=id_product, quantity=1, promotion=True
             )
             message += f"{product}"
@@ -165,7 +165,7 @@ class PlaceOrderView(AbstractView):
             product = list_choosen_products_names[i]
             quantity = int(quantities[i])
             id_product = product_service.get_id_by_name(product)
-            added = order_service.add_product_to_order(
+            order_service.add_product_to_order(
                 order_id=id_order, product_id=id_product, quantity=int(quantity), promotion=False
             )
             message += f"{product} quantity: {quantity} \n"

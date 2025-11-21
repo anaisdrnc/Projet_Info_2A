@@ -13,14 +13,13 @@ def create_salt() -> str:
 def check_password_strength(password: str):
     """Vérifie que le mot de passe est suffisamment fort"""
     if len(password) < 8:
-        raise Exception("Password length must be at least 8 characters")
+        raise ValueError("Password length must be at least 8 characters")
     if not any(c.isupper() for c in password):
-        raise Exception("Password must contain at least one uppercase letter")
+        raise ValueError("Password must contain at least one uppercase letter")
     if not any(c.islower() for c in password):
-        raise Exception("Password must contain at least one lowercase letter")
+        raise ValueError("Password must contain at least one lowercase letter")
     if not any(c.isdigit() for c in password):
-        raise Exception("Password must contain at least one number")
-print(check_password_strength("Anais2003"))
+        raise ValueError("Password must contain at least one number")
 
 
 def validate_username_password(
