@@ -36,22 +36,28 @@ def is_address_sufficient_for_routing(adresse: str) -> Tuple[bool, str]:
     adresse: str
 
     Returns:
-        Tuple[bool, str]: (Est_valide_pour_itineraire, Adresse_complete)
+        Tuple[bool, str]: (Is address valid for itinerary, Complete address)
     """
     if not adresse or len(adresse.strip()) < 3:
         return False, ""
 
     results = gmaps.geocode(adresse)
+    # Returns a list of GeocodeResult items that represents places that matched 'adresse'
+    # Check https://developers.google.com/maps/documentation/geocoding/geocoding?hl=fr for more information
+    # about the parameters in GeocodeResult
     if not results:
         return False, ""
 
     best_result = results[0]
-    formatted_address = best_result.get("formatted_address", "")
-    address_components = best_result.get("address_components", [])
+    formatted_address = best_result.get("formatted_address", "")    # Formatted address obtained from Google Maps
+    address_components = best_result.get("address_components", [])  # Components detected in the address (city, street...)
     best_result.get("types", [])
 
+    # Checks if "locality" is in the address components
     has_city = any("locality" in comp.get("types", []) for comp in address_components)
+    # Checks if "route" is in the address components
     has_street = any("route" in comp.get("types", []) for comp in address_components)
+    # Checks if "postal_code" is in the address components
     any("postal_code" in comp.get("types", []) for comp in address_components)
 
     if has_city or has_street:
@@ -75,12 +81,14 @@ def get_address_suggestions(adresse: str, max_results: int = 5) -> List[Dict[str
         return []
 
     results = gmaps.geocode(adresse)
+    # Returns a list of GeocodeResult items that represents places that matched 'adresse'
     suggestions = []
 
     for result in results[:max_results]:
         address_components = result.get("address_components", [])
         formatted_address = result.get("formatted_address", "")
 
+        # Main components in the GeocodeResult class
         components = {
             "street_number": "",
             "street_name": "",
@@ -90,6 +98,7 @@ def get_address_suggestions(adresse: str, max_results: int = 5) -> List[Dict[str
             "is_routable": False,
         }
 
+    # Checking if the address has any component listed above
         for component in address_components:
             types = component.get("types", [])
             name = component.get("long_name", "")
@@ -110,6 +119,7 @@ def get_address_suggestions(adresse: str, max_results: int = 5) -> List[Dict[str
             "route" in comp.get("types", []) for comp in address_components
         )
         components["is_routable"] = has_city or has_street
+        # A component is considered as routable if the address has a city or a streer
 
         suggestions.append(components)
 
@@ -134,6 +144,7 @@ def display_suggestions(adresse: str):
     print(f"\nSuggestions for '{adresse}':")
     print("=" * 60)
 
+    # Displays the suggested address accoridng to its components
     for i, suggestion in enumerate(suggestions, 1):
         routable_indicator = "VALID" if suggestion["is_routable"] else "INVALID "
         print(f"{routable_indicator} {i}. {suggestion['full_address']}")

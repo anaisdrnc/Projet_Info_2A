@@ -55,7 +55,9 @@ def display_itinerary_details(directions):
         print("No available details about the itinerary")
         return
 
-    leg = directions[0]["legs"][0]
+    leg = directions[0]["legs"][0]  # Accessing the 'legs' item in directions
+
+    # Displays the steps of the itinerary
 
     print("\nMain steps:")
     for i, step in enumerate(leg["steps"], 1):
@@ -68,6 +70,8 @@ def display_itinerary_details(directions):
             .replace("/<wbr/>", "/")
             .replace("<wbr/>", " ")
         )
+        # Suppressing html symbols
+
         print(f"   {i}. {instruction} ({step['distance']['text']})")
 
 
@@ -92,23 +96,27 @@ def create_map(origin, destination, transport_mode):
         departure_time=now,
     )
 
-    leg = directions[0]["legs"][0]
-    distance = leg["distance"]["text"]
-    duration = leg["duration"]["text"]
-    start_location = leg["start_location"]
-    end_location = leg["end_location"]
+    leg = directions[0]["legs"][0]  # Accessing the 'legs' item in directions
+    distance = leg["distance"]["text"]  # Accessing the 'text' value of the 'distance' dicitonary
+    duration = leg["duration"]["text"]  # Accessing the 'text' value of the 'duration' dicitonary
+    start_location = leg["start_location"]  # Accessing the 'start_location' item in 'legs'
+    end_location = leg["end_location"]  # Accessing the 'end_location' item in 'legs'
 
     print(f" Itinerary from {origin} to {destination}")
     print(f" Distance : {distance}")
     print(f" Estimated Duration : {duration}")
 
-    m = folium.Map(location=[start_location["lat"], start_location["lng"]], zoom_start=6)
+    m = folium.Map(location=[start_location["lat"], start_location["lng"]], zoom_start=6)   # Creates a folium map
+
+    # Adding a starting point marker
 
     folium.Marker(
         [start_location["lat"], start_location["lng"]],
         popup=f"Departure : {origin}",
         icon=folium.Icon(color="green"),
     ).add_to(m)
+
+    # Adding an ending point marker
 
     folium.Marker(
         [end_location["lat"], end_location["lng"]],
@@ -117,6 +125,8 @@ def create_map(origin, destination, transport_mode):
     ).add_to(m)
 
     path = []
+
+    # Adding a polyline to the map
 
     for step in leg["steps"]:
         polyline = step["polyline"]["points"]
