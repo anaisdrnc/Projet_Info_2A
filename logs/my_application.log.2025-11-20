@@ -196,3 +196,4 @@ UnboundLocalError: cannot access local variable 'OpeningView' where it is not as
 20/11/2025 16:06:50 - INFO     -     Session.deconnexion() - FIN
 20/11/2025 16:06:50 - INFO     -        └─> Sortie : None
 20/11/2025 16:06:50 - INFO     - OpeningView
+21/11/2025 11:07:48 - INFO     - Fin de l'application
