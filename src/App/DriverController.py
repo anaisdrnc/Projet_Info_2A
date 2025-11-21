@@ -23,15 +23,15 @@ def create_driver(
     credentials: Annotated[HTTPAuthorizationCredentials, Depends(JWTBearer())],
 ) -> APIUser:
     """
-    Permet à un admin authentifié de créer un nouveau driver.
+    Create a new driver account.
+    Only an authenticated admin can perform this action.
+    Requires a valid admin JWT.
     """
-    # Vérifier que le token appartient à un admin valide
     admin = get_admin_from_credentials(credentials)
 
     if not admin:
         raise HTTPException(status_code=403, detail="Admin authentication failed")
 
-    # Création du driver
     driver = driver_service.create_driver(
         username=username,
         password=password,
@@ -44,7 +44,6 @@ def create_driver(
     if not driver:
         raise HTTPException(status_code=400, detail="Driver could not be created")
 
-    # Retourner un format similaire à APIUser
     return APIUser(
         id=driver.id_driver,
         username=driver.user_name,

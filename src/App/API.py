@@ -16,8 +16,18 @@ app.include_router(driver_router)
 
 @app.get("/", include_in_schema=False)
 async def redirect_to_docs():
+    """
+    Redirects the root URL to the interactive API documentation (/docs).
+    Useful to directly open Swagger UI when accessing the server.
+    """
     return RedirectResponse(url="/docs")
 
 
 def run_app():
+    """
+    Starts the FastAPI application using Uvicorn.
+    - Runs on host 0.0.0.0 (accessible from outside container)
+    - Port 8000
+    - Reload enabled for development
+    """
     uvicorn.run("src.App.API:app", host="0.0.0.0", port=8000, reload=True)

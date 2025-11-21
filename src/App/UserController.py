@@ -59,6 +59,9 @@ def get_user_own_profile(
 
 
 def get_user_from_credentials(credentials: HTTPAuthorizationCredentials) -> APIUser:
+    """
+    Extract the authenticated user from the JWT token and return their public profile.
+    """
     token = credentials.credentials
     user_id = int(jwt_service.validate_user_jwt(token))
     user: User | None = user_repo.get_by_id(user_id)

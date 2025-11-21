@@ -15,7 +15,7 @@ db = DBConnector()
 
 @product_router.get("/{product_id}", response_model=Product, status_code=status.HTTP_200_OK)
 def get_product_by_id(product_id: int, credentials: Annotated[HTTPAuthorizationCredentials, Depends(JWTBearer())]):
-    """Récupère un produit à partir de son ID (accessible à tous)."""
+    """Retrieve a product by its ID."""
     productdao = ProductDAO(DBConnector(test=False))
     try:
         product = productdao.get_product_by_id(product_id)
@@ -26,9 +26,6 @@ def get_product_by_id(product_id: int, credentials: Annotated[HTTPAuthorizationC
         raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
-
-
-# --- Les endpoints protégés par JWT (admin connecté) ---
 
 
 @product_router.get("/id/{product_name}", status_code=status.HTTP_200_OK)
@@ -53,7 +50,7 @@ def create_product(
     stock,
     credentials: Annotated[HTTPAuthorizationCredentials, Depends(JWTBearer())],  # admin connecté
 ):
-    """Crée un nouveau produit (uniquement admin)."""
+    """Create a new product (admin only)."""
     productdao = ProductDAO(DBConnector(test=False))
     product_service = ProductService(productdao)
     try:
@@ -77,7 +74,7 @@ def delete_product(
     product_id: int,
     credentials: Annotated[HTTPAuthorizationCredentials, Depends(JWTBearer())],  # admin connecté
 ):
-    """Supprime un produit (uniquement admin)."""
+    """Delete a product by ID (admin only)."""
     productdao = ProductDAO(DBConnector(test=False))
     product_service = ProductService(productdao)
     try:
@@ -96,7 +93,7 @@ def update_product(
     updated_product: Product,
     credentials: Annotated[HTTPAuthorizationCredentials, Depends(JWTBearer())],  # admin connecté
 ):
-    """Met à jour un produit existant (uniquement admin)."""
+    """Update an existing product (admin only)."""
     try:
         check_query = "SELECT id_product FROM product WHERE id_product = %s;"
         existing_product = db.sql_query(check_query, (product_id,), return_type="one")
@@ -138,6 +135,7 @@ def update_stock(
     stock_added: int,
     credentials: Annotated[HTTPAuthorizationCredentials, Depends(JWTBearer())],  # admin connecté
 ):
+    """Increase product stock by a given amount (admin only)."""
     productdao = ProductDAO(DBConnector(test=False))
     product_service = ProductService(productdao)
     try:

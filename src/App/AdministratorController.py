@@ -1,7 +1,8 @@
-from typing import TYPE_CHECKING, Annotated
+from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials
+from pydantic import BaseModel
 
 from src.App.init_app import jwt_service
 from src.App.JWTBearer import JWTBearer
@@ -12,11 +13,6 @@ from src.Model.JWTResponse import JWTResponse
 from src.Service.AdminService import AdminService
 from src.Service.PasswordService import check_password_strength, create_salt
 from src.utils.securite import hash_password
-
-if TYPE_CHECKING:
-    from src.Model.Admin import Admin
-
-from pydantic import BaseModel
 
 
 class AdminUpdateRequest(BaseModel):
@@ -34,7 +30,8 @@ admin_service = AdminService()
 @admin_router.post("/jwt", status_code=status.HTTP_201_CREATED)
 def login_admin(username: str, password: str) -> JWTResponse:
     """
-    Authenticate an admin with username and password and obtain a token
+    Authenticate an admin using username and password.
+    Returns a JWT if credentials are valid.
     """
     try:
         admin = admin_service.get_by_username(username)
@@ -43,7 +40,6 @@ def login_admin(username: str, password: str) -> JWTResponse:
     except Exception as error:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(error)) from error
 
-    # Encode JWT pour l'admin
     return jwt_service.encode_jwt(admin.id_admin)
 
 
@@ -52,7 +48,7 @@ def get_admin_own_profile(
     credentials: Annotated[HTTPAuthorizationCredentials, Depends(JWTBearer())],
 ) -> APIUser:
     """
-    Get the authenticated admin profile
+    Return the authenticated admin's profile using the provided JWT.
     """
     return get_admin_from_credentials(credentials)
 
@@ -67,13 +63,12 @@ def create_new_admin(
     credentials: Annotated[HTTPAuthorizationCredentials, Depends(JWTBearer())],
 ) -> APIUser:
     """
-    Create a new admin account (requires JWT authentication).
+    Create a new admin account (requires valid JWT).
+    Returns the created admin.
     """
-    # Vérifie que le token est valide
     token = credentials.credentials
     jwt_service.validate_user_jwt(token)
 
-    # Appelle le service
     admin = admin_service.create_admin(
         username=username, password=password, first_name=first_name, last_name=last_name, email=email
     )
@@ -101,7 +96,7 @@ def update_my_admin_profile(
 ) -> APIUser:
     """
     Update the authenticated admin's profile.
-    All fields are optional, but follow the same structure as create_admin.
+    Only provided fields are modified.
     """
     admindao = AdminDAO(DBConnector(test=False))
     admin_service = AdminService(admindao=admindao)
@@ -109,13 +104,11 @@ def update_my_admin_profile(
     admin_id = int(jwt_service.validate_user_jwt(token))
     print(admin_id)
 
-    # Récupère l'admin actuel
     admin = admin_service.get_by_id(admin_id)
     print(admin)
     if not admin:
         raise HTTPException(status_code=404, detail="Admin not found")
 
-    # Met à jour les champs si fournis
     if username is not None:
         admin.user_name = username
     if first_name is not None:
@@ -129,7 +122,6 @@ def update_my_admin_profile(
         admin.salt = create_salt()
         admin.password = hash_password(password, admin.salt)
 
-    # Sauvegarde en DB
     try:
         updated = admin_service.update_admin(admin)
     except HTTPException:
@@ -141,7 +133,6 @@ def update_my_admin_profile(
     if not updated:
         raise HTTPException(status_code=500, detail="Unable to update admin")
 
-    # Retourne le nouvel état
     return APIUser(
         id=admin.id, username=admin.user_name, first_name=admin.first_name, last_name=admin.last_name, email=admin.email
     )
@@ -150,10 +141,11 @@ def update_my_admin_profile(
 def get_admin_from_credentials(
     credentials: HTTPAuthorizationCredentials,
 ) -> APIUser:
+    """
+    Extract admin ID from JWT and return the admin profile.
+    """
     token = credentials.credentials
-    # Récupère l'id_admin encodé dans le JWT
     admin_id = int(jwt_service.validate_user_jwt(token))
-    # Récupère l'admin correspondant
     admin = admin_service.get_by_id(admin_id)
     if not admin:
         raise HTTPException(status_code=404, detail="Admin not found")
