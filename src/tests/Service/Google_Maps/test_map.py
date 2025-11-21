@@ -11,7 +11,7 @@ from src.Service.Google_Maps.check_address import (
 
 @pytest.fixture
 def mock_geocode_valid():
-    """Mock pour une adresse valide avec rue et ville"""
+    """Mock for a valid address with city and street"""
     return [
         {
             "formatted_address": "10 Rue de Paris, 75001 Paris, France",
@@ -27,7 +27,7 @@ def mock_geocode_valid():
 
 @pytest.fixture
 def mock_geocode_only_city():
-    """Mock pour une adresse avec seulement une ville"""
+    """Mock an address with only a city"""
     return [
         {
             "formatted_address": "Paris, France",
@@ -38,7 +38,7 @@ def mock_geocode_only_city():
 
 @pytest.fixture
 def mock_geocode_vague():
-    """Mock pour une adresse trop vague"""
+    """Mock for a vague address"""
     return [
         {
             "formatted_address": "France",
@@ -49,12 +49,12 @@ def mock_geocode_vague():
 
 @pytest.fixture
 def mock_geocode_empty():
-    """Mock pour aucune adresse trouvée"""
+    """Mock for an address not found"""
     return []
 
 
 def test_check_address_ok(mock_geocode_valid):
-    """Adresse valide existe"""
+    """Address exists and is valid"""
     with patch(
         "src.Service.Google_Maps.check_address.gmaps.geocode",
         return_value=mock_geocode_valid,
@@ -65,7 +65,7 @@ def test_check_address_ok(mock_geocode_valid):
 
 
 def test_check_address_ko(mock_geocode_empty):
-    """L'adresse n'existe pas"""
+    """Address does not exist"""
     with patch(
         "src.Service.Google_Maps.check_address.gmaps.geocode",
         return_value=mock_geocode_empty,
@@ -76,14 +76,14 @@ def test_check_address_ko(mock_geocode_empty):
 
 
 def test_check_address_none():
-    """L'adresse est None"""
+    """Address is None"""
     result = check_address(None)
 
     assert result is False
 
 
 def test_is_address_sufficient_for_routing_with_street_and_city(mock_geocode_valid):
-    """Adresse avec rue et ville est routable"""
+    """Address with street and city is routable"""
     with patch(
         "src.Service.Google_Maps.check_address.gmaps.geocode",
         return_value=mock_geocode_valid,
@@ -95,7 +95,7 @@ def test_is_address_sufficient_for_routing_with_street_and_city(mock_geocode_val
 
 
 def test_is_address_sufficient_for_routing_only_city(mock_geocode_only_city):
-    """Adresse avec seulement une ville est routable"""
+    """Address with only a city is routable"""
     with patch(
         "src.Service.Google_Maps.check_address.gmaps.geocode",
         return_value=mock_geocode_only_city,
@@ -107,7 +107,7 @@ def test_is_address_sufficient_for_routing_only_city(mock_geocode_only_city):
 
 
 def test_is_address_sufficient_for_routing_vague_address(mock_geocode_vague):
-    """Adresse trop vague n'est pas routable"""
+    """Address too vague not routable"""
     with patch(
         "src.Service.Google_Maps.check_address.gmaps.geocode",
         return_value=mock_geocode_vague,
@@ -119,7 +119,7 @@ def test_is_address_sufficient_for_routing_vague_address(mock_geocode_vague):
 
 
 def test_is_address_sufficient_for_routing_empty_address():
-    """Adresse vide"""
+    """Empty address"""
     is_routable, complete_address = is_address_sufficient_for_routing("")
 
     assert is_routable is False
@@ -127,7 +127,7 @@ def test_is_address_sufficient_for_routing_empty_address():
 
 
 def test_get_address_suggestions_ok(mock_geocode_valid):
-    """Récupération des suggestions d'adresse"""
+    """Retrieving address suggestions"""
     with patch(
         "src.Service.Google_Maps.check_address.gmaps.geocode",
         return_value=mock_geocode_valid,
@@ -144,7 +144,7 @@ def test_get_address_suggestions_ok(mock_geocode_valid):
 
 
 def test_get_address_suggestions_empty(mock_geocode_empty):
-    """Aucune suggestion trouvée"""
+    """No suggestions found"""
     with patch(
         "src.Service.Google_Maps.check_address.gmaps.geocode",
         return_value=mock_geocode_empty,
@@ -155,7 +155,7 @@ def test_get_address_suggestions_empty(mock_geocode_empty):
 
 
 def test_get_address_suggestions_max_results(mock_geocode_valid):
-    """Respect de la limite max_results"""
+    """Respecting max_results limit"""
     multiple_results = mock_geocode_valid * 3
     with patch(
         "src.Service.Google_Maps.check_address.gmaps.geocode",

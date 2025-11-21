@@ -7,7 +7,7 @@ from src.Service.Google_Maps.map import compute_itinerary, create_map
 
 @pytest.fixture
 def mock_directions_valid():
-    """Mock pour des directions valides"""
+    """Mock for valid directions"""
     return [
         {
             "legs": [
@@ -36,12 +36,12 @@ def mock_directions_valid():
 
 @pytest.fixture
 def mock_directions_empty():
-    """Mock lorsque aucune direction n'est trouvée"""
+    """Mock when no directions are found"""
     return []
 
 
-def test_calculer_itineraire_ok(mock_directions_valid):
-    """Calcul d'itinéraire réussi"""
+def test_compute_itinerary_ok(mock_directions_valid):
+    """Path successfully computed"""
     with patch(
         "src.Service.Google_Maps.map.gmaps.directions",
         return_value=mock_directions_valid,
@@ -52,8 +52,8 @@ def test_calculer_itineraire_ok(mock_directions_valid):
         assert result[0]["legs"][0]["duration"]["text"] == "20 mins"
 
 
-def test_calculer_itineraire_ko(mock_directions_empty):
-    """Aucun itinéraire trouvé"""
+def test_compute_itinerary_ko(mock_directions_empty):
+    """No itinerary found"""
     with patch(
         "src.Service.Google_Maps.map.gmaps.directions",
         return_value=mock_directions_empty,
@@ -63,8 +63,8 @@ def test_calculer_itineraire_ko(mock_directions_empty):
         assert result is None
 
 
-def test_calculer_itineraire_exception():
-    """Exception lors du calcul d'itinéraire"""
+def test_compute_itinerary_exception():
+    """Exception during the computing of the itinerary"""
     with patch(
         "src.Service.Google_Maps.map.gmaps.directions",
         side_effect=Exception("API error"),
@@ -86,7 +86,7 @@ def test_create_map_ok(
     mock_directions_valid,
     tmp_path,
 ):
-    """Création de carte réussie"""
+    """Map successfully created"""
     mock_decode_polyline.return_value = [{"lat": 48.8566, "lng": 2.3522}]
 
     with patch(
