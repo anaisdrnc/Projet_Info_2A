@@ -510,7 +510,6 @@ class OrderDAO:
             Returns an empty list if no orders are found or an error occurs.
         """
         try:
-            # On récupère uniquement les commandes avec le statut 'Ready'
             raw_orders = self.db_connector.sql_query(
                 "SELECT * FROM orders WHERE status = 'Ready'", [], "all"
             )

@@ -1,12 +1,5 @@
-import os
-import sys
-
 import dotenv
 from psycopg2 import connect, sql
-
-current_dir = os.path.dirname(os.path.abspath(__file__))
-project_root = os.path.dirname(current_dir)
-sys.path.insert(0, project_root)
 
 from DAO.DBConnector import DBConnector
 
@@ -48,6 +41,5 @@ class ResetDatabase:
 
 
 if __name__ == "__main__":
-    # Exemples d’utilisation
     ResetDatabase(test=False).lancer()  # for "default_schema"
     ResetDatabase(test=True).lancer()  # for "test"

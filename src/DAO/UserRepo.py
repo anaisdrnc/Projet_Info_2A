@@ -176,7 +176,6 @@ class UserRepo:
 
         """
         if not user.id:
-            #print(user.id)
             logging.info("update_user: user.id is missing")
             return False
 

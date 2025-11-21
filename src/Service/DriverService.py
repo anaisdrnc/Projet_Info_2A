@@ -52,14 +52,11 @@ class DriverService:
         """
         driverdao = self.driverdao
 
-        # Vérifie la force du mot de passe
         check_password_strength(password)
 
-        # Génère sel + hash
         salt = create_salt()
         hashed_password = hash_password(password, sel=salt)
 
-        # Création du Driver
         driver = Driver(
             user_name=username,
             password=hashed_password,

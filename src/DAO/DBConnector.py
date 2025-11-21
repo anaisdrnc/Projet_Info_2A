@@ -23,7 +23,6 @@ class DBConnector:
             self.database = os.environ["POSTGRES_DATABASE"]
             self.user = os.environ["POSTGRES_USER"]
             self.password = os.environ["POSTGRES_PASSWORD"]
-            # Choix du schema selon si c’est un test
             self.schema = os.environ["POSTGRES_SCHEMA"] if not test else "test"
 
     def sql_query(
@@ -55,8 +54,6 @@ class DBConnector:
                         )
                         connection.commit()
                         return result
-                    # elif return_type is None:
-                    # return cursor.rowcount
         except Exception as e:
             print("ERROR")
             print(e)

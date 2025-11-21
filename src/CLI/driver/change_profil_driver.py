@@ -65,5 +65,9 @@ class ChangeProfilDriver(AbstractView):
                 ).execute()
 
                 success = driver_service.update_driver(username, new_transport)
-                message = "Means of transport successfully changed." if success else "Operation failed, please try again."
+                message = (
+                    "Means of transport successfully changed."
+                    if success
+                    else "Operation failed, please try again."
+                )
                 return MenuDriver(message)

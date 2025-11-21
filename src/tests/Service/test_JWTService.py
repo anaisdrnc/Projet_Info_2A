@@ -9,16 +9,6 @@ from src.Service.JWTService import JwtService
 jwt_service = JwtService("mysecret")
 
 
-# @freeze_time("2024-08-26 12:00:00")
-# def test_encode_jwt():
-#    user_id = "myUser"
-#    jwtResponse = jwt_service.encode_jwt(user_id=user_id)
-#    assert (
-#        jwtResponse.access_token
-#        == "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoibXlVc2VyIiwiZXhwaXJ5X3RpbWVzdGFtcCI6MTcyNDY3NDIwMC4wfQ.eUjNbpMCDNuPESsMHF2dpeRlDl6fMJmjUWsHSZT_n1Q"  # noqa: E501
-#    )
-
-
 @freeze_time("2024-08-26 12:00:00")
 @patch("src.Service.JWTService.time.time", return_value=datetime.datetime(2024, 8, 26, 12, 0, 0).timestamp())
 def test_encode_jwt(mock_time):

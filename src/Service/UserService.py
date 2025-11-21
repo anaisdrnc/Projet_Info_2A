@@ -112,24 +112,19 @@ class UserService:
         bool
             True if the password was successfully changed, False otherwise.
         """
-        # Vérifie l'ancien mot de passe
         old_password_correct = validate_username_password(
             username=user_name, password=old_password, user_repo=self.user_repo
         )
         if not old_password_correct:
             return False
 
-        # Vérifie la force du nouveau mot de passe
         check_password_strength(new_password)
 
-        # Récupère l'utilisateur actuel
         user = self.user_repo.get_by_username(user_name=user_name)
 
-        # Génère un nouveau sel et hash le nouveau mot de passe
         new_salt = create_salt()
         hashed_password = hash_password(new_password, new_salt)
 
-        # Crée un nouvel objet User
         new_user = User(
             first_name=user.first_name,
             last_name=user.last_name,
@@ -140,5 +135,4 @@ class UserService:
             id=user.id
         )
 
-        # Met à jour l'utilisateur
         return self.user_repo.update_user(new_user)

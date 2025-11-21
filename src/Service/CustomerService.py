@@ -52,10 +52,8 @@ class CustomerService:
         """
         customerdao = self.customerdao
 
-        # Vérifie la force du mot de passe
         check_password_strength(password)
 
-        # Génère sel + hash
         salt = create_salt()
         hashed_password = hash_password(password, sel=salt)
 

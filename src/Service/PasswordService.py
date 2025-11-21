@@ -30,12 +30,9 @@ def validate_username_password(
     if user_with_username is None:
         raise Exception(f"user with username {username} not found")
 
-    # On récupère le salt et le hash enregistré
-
     salt = user_with_username.salt
     stored_hash = user_with_username.password
 
-    # On re-hashe le mot de passe fourni
     computed_hash = hash_password(password, salt)
 
     if computed_hash != stored_hash:

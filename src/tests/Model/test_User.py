@@ -54,7 +54,11 @@ class TestUser:
                 email="lilas.dpt@gmail.com",
                 salt="i",
             )
-        assert "user_name" in str(exception_info.value) and "Input should be a valid string" in str(exception_info.value)
+        assert (
+            "user_name" in str(exception_info.value)
+            and "Input should be a valid string" in str(exception_info.value)
+        )
+
 
     def test_user_constructor_on_incorrect_firstname(self):
         """Test : checks constructor on incorrect firstname."""
@@ -68,7 +72,11 @@ class TestUser:
                 email="lilas.dpt@gmail.com",
                 salt="h",
             )
-        assert "first_name" in str(exception_info.value) and "Input should be a valid string" in str(exception_info.value)
+        assert (
+            "first_name" in str(exception_info.value)
+            and "Input should be a valid string" in str(exception_info.value)
+        )
+
 
     def test_user_constructor_on_incorrect_lastname(self):
         """Test : checks constructor on incorrect lastname."""
@@ -82,7 +90,11 @@ class TestUser:
                 email="lilas.dpt@gmail.com",
                 salt="y",
             )
-        assert "last_name" in str(exception_info.value) and "Input should be a valid string" in str(exception_info.value)
+        assert (
+            "last_name" in str(exception_info.value)
+            and "Input should be a valid string" in str(exception_info.value)
+        )
+
 
     def test_user_constructor_on_incorrect_email(self):
         """Test : checks constructor on incorrect email."""

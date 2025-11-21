@@ -217,4 +217,8 @@ class TestProduct:
                 stock=5,
                 description=4,
             )
-        assert "description" in str(exception_info.value) and "Input should be a valid string" in str(exception_info.value)
+        assert (
+            "description" in str(exception_info.value)
+            and "Input should be a valid string" in str(exception_info.value)
+        )
+
