@@ -16,11 +16,13 @@ graph LR
 
     USR1<--->CLI
     USR2<--->CLI
-        subgraph Python app 
-            CLI<-->SVC
-            API<-->SVC
-            SVC<-->DAO
-        END
+    
+    subgraph Python app 
+        CLI<-->SVC
+        API<-->SVC
+        SVC<-->DAO
+    end
+
     USR3<--->API
 
     DAO<--->DB

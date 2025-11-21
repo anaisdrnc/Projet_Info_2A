@@ -1,94 +1,70 @@
----
-title: Ub'EJR Eats Class Diagram
----
 ```mermaid
-
 classDiagram
-direction LR 
-    class User {
-        +id: int
-        +firstName: string
-        +lastName: string
-        +username: string
-        -password: string
-        +email: string
-    }
-    
-    class Customer {
-        +address: string
-        +postalCode: string
-        +city: string 
-    }
-    
-    class Driver {
-        +transportation: string
-    }
+direction LR
 
-    class Administrator {
-    }
-    
-    class Order {
-        +id: int
-        +date: Date
-        +status: string
-        +deliveryAddress: string
-        +totalAmount: float
-        +transportMethod : string
-        +paymentMethod: string
-        +calculateTotal() float
-        +pay() bool
-    }
+class User {
+    +id: int?
+    +user_name: str
+    +password: str
+    +first_name: str
+    +last_name: str
+    +email: str
+    +salt: str?
+}
 
-    class Menu {
-        -id: int
-        +name: string
-        +description: string
-    }
+class Admin {
+    +id_admin: int?
+}
 
-    class Product {
-        -id: int
-        +name: string
-        +sellingPrice: float
-        -purchasePrice : float
-        +type : string
-        -stockQuantity: int
-    }
+class Customer {
+    +id_customer: int?
+    +address: Address?
+}
 
-    class OrderLine {
-        +id:int
-        +quantity: int
-        +subTotal: float
-    }
+class Driver {
+    +id_driver: int?
+    +mean_of_transport: "Bike" | "Car"
+}
 
+class Address {
+    +id_address: int?
+    +address: str
+    +postal_code: int
+    +city: str
+}
 
-    %% Relations 
-    User <|-- Customer : Heritage
-    User <|-- Driver : Heritage
-    User <|-- Administrator : Heritage
-    
-    Customer "1" -- "0..*" Order : place 
+class Product {
+    +id_product: int?
+    +name: str
+    +price: float
+    +production_cost: float
+    +product_type: "drink" | "lunch" | "dessert"
+    +description: str
+    +stock: int
+}
 
-    Order "1" *-- "1..*" OrderLine : composition
+class Order {
+    +id_order: int?
+    +id_customer: int
+    +id_driver: int?
+    +id_address: int
+    +date: datetime
+    +status: "Delivered" | "Ready" | "On the way"
+    +nb_items: int
+    +total_amount: float
+    +payment_method: "Card" | "Cash"
+}
 
-    OrderLine "0..*" -- "1" Product : reference
+User <|-- Admin
+User <|-- Customer
+User <|-- Driver
 
-    Driver "1" -- "0..*" Order : deliver 
+Customer "1" --> "0..*" Order : places
+Driver "1" --> "0..*" Order : delivers
 
-    Administrator "1" -- "1" Menu : changes
+Order "1" --> "1" Address : delivered_to
 
-    Menu "1" *-- "0..*" Product : composition
-    
-    %% Styles pour la lisibilité
-    style User fill:#D6EAF8,stroke:#1A5276,stroke-width:2px
-    style Customer fill:#E8F8F5,stroke:#27AE60,stroke-width:2px
-    style Driver fill:#D6EAF8,stroke:#1A5276
-    style Administrator fill:#FFB6B6,stroke:#E67E22
-    
-    style Order fill:#E0E0E0,stroke=#808080,stroke-width:2px
-    style OrderLine fill:#E0E0E0,stroke=#808080
-
-    style Menu fill:#E0E0E0,stroke=#808080,stroke-width:2px
-    style Product fill:#E0E0E0,stroke=#808080
-    style Cart fill:#E0E0E0,stroke=#808080
-
+Product "1" --> "0..*" Order : included_in
 ```
+
+
