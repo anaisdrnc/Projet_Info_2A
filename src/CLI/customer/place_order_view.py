@@ -55,14 +55,27 @@ class PlaceOrderView(AbstractView):
                 list_dessert.append(name)
 
         choice = inquirer.select(
-            message="Choose :", choices=["Get a menu (10 percent discount)", "choose a product"]
+            message="Choose :", choices=["Get a menu (10 percent discount)", "add a product to order"]
         ).execute()
 
-        if choice == "choose a product":
-            product = inquirer.select(
-                message="Choose a product : ",
-                choices=list_products,
+        if choice == "add a product to order":
+            type_choice = inquirer.select(
+                message="Select product type:",
+                choices=["lunch", "drink", "dessert"],
             ).execute()
+
+            if type_choice == "lunch":
+                filtered_list = [p for p in list_lunch if p not in list_choosen_products_names]
+            elif type_choice == "drink":
+                filtered_list = [p for p in list_drink if p not in list_choosen_products_names]
+            else:  # dessert
+                filtered_list = [p for p in list_dessert if p not in list_choosen_products_names]
+
+            product = inquirer.select(
+                message=f"Choose a {type_choice} : ",
+                choices=filtered_list,
+            ).execute()
+
             stock = stocks[product]
 
             while True:
@@ -98,17 +111,41 @@ class PlaceOrderView(AbstractView):
 
         while choice in ["add a product to the order", "get a menu"] and nb_iterations < 50:
             if choice == "add a product to the order":
-                list_products_proposed = {
-                    product for product in list_products if product not in list_choosen_products_names
-                }
-                product = inquirer.select(
-                    message="Choose a product : ",
-                    choices=list_products_proposed,
+                type_choice = inquirer.select(
+                    message="Select product type:",
+                    choices=["lunch", "drink", "dessert"],
                 ).execute()
-                quantity = inquirer.number(message="Quantity :").execute()
-                list_choosen_products_names.append(product)
-                quantities.append(quantity)
-                total_amount += prices[product] * int(quantity)
+
+                if type_choice == "lunch":
+                    filtered_list = [p for p in list_lunch if p not in list_choosen_products_names]
+                elif type_choice == "drink":
+                    filtered_list = [p for p in list_drink if p not in list_choosen_products_names]
+                else:  # dessert
+                    filtered_list = [p for p in list_dessert if p not in list_choosen_products_names]
+
+                if not filtered_list:
+                    print(f"No more {type_choice} products available to add.\n")
+                else:
+                    product = inquirer.select(
+                        message=f"Choose a {type_choice} :",
+                        choices=filtered_list,
+                    ).execute()
+
+                    stock = stocks[product]
+                    while True:
+                        quantity = inquirer.number(
+                            message=f"Quantity (Available: {int(stock)}):",
+                            min_allowed=1,
+                        ).execute()
+                        quantity = int(quantity)
+                        if quantity > stock:
+                            print(f"Sorry, you requested {quantity} units but only {int(stock)} are available. Please enter a lower quantity.\n")
+                        else:
+                            break
+
+                    list_choosen_products_names.append(product)
+                    quantities.append(quantity)
+                    total_amount += prices[product] * int(quantity)
 
             else:
                 lunch = inquirer.select(message="Choose your lunch item :", choices=list_lunch).execute()
