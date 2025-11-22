@@ -42,23 +42,23 @@ class MenuView(AbstractView):
 
         match choice:
             case "Log out":
-                from CLI.opening.openingview import OpeningView
+                from src.CLI.opening.openingview import OpeningView
 
                 Session().deconnexion()
                 return OpeningView()
 
             case "Place an order":
-                from CLI.customer.place_order_view import PlaceOrderView
+                from src.CLI.customer.place_order_view import PlaceOrderView
                 return PlaceOrderView()
 
             case "Get menu":
-                from CLI.customer.products_view import ProductView
+                from src.CLI.customer.products_view import ProductView
                 return ProductView()
 
             case "Change profile":
-                from CLI.customer.change_profil import ChangeProfileView
+                from src.CLI.customer.change_profil import ChangeProfileView
                 return ChangeProfileView()
 
             case "Get my orders history":
-                from CLI.customer.orders_history import OrdersHistory
+                from src.CLI.customer.orders_history import OrdersHistory
                 return OrdersHistory()

@@ -21,7 +21,7 @@ class ProductView(AbstractView):
             price = product["price"]
             list_products.append([name, description, price])
 
-        from CLI.customer.menu_customer import MenuView
+        from src.CLI.customer.menu_customer import MenuView
 
         products_str = "List of available products : \n\n"
         for product in list_products:
