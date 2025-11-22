@@ -28,7 +28,7 @@ class InscriptionView(AbstractView):
         customer_service = CustomerService(customerdao=customerdao)
 
         if user_service.is_username_taken(user_name=username):
-            from CLI.opening.openingview import OpeningView
+            from src.CLI.opening.openingview import OpeningView
             return OpeningView(f"The username {username} is already taken.")
 
         # Ask user to enter password
@@ -46,7 +46,7 @@ class InscriptionView(AbstractView):
             check_password_strength(password)
         except Exception as e:
             message = str(e)
-            from CLI.opening.openingview import OpeningView
+            from src.CLI.opening.openingview import OpeningView
             return OpeningView(message)
 
         # Ask for first and last name
@@ -71,7 +71,7 @@ class InscriptionView(AbstractView):
         else:
             message = "Connection error (invalid username or password)"
 
-        from CLI.opening.openingview import OpeningView
+        from src.CLI.opening.openingview import OpeningView
         return OpeningView(message)
 
 
