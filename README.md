@@ -126,7 +126,7 @@ This data is loaded into a separate schema (test) so as not to pollute the other
 If you want to use the pdm shortcut, you must install it using the following commands: 
 ```bash
 pip install pdm
-install pdm
+pdm install
 ```
 
 This application provides the interface for delivery drivers and customers. 
@@ -139,7 +139,7 @@ This application provides the interface for delivery drivers and customers.
 If you want to use the pdm shortcut, you must install it using the following commands:
 ```bash
 pip install pdm
-install pdm
+pdm install
 ```
 
 This application provides the administrator interface. 

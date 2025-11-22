@@ -1,0 +1,1109 @@
+21/11/2025 17:23:56 - INFO     - --------------------------------------------------
+21/11/2025 17:23:56 - INFO     - Starting Application
+21/11/2025 17:23:56 - INFO     - --------------------------------------------------
+21/11/2025 17:23:56 - INFO     - OpeningView
+21/11/2025 17:24:04 - INFO     - LoginView
+21/11/2025 17:24:04 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7fa5bf1cec10>',) - START
+21/11/2025 17:24:04 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7fa5bf1cec10>',) - END
+21/11/2025 17:24:04 - INFO     -        └─> Output: None
+21/11/2025 17:24:08 - INFO     -     UserRepo.get_by_username('',) - START
+21/11/2025 17:24:08 - INFO     -     UserRepo.get_by_username('',) - END
+21/11/2025 17:24:08 - INFO     -        └─> Output: None
+21/11/2025 17:24:08 - ERROR    - Exception : user with username  not found
+Traceback (most recent call last):
+  File "/home/onyxia/work/Projet_Info_2A/src/main_CLI.py", line 22, in <module>
+    current_view = current_view.choose_menu()
+  File "/home/onyxia/work/Projet_Info_2A/src/CLI/opening/loginview.py", line 35, in choose_menu
+    user = validate_username_password(
+        username=username, password=password, user_repo=user_repo
+    )
+  File "/home/onyxia/work/Projet_Info_2A/src/Service/PasswordService.py", line 30, in validate_username_password
+    raise Exception(f"user with username {username} not found")
+Exception: user with username  not found
+21/11/2025 17:24:08 - INFO     - OpeningView
+21/11/2025 17:24:11 - INFO     - InscriptionView
+21/11/2025 17:24:17 - INFO     -     UserService.is_username_taken('anais',) - START
+21/11/2025 17:24:17 - INFO     -         UserRepo.is_username_taken('anais',) - START
+21/11/2025 17:24:17 - INFO     -         UserRepo.is_username_taken('anais',) - END
+21/11/2025 17:24:17 - INFO     -            └─> Output: False
+21/11/2025 17:24:17 - INFO     -     UserService.is_username_taken('anais',) - END
+21/11/2025 17:24:17 - INFO     -        └─> Output: False
+21/11/2025 17:24:32 - INFO     -     CustomerService.create_customer('anais', '*****', 'Anais', 'Duranceau', 'anais@gmail.com') - START
+21/11/2025 17:24:32 - INFO     -         CustomerDAO.add_customer("id=None user_name='anais' password='981c5169ab085fde26168c06c0b40cd43a492fdc7d09dd0bf954d97aade8bd73' first_name='Anais' last_name='Duranceau' email='anais@gmail.com' salt='9ce7b964379ec44f779fc9cb86944ff7ff70e2d6c81e84348aa74ad1e1c2ce165c2dbe87d444a60bc40373b9392e55118fe4227c36d72e4080a18a154f7ff9de65722791833a9b30a9b081f3f8ef78b0326d13c16aa4f18d7fbad10f34b622062c55332b51fab87557020fb2147280b8aabfdd23eb46f003307e3a11fe7d3f14' address=None id_customer=None",) - START
+21/11/2025 17:24:32 - INFO     -             UserRepo.add_user("id=None user_name='anais' password='981c5169ab085fde26168c06c0b40cd43a492fdc7d09dd0bf954d97aade8bd73' first_name='Anais' last_name='Duranceau' email='anais@gmail.com' salt='9ce7b964379ec44f779fc9cb86944ff7ff70e2d6c81e84348aa74ad1e1c2ce165c2dbe87d444a60bc40373b9392e55118fe4227c36d72e4080a18a154f7ff9de65722791833a9b30a9b081f3f8ef78b0326d13c16aa4f18d7fbad10f34b622062c55332b51fab87557020fb2147280b8aabfdd23eb46f003307e3a11fe7d3f14' address=None id_customer=None",) - START
+21/11/2025 17:24:33 - INFO     -             UserRepo.add_user("id=None user_name='anais' password='981c5169ab085fde26168c06c0b40cd43a492fdc7d09dd0bf954d97aade8bd73' first_name='Anais' last_name='Duranceau' email='anais@gmail.com' salt='9ce7b964379ec44f779fc9cb86944ff7ff70e2d6c81e84348aa74ad1e1c2ce165c2dbe87d444a60bc40373b9392e55118fe4227c36d72e4080a18a154f7ff9de65722791833a9b30a9b081f3f8ef78b0326d13c16aa4f18d7fbad10f34b622062c55332b51fab87557020fb2147280b8aabfdd23eb46f003307e3a11fe7d3f14' address=None id_customer=None",) - END
+21/11/2025 17:24:33 - INFO     -                └─> Output: 9
+21/11/2025 17:24:33 - INFO     -         CustomerDAO.add_customer("id=None user_name='anais' password='981c5169ab085fde26168c06c0b40cd43a492fdc7d09dd0bf954d97aade8bd73' first_name='Anais' last_name='Duranceau' email='anais@gmail.com' salt='9ce7b964379ec44f779fc9cb86944ff7ff70e2d6c81e84348aa74ad1e1c2ce165c2dbe87d444a60bc40373b9392e55118fe4227c36d72e4080a18a154f7ff9de65722791833a9b30a9b081f3f8ef78b0326d13c16aa4f18d7fbad10f34b622062c55332b51fab87557020fb2147280b8aabfdd23eb46f003307e3a11fe7d3f14' address=None id_customer=None",) - END
+21/11/2025 17:24:33 - INFO     -            └─> Output: id=9 user_name='anais' password='981c5169ab085fde26168c06c0b40cd43a492fdc7d09dd0bf954d97aade8bd73' first_name='Anais' last_name='Duranceau' email='anais@gmail.com' salt='9ce7b964379ec44f779fc9cb86944ff7ff70e2d6c81e84348aa74ad1e1c2ce165c2dbe87d444a60bc40373b9392e55118fe4227c36d72e4080a18a154f7ff9de65722791833a9b30a9b081f3f8ef78b0326d13c16aa4f18d7fbad10f34b622062c55332b51fab87557020fb2147280b8aabfdd23eb46f003307e3a11fe7d3f14' address=None id_customer=5
+21/11/2025 17:24:33 - INFO     -     CustomerService.create_customer('anais', '*****', 'Anais', 'Duranceau', 'anais@gmail.com') - END
+21/11/2025 17:24:33 - INFO     -        └─> Output: id=9 user_name='anais' password='981c5169ab085fde26168c06c0b40cd43a492fdc7d09dd0bf954d97aade8bd73' first_name='Anais' last_name='Duranceau' email='anais@gmail.com' salt='9ce7b964379ec44f779fc9cb86944ff7ff70e2d6c81e84348aa74ad1e1c2ce165c2dbe87d444a60bc40373b9392e55118fe4227c36d72e4080a18a154f7ff9de65722791833a9b30a9b081f3f8ef78b0326d13c16aa4f18d7fbad10f34b622062c55332b51fab87557020fb2147280b8aabfdd23eb46f003307e3a11fe7d3f14' address=None id_customer=5
+21/11/2025 17:24:33 - INFO     - OpeningView
+21/11/2025 17:24:34 - INFO     - LoginView
+21/11/2025 17:24:34 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7fa5bedcfac0>',) - START
+21/11/2025 17:24:34 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7fa5bedcfac0>',) - END
+21/11/2025 17:24:34 - INFO     -        └─> Output: None
+21/11/2025 17:24:39 - INFO     -     UserRepo.get_by_username('anais',) - START
+21/11/2025 17:24:39 - INFO     -     UserRepo.get_by_username('anais',) - END
+21/11/2025 17:24:39 - INFO     -        └─> Output: id=9 user_name='anais' password='981c5169ab085fde26168c06c0b40cd43a492fdc7d09dd0bf954d97aade8bd73' first_name='Anais' last_name='Duranceau' email='anais@gmail.com' salt='9ce7b964379ec44f779fc9cb86944ff7ff70e2d6c81e84348aa74ad1e1c2ce165c2dbe87d444a60bc40373b9392e55118fe4227c36d72e4080a18a154f7ff9de65722791833a9b30a9b081f3f8ef78b0326d13c16aa4f18d7fbad10f34b622062c55332b51fab87557020fb2147280b8aabfdd23eb46f003307e3a11fe7d3f14'
+21/11/2025 17:24:39 - INFO     -     CustomerDAO.get_id_customer_by_id_user(9,) - START
+21/11/2025 17:24:39 - INFO     -     CustomerDAO.get_id_customer_by_id_user(9,) - END
+21/11/2025 17:24:39 - INFO     -        └─> Output: 5
+21/11/2025 17:24:39 - INFO     -     DriverDAO.get_id_driver_by_id_user(9,) - START
+21/11/2025 17:24:39 - INFO     -     DriverDAO.get_id_driver_by_id_user(9,) - END
+21/11/2025 17:24:39 - INFO     -        └─> Output: None
+21/11/2025 17:24:39 - INFO     -     Session.login("id=9 user_name='anais' password='981c5169ab085fde26168c06c0b40cd43a492fdc7d09dd0bf954d97aade8bd73' first_name='Anais' last_name='Duranceau' email='anais@gmail.com' salt='9ce7b964379ec44f779fc9cb86944ff7ff70e2d6c81e84348aa74ad1e1c2ce165c2dbe87d444a60bc40373b9392e55118fe4227c36d72e4080a18a154f7ff9de65722791833a9b30a9b081f3f8ef78b0326d13c16aa4f18d7fbad10f34b622062c55332b51fab87557020fb2147280b8aabfdd23eb46f003307e3a11fe7d3f14'", 5) - START
+21/11/2025 17:24:39 - INFO     -     Session.login("id=9 user_name='anais' password='981c5169ab085fde26168c06c0b40cd43a492fdc7d09dd0bf954d97aade8bd73' first_name='Anais' last_name='Duranceau' email='anais@gmail.com' salt='9ce7b964379ec44f779fc9cb86944ff7ff70e2d6c81e84348aa74ad1e1c2ce165c2dbe87d444a60bc40373b9392e55118fe4227c36d72e4080a18a154f7ff9de65722791833a9b30a9b081f3f8ef78b0326d13c16aa4f18d7fbad10f34b622062c55332b51fab87557020fb2147280b8aabfdd23eb46f003307e3a11fe7d3f14'", 5) - END
+21/11/2025 17:24:39 - INFO     -        └─> Output: None
+21/11/2025 17:24:39 - INFO     - MenuView
+21/11/2025 17:24:41 - INFO     - ProductView
+21/11/2025 17:24:41 - INFO     -     ProductService.get_available_products() - START
+21/11/2025 17:24:41 - INFO     -         ProductDAO.get_available_products() - START
+21/11/2025 17:24:41 - INFO     -         ProductDAO.get_available_products() - END
+21/11/2025 17:24:41 - INFO     -            └─> Output: ["RealDictRow({'name': 'Italian Panini', 'description': 'Chicken, fresh tomatoes, mozzarella', 'price': Decimal('3.00'), 'product_type': 'lunch', 'stock': 20})", "RealDictRow({'name': 'Pesto Panini', 'description': 'Pesto, mozzarella, fresh or sun-dried tomatoes', 'price': Decimal('3.00'), 'product_type': 'lunch', 'stock': 20})", "RealDictRow({'name': 'Classic Kebab', 'description': 'Chicken, sauce of choice, endive, lettuce, onions', 'price': Decimal('3.00'), 'product_type': 'lunch', 'stock': 20})"] ... (24 elements)
+21/11/2025 17:24:41 - INFO     -     ProductService.get_available_products() - END
+21/11/2025 17:24:41 - INFO     -        └─> Output: ["RealDictRow({'name': 'Italian Panini', 'description': 'Chicken, fresh tomatoes, mozzarella', 'price': Decimal('3.00'), 'product_type': 'lunch', 'stock': 20})", "RealDictRow({'name': 'Pesto Panini', 'description': 'Pesto, mozzarella, fresh or sun-dried tomatoes', 'price': Decimal('3.00'), 'product_type': 'lunch', 'stock': 20})", "RealDictRow({'name': 'Classic Kebab', 'description': 'Chicken, sauce of choice, endive, lettuce, onions', 'price': Decimal('3.00'), 'product_type': 'lunch', 'stock': 20})"] ... (24 elements)
+21/11/2025 17:24:41 - INFO     - MenuView
+21/11/2025 17:24:44 - INFO     - API queries_quota: 60
+21/11/2025 17:24:44 - INFO     - PlaceOrderView
+21/11/2025 17:24:44 - INFO     -     Session.get_id_role() - START
+21/11/2025 17:24:44 - INFO     -     Session.get_id_role() - END
+21/11/2025 17:24:44 - INFO     -        └─> Output: 5
+21/11/2025 17:24:44 - INFO     -     ProductService.get_available_products() - START
+21/11/2025 17:24:44 - INFO     -         ProductDAO.get_available_products() - START
+21/11/2025 17:24:44 - INFO     -         ProductDAO.get_available_products() - END
+21/11/2025 17:24:44 - INFO     -            └─> Output: ["RealDictRow({'name': 'Italian Panini', 'description': 'Chicken, fresh tomatoes, mozzarella', 'price': Decimal('3.00'), 'product_type': 'lunch', 'stock': 20})", "RealDictRow({'name': 'Pesto Panini', 'description': 'Pesto, mozzarella, fresh or sun-dried tomatoes', 'price': Decimal('3.00'), 'product_type': 'lunch', 'stock': 20})", "RealDictRow({'name': 'Classic Kebab', 'description': 'Chicken, sauce of choice, endive, lettuce, onions', 'price': Decimal('3.00'), 'product_type': 'lunch', 'stock': 20})"] ... (24 elements)
+21/11/2025 17:24:44 - INFO     -     ProductService.get_available_products() - END
+21/11/2025 17:24:44 - INFO     -        └─> Output: ["RealDictRow({'name': 'Italian Panini', 'description': 'Chicken, fresh tomatoes, mozzarella', 'price': Decimal('3.00'), 'product_type': 'lunch', 'stock': 20})", "RealDictRow({'name': 'Pesto Panini', 'description': 'Pesto, mozzarella, fresh or sun-dried tomatoes', 'price': Decimal('3.00'), 'product_type': 'lunch', 'stock': 20})", "RealDictRow({'name': 'Classic Kebab', 'description': 'Chicken, sauce of choice, endive, lettuce, onions', 'price': Decimal('3.00'), 'product_type': 'lunch', 'stock': 20})"] ... (24 elements)
+21/11/2025 17:25:04 - INFO     -     AddressService.add_address('15 Rue Louis Armand', 'Bruz', '35170') - START
+21/11/2025 17:25:04 - INFO     -         AddressDAO.add_address("id_address=None address='15 Rue Louis Armand' postal_code=35170 city='Bruz'",) - START
+21/11/2025 17:25:04 - INFO     -         AddressDAO.add_address("id_address=None address='15 Rue Louis Armand' postal_code=35170 city='Bruz'",) - END
+21/11/2025 17:25:04 - INFO     -            └─> Output: id_address=6 address='15 Rue Louis Armand' postal_code=35170 city='Bruz'
+21/11/2025 17:25:04 - INFO     -     AddressService.add_address('15 Rue Louis Armand', 'Bruz', '35170') - END
+21/11/2025 17:25:04 - INFO     -        └─> Output: id_address=6 address='15 Rue Louis Armand' postal_code=35170 city='Bruz'
+21/11/2025 17:25:04 - INFO     -     AddressService.validate_address("id_address=6 address='15 Rue Louis Armand' postal_code=35170 city='Bruz'",) - START
+21/11/2025 17:25:04 - INFO     -     AddressService.validate_address("id_address=6 address='15 Rue Louis Armand' postal_code=35170 city='Bruz'",) - END
+21/11/2025 17:25:04 - INFO     -        └─> Output: True
+21/11/2025 17:25:05 - INFO     -     OrderService.create(5, 6, 0, 0, 'Cash') - START
+21/11/2025 17:25:05 - INFO     -         OrderDAO.create_order("id_order=None id_customer=5 id_driver=None id_address=6 date=datetime.datetime(2025, 11, 21, 17, 25, 5, 893050) status='Ready' nb_items=0 total_amount=0.0 payment_method='Cash'",) - START
+21/11/2025 17:25:05 - INFO     -         OrderDAO.create_order("id_order=None id_customer=5 id_driver=None id_address=6 date=datetime.datetime(2025, 11, 21, 17, 25, 5, 893050) status='Ready' nb_items=0 total_amount=0.0 payment_method='Cash'",) - END
+21/11/2025 17:25:05 - INFO     -            └─> Output: 5
+21/11/2025 17:25:05 - INFO     -         OrderService.get_by_id(5,) - START
+21/11/2025 17:25:05 - INFO     -             OrderDAO.get_by_id(5,) - START
+21/11/2025 17:25:05 - INFO     -                 OrderDAO.get_order_products(5,) - START
+21/11/2025 17:25:05 - INFO     -                 OrderDAO.get_order_products(5,) - END
+21/11/2025 17:25:05 - INFO     -                    └─> Output: [] ... (0 elements)
+21/11/2025 17:25:05 - INFO     -             OrderDAO.get_by_id(5,) - END
+21/11/2025 17:25:05 - INFO     -                └─> Output: [('order', "id_order=5 id_customer=5 id_driver=None id_address=6 date=datetime.datetime(2025, 11, 21, 17, 25, 5, 893050) status='Ready' nb_items=0 total_amount=0.0 payment_method='Cash'"), ('address', "id_address=6 address='15 Rue Louis Armand' postal_code=35170 city='Bruz'"), ('products', '[]'), ' ', '.', '.', '.', ' ', '(', '3', ' ', 'e', 'l', 'e', 'm', 'e', 'n', 't', 's', ')']
+21/11/2025 17:25:05 - INFO     -         OrderService.get_by_id(5,) - END
+21/11/2025 17:25:05 - INFO     -            └─> Output: id_order=5 id_customer=5 id_driver=None id_address=6 date=datetime.datetime(2025, 11, 21, 17, 25, 5, 893050) status='Ready' nb_items=0 total_amount=0.0 payment_method='Cash'
+21/11/2025 17:25:05 - INFO     -     OrderService.create(5, 6, 0, 0, 'Cash') - END
+21/11/2025 17:25:05 - INFO     -        └─> Output: id_order=5 id_customer=5 id_driver=None id_address=6 date=datetime.datetime(2025, 11, 21, 17, 25, 5, 893050) status='Ready' nb_items=0 total_amount=0.0 payment_method='Cash'
+21/11/2025 17:25:05 - INFO     -     ProductService.get_id_by_name('Italian Panini',) - START
+21/11/2025 17:25:05 - INFO     -         ProductDAO.get_id_by_productname('Italian Panini',) - START
+21/11/2025 17:25:06 - INFO     -         ProductDAO.get_id_by_productname('Italian Panini',) - END
+21/11/2025 17:25:06 - INFO     -            └─> Output: 1
+21/11/2025 17:25:06 - INFO     -     ProductService.get_id_by_name('Italian Panini',) - END
+21/11/2025 17:25:06 - INFO     -        └─> Output: 1
+21/11/2025 17:25:06 - INFO     -     OrderService.add_product_to_order(5, 1, 1, True) - START
+21/11/2025 17:25:06 - INFO     -         OrderDAO.add_product(5, 1, 1, True) - START
+21/11/2025 17:25:06 - INFO     -             ProductDAO.decrement_stock(1, 1) - START
+21/11/2025 17:25:06 - INFO     -             ProductDAO.decrement_stock(1, 1) - END
+21/11/2025 17:25:06 - INFO     -                └─> Output: True
+21/11/2025 17:25:06 - INFO     -         OrderDAO.add_product(5, 1, 1, True) - END
+21/11/2025 17:25:06 - INFO     -            └─> Output: True
+21/11/2025 17:25:06 - INFO     -     OrderService.add_product_to_order(5, 1, 1, True) - END
+21/11/2025 17:25:06 - INFO     -        └─> Output: True
+21/11/2025 17:25:06 - INFO     -     ProductService.get_id_by_name('Coca Cola',) - START
+21/11/2025 17:25:06 - INFO     -         ProductDAO.get_id_by_productname('Coca Cola',) - START
+21/11/2025 17:25:06 - INFO     -         ProductDAO.get_id_by_productname('Coca Cola',) - END
+21/11/2025 17:25:06 - INFO     -            └─> Output: 22
+21/11/2025 17:25:06 - INFO     -     ProductService.get_id_by_name('Coca Cola',) - END
+21/11/2025 17:25:06 - INFO     -        └─> Output: 22
+21/11/2025 17:25:06 - INFO     -     OrderService.add_product_to_order(5, 22, 1, True) - START
+21/11/2025 17:25:06 - INFO     -         OrderDAO.add_product(5, 22, 1, True) - START
+21/11/2025 17:25:06 - INFO     -             ProductDAO.decrement_stock(22, 1) - START
+21/11/2025 17:25:06 - INFO     -             ProductDAO.decrement_stock(22, 1) - END
+21/11/2025 17:25:06 - INFO     -                └─> Output: True
+21/11/2025 17:25:06 - INFO     -         OrderDAO.add_product(5, 22, 1, True) - END
+21/11/2025 17:25:06 - INFO     -            └─> Output: True
+21/11/2025 17:25:06 - INFO     -     OrderService.add_product_to_order(5, 22, 1, True) - END
+21/11/2025 17:25:06 - INFO     -        └─> Output: True
+21/11/2025 17:25:06 - INFO     -     ProductService.get_id_by_name('Chocolate Cake',) - START
+21/11/2025 17:25:06 - INFO     -         ProductDAO.get_id_by_productname('Chocolate Cake',) - START
+21/11/2025 17:25:06 - INFO     -         ProductDAO.get_id_by_productname('Chocolate Cake',) - END
+21/11/2025 17:25:06 - INFO     -            └─> Output: 19
+21/11/2025 17:25:06 - INFO     -     ProductService.get_id_by_name('Chocolate Cake',) - END
+21/11/2025 17:25:06 - INFO     -        └─> Output: 19
+21/11/2025 17:25:06 - INFO     -     OrderService.add_product_to_order(5, 19, 1, True) - START
+21/11/2025 17:25:06 - INFO     -         OrderDAO.add_product(5, 19, 1, True) - START
+21/11/2025 17:25:06 - INFO     -             ProductDAO.decrement_stock(19, 1) - START
+21/11/2025 17:25:06 - INFO     -             ProductDAO.decrement_stock(19, 1) - END
+21/11/2025 17:25:06 - INFO     -                └─> Output: True
+21/11/2025 17:25:06 - INFO     -         OrderDAO.add_product(5, 19, 1, True) - END
+21/11/2025 17:25:06 - INFO     -            └─> Output: True
+21/11/2025 17:25:06 - INFO     -     OrderService.add_product_to_order(5, 19, 1, True) - END
+21/11/2025 17:25:06 - INFO     -        └─> Output: True
+21/11/2025 17:25:06 - INFO     - MenuView
+21/11/2025 17:25:08 - INFO     - ChangeProfileView
+21/11/2025 17:25:14 - INFO     -     UserService.change_password('anais', 'Anais2003', 'Anais') - START
+21/11/2025 17:25:14 - INFO     -         UserRepo.get_by_username('anais',) - START
+21/11/2025 17:25:14 - INFO     -         UserRepo.get_by_username('anais',) - END
+21/11/2025 17:25:14 - INFO     -            └─> Output: id=9 user_name='anais' password='981c5169ab085fde26168c06c0b40cd43a492fdc7d09dd0bf954d97aade8bd73' first_name='Anais' last_name='Duranceau' email='anais@gmail.com' salt='9ce7b964379ec44f779fc9cb86944ff7ff70e2d6c81e84348aa74ad1e1c2ce165c2dbe87d444a60bc40373b9392e55118fe4227c36d72e4080a18a154f7ff9de65722791833a9b30a9b081f3f8ef78b0326d13c16aa4f18d7fbad10f34b622062c55332b51fab87557020fb2147280b8aabfdd23eb46f003307e3a11fe7d3f14'
+21/11/2025 17:25:14 - ERROR    - ValueError : Password length must be at least 8 characters
+Traceback (most recent call last):
+  File "/home/onyxia/work/Projet_Info_2A/src/main_CLI.py", line 22, in <module>
+    current_view = current_view.choose_menu()
+  File "/home/onyxia/work/Projet_Info_2A/src/CLI/customer/change_profil.py", line 28, in choose_menu
+    success = user_service.change_password(
+        user_name=username, old_password=old_password, new_password=new_password
+    )
+  File "/home/onyxia/work/Projet_Info_2A/src/utils/log_decorator.py", line 65, in wrapper
+    result = func(*args, **kwargs)
+  File "/home/onyxia/work/Projet_Info_2A/src/Service/UserService.py", line 121, in change_password
+    check_password_strength(new_password)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/home/onyxia/work/Projet_Info_2A/src/Service/PasswordService.py", line 16, in check_password_strength
+    raise ValueError("Password length must be at least 8 characters")
+ValueError: Password length must be at least 8 characters
+21/11/2025 17:25:14 - INFO     - OpeningView
+21/11/2025 17:25:41 - INFO     - InscriptionView
+21/11/2025 17:25:43 - INFO     -         UserService.is_username_taken('anais2',) - START
+21/11/2025 17:25:43 - INFO     -             UserRepo.is_username_taken('anais2',) - START
+21/11/2025 17:25:43 - INFO     -             UserRepo.is_username_taken('anais2',) - END
+21/11/2025 17:25:43 - INFO     -                └─> Output: False
+21/11/2025 17:25:43 - INFO     -         UserService.is_username_taken('anais2',) - END
+21/11/2025 17:25:43 - INFO     -            └─> Output: False
+21/11/2025 17:26:12 - INFO     -         CustomerService.create_customer('anais2', '*****', 'Anais', 'D', 'anais2@mail.com') - START
+21/11/2025 17:26:12 - INFO     -             CustomerDAO.add_customer("id=None user_name='anais2' password='ba8822833f56ef147408fbeca5962d181639586acf3d0adc82081852b5ce1811' first_name='Anais' last_name='D' email='anais2@mail.com' salt='04626f03610ae1ee43c27749e1c5c764cb7d2ba326c65a7ed26722789e18f1a44efc34ae37e38689220c9c74ebe7ff91ff1d453061f7172da0983049cfef8ceee39803fe6bcf4e3650c7f96dab4ee45e64a81de5617c87a774e95512bd9eae795f22a3afeb4f17b52215939f9b2393b2c84a774f68271b8676fe05bbfbe71910' address=None id_customer=None",) - START
+21/11/2025 17:26:12 - INFO     -                 UserRepo.add_user("id=None user_name='anais2' password='ba8822833f56ef147408fbeca5962d181639586acf3d0adc82081852b5ce1811' first_name='Anais' last_name='D' email='anais2@mail.com' salt='04626f03610ae1ee43c27749e1c5c764cb7d2ba326c65a7ed26722789e18f1a44efc34ae37e38689220c9c74ebe7ff91ff1d453061f7172da0983049cfef8ceee39803fe6bcf4e3650c7f96dab4ee45e64a81de5617c87a774e95512bd9eae795f22a3afeb4f17b52215939f9b2393b2c84a774f68271b8676fe05bbfbe71910' address=None id_customer=None",) - START
+21/11/2025 17:26:12 - INFO     -                 UserRepo.add_user("id=None user_name='anais2' password='ba8822833f56ef147408fbeca5962d181639586acf3d0adc82081852b5ce1811' first_name='Anais' last_name='D' email='anais2@mail.com' salt='04626f03610ae1ee43c27749e1c5c764cb7d2ba326c65a7ed26722789e18f1a44efc34ae37e38689220c9c74ebe7ff91ff1d453061f7172da0983049cfef8ceee39803fe6bcf4e3650c7f96dab4ee45e64a81de5617c87a774e95512bd9eae795f22a3afeb4f17b52215939f9b2393b2c84a774f68271b8676fe05bbfbe71910' address=None id_customer=None",) - END
+21/11/2025 17:26:12 - INFO     -                    └─> Output: 10
+21/11/2025 17:26:12 - INFO     -             CustomerDAO.add_customer("id=None user_name='anais2' password='ba8822833f56ef147408fbeca5962d181639586acf3d0adc82081852b5ce1811' first_name='Anais' last_name='D' email='anais2@mail.com' salt='04626f03610ae1ee43c27749e1c5c764cb7d2ba326c65a7ed26722789e18f1a44efc34ae37e38689220c9c74ebe7ff91ff1d453061f7172da0983049cfef8ceee39803fe6bcf4e3650c7f96dab4ee45e64a81de5617c87a774e95512bd9eae795f22a3afeb4f17b52215939f9b2393b2c84a774f68271b8676fe05bbfbe71910' address=None id_customer=None",) - END
+21/11/2025 17:26:12 - INFO     -                └─> Output: id=10 user_name='anais2' password='ba8822833f56ef147408fbeca5962d181639586acf3d0adc82081852b5ce1811' first_name='Anais' last_name='D' email='anais2@mail.com' salt='04626f03610ae1ee43c27749e1c5c764cb7d2ba326c65a7ed26722789e18f1a44efc34ae37e38689220c9c74ebe7ff91ff1d453061f7172da0983049cfef8ceee39803fe6bcf4e3650c7f96dab4ee45e64a81de5617c87a774e95512bd9eae795f22a3afeb4f17b52215939f9b2393b2c84a774f68271b8676fe05bbfbe71910' address=None id_customer=6
+21/11/2025 17:26:12 - INFO     -         CustomerService.create_customer('anais2', '*****', 'Anais', 'D', 'anais2@mail.com') - END
+21/11/2025 17:26:12 - INFO     -            └─> Output: id=10 user_name='anais2' password='ba8822833f56ef147408fbeca5962d181639586acf3d0adc82081852b5ce1811' first_name='Anais' last_name='D' email='anais2@mail.com' salt='04626f03610ae1ee43c27749e1c5c764cb7d2ba326c65a7ed26722789e18f1a44efc34ae37e38689220c9c74ebe7ff91ff1d453061f7172da0983049cfef8ceee39803fe6bcf4e3650c7f96dab4ee45e64a81de5617c87a774e95512bd9eae795f22a3afeb4f17b52215939f9b2393b2c84a774f68271b8676fe05bbfbe71910' address=None id_customer=6
+21/11/2025 17:26:12 - INFO     - OpeningView
+21/11/2025 17:26:16 - INFO     - LoginView
+21/11/2025 17:26:16 - INFO     -         DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7fa5bd3fcec0>',) - START
+21/11/2025 17:26:16 - INFO     -         DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7fa5bd3fcec0>',) - END
+21/11/2025 17:26:16 - INFO     -            └─> Output: None
+21/11/2025 17:26:20 - INFO     -         UserRepo.get_by_username('anais2',) - START
+21/11/2025 17:26:20 - INFO     -         UserRepo.get_by_username('anais2',) - END
+21/11/2025 17:26:20 - INFO     -            └─> Output: id=10 user_name='anais2' password='ba8822833f56ef147408fbeca5962d181639586acf3d0adc82081852b5ce1811' first_name='Anais' last_name='D' email='anais2@mail.com' salt='04626f03610ae1ee43c27749e1c5c764cb7d2ba326c65a7ed26722789e18f1a44efc34ae37e38689220c9c74ebe7ff91ff1d453061f7172da0983049cfef8ceee39803fe6bcf4e3650c7f96dab4ee45e64a81de5617c87a774e95512bd9eae795f22a3afeb4f17b52215939f9b2393b2c84a774f68271b8676fe05bbfbe71910'
+21/11/2025 17:26:20 - INFO     -         CustomerDAO.get_id_customer_by_id_user(10,) - START
+21/11/2025 17:26:20 - INFO     -         CustomerDAO.get_id_customer_by_id_user(10,) - END
+21/11/2025 17:26:20 - INFO     -            └─> Output: 6
+21/11/2025 17:26:20 - INFO     -         DriverDAO.get_id_driver_by_id_user(10,) - START
+21/11/2025 17:26:20 - INFO     -         DriverDAO.get_id_driver_by_id_user(10,) - END
+21/11/2025 17:26:20 - INFO     -            └─> Output: None
+21/11/2025 17:26:20 - INFO     -         Session.login("id=10 user_name='anais2' password='ba8822833f56ef147408fbeca5962d181639586acf3d0adc82081852b5ce1811' first_name='Anais' last_name='D' email='anais2@mail.com' salt='04626f03610ae1ee43c27749e1c5c764cb7d2ba326c65a7ed26722789e18f1a44efc34ae37e38689220c9c74ebe7ff91ff1d453061f7172da0983049cfef8ceee39803fe6bcf4e3650c7f96dab4ee45e64a81de5617c87a774e95512bd9eae795f22a3afeb4f17b52215939f9b2393b2c84a774f68271b8676fe05bbfbe71910'", 6) - START
+21/11/2025 17:26:20 - INFO     -         Session.login("id=10 user_name='anais2' password='ba8822833f56ef147408fbeca5962d181639586acf3d0adc82081852b5ce1811' first_name='Anais' last_name='D' email='anais2@mail.com' salt='04626f03610ae1ee43c27749e1c5c764cb7d2ba326c65a7ed26722789e18f1a44efc34ae37e38689220c9c74ebe7ff91ff1d453061f7172da0983049cfef8ceee39803fe6bcf4e3650c7f96dab4ee45e64a81de5617c87a774e95512bd9eae795f22a3afeb4f17b52215939f9b2393b2c84a774f68271b8676fe05bbfbe71910'", 6) - END
+21/11/2025 17:26:20 - INFO     -            └─> Output: None
+21/11/2025 17:26:20 - INFO     - MenuView
+21/11/2025 17:26:23 - INFO     - ChangeProfileView
+21/11/2025 17:26:28 - INFO     -         UserService.change_password('anais2', 'Anais2003', 'anais') - START
+21/11/2025 17:26:28 - INFO     -             UserRepo.get_by_username('anais2',) - START
+21/11/2025 17:26:28 - INFO     -             UserRepo.get_by_username('anais2',) - END
+21/11/2025 17:26:28 - INFO     -                └─> Output: id=10 user_name='anais2' password='ba8822833f56ef147408fbeca5962d181639586acf3d0adc82081852b5ce1811' first_name='Anais' last_name='D' email='anais2@mail.com' salt='04626f03610ae1ee43c27749e1c5c764cb7d2ba326c65a7ed26722789e18f1a44efc34ae37e38689220c9c74ebe7ff91ff1d453061f7172da0983049cfef8ceee39803fe6bcf4e3650c7f96dab4ee45e64a81de5617c87a774e95512bd9eae795f22a3afeb4f17b52215939f9b2393b2c84a774f68271b8676fe05bbfbe71910'
+21/11/2025 17:26:28 - ERROR    - ValueError : Password length must be at least 8 characters
+Traceback (most recent call last):
+  File "/home/onyxia/work/Projet_Info_2A/src/main_CLI.py", line 22, in <module>
+    current_view = current_view.choose_menu()
+  File "/home/onyxia/work/Projet_Info_2A/src/CLI/customer/change_profil.py", line 28, in choose_menu
+    success = user_service.change_password(
+        user_name=username, old_password=old_password, new_password=new_password
+    )
+  File "/home/onyxia/work/Projet_Info_2A/src/utils/log_decorator.py", line 65, in wrapper
+    result = func(*args, **kwargs)
+  File "/home/onyxia/work/Projet_Info_2A/src/Service/UserService.py", line 121, in change_password
+    check_password_strength(new_password)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/home/onyxia/work/Projet_Info_2A/src/Service/PasswordService.py", line 16, in check_password_strength
+    raise ValueError("Password length must be at least 8 characters")
+ValueError: Password length must be at least 8 characters
+21/11/2025 17:26:28 - INFO     - OpeningView
+21/11/2025 17:26:35 - INFO     - LoginView
+21/11/2025 17:26:35 - INFO     -             DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7fa5bf9560f0>',) - START
+21/11/2025 17:26:35 - INFO     -             DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7fa5bf9560f0>',) - END
+21/11/2025 17:26:35 - INFO     -                └─> Output: None
+21/11/2025 17:27:05 - INFO     -             UserRepo.get_by_username('anais2',) - START
+21/11/2025 17:27:05 - INFO     -             UserRepo.get_by_username('anais2',) - END
+21/11/2025 17:27:05 - INFO     -                └─> Output: id=10 user_name='anais2' password='ba8822833f56ef147408fbeca5962d181639586acf3d0adc82081852b5ce1811' first_name='Anais' last_name='D' email='anais2@mail.com' salt='04626f03610ae1ee43c27749e1c5c764cb7d2ba326c65a7ed26722789e18f1a44efc34ae37e38689220c9c74ebe7ff91ff1d453061f7172da0983049cfef8ceee39803fe6bcf4e3650c7f96dab4ee45e64a81de5617c87a774e95512bd9eae795f22a3afeb4f17b52215939f9b2393b2c84a774f68271b8676fe05bbfbe71910'
+21/11/2025 17:27:05 - INFO     -             CustomerDAO.get_id_customer_by_id_user(10,) - START
+21/11/2025 17:27:05 - INFO     -             CustomerDAO.get_id_customer_by_id_user(10,) - END
+21/11/2025 17:27:05 - INFO     -                └─> Output: 6
+21/11/2025 17:27:05 - INFO     -             DriverDAO.get_id_driver_by_id_user(10,) - START
+21/11/2025 17:27:05 - INFO     -             DriverDAO.get_id_driver_by_id_user(10,) - END
+21/11/2025 17:27:05 - INFO     -                └─> Output: None
+21/11/2025 17:27:05 - INFO     -             Session.login("id=10 user_name='anais2' password='ba8822833f56ef147408fbeca5962d181639586acf3d0adc82081852b5ce1811' first_name='Anais' last_name='D' email='anais2@mail.com' salt='04626f03610ae1ee43c27749e1c5c764cb7d2ba326c65a7ed26722789e18f1a44efc34ae37e38689220c9c74ebe7ff91ff1d453061f7172da0983049cfef8ceee39803fe6bcf4e3650c7f96dab4ee45e64a81de5617c87a774e95512bd9eae795f22a3afeb4f17b52215939f9b2393b2c84a774f68271b8676fe05bbfbe71910'", 6) - START
+21/11/2025 17:27:05 - INFO     -             Session.login("id=10 user_name='anais2' password='ba8822833f56ef147408fbeca5962d181639586acf3d0adc82081852b5ce1811' first_name='Anais' last_name='D' email='anais2@mail.com' salt='04626f03610ae1ee43c27749e1c5c764cb7d2ba326c65a7ed26722789e18f1a44efc34ae37e38689220c9c74ebe7ff91ff1d453061f7172da0983049cfef8ceee39803fe6bcf4e3650c7f96dab4ee45e64a81de5617c87a774e95512bd9eae795f22a3afeb4f17b52215939f9b2393b2c84a774f68271b8676fe05bbfbe71910'", 6) - END
+21/11/2025 17:27:05 - INFO     -                └─> Output: None
+21/11/2025 17:27:05 - INFO     - MenuView
+21/11/2025 17:27:12 - INFO     - PlaceOrderView
+21/11/2025 17:27:12 - INFO     -             Session.get_id_role() - START
+21/11/2025 17:27:12 - INFO     -             Session.get_id_role() - END
+21/11/2025 17:27:12 - INFO     -                └─> Output: 6
+21/11/2025 17:27:12 - INFO     -             ProductService.get_available_products() - START
+21/11/2025 17:27:12 - INFO     -                 ProductDAO.get_available_products() - START
+21/11/2025 17:27:13 - INFO     -                 ProductDAO.get_available_products() - END
+21/11/2025 17:27:13 - INFO     -                    └─> Output: ["RealDictRow({'name': 'Pesto Panini', 'description': 'Pesto, mozzarella, fresh or sun-dried tomatoes', 'price': Decimal('3.00'), 'product_type': 'lunch', 'stock': 20})", "RealDictRow({'name': 'Classic Kebab', 'description': 'Chicken, sauce of choice, endive, lettuce, onions', 'price': Decimal('3.00'), 'product_type': 'lunch', 'stock': 20})", "RealDictRow({'name': 'Veggie Kebab', 'description': 'Falafels, rösti, herb sauce, white cabbage, lettuce, tomatoes', 'price': Decimal('3.00'), 'product_type': 'lunch', 'stock': 20})"] ... (24 elements)
+21/11/2025 17:27:13 - INFO     -             ProductService.get_available_products() - END
+21/11/2025 17:27:13 - INFO     -                └─> Output: ["RealDictRow({'name': 'Pesto Panini', 'description': 'Pesto, mozzarella, fresh or sun-dried tomatoes', 'price': Decimal('3.00'), 'product_type': 'lunch', 'stock': 20})", "RealDictRow({'name': 'Classic Kebab', 'description': 'Chicken, sauce of choice, endive, lettuce, onions', 'price': Decimal('3.00'), 'product_type': 'lunch', 'stock': 20})", "RealDictRow({'name': 'Veggie Kebab', 'description': 'Falafels, rösti, herb sauce, white cabbage, lettuce, tomatoes', 'price': Decimal('3.00'), 'product_type': 'lunch', 'stock': 20})"] ... (24 elements)
+21/11/2025 17:28:08 - INFO     -             AddressService.add_address('15 rue louis armand', 'Bruz', '35170') - START
+21/11/2025 17:28:08 - INFO     -                 AddressDAO.add_address("id_address=None address='15 rue louis armand' postal_code=35170 city='Bruz'",) - START
+21/11/2025 17:28:08 - INFO     -                 AddressDAO.add_address("id_address=None address='15 rue louis armand' postal_code=35170 city='Bruz'",) - END
+21/11/2025 17:28:08 - INFO     -                    └─> Output: id_address=7 address='15 rue louis armand' postal_code=35170 city='Bruz'
+21/11/2025 17:28:08 - INFO     -             AddressService.add_address('15 rue louis armand', 'Bruz', '35170') - END
+21/11/2025 17:28:08 - INFO     -                └─> Output: id_address=7 address='15 rue louis armand' postal_code=35170 city='Bruz'
+21/11/2025 17:28:08 - INFO     -             AddressService.validate_address("id_address=7 address='15 rue louis armand' postal_code=35170 city='Bruz'",) - START
+21/11/2025 17:28:08 - INFO     -             AddressService.validate_address("id_address=7 address='15 rue louis armand' postal_code=35170 city='Bruz'",) - END
+21/11/2025 17:28:08 - INFO     -                └─> Output: True
+21/11/2025 17:28:09 - INFO     -             OrderService.create(6, 7, 0, 0, 'Cash') - START
+21/11/2025 17:28:09 - INFO     -                 OrderDAO.create_order("id_order=None id_customer=6 id_driver=None id_address=7 date=datetime.datetime(2025, 11, 21, 17, 28, 9, 803793) status='Ready' nb_items=0 total_amount=0.0 payment_method='Cash'",) - START
+21/11/2025 17:28:09 - INFO     -                 OrderDAO.create_order("id_order=None id_customer=6 id_driver=None id_address=7 date=datetime.datetime(2025, 11, 21, 17, 28, 9, 803793) status='Ready' nb_items=0 total_amount=0.0 payment_method='Cash'",) - END
+21/11/2025 17:28:09 - INFO     -                    └─> Output: 6
+21/11/2025 17:28:09 - INFO     -                 OrderService.get_by_id(6,) - START
+21/11/2025 17:28:09 - INFO     -                     OrderDAO.get_by_id(6,) - START
+21/11/2025 17:28:09 - INFO     -                         OrderDAO.get_order_products(6,) - START
+21/11/2025 17:28:09 - INFO     -                         OrderDAO.get_order_products(6,) - END
+21/11/2025 17:28:09 - INFO     -                            └─> Output: [] ... (0 elements)
+21/11/2025 17:28:09 - INFO     -                     OrderDAO.get_by_id(6,) - END
+21/11/2025 17:28:09 - INFO     -                        └─> Output: [('order', "id_order=6 id_customer=6 id_driver=None id_address=7 date=datetime.datetime(2025, 11, 21, 17, 28, 9, 803793) status='Ready' nb_items=0 total_amount=0.0 payment_method='Cash'"), ('address', "id_address=7 address='15 rue louis armand' postal_code=35170 city='Bruz'"), ('products', '[]'), ' ', '.', '.', '.', ' ', '(', '3', ' ', 'e', 'l', 'e', 'm', 'e', 'n', 't', 's', ')']
+21/11/2025 17:28:09 - INFO     -                 OrderService.get_by_id(6,) - END
+21/11/2025 17:28:09 - INFO     -                    └─> Output: id_order=6 id_customer=6 id_driver=None id_address=7 date=datetime.datetime(2025, 11, 21, 17, 28, 9, 803793) status='Ready' nb_items=0 total_amount=0.0 payment_method='Cash'
+21/11/2025 17:28:09 - INFO     -             OrderService.create(6, 7, 0, 0, 'Cash') - END
+21/11/2025 17:28:09 - INFO     -                └─> Output: id_order=6 id_customer=6 id_driver=None id_address=7 date=datetime.datetime(2025, 11, 21, 17, 28, 9, 803793) status='Ready' nb_items=0 total_amount=0.0 payment_method='Cash'
+21/11/2025 17:28:09 - INFO     -             ProductService.get_id_by_name('Pesto Panini',) - START
+21/11/2025 17:28:09 - INFO     -                 ProductDAO.get_id_by_productname('Pesto Panini',) - START
+21/11/2025 17:28:09 - INFO     -                 ProductDAO.get_id_by_productname('Pesto Panini',) - END
+21/11/2025 17:28:09 - INFO     -                    └─> Output: 4
+21/11/2025 17:28:09 - INFO     -             ProductService.get_id_by_name('Pesto Panini',) - END
+21/11/2025 17:28:09 - INFO     -                └─> Output: 4
+21/11/2025 17:28:09 - INFO     -             OrderService.add_product_to_order(6, 4, 1, False) - START
+21/11/2025 17:28:09 - INFO     -                 OrderDAO.add_product(6, 4, 1, False) - START
+21/11/2025 17:28:09 - INFO     -                     ProductDAO.decrement_stock(4, 1) - START
+21/11/2025 17:28:09 - INFO     -                     ProductDAO.decrement_stock(4, 1) - END
+21/11/2025 17:28:09 - INFO     -                        └─> Output: True
+21/11/2025 17:28:10 - INFO     -                 OrderDAO.add_product(6, 4, 1, False) - END
+21/11/2025 17:28:10 - INFO     -                    └─> Output: True
+21/11/2025 17:28:10 - INFO     -             OrderService.add_product_to_order(6, 4, 1, False) - END
+21/11/2025 17:28:10 - INFO     -                └─> Output: True
+21/11/2025 17:28:10 - INFO     - MenuView
+21/11/2025 17:28:14 - INFO     - ChangeProfileView
+21/11/2025 17:28:21 - INFO     -             UserService.change_password('anais2', 'Anais2003', 'Anais.2003') - START
+21/11/2025 17:28:21 - INFO     -                 UserRepo.get_by_username('anais2',) - START
+21/11/2025 17:28:21 - INFO     -                 UserRepo.get_by_username('anais2',) - END
+21/11/2025 17:28:21 - INFO     -                    └─> Output: id=10 user_name='anais2' password='ba8822833f56ef147408fbeca5962d181639586acf3d0adc82081852b5ce1811' first_name='Anais' last_name='D' email='anais2@mail.com' salt='04626f03610ae1ee43c27749e1c5c764cb7d2ba326c65a7ed26722789e18f1a44efc34ae37e38689220c9c74ebe7ff91ff1d453061f7172da0983049cfef8ceee39803fe6bcf4e3650c7f96dab4ee45e64a81de5617c87a774e95512bd9eae795f22a3afeb4f17b52215939f9b2393b2c84a774f68271b8676fe05bbfbe71910'
+21/11/2025 17:28:21 - INFO     -                 UserRepo.get_by_username('anais2',) - START
+21/11/2025 17:28:21 - INFO     -                 UserRepo.get_by_username('anais2',) - END
+21/11/2025 17:28:21 - INFO     -                    └─> Output: id=10 user_name='anais2' password='ba8822833f56ef147408fbeca5962d181639586acf3d0adc82081852b5ce1811' first_name='Anais' last_name='D' email='anais2@mail.com' salt='04626f03610ae1ee43c27749e1c5c764cb7d2ba326c65a7ed26722789e18f1a44efc34ae37e38689220c9c74ebe7ff91ff1d453061f7172da0983049cfef8ceee39803fe6bcf4e3650c7f96dab4ee45e64a81de5617c87a774e95512bd9eae795f22a3afeb4f17b52215939f9b2393b2c84a774f68271b8676fe05bbfbe71910'
+21/11/2025 17:28:21 - INFO     -                 UserRepo.update_user("id=10 user_name='anais2' password='327474cc1eda63d31269922377453e3e024ad7d5d0198737d8572aef1a18efd8' first_name='Anais' last_name='D' email='anais2@mail.com' salt='4218d91f2e7f44876067e096b6228f7d562624be4edb7e8c2991aedc706ad5ca4f12adb71da06cbf030594170da92dc0a56222c70d7d79ebb58a70ad9faa9402e7658e49f61005b6d9dfea50281db6733511c6dbc4ed5df5561e5e9e84871f5bcff8ce7d56a9187494dc337445dba42eaf7e074088e266968513c1577940462f'",) - START
+21/11/2025 17:28:21 - INFO     -                 UserRepo.update_user("id=10 user_name='anais2' password='327474cc1eda63d31269922377453e3e024ad7d5d0198737d8572aef1a18efd8' first_name='Anais' last_name='D' email='anais2@mail.com' salt='4218d91f2e7f44876067e096b6228f7d562624be4edb7e8c2991aedc706ad5ca4f12adb71da06cbf030594170da92dc0a56222c70d7d79ebb58a70ad9faa9402e7658e49f61005b6d9dfea50281db6733511c6dbc4ed5df5561e5e9e84871f5bcff8ce7d56a9187494dc337445dba42eaf7e074088e266968513c1577940462f'",) - END
+21/11/2025 17:28:21 - INFO     -                    └─> Output: True
+21/11/2025 17:28:21 - INFO     -             UserService.change_password('anais2', 'Anais2003', 'Anais.2003') - END
+21/11/2025 17:28:21 - INFO     -                └─> Output: True
+21/11/2025 17:28:21 - INFO     - MenuView
+21/11/2025 17:28:26 - INFO     - OrdersHistory
+21/11/2025 17:28:26 - INFO     -             OrderService.get_all_orders_by_id_customer(6,) - START
+21/11/2025 17:28:26 - INFO     -                 OrderDAO.get_orders_by_id_user(6,) - START
+21/11/2025 17:28:26 - INFO     -                     OrderDAO.get_by_id(6,) - START
+21/11/2025 17:28:26 - INFO     -                         OrderDAO.get_order_products(6,) - START
+21/11/2025 17:28:26 - INFO     -                         OrderDAO.get_order_products(6,) - END
+21/11/2025 17:28:26 - INFO     -                            └─> Output: ["RealDictRow({'id_product': 4, 'name': 'Pesto Panini', 'price': Decimal('3.00'), 'product_type': 'lunch', 'quantity': 1})"] ... (1 elements)
+21/11/2025 17:28:26 - INFO     -                     OrderDAO.get_by_id(6,) - END
+21/11/2025 17:28:26 - INFO     -                        └─> Output: [('order', "id_order=6 id_customer=6 id_driver=None id_address=7 date=datetime.datetime(2025, 11, 21, 17, 28, 9, 803793) status='Ready' nb_items=1 total_amount=3.0 payment_method='Cash'"), ('address', "id_address=7 address='15 rue louis armand' postal_code=35170 city='Bruz'"), ('products', "[RealDictRow({'id_product': 4, 'name': 'Pesto Panini', 'price': Decimal('3.00'), 'product_type': 'lunch', 'quantity': 1})]"), ' ', '.', '.', '.', ' ', '(', '3', ' ', 'e', 'l', 'e', 'm', 'e', 'n', 't', 's', ')']
+21/11/2025 17:28:26 - INFO     -                 OrderDAO.get_orders_by_id_user(6,) - END
+21/11/2025 17:28:26 - INFO     -                    └─> Output: ["{'order': Order(id_order=6, id_customer=6, id_driver=None, id_address=7, date=datetime.datetime(2025, 11, 21, 17, 28, 9, 803793), status='Ready', nb_items=1, total_amount=3.0, payment_method='Cash'), 'address': Address(id_address=7, address='15 rue louis armand', postal_code=35170, city='Bruz'), 'products': [RealDictRow({'id_product': 4, 'name': 'Pesto Panini', 'price': Decimal('3.00'), 'product_type': 'lunch', 'quantity': 1})]}"] ... (1 elements)
+21/11/2025 17:28:26 - INFO     -             OrderService.get_all_orders_by_id_customer(6,) - END
+21/11/2025 17:28:26 - INFO     -                └─> Output: ["{'order': Order(id_order=6, id_customer=6, id_driver=None, id_address=7, date=datetime.datetime(2025, 11, 21, 17, 28, 9, 803793), status='Ready', nb_items=1, total_amount=3.0, payment_method='Cash'), 'address': Address(id_address=7, address='15 rue louis armand', postal_code=35170, city='Bruz'), 'products': [RealDictRow({'id_product': 4, 'name': 'Pesto Panini', 'price': Decimal('3.00'), 'product_type': 'lunch', 'quantity': 1})]}"] ... (1 elements)
+21/11/2025 17:28:28 - INFO     - MenuView
+21/11/2025 17:28:34 - ERROR    - AttributeError : 'Session' object has no attribute 'deconnexion'
+Traceback (most recent call last):
+  File "/home/onyxia/work/Projet_Info_2A/src/main_CLI.py", line 22, in <module>
+    current_view = current_view.choose_menu()
+  File "/home/onyxia/work/Projet_Info_2A/src/CLI/customer/menu_customer.py", line 47, in choose_menu
+    Session().deconnexion()
+    ^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Session' object has no attribute 'deconnexion'
+21/11/2025 17:28:34 - INFO     - OpeningView
+21/11/2025 17:28:39 - INFO     - InscriptionView
+21/11/2025 17:28:42 - INFO     -             UserService.is_username_taken('anais2',) - START
+21/11/2025 17:28:42 - INFO     -                 UserRepo.is_username_taken('anais2',) - START
+21/11/2025 17:28:42 - INFO     -                 UserRepo.is_username_taken('anais2',) - END
+21/11/2025 17:28:42 - INFO     -                    └─> Output: True
+21/11/2025 17:28:42 - INFO     -             UserService.is_username_taken('anais2',) - END
+21/11/2025 17:28:42 - INFO     -                └─> Output: True
+21/11/2025 17:28:42 - INFO     - OpeningView
+21/11/2025 17:28:46 - INFO     - End of application
+21/11/2025 17:50:27 - INFO     - --------------------------------------------------
+21/11/2025 17:50:27 - INFO     - Starting Application
+21/11/2025 17:50:27 - INFO     - --------------------------------------------------
+21/11/2025 17:50:27 - INFO     - OpeningView
+21/11/2025 17:50:30 - INFO     - LoginView
+21/11/2025 17:50:30 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7f43a55b9bd0>',) - START
+21/11/2025 17:50:30 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7f43a55b9bd0>',) - END
+21/11/2025 17:50:30 - INFO     -        └─> Output: None
+21/11/2025 17:50:35 - INFO     -     UserRepo.get_by_username('anais',) - START
+21/11/2025 17:50:35 - INFO     -     UserRepo.get_by_username('anais',) - END
+21/11/2025 17:50:35 - INFO     -        └─> Output: id=9 user_name='anais' password='981c5169ab085fde26168c06c0b40cd43a492fdc7d09dd0bf954d97aade8bd73' first_name='Anais' last_name='Duranceau' email='anais@gmail.com' salt='9ce7b964379ec44f779fc9cb86944ff7ff70e2d6c81e84348aa74ad1e1c2ce165c2dbe87d444a60bc40373b9392e55118fe4227c36d72e4080a18a154f7ff9de65722791833a9b30a9b081f3f8ef78b0326d13c16aa4f18d7fbad10f34b622062c55332b51fab87557020fb2147280b8aabfdd23eb46f003307e3a11fe7d3f14'
+21/11/2025 17:50:35 - INFO     -     CustomerDAO.get_id_customer_by_id_user(9,) - START
+21/11/2025 17:50:36 - INFO     -     CustomerDAO.get_id_customer_by_id_user(9,) - END
+21/11/2025 17:50:36 - INFO     -        └─> Output: 5
+21/11/2025 17:50:36 - INFO     -     DriverDAO.get_id_driver_by_id_user(9,) - START
+21/11/2025 17:50:36 - INFO     -     DriverDAO.get_id_driver_by_id_user(9,) - END
+21/11/2025 17:50:36 - INFO     -        └─> Output: None
+21/11/2025 17:50:36 - INFO     -     Session.login("id=9 user_name='anais' password='981c5169ab085fde26168c06c0b40cd43a492fdc7d09dd0bf954d97aade8bd73' first_name='Anais' last_name='Duranceau' email='anais@gmail.com' salt='9ce7b964379ec44f779fc9cb86944ff7ff70e2d6c81e84348aa74ad1e1c2ce165c2dbe87d444a60bc40373b9392e55118fe4227c36d72e4080a18a154f7ff9de65722791833a9b30a9b081f3f8ef78b0326d13c16aa4f18d7fbad10f34b622062c55332b51fab87557020fb2147280b8aabfdd23eb46f003307e3a11fe7d3f14'", 5) - START
+21/11/2025 17:50:36 - INFO     -     Session.login("id=9 user_name='anais' password='981c5169ab085fde26168c06c0b40cd43a492fdc7d09dd0bf954d97aade8bd73' first_name='Anais' last_name='Duranceau' email='anais@gmail.com' salt='9ce7b964379ec44f779fc9cb86944ff7ff70e2d6c81e84348aa74ad1e1c2ce165c2dbe87d444a60bc40373b9392e55118fe4227c36d72e4080a18a154f7ff9de65722791833a9b30a9b081f3f8ef78b0326d13c16aa4f18d7fbad10f34b622062c55332b51fab87557020fb2147280b8aabfdd23eb46f003307e3a11fe7d3f14'", 5) - END
+21/11/2025 17:50:36 - INFO     -        └─> Output: None
+21/11/2025 17:50:36 - INFO     - MenuView
+21/11/2025 17:50:38 - INFO     - ChangeProfileView
+21/11/2025 17:50:52 - INFO     -     UserService.change_password('anais', 'Anais2003', 'Anais.2003') - START
+21/11/2025 17:50:52 - INFO     -         UserRepo.get_by_username('anais',) - START
+21/11/2025 17:50:52 - INFO     -         UserRepo.get_by_username('anais',) - END
+21/11/2025 17:50:52 - INFO     -            └─> Output: id=9 user_name='anais' password='981c5169ab085fde26168c06c0b40cd43a492fdc7d09dd0bf954d97aade8bd73' first_name='Anais' last_name='Duranceau' email='anais@gmail.com' salt='9ce7b964379ec44f779fc9cb86944ff7ff70e2d6c81e84348aa74ad1e1c2ce165c2dbe87d444a60bc40373b9392e55118fe4227c36d72e4080a18a154f7ff9de65722791833a9b30a9b081f3f8ef78b0326d13c16aa4f18d7fbad10f34b622062c55332b51fab87557020fb2147280b8aabfdd23eb46f003307e3a11fe7d3f14'
+21/11/2025 17:50:52 - INFO     -         UserRepo.get_by_username('anais',) - START
+21/11/2025 17:50:52 - INFO     -         UserRepo.get_by_username('anais',) - END
+21/11/2025 17:50:52 - INFO     -            └─> Output: id=9 user_name='anais' password='981c5169ab085fde26168c06c0b40cd43a492fdc7d09dd0bf954d97aade8bd73' first_name='Anais' last_name='Duranceau' email='anais@gmail.com' salt='9ce7b964379ec44f779fc9cb86944ff7ff70e2d6c81e84348aa74ad1e1c2ce165c2dbe87d444a60bc40373b9392e55118fe4227c36d72e4080a18a154f7ff9de65722791833a9b30a9b081f3f8ef78b0326d13c16aa4f18d7fbad10f34b622062c55332b51fab87557020fb2147280b8aabfdd23eb46f003307e3a11fe7d3f14'
+21/11/2025 17:50:52 - INFO     -         UserRepo.update_user("id=9 user_name='anais' password='f7deb4f8402b0bab1497f6165ed5a32712c49fd658d5bdb432965948035676c8' first_name='Anais' last_name='Duranceau' email='anais@gmail.com' salt='1afab70586e7848600de02e53ba460cb02ef7445e09617d36a7960d5e6202a6536face5aa5745d1493eaf903725919e9c254cf397ab469aaa5d5085a645b8f977d8645bce1bbb8d1ee75b54ab0c19f48351d36dcd73415e01d56a2a54ae1d7c417a471dd8ca5c7f888a424c4e329a5be6b12351878f02d546436e2be1e5b74d8'",) - START
+21/11/2025 17:50:52 - INFO     -         UserRepo.update_user("id=9 user_name='anais' password='f7deb4f8402b0bab1497f6165ed5a32712c49fd658d5bdb432965948035676c8' first_name='Anais' last_name='Duranceau' email='anais@gmail.com' salt='1afab70586e7848600de02e53ba460cb02ef7445e09617d36a7960d5e6202a6536face5aa5745d1493eaf903725919e9c254cf397ab469aaa5d5085a645b8f977d8645bce1bbb8d1ee75b54ab0c19f48351d36dcd73415e01d56a2a54ae1d7c417a471dd8ca5c7f888a424c4e329a5be6b12351878f02d546436e2be1e5b74d8'",) - END
+21/11/2025 17:50:52 - INFO     -            └─> Output: True
+21/11/2025 17:50:52 - INFO     -     UserService.change_password('anais', 'Anais2003', 'Anais.2003') - END
+21/11/2025 17:50:52 - INFO     -        └─> Output: True
+21/11/2025 17:50:52 - INFO     - MenuView
+21/11/2025 17:51:42 - ERROR    - AttributeError : 'Session' object has no attribute 'deconnexion'
+Traceback (most recent call last):
+  File "/home/onyxia/work/Projet_Info_2A/src/main_CLI.py", line 22, in <module>
+    current_view = current_view.choose_menu()
+  File "/home/onyxia/work/Projet_Info_2A/src/CLI/customer/menu_customer.py", line 47, in choose_menu
+    Session().deconnexion()
+    ^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Session' object has no attribute 'deconnexion'
+21/11/2025 17:51:42 - INFO     - OpeningView
+21/11/2025 17:51:43 - INFO     - End of application
+21/11/2025 17:57:56 - INFO     - --------------------------------------------------
+21/11/2025 17:57:56 - INFO     - Starting Application
+21/11/2025 17:57:56 - INFO     - --------------------------------------------------
+21/11/2025 17:57:56 - INFO     - OpeningView
+21/11/2025 17:57:57 - INFO     - LoginView
+21/11/2025 17:57:57 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7f247e7b9bd0>',) - START
+21/11/2025 17:57:57 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7f247e7b9bd0>',) - END
+21/11/2025 17:57:57 - INFO     -        └─> Output: None
+21/11/2025 17:58:11 - INFO     -     UserRepo.get_by_username('anais',) - START
+21/11/2025 17:58:11 - INFO     -     UserRepo.get_by_username('anais',) - END
+21/11/2025 17:58:11 - INFO     -        └─> Output: id=9 user_name='anais' password='f7deb4f8402b0bab1497f6165ed5a32712c49fd658d5bdb432965948035676c8' first_name='Anais' last_name='Duranceau' email='anais@gmail.com' salt='1afab70586e7848600de02e53ba460cb02ef7445e09617d36a7960d5e6202a6536face5aa5745d1493eaf903725919e9c254cf397ab469aaa5d5085a645b8f977d8645bce1bbb8d1ee75b54ab0c19f48351d36dcd73415e01d56a2a54ae1d7c417a471dd8ca5c7f888a424c4e329a5be6b12351878f02d546436e2be1e5b74d8'
+21/11/2025 17:58:11 - INFO     -     CustomerDAO.get_id_customer_by_id_user(9,) - START
+21/11/2025 17:58:11 - INFO     -     CustomerDAO.get_id_customer_by_id_user(9,) - END
+21/11/2025 17:58:11 - INFO     -        └─> Output: 5
+21/11/2025 17:58:11 - INFO     -     DriverDAO.get_id_driver_by_id_user(9,) - START
+21/11/2025 17:58:11 - INFO     -     DriverDAO.get_id_driver_by_id_user(9,) - END
+21/11/2025 17:58:11 - INFO     -        └─> Output: None
+21/11/2025 17:58:11 - INFO     -     Session.login("id=9 user_name='anais' password='f7deb4f8402b0bab1497f6165ed5a32712c49fd658d5bdb432965948035676c8' first_name='Anais' last_name='Duranceau' email='anais@gmail.com' salt='1afab70586e7848600de02e53ba460cb02ef7445e09617d36a7960d5e6202a6536face5aa5745d1493eaf903725919e9c254cf397ab469aaa5d5085a645b8f977d8645bce1bbb8d1ee75b54ab0c19f48351d36dcd73415e01d56a2a54ae1d7c417a471dd8ca5c7f888a424c4e329a5be6b12351878f02d546436e2be1e5b74d8'", 5) - START
+21/11/2025 17:58:11 - INFO     -     Session.login("id=9 user_name='anais' password='f7deb4f8402b0bab1497f6165ed5a32712c49fd658d5bdb432965948035676c8' first_name='Anais' last_name='Duranceau' email='anais@gmail.com' salt='1afab70586e7848600de02e53ba460cb02ef7445e09617d36a7960d5e6202a6536face5aa5745d1493eaf903725919e9c254cf397ab469aaa5d5085a645b8f977d8645bce1bbb8d1ee75b54ab0c19f48351d36dcd73415e01d56a2a54ae1d7c417a471dd8ca5c7f888a424c4e329a5be6b12351878f02d546436e2be1e5b74d8'", 5) - END
+21/11/2025 17:58:11 - INFO     -        └─> Output: None
+21/11/2025 17:58:11 - INFO     - MenuView
+21/11/2025 17:58:14 - INFO     - API queries_quota: 60
+21/11/2025 17:58:14 - INFO     - PlaceOrderView
+21/11/2025 17:58:14 - INFO     -     Session.get_id_role() - START
+21/11/2025 17:58:14 - INFO     -     Session.get_id_role() - END
+21/11/2025 17:58:14 - INFO     -        └─> Output: 5
+21/11/2025 17:58:14 - INFO     -     ProductService.get_available_products() - START
+21/11/2025 17:58:14 - INFO     -         ProductDAO.get_available_products() - START
+21/11/2025 17:58:14 - INFO     -         ProductDAO.get_available_products() - END
+21/11/2025 17:58:14 - INFO     -            └─> Output: ["RealDictRow({'name': 'Classic Kebab', 'description': 'Chicken, sauce of choice, endive, lettuce, onions', 'price': Decimal('3.00'), 'product_type': 'lunch', 'stock': 20})", "RealDictRow({'name': 'Veggie Kebab', 'description': 'Falafels, rösti, herb sauce, white cabbage, lettuce, tomatoes', 'price': Decimal('3.00'), 'product_type': 'lunch', 'stock': 20})", "RealDictRow({'name': 'Classic Fajitas', 'description': 'Chicken, onion, tomatoes, guacamole, grated cheese, lemon', 'price': Decimal('3.00'), 'product_type': 'lunch', 'stock': 20})"] ... (24 elements)
+21/11/2025 17:58:14 - INFO     -     ProductService.get_available_products() - END
+21/11/2025 17:58:14 - INFO     -        └─> Output: ["RealDictRow({'name': 'Classic Kebab', 'description': 'Chicken, sauce of choice, endive, lettuce, onions', 'price': Decimal('3.00'), 'product_type': 'lunch', 'stock': 20})", "RealDictRow({'name': 'Veggie Kebab', 'description': 'Falafels, rösti, herb sauce, white cabbage, lettuce, tomatoes', 'price': Decimal('3.00'), 'product_type': 'lunch', 'stock': 20})", "RealDictRow({'name': 'Classic Fajitas', 'description': 'Chicken, onion, tomatoes, guacamole, grated cheese, lemon', 'price': Decimal('3.00'), 'product_type': 'lunch', 'stock': 20})"] ... (24 elements)
+21/11/2025 17:59:55 - ERROR    - TypeError : '>' not supported between instances of 'str' and 'float'
+Traceback (most recent call last):
+  File "/home/onyxia/work/Projet_Info_2A/src/main_CLI.py", line 22, in <module>
+    current_view = current_view.choose_menu()
+  File "/home/onyxia/work/Projet_Info_2A/src/CLI/customer/place_order_view.py", line 73, in choose_menu
+    if quantity > stock:
+       ^^^^^^^^^^^^^^^^
+TypeError: '>' not supported between instances of 'str' and 'float'
+21/11/2025 17:59:55 - INFO     - OpeningView
+21/11/2025 18:03:47 - INFO     - LoginView
+21/11/2025 18:03:47 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7f247d32a750>',) - START
+21/11/2025 18:03:47 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7f247d32a750>',) - END
+21/11/2025 18:03:47 - INFO     -        └─> Output: None
+21/11/2025 18:03:51 - INFO     -     UserRepo.get_by_username('anais',) - START
+21/11/2025 18:03:51 - INFO     -     UserRepo.get_by_username('anais',) - END
+21/11/2025 18:03:51 - INFO     -        └─> Output: id=9 user_name='anais' password='f7deb4f8402b0bab1497f6165ed5a32712c49fd658d5bdb432965948035676c8' first_name='Anais' last_name='Duranceau' email='anais@gmail.com' salt='1afab70586e7848600de02e53ba460cb02ef7445e09617d36a7960d5e6202a6536face5aa5745d1493eaf903725919e9c254cf397ab469aaa5d5085a645b8f977d8645bce1bbb8d1ee75b54ab0c19f48351d36dcd73415e01d56a2a54ae1d7c417a471dd8ca5c7f888a424c4e329a5be6b12351878f02d546436e2be1e5b74d8'
+21/11/2025 18:03:51 - ERROR    - Exception : Incorrect password
+Traceback (most recent call last):
+  File "/home/onyxia/work/Projet_Info_2A/src/main_CLI.py", line 22, in <module>
+    current_view = current_view.choose_menu()
+  File "/home/onyxia/work/Projet_Info_2A/src/CLI/opening/loginview.py", line 35, in choose_menu
+    user = validate_username_password(
+        username=username, password=password, user_repo=user_repo
+    )
+  File "/home/onyxia/work/Projet_Info_2A/src/Service/PasswordService.py", line 38, in validate_username_password
+    raise Exception("Incorrect password")
+Exception: Incorrect password
+21/11/2025 18:03:51 - INFO     - OpeningView
+21/11/2025 18:03:55 - INFO     - End of application
+21/11/2025 18:04:01 - INFO     - --------------------------------------------------
+21/11/2025 18:04:01 - INFO     - Starting Application
+21/11/2025 18:04:01 - INFO     - --------------------------------------------------
+21/11/2025 18:04:01 - INFO     - OpeningView
+21/11/2025 18:04:07 - INFO     - LoginView
+21/11/2025 18:04:07 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7f7d579c1bd0>',) - START
+21/11/2025 18:04:07 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7f7d579c1bd0>',) - END
+21/11/2025 18:04:07 - INFO     -        └─> Output: None
+21/11/2025 18:04:11 - INFO     -     UserRepo.get_by_username('anais',) - START
+21/11/2025 18:04:11 - INFO     -     UserRepo.get_by_username('anais',) - END
+21/11/2025 18:04:11 - INFO     -        └─> Output: id=9 user_name='anais' password='f7deb4f8402b0bab1497f6165ed5a32712c49fd658d5bdb432965948035676c8' first_name='Anais' last_name='Duranceau' email='anais@gmail.com' salt='1afab70586e7848600de02e53ba460cb02ef7445e09617d36a7960d5e6202a6536face5aa5745d1493eaf903725919e9c254cf397ab469aaa5d5085a645b8f977d8645bce1bbb8d1ee75b54ab0c19f48351d36dcd73415e01d56a2a54ae1d7c417a471dd8ca5c7f888a424c4e329a5be6b12351878f02d546436e2be1e5b74d8'
+21/11/2025 18:04:11 - ERROR    - Exception : Incorrect password
+Traceback (most recent call last):
+  File "/home/onyxia/work/Projet_Info_2A/src/main_CLI.py", line 22, in <module>
+    current_view = current_view.choose_menu()
+  File "/home/onyxia/work/Projet_Info_2A/src/CLI/opening/loginview.py", line 35, in choose_menu
+    user = validate_username_password(
+        username=username, password=password, user_repo=user_repo
+    )
+  File "/home/onyxia/work/Projet_Info_2A/src/Service/PasswordService.py", line 38, in validate_username_password
+    raise Exception("Incorrect password")
+Exception: Incorrect password
+21/11/2025 18:04:11 - INFO     - OpeningView
+21/11/2025 18:04:14 - INFO     - LoginView
+21/11/2025 18:04:14 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7f7d5751af90>',) - START
+21/11/2025 18:04:14 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7f7d5751af90>',) - END
+21/11/2025 18:04:14 - INFO     -        └─> Output: None
+21/11/2025 18:04:19 - INFO     -     UserRepo.get_by_username('anais',) - START
+21/11/2025 18:04:19 - INFO     -     UserRepo.get_by_username('anais',) - END
+21/11/2025 18:04:19 - INFO     -        └─> Output: id=9 user_name='anais' password='f7deb4f8402b0bab1497f6165ed5a32712c49fd658d5bdb432965948035676c8' first_name='Anais' last_name='Duranceau' email='anais@gmail.com' salt='1afab70586e7848600de02e53ba460cb02ef7445e09617d36a7960d5e6202a6536face5aa5745d1493eaf903725919e9c254cf397ab469aaa5d5085a645b8f977d8645bce1bbb8d1ee75b54ab0c19f48351d36dcd73415e01d56a2a54ae1d7c417a471dd8ca5c7f888a424c4e329a5be6b12351878f02d546436e2be1e5b74d8'
+21/11/2025 18:04:19 - INFO     -     CustomerDAO.get_id_customer_by_id_user(9,) - START
+21/11/2025 18:04:19 - INFO     -     CustomerDAO.get_id_customer_by_id_user(9,) - END
+21/11/2025 18:04:19 - INFO     -        └─> Output: 5
+21/11/2025 18:04:19 - INFO     -     DriverDAO.get_id_driver_by_id_user(9,) - START
+21/11/2025 18:04:19 - INFO     -     DriverDAO.get_id_driver_by_id_user(9,) - END
+21/11/2025 18:04:19 - INFO     -        └─> Output: None
+21/11/2025 18:04:19 - INFO     -     Session.login("id=9 user_name='anais' password='f7deb4f8402b0bab1497f6165ed5a32712c49fd658d5bdb432965948035676c8' first_name='Anais' last_name='Duranceau' email='anais@gmail.com' salt='1afab70586e7848600de02e53ba460cb02ef7445e09617d36a7960d5e6202a6536face5aa5745d1493eaf903725919e9c254cf397ab469aaa5d5085a645b8f977d8645bce1bbb8d1ee75b54ab0c19f48351d36dcd73415e01d56a2a54ae1d7c417a471dd8ca5c7f888a424c4e329a5be6b12351878f02d546436e2be1e5b74d8'", 5) - START
+21/11/2025 18:04:19 - INFO     -     Session.login("id=9 user_name='anais' password='f7deb4f8402b0bab1497f6165ed5a32712c49fd658d5bdb432965948035676c8' first_name='Anais' last_name='Duranceau' email='anais@gmail.com' salt='1afab70586e7848600de02e53ba460cb02ef7445e09617d36a7960d5e6202a6536face5aa5745d1493eaf903725919e9c254cf397ab469aaa5d5085a645b8f977d8645bce1bbb8d1ee75b54ab0c19f48351d36dcd73415e01d56a2a54ae1d7c417a471dd8ca5c7f888a424c4e329a5be6b12351878f02d546436e2be1e5b74d8'", 5) - END
+21/11/2025 18:04:19 - INFO     -        └─> Output: None
+21/11/2025 18:04:19 - INFO     - MenuView
+21/11/2025 18:04:21 - INFO     - ProductView
+21/11/2025 18:04:21 - INFO     -     ProductService.get_available_products() - START
+21/11/2025 18:04:21 - INFO     -         ProductDAO.get_available_products() - START
+21/11/2025 18:04:21 - INFO     -         ProductDAO.get_available_products() - END
+21/11/2025 18:04:21 - INFO     -            └─> Output: ["RealDictRow({'name': 'Classic Kebab', 'description': 'Chicken, sauce of choice, endive, lettuce, onions', 'price': Decimal('3.00'), 'product_type': 'lunch', 'stock': 20})", "RealDictRow({'name': 'Veggie Kebab', 'description': 'Falafels, rösti, herb sauce, white cabbage, lettuce, tomatoes', 'price': Decimal('3.00'), 'product_type': 'lunch', 'stock': 20})", "RealDictRow({'name': 'Classic Fajitas', 'description': 'Chicken, onion, tomatoes, guacamole, grated cheese, lemon', 'price': Decimal('3.00'), 'product_type': 'lunch', 'stock': 20})"] ... (24 elements)
+21/11/2025 18:04:21 - INFO     -     ProductService.get_available_products() - END
+21/11/2025 18:04:21 - INFO     -        └─> Output: ["RealDictRow({'name': 'Classic Kebab', 'description': 'Chicken, sauce of choice, endive, lettuce, onions', 'price': Decimal('3.00'), 'product_type': 'lunch', 'stock': 20})", "RealDictRow({'name': 'Veggie Kebab', 'description': 'Falafels, rösti, herb sauce, white cabbage, lettuce, tomatoes', 'price': Decimal('3.00'), 'product_type': 'lunch', 'stock': 20})", "RealDictRow({'name': 'Classic Fajitas', 'description': 'Chicken, onion, tomatoes, guacamole, grated cheese, lemon', 'price': Decimal('3.00'), 'product_type': 'lunch', 'stock': 20})"] ... (24 elements)
+21/11/2025 18:04:21 - INFO     - MenuView
+21/11/2025 18:04:26 - INFO     - API queries_quota: 60
+21/11/2025 18:04:26 - INFO     - PlaceOrderView
+21/11/2025 18:04:26 - INFO     -     Session.get_id_role() - START
+21/11/2025 18:04:26 - INFO     -     Session.get_id_role() - END
+21/11/2025 18:04:26 - INFO     -        └─> Output: 5
+21/11/2025 18:04:26 - INFO     -     ProductService.get_available_products() - START
+21/11/2025 18:04:26 - INFO     -         ProductDAO.get_available_products() - START
+21/11/2025 18:04:26 - INFO     -         ProductDAO.get_available_products() - END
+21/11/2025 18:04:26 - INFO     -            └─> Output: ["RealDictRow({'name': 'Classic Kebab', 'description': 'Chicken, sauce of choice, endive, lettuce, onions', 'price': Decimal('3.00'), 'product_type': 'lunch', 'stock': 20})", "RealDictRow({'name': 'Veggie Kebab', 'description': 'Falafels, rösti, herb sauce, white cabbage, lettuce, tomatoes', 'price': Decimal('3.00'), 'product_type': 'lunch', 'stock': 20})", "RealDictRow({'name': 'Classic Fajitas', 'description': 'Chicken, onion, tomatoes, guacamole, grated cheese, lemon', 'price': Decimal('3.00'), 'product_type': 'lunch', 'stock': 20})"] ... (24 elements)
+21/11/2025 18:04:26 - INFO     -     ProductService.get_available_products() - END
+21/11/2025 18:04:26 - INFO     -        └─> Output: ["RealDictRow({'name': 'Classic Kebab', 'description': 'Chicken, sauce of choice, endive, lettuce, onions', 'price': Decimal('3.00'), 'product_type': 'lunch', 'stock': 20})", "RealDictRow({'name': 'Veggie Kebab', 'description': 'Falafels, rösti, herb sauce, white cabbage, lettuce, tomatoes', 'price': Decimal('3.00'), 'product_type': 'lunch', 'stock': 20})", "RealDictRow({'name': 'Classic Fajitas', 'description': 'Chicken, onion, tomatoes, guacamole, grated cheese, lemon', 'price': Decimal('3.00'), 'product_type': 'lunch', 'stock': 20})"] ... (24 elements)
+21/11/2025 18:05:05 - INFO     -     AddressService.add_address('15 rue Louis Armand', 'Bruz', '35170') - START
+21/11/2025 18:05:05 - INFO     -         AddressDAO.add_address("id_address=None address='15 rue Louis Armand' postal_code=35170 city='Bruz'",) - START
+21/11/2025 18:05:05 - INFO     -         AddressDAO.add_address("id_address=None address='15 rue Louis Armand' postal_code=35170 city='Bruz'",) - END
+21/11/2025 18:05:05 - INFO     -            └─> Output: id_address=8 address='15 rue Louis Armand' postal_code=35170 city='Bruz'
+21/11/2025 18:05:05 - INFO     -     AddressService.add_address('15 rue Louis Armand', 'Bruz', '35170') - END
+21/11/2025 18:05:05 - INFO     -        └─> Output: id_address=8 address='15 rue Louis Armand' postal_code=35170 city='Bruz'
+21/11/2025 18:05:06 - INFO     -     AddressService.validate_address("id_address=8 address='15 rue Louis Armand' postal_code=35170 city='Bruz'",) - START
+21/11/2025 18:05:06 - INFO     -     AddressService.validate_address("id_address=8 address='15 rue Louis Armand' postal_code=35170 city='Bruz'",) - END
+21/11/2025 18:05:06 - INFO     -        └─> Output: True
+21/11/2025 18:05:08 - INFO     -     OrderService.create(5, 8, 0, 0, 'Cash') - START
+21/11/2025 18:05:08 - INFO     -         OrderDAO.create_order("id_order=None id_customer=5 id_driver=None id_address=8 date=datetime.datetime(2025, 11, 21, 18, 5, 8, 567170) status='Ready' nb_items=0 total_amount=0.0 payment_method='Cash'",) - START
+21/11/2025 18:05:08 - INFO     -         OrderDAO.create_order("id_order=None id_customer=5 id_driver=None id_address=8 date=datetime.datetime(2025, 11, 21, 18, 5, 8, 567170) status='Ready' nb_items=0 total_amount=0.0 payment_method='Cash'",) - END
+21/11/2025 18:05:08 - INFO     -            └─> Output: 7
+21/11/2025 18:05:08 - INFO     -         OrderService.get_by_id(7,) - START
+21/11/2025 18:05:08 - INFO     -             OrderDAO.get_by_id(7,) - START
+21/11/2025 18:05:08 - INFO     -                 OrderDAO.get_order_products(7,) - START
+21/11/2025 18:05:08 - INFO     -                 OrderDAO.get_order_products(7,) - END
+21/11/2025 18:05:08 - INFO     -                    └─> Output: [] ... (0 elements)
+21/11/2025 18:05:08 - INFO     -             OrderDAO.get_by_id(7,) - END
+21/11/2025 18:05:08 - INFO     -                └─> Output: [('order', "id_order=7 id_customer=5 id_driver=None id_address=8 date=datetime.datetime(2025, 11, 21, 18, 5, 8, 567170) status='Ready' nb_items=0 total_amount=0.0 payment_method='Cash'"), ('address', "id_address=8 address='15 rue Louis Armand' postal_code=35170 city='Bruz'"), ('products', '[]'), ' ', '.', '.', '.', ' ', '(', '3', ' ', 'e', 'l', 'e', 'm', 'e', 'n', 't', 's', ')']
+21/11/2025 18:05:08 - INFO     -         OrderService.get_by_id(7,) - END
+21/11/2025 18:05:08 - INFO     -            └─> Output: id_order=7 id_customer=5 id_driver=None id_address=8 date=datetime.datetime(2025, 11, 21, 18, 5, 8, 567170) status='Ready' nb_items=0 total_amount=0.0 payment_method='Cash'
+21/11/2025 18:05:08 - INFO     -     OrderService.create(5, 8, 0, 0, 'Cash') - END
+21/11/2025 18:05:08 - INFO     -        └─> Output: id_order=7 id_customer=5 id_driver=None id_address=8 date=datetime.datetime(2025, 11, 21, 18, 5, 8, 567170) status='Ready' nb_items=0 total_amount=0.0 payment_method='Cash'
+21/11/2025 18:05:08 - INFO     -     ProductService.get_id_by_name('Chocolate Cake',) - START
+21/11/2025 18:05:08 - INFO     -         ProductDAO.get_id_by_productname('Chocolate Cake',) - START
+21/11/2025 18:05:08 - INFO     -         ProductDAO.get_id_by_productname('Chocolate Cake',) - END
+21/11/2025 18:05:08 - INFO     -            └─> Output: 19
+21/11/2025 18:05:08 - INFO     -     ProductService.get_id_by_name('Chocolate Cake',) - END
+21/11/2025 18:05:08 - INFO     -        └─> Output: 19
+21/11/2025 18:05:08 - INFO     -     OrderService.add_product_to_order(7, 19, 1, False) - START
+21/11/2025 18:05:08 - INFO     -         OrderDAO.add_product(7, 19, 1, False) - START
+21/11/2025 18:05:08 - INFO     -             ProductDAO.decrement_stock(19, 1) - START
+21/11/2025 18:05:08 - INFO     -             ProductDAO.decrement_stock(19, 1) - END
+21/11/2025 18:05:08 - INFO     -                └─> Output: True
+21/11/2025 18:05:08 - INFO     -         OrderDAO.add_product(7, 19, 1, False) - END
+21/11/2025 18:05:08 - INFO     -            └─> Output: True
+21/11/2025 18:05:08 - INFO     -     OrderService.add_product_to_order(7, 19, 1, False) - END
+21/11/2025 18:05:08 - INFO     -        └─> Output: True
+21/11/2025 18:05:08 - INFO     - MenuView
+21/11/2025 18:05:12 - ERROR    - AttributeError : 'Session' object has no attribute 'deconnexion'
+Traceback (most recent call last):
+  File "/home/onyxia/work/Projet_Info_2A/src/main_CLI.py", line 22, in <module>
+    current_view = current_view.choose_menu()
+  File "/home/onyxia/work/Projet_Info_2A/src/CLI/customer/menu_customer.py", line 47, in choose_menu
+    Session().deconnexion()
+    ^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Session' object has no attribute 'deconnexion'
+21/11/2025 18:05:12 - INFO     - OpeningView
+21/11/2025 18:05:26 - INFO     - LoginView
+21/11/2025 18:05:26 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7f7d55c72c10>',) - START
+21/11/2025 18:05:26 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7f7d55c72c10>',) - END
+21/11/2025 18:05:26 - INFO     -        └─> Output: None
+21/11/2025 18:05:34 - INFO     -     UserRepo.get_by_username('PierreVelo',) - START
+21/11/2025 18:05:34 - INFO     -     UserRepo.get_by_username('PierreVelo',) - END
+21/11/2025 18:05:34 - INFO     -        └─> Output: id=6 user_name='PierreVelo' password='443ec806e9af0519558062ecb471c5e736fc1addca19d8e60c805e2186b71fbf' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='PierreVelo'
+21/11/2025 18:05:34 - INFO     -     CustomerDAO.get_id_customer_by_id_user(6,) - START
+21/11/2025 18:05:34 - INFO     -     CustomerDAO.get_id_customer_by_id_user(6,) - END
+21/11/2025 18:05:34 - INFO     -        └─> Output: None
+21/11/2025 18:05:34 - INFO     -     DriverDAO.get_id_driver_by_id_user(6,) - START
+21/11/2025 18:05:34 - INFO     -     DriverDAO.get_id_driver_by_id_user(6,) - END
+21/11/2025 18:05:34 - INFO     -        └─> Output: 3
+21/11/2025 18:05:34 - INFO     -     Session.login("id=6 user_name='PierreVelo' password='443ec806e9af0519558062ecb471c5e736fc1addca19d8e60c805e2186b71fbf' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='PierreVelo'", 3) - START
+21/11/2025 18:05:34 - INFO     -     Session.login("id=6 user_name='PierreVelo' password='443ec806e9af0519558062ecb471c5e736fc1addca19d8e60c805e2186b71fbf' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='PierreVelo'", 3) - END
+21/11/2025 18:05:34 - INFO     -        └─> Output: None
+21/11/2025 18:05:34 - INFO     - MenuDriver
+21/11/2025 18:05:39 - INFO     - ChangeProfilDriver
+21/11/2025 18:05:39 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7f7d556074d0>',) - START
+21/11/2025 18:05:39 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7f7d556074d0>',) - END
+21/11/2025 18:05:39 - INFO     -        └─> Output: None
+21/11/2025 18:05:51 - INFO     -     UserService.change_password('PierreVelo', 'PierreVelo0000', 'Pierre') - START
+21/11/2025 18:05:51 - INFO     -         UserRepo.get_by_username('PierreVelo',) - START
+21/11/2025 18:05:51 - INFO     -         UserRepo.get_by_username('PierreVelo',) - END
+21/11/2025 18:05:51 - INFO     -            └─> Output: id=6 user_name='PierreVelo' password='443ec806e9af0519558062ecb471c5e736fc1addca19d8e60c805e2186b71fbf' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='PierreVelo'
+21/11/2025 18:05:51 - ERROR    - ValueError : Password length must be at least 8 characters
+Traceback (most recent call last):
+  File "/home/onyxia/work/Projet_Info_2A/src/main_CLI.py", line 22, in <module>
+    current_view = current_view.choose_menu()
+  File "/home/onyxia/work/Projet_Info_2A/src/CLI/driver/change_profil_driver.py", line 24, in choose_menu
+    return self.change_driver_profile()
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/home/onyxia/work/Projet_Info_2A/src/CLI/driver/change_profil_driver.py", line 51, in change_driver_profile
+    success = user_service.change_password(
+        user_name=username,
+        old_password=old_password,
+        new_password=new_password,
+    )
+  File "/home/onyxia/work/Projet_Info_2A/src/utils/log_decorator.py", line 65, in wrapper
+    result = func(*args, **kwargs)
+  File "/home/onyxia/work/Projet_Info_2A/src/Service/UserService.py", line 121, in change_password
+    check_password_strength(new_password)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/home/onyxia/work/Projet_Info_2A/src/Service/PasswordService.py", line 16, in check_password_strength
+    raise ValueError("Password length must be at least 8 characters")
+ValueError: Password length must be at least 8 characters
+21/11/2025 18:05:51 - INFO     - OpeningView
+21/11/2025 18:08:10 - INFO     - End of application
+21/11/2025 18:08:17 - INFO     - --------------------------------------------------
+21/11/2025 18:08:17 - INFO     - Starting Application
+21/11/2025 18:08:17 - INFO     - --------------------------------------------------
+21/11/2025 18:08:17 - INFO     - OpeningView
+21/11/2025 18:08:19 - INFO     - LoginView
+21/11/2025 18:08:19 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7ff9c6fbdbd0>',) - START
+21/11/2025 18:08:19 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7ff9c6fbdbd0>',) - END
+21/11/2025 18:08:19 - INFO     -        └─> Output: None
+21/11/2025 18:08:29 - INFO     -     UserRepo.get_by_username('PierreVelo',) - START
+21/11/2025 18:08:29 - INFO     -     UserRepo.get_by_username('PierreVelo',) - END
+21/11/2025 18:08:29 - INFO     -        └─> Output: id=6 user_name='PierreVelo' password='443ec806e9af0519558062ecb471c5e736fc1addca19d8e60c805e2186b71fbf' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='PierreVelo'
+21/11/2025 18:08:29 - INFO     -     CustomerDAO.get_id_customer_by_id_user(6,) - START
+21/11/2025 18:08:29 - INFO     -     CustomerDAO.get_id_customer_by_id_user(6,) - END
+21/11/2025 18:08:29 - INFO     -        └─> Output: None
+21/11/2025 18:08:29 - INFO     -     DriverDAO.get_id_driver_by_id_user(6,) - START
+21/11/2025 18:08:29 - INFO     -     DriverDAO.get_id_driver_by_id_user(6,) - END
+21/11/2025 18:08:29 - INFO     -        └─> Output: 3
+21/11/2025 18:08:29 - INFO     -     Session.login("id=6 user_name='PierreVelo' password='443ec806e9af0519558062ecb471c5e736fc1addca19d8e60c805e2186b71fbf' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='PierreVelo'", 3) - START
+21/11/2025 18:08:29 - INFO     -     Session.login("id=6 user_name='PierreVelo' password='443ec806e9af0519558062ecb471c5e736fc1addca19d8e60c805e2186b71fbf' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='PierreVelo'", 3) - END
+21/11/2025 18:08:29 - INFO     -        └─> Output: None
+21/11/2025 18:08:29 - INFO     - MenuDriver
+21/11/2025 18:08:31 - INFO     - ChangeProfilDriver
+21/11/2025 18:08:31 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7ff9c6b4c770>',) - START
+21/11/2025 18:08:31 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7ff9c6b4c770>',) - END
+21/11/2025 18:08:31 - INFO     -        └─> Output: None
+21/11/2025 18:08:50 - INFO     -     UserService.change_password('PierreVelo', 'PierreVelo0000', 'PierreVelo0000') - START
+21/11/2025 18:08:50 - INFO     -         UserRepo.get_by_username('PierreVelo',) - START
+21/11/2025 18:08:50 - INFO     -         UserRepo.get_by_username('PierreVelo',) - END
+21/11/2025 18:08:50 - INFO     -            └─> Output: id=6 user_name='PierreVelo' password='443ec806e9af0519558062ecb471c5e736fc1addca19d8e60c805e2186b71fbf' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='PierreVelo'
+21/11/2025 18:08:50 - INFO     -         UserRepo.get_by_username('PierreVelo',) - START
+21/11/2025 18:08:50 - INFO     -         UserRepo.get_by_username('PierreVelo',) - END
+21/11/2025 18:08:50 - INFO     -            └─> Output: id=6 user_name='PierreVelo' password='443ec806e9af0519558062ecb471c5e736fc1addca19d8e60c805e2186b71fbf' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='PierreVelo'
+21/11/2025 18:08:50 - INFO     -         UserRepo.update_user("id=6 user_name='PierreVelo' password='ac8615a0f3127e1885d7de8e6c1246706c90be1a2053ef94a70053410641316c' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='7c3698e6d270e18a90106780820144039bdfa050b7df9c2c41cf6af311a4e03607070566abe4c5f29df2d43da01a37830613951a356d17347f81c19f5e021d45453e1903b55ea9420b50c848fab08ec96c32d3c27d5082793673364628c85ff3b4e00110a00375d796ce5c94c6b7786401427c045833f6d17de566798e0b5c77'",) - START
+21/11/2025 18:08:50 - INFO     -         UserRepo.update_user("id=6 user_name='PierreVelo' password='ac8615a0f3127e1885d7de8e6c1246706c90be1a2053ef94a70053410641316c' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='7c3698e6d270e18a90106780820144039bdfa050b7df9c2c41cf6af311a4e03607070566abe4c5f29df2d43da01a37830613951a356d17347f81c19f5e021d45453e1903b55ea9420b50c848fab08ec96c32d3c27d5082793673364628c85ff3b4e00110a00375d796ce5c94c6b7786401427c045833f6d17de566798e0b5c77'",) - END
+21/11/2025 18:08:50 - INFO     -            └─> Output: True
+21/11/2025 18:08:50 - INFO     -     UserService.change_password('PierreVelo', 'PierreVelo0000', 'PierreVelo0000') - END
+21/11/2025 18:08:50 - INFO     -        └─> Output: True
+21/11/2025 18:08:50 - INFO     - MenuDriver
+21/11/2025 18:08:56 - INFO     - ChangeProfilDriver
+21/11/2025 18:08:56 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7ff9c6b171d0>',) - START
+21/11/2025 18:08:56 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7ff9c6b171d0>',) - END
+21/11/2025 18:08:56 - INFO     -        └─> Output: None
+21/11/2025 18:09:15 - INFO     -     UserService.change_password('PierreVelo', 'pierre', 'PierreVelo0000') - START
+21/11/2025 18:09:15 - INFO     -         UserRepo.get_by_username('PierreVelo',) - START
+21/11/2025 18:09:15 - INFO     -         UserRepo.get_by_username('PierreVelo',) - END
+21/11/2025 18:09:15 - INFO     -            └─> Output: id=6 user_name='PierreVelo' password='ac8615a0f3127e1885d7de8e6c1246706c90be1a2053ef94a70053410641316c' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='7c3698e6d270e18a90106780820144039bdfa050b7df9c2c41cf6af311a4e03607070566abe4c5f29df2d43da01a37830613951a356d17347f81c19f5e021d45453e1903b55ea9420b50c848fab08ec96c32d3c27d5082793673364628c85ff3b4e00110a00375d796ce5c94c6b7786401427c045833f6d17de566798e0b5c77'
+21/11/2025 18:09:15 - ERROR    - Exception : Incorrect password
+Traceback (most recent call last):
+  File "/home/onyxia/work/Projet_Info_2A/src/main_CLI.py", line 22, in <module>
+    current_view = current_view.choose_menu()
+  File "/home/onyxia/work/Projet_Info_2A/src/CLI/driver/change_profil_driver.py", line 24, in choose_menu
+    return self.change_driver_profile()
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/home/onyxia/work/Projet_Info_2A/src/CLI/driver/change_profil_driver.py", line 67, in change_driver_profile
+    success = user_service.change_password(
+        user_name=username,
+        old_password=old_password,
+        new_password=new_password,
+    )
+  File "/home/onyxia/work/Projet_Info_2A/src/utils/log_decorator.py", line 65, in wrapper
+    result = func(*args, **kwargs)
+  File "/home/onyxia/work/Projet_Info_2A/src/Service/UserService.py", line 115, in change_password
+    old_password_correct = validate_username_password(
+        username=user_name, password=old_password, user_repo=self.user_repo
+    )
+  File "/home/onyxia/work/Projet_Info_2A/src/Service/PasswordService.py", line 38, in validate_username_password
+    raise Exception("Incorrect password")
+Exception: Incorrect password
+21/11/2025 18:09:15 - INFO     - OpeningView
+21/11/2025 18:11:47 - INFO     - End of application
+21/11/2025 18:11:51 - INFO     - --------------------------------------------------
+21/11/2025 18:11:51 - INFO     - Starting Application
+21/11/2025 18:11:51 - INFO     - --------------------------------------------------
+21/11/2025 18:11:51 - INFO     - OpeningView
+21/11/2025 18:11:54 - INFO     - LoginView
+21/11/2025 18:11:54 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7f450a7b9bd0>',) - START
+21/11/2025 18:11:54 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7f450a7b9bd0>',) - END
+21/11/2025 18:11:54 - INFO     -        └─> Output: None
+21/11/2025 18:12:01 - INFO     -     UserRepo.get_by_username('PierreVelo',) - START
+21/11/2025 18:12:01 - INFO     -     UserRepo.get_by_username('PierreVelo',) - END
+21/11/2025 18:12:01 - INFO     -        └─> Output: id=6 user_name='PierreVelo' password='ac8615a0f3127e1885d7de8e6c1246706c90be1a2053ef94a70053410641316c' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='7c3698e6d270e18a90106780820144039bdfa050b7df9c2c41cf6af311a4e03607070566abe4c5f29df2d43da01a37830613951a356d17347f81c19f5e021d45453e1903b55ea9420b50c848fab08ec96c32d3c27d5082793673364628c85ff3b4e00110a00375d796ce5c94c6b7786401427c045833f6d17de566798e0b5c77'
+21/11/2025 18:12:01 - INFO     -     CustomerDAO.get_id_customer_by_id_user(6,) - START
+21/11/2025 18:12:01 - INFO     -     CustomerDAO.get_id_customer_by_id_user(6,) - END
+21/11/2025 18:12:01 - INFO     -        └─> Output: None
+21/11/2025 18:12:01 - INFO     -     DriverDAO.get_id_driver_by_id_user(6,) - START
+21/11/2025 18:12:01 - INFO     -     DriverDAO.get_id_driver_by_id_user(6,) - END
+21/11/2025 18:12:01 - INFO     -        └─> Output: 3
+21/11/2025 18:12:01 - INFO     -     Session.login("id=6 user_name='PierreVelo' password='ac8615a0f3127e1885d7de8e6c1246706c90be1a2053ef94a70053410641316c' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='7c3698e6d270e18a90106780820144039bdfa050b7df9c2c41cf6af311a4e03607070566abe4c5f29df2d43da01a37830613951a356d17347f81c19f5e021d45453e1903b55ea9420b50c848fab08ec96c32d3c27d5082793673364628c85ff3b4e00110a00375d796ce5c94c6b7786401427c045833f6d17de566798e0b5c77'", 3) - START
+21/11/2025 18:12:01 - INFO     -     Session.login("id=6 user_name='PierreVelo' password='ac8615a0f3127e1885d7de8e6c1246706c90be1a2053ef94a70053410641316c' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='7c3698e6d270e18a90106780820144039bdfa050b7df9c2c41cf6af311a4e03607070566abe4c5f29df2d43da01a37830613951a356d17347f81c19f5e021d45453e1903b55ea9420b50c848fab08ec96c32d3c27d5082793673364628c85ff3b4e00110a00375d796ce5c94c6b7786401427c045833f6d17de566798e0b5c77'", 3) - END
+21/11/2025 18:12:01 - INFO     -        └─> Output: None
+21/11/2025 18:12:01 - INFO     - MenuDriver
+21/11/2025 18:12:04 - ERROR    - IndentationError : expected an indented block after 'case' statement on line 46 (change_profil_driver.py, line 47)
+Traceback (most recent call last):
+  File "/home/onyxia/work/Projet_Info_2A/src/main_CLI.py", line 22, in <module>
+    current_view = current_view.choose_menu()
+  File "/home/onyxia/work/Projet_Info_2A/src/CLI/driver/menu_driver.py", line 53, in choose_menu
+    from CLI.driver.change_profil_driver import ChangeProfilDriver
+  File "/home/onyxia/work/Projet_Info_2A/src/CLI/driver/change_profil_driver.py", line 47
+    username = Session().username
+    ^^^^^^^^
+IndentationError: expected an indented block after 'case' statement on line 46
+21/11/2025 18:12:04 - INFO     - OpeningView
+21/11/2025 18:12:20 - INFO     - LoginView
+21/11/2025 18:12:20 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7f450a311370>',) - START
+21/11/2025 18:12:20 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7f450a311370>',) - END
+21/11/2025 18:12:20 - INFO     -        └─> Output: None
+21/11/2025 18:12:28 - INFO     -     UserRepo.get_by_username('PierreVelo',) - START
+21/11/2025 18:12:28 - INFO     -     UserRepo.get_by_username('PierreVelo',) - END
+21/11/2025 18:12:28 - INFO     -        └─> Output: id=6 user_name='PierreVelo' password='ac8615a0f3127e1885d7de8e6c1246706c90be1a2053ef94a70053410641316c' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='7c3698e6d270e18a90106780820144039bdfa050b7df9c2c41cf6af311a4e03607070566abe4c5f29df2d43da01a37830613951a356d17347f81c19f5e021d45453e1903b55ea9420b50c848fab08ec96c32d3c27d5082793673364628c85ff3b4e00110a00375d796ce5c94c6b7786401427c045833f6d17de566798e0b5c77'
+21/11/2025 18:12:28 - INFO     -     CustomerDAO.get_id_customer_by_id_user(6,) - START
+21/11/2025 18:12:28 - INFO     -     CustomerDAO.get_id_customer_by_id_user(6,) - END
+21/11/2025 18:12:28 - INFO     -        └─> Output: None
+21/11/2025 18:12:28 - INFO     -     DriverDAO.get_id_driver_by_id_user(6,) - START
+21/11/2025 18:12:28 - INFO     -     DriverDAO.get_id_driver_by_id_user(6,) - END
+21/11/2025 18:12:28 - INFO     -        └─> Output: 3
+21/11/2025 18:12:28 - INFO     -     Session.login("id=6 user_name='PierreVelo' password='ac8615a0f3127e1885d7de8e6c1246706c90be1a2053ef94a70053410641316c' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='7c3698e6d270e18a90106780820144039bdfa050b7df9c2c41cf6af311a4e03607070566abe4c5f29df2d43da01a37830613951a356d17347f81c19f5e021d45453e1903b55ea9420b50c848fab08ec96c32d3c27d5082793673364628c85ff3b4e00110a00375d796ce5c94c6b7786401427c045833f6d17de566798e0b5c77'", 3) - START
+21/11/2025 18:12:28 - INFO     -     Session.login("id=6 user_name='PierreVelo' password='ac8615a0f3127e1885d7de8e6c1246706c90be1a2053ef94a70053410641316c' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='7c3698e6d270e18a90106780820144039bdfa050b7df9c2c41cf6af311a4e03607070566abe4c5f29df2d43da01a37830613951a356d17347f81c19f5e021d45453e1903b55ea9420b50c848fab08ec96c32d3c27d5082793673364628c85ff3b4e00110a00375d796ce5c94c6b7786401427c045833f6d17de566798e0b5c77'", 3) - END
+21/11/2025 18:12:28 - INFO     -        └─> Output: None
+21/11/2025 18:12:28 - INFO     - MenuDriver
+21/11/2025 18:12:30 - INFO     - ChangeProfilDriver
+21/11/2025 18:12:30 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7f4509f2e8b0>',) - START
+21/11/2025 18:12:30 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7f4509f2e8b0>',) - END
+21/11/2025 18:12:30 - INFO     -        └─> Output: None
+21/11/2025 18:12:33 - ERROR    - AttributeError : 'UserService' object has no attribute 'verify_password'
+Traceback (most recent call last):
+  File "/home/onyxia/work/Projet_Info_2A/src/main_CLI.py", line 22, in <module>
+    current_view = current_view.choose_menu()
+  File "/home/onyxia/work/Projet_Info_2A/src/CLI/driver/change_profil_driver.py", line 24, in choose_menu
+    return self.change_driver_profile()
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/home/onyxia/work/Projet_Info_2A/src/CLI/driver/change_profil_driver.py", line 53, in change_driver_profile
+    if not user_service.verify_password(username, old_password):
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'UserService' object has no attribute 'verify_password'
+21/11/2025 18:12:33 - INFO     - OpeningView
+21/11/2025 18:12:53 - INFO     - End of application
+21/11/2025 18:12:58 - INFO     - --------------------------------------------------
+21/11/2025 18:12:58 - INFO     - Starting Application
+21/11/2025 18:12:58 - INFO     - --------------------------------------------------
+21/11/2025 18:12:58 - INFO     - OpeningView
+21/11/2025 18:13:00 - INFO     - LoginView
+21/11/2025 18:13:00 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7fdcde1c1a90>',) - START
+21/11/2025 18:13:00 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7fdcde1c1a90>',) - END
+21/11/2025 18:13:00 - INFO     -        └─> Output: None
+21/11/2025 18:13:08 - INFO     -     UserRepo.get_by_username('PierreVelo',) - START
+21/11/2025 18:13:08 - INFO     -     UserRepo.get_by_username('PierreVelo',) - END
+21/11/2025 18:13:08 - INFO     -        └─> Output: id=6 user_name='PierreVelo' password='ac8615a0f3127e1885d7de8e6c1246706c90be1a2053ef94a70053410641316c' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='7c3698e6d270e18a90106780820144039bdfa050b7df9c2c41cf6af311a4e03607070566abe4c5f29df2d43da01a37830613951a356d17347f81c19f5e021d45453e1903b55ea9420b50c848fab08ec96c32d3c27d5082793673364628c85ff3b4e00110a00375d796ce5c94c6b7786401427c045833f6d17de566798e0b5c77'
+21/11/2025 18:13:08 - INFO     -     CustomerDAO.get_id_customer_by_id_user(6,) - START
+21/11/2025 18:13:08 - INFO     -     CustomerDAO.get_id_customer_by_id_user(6,) - END
+21/11/2025 18:13:08 - INFO     -        └─> Output: None
+21/11/2025 18:13:08 - INFO     -     DriverDAO.get_id_driver_by_id_user(6,) - START
+21/11/2025 18:13:08 - INFO     -     DriverDAO.get_id_driver_by_id_user(6,) - END
+21/11/2025 18:13:08 - INFO     -        └─> Output: 3
+21/11/2025 18:13:08 - INFO     -     Session.login("id=6 user_name='PierreVelo' password='ac8615a0f3127e1885d7de8e6c1246706c90be1a2053ef94a70053410641316c' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='7c3698e6d270e18a90106780820144039bdfa050b7df9c2c41cf6af311a4e03607070566abe4c5f29df2d43da01a37830613951a356d17347f81c19f5e021d45453e1903b55ea9420b50c848fab08ec96c32d3c27d5082793673364628c85ff3b4e00110a00375d796ce5c94c6b7786401427c045833f6d17de566798e0b5c77'", 3) - START
+21/11/2025 18:13:08 - INFO     -     Session.login("id=6 user_name='PierreVelo' password='ac8615a0f3127e1885d7de8e6c1246706c90be1a2053ef94a70053410641316c' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='7c3698e6d270e18a90106780820144039bdfa050b7df9c2c41cf6af311a4e03607070566abe4c5f29df2d43da01a37830613951a356d17347f81c19f5e021d45453e1903b55ea9420b50c848fab08ec96c32d3c27d5082793673364628c85ff3b4e00110a00375d796ce5c94c6b7786401427c045833f6d17de566798e0b5c77'", 3) - END
+21/11/2025 18:13:08 - INFO     -        └─> Output: None
+21/11/2025 18:13:08 - INFO     - MenuDriver
+21/11/2025 18:13:09 - INFO     - ChangeProfilDriver
+21/11/2025 18:13:09 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7fdcddd50510>',) - START
+21/11/2025 18:13:09 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7fdcddd50510>',) - END
+21/11/2025 18:13:09 - INFO     -        └─> Output: None
+21/11/2025 18:13:13 - ERROR    - AttributeError : 'UserService' object has no attribute 'verify_password'
+Traceback (most recent call last):
+  File "/home/onyxia/work/Projet_Info_2A/src/main_CLI.py", line 22, in <module>
+    current_view = current_view.choose_menu()
+  File "/home/onyxia/work/Projet_Info_2A/src/CLI/driver/change_profil_driver.py", line 24, in choose_menu
+    return self.change_driver_profile()
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/home/onyxia/work/Projet_Info_2A/src/CLI/driver/change_profil_driver.py", line 52, in change_driver_profile
+    if not user_service.verify_password(username, old_password):
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'UserService' object has no attribute 'verify_password'
+21/11/2025 18:13:13 - INFO     - OpeningView
+21/11/2025 18:18:10 - INFO     - LoginView
+21/11/2025 18:18:10 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7fdcdddc56a0>',) - START
+21/11/2025 18:18:10 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7fdcdddc56a0>',) - END
+21/11/2025 18:18:10 - INFO     -        └─> Output: None
+21/11/2025 18:18:18 - INFO     -     UserRepo.get_by_username('PierreVelo',) - START
+21/11/2025 18:18:18 - INFO     -     UserRepo.get_by_username('PierreVelo',) - END
+21/11/2025 18:18:18 - INFO     -        └─> Output: id=6 user_name='PierreVelo' password='ac8615a0f3127e1885d7de8e6c1246706c90be1a2053ef94a70053410641316c' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='7c3698e6d270e18a90106780820144039bdfa050b7df9c2c41cf6af311a4e03607070566abe4c5f29df2d43da01a37830613951a356d17347f81c19f5e021d45453e1903b55ea9420b50c848fab08ec96c32d3c27d5082793673364628c85ff3b4e00110a00375d796ce5c94c6b7786401427c045833f6d17de566798e0b5c77'
+21/11/2025 18:18:18 - ERROR    - Exception : Incorrect password
+Traceback (most recent call last):
+  File "/home/onyxia/work/Projet_Info_2A/src/main_CLI.py", line 22, in <module>
+    current_view = current_view.choose_menu()
+  File "/home/onyxia/work/Projet_Info_2A/src/CLI/opening/loginview.py", line 35, in choose_menu
+    user = validate_username_password(
+        username=username, password=password, user_repo=user_repo
+    )
+  File "/home/onyxia/work/Projet_Info_2A/src/Service/PasswordService.py", line 38, in validate_username_password
+    raise Exception("Incorrect password")
+Exception: Incorrect password
+21/11/2025 18:18:18 - INFO     - OpeningView
+21/11/2025 18:18:23 - INFO     - LoginView
+21/11/2025 18:18:23 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7fdcdcdd33e0>',) - START
+21/11/2025 18:18:23 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7fdcdcdd33e0>',) - END
+21/11/2025 18:18:23 - INFO     -        └─> Output: None
+21/11/2025 18:18:33 - INFO     -     UserRepo.get_by_username('PierreVelo',) - START
+21/11/2025 18:18:33 - INFO     -     UserRepo.get_by_username('PierreVelo',) - END
+21/11/2025 18:18:33 - INFO     -        └─> Output: id=6 user_name='PierreVelo' password='ac8615a0f3127e1885d7de8e6c1246706c90be1a2053ef94a70053410641316c' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='7c3698e6d270e18a90106780820144039bdfa050b7df9c2c41cf6af311a4e03607070566abe4c5f29df2d43da01a37830613951a356d17347f81c19f5e021d45453e1903b55ea9420b50c848fab08ec96c32d3c27d5082793673364628c85ff3b4e00110a00375d796ce5c94c6b7786401427c045833f6d17de566798e0b5c77'
+21/11/2025 18:18:33 - INFO     -     CustomerDAO.get_id_customer_by_id_user(6,) - START
+21/11/2025 18:18:33 - INFO     -     CustomerDAO.get_id_customer_by_id_user(6,) - END
+21/11/2025 18:18:33 - INFO     -        └─> Output: None
+21/11/2025 18:18:33 - INFO     -     DriverDAO.get_id_driver_by_id_user(6,) - START
+21/11/2025 18:18:33 - INFO     -     DriverDAO.get_id_driver_by_id_user(6,) - END
+21/11/2025 18:18:33 - INFO     -        └─> Output: 3
+21/11/2025 18:18:33 - INFO     -     Session.login("id=6 user_name='PierreVelo' password='ac8615a0f3127e1885d7de8e6c1246706c90be1a2053ef94a70053410641316c' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='7c3698e6d270e18a90106780820144039bdfa050b7df9c2c41cf6af311a4e03607070566abe4c5f29df2d43da01a37830613951a356d17347f81c19f5e021d45453e1903b55ea9420b50c848fab08ec96c32d3c27d5082793673364628c85ff3b4e00110a00375d796ce5c94c6b7786401427c045833f6d17de566798e0b5c77'", 3) - START
+21/11/2025 18:18:33 - INFO     -     Session.login("id=6 user_name='PierreVelo' password='ac8615a0f3127e1885d7de8e6c1246706c90be1a2053ef94a70053410641316c' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='7c3698e6d270e18a90106780820144039bdfa050b7df9c2c41cf6af311a4e03607070566abe4c5f29df2d43da01a37830613951a356d17347f81c19f5e021d45453e1903b55ea9420b50c848fab08ec96c32d3c27d5082793673364628c85ff3b4e00110a00375d796ce5c94c6b7786401427c045833f6d17de566798e0b5c77'", 3) - END
+21/11/2025 18:18:33 - INFO     -        └─> Output: None
+21/11/2025 18:18:33 - INFO     - MenuDriver
+21/11/2025 18:18:35 - INFO     - ChangeProfilDriver
+21/11/2025 18:18:35 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7fdcdc9a5c70>',) - START
+21/11/2025 18:18:35 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7fdcdc9a5c70>',) - END
+21/11/2025 18:18:35 - INFO     -        └─> Output: None
+21/11/2025 18:18:41 - ERROR    - AttributeError : 'UserService' object has no attribute 'verify_password'
+Traceback (most recent call last):
+  File "/home/onyxia/work/Projet_Info_2A/src/main_CLI.py", line 22, in <module>
+    current_view = current_view.choose_menu()
+  File "/home/onyxia/work/Projet_Info_2A/src/CLI/driver/change_profil_driver.py", line 24, in choose_menu
+  File "/home/onyxia/work/Projet_Info_2A/src/CLI/driver/change_profil_driver.py", line 52, in change_driver_profile
+    new_password = inquirer.secret(message="Enter your new password:").execute()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'UserService' object has no attribute 'verify_password'
+21/11/2025 18:18:41 - INFO     - OpeningView
+21/11/2025 18:19:13 - INFO     - End of application
+21/11/2025 18:22:37 - INFO     - --------------------------------------------------
+21/11/2025 18:22:37 - INFO     - Starting Application
+21/11/2025 18:22:37 - INFO     - --------------------------------------------------
+21/11/2025 18:22:37 - INFO     - OpeningView
+21/11/2025 18:22:38 - INFO     - LoginView
+21/11/2025 18:22:38 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7fc40bbb9bd0>',) - START
+21/11/2025 18:22:38 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7fc40bbb9bd0>',) - END
+21/11/2025 18:22:38 - INFO     -        └─> Output: None
+21/11/2025 18:22:46 - INFO     -     UserRepo.get_by_username('PierreVelo',) - START
+21/11/2025 18:22:46 - INFO     -     UserRepo.get_by_username('PierreVelo',) - END
+21/11/2025 18:22:46 - INFO     -        └─> Output: id=6 user_name='PierreVelo' password='ac8615a0f3127e1885d7de8e6c1246706c90be1a2053ef94a70053410641316c' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='7c3698e6d270e18a90106780820144039bdfa050b7df9c2c41cf6af311a4e03607070566abe4c5f29df2d43da01a37830613951a356d17347f81c19f5e021d45453e1903b55ea9420b50c848fab08ec96c32d3c27d5082793673364628c85ff3b4e00110a00375d796ce5c94c6b7786401427c045833f6d17de566798e0b5c77'
+21/11/2025 18:22:46 - INFO     -     CustomerDAO.get_id_customer_by_id_user(6,) - START
+21/11/2025 18:22:47 - INFO     -     CustomerDAO.get_id_customer_by_id_user(6,) - END
+21/11/2025 18:22:47 - INFO     -        └─> Output: None
+21/11/2025 18:22:47 - INFO     -     DriverDAO.get_id_driver_by_id_user(6,) - START
+21/11/2025 18:22:47 - INFO     -     DriverDAO.get_id_driver_by_id_user(6,) - END
+21/11/2025 18:22:47 - INFO     -        └─> Output: 3
+21/11/2025 18:22:47 - INFO     -     Session.login("id=6 user_name='PierreVelo' password='ac8615a0f3127e1885d7de8e6c1246706c90be1a2053ef94a70053410641316c' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='7c3698e6d270e18a90106780820144039bdfa050b7df9c2c41cf6af311a4e03607070566abe4c5f29df2d43da01a37830613951a356d17347f81c19f5e021d45453e1903b55ea9420b50c848fab08ec96c32d3c27d5082793673364628c85ff3b4e00110a00375d796ce5c94c6b7786401427c045833f6d17de566798e0b5c77'", 3) - START
+21/11/2025 18:22:47 - INFO     -     Session.login("id=6 user_name='PierreVelo' password='ac8615a0f3127e1885d7de8e6c1246706c90be1a2053ef94a70053410641316c' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='7c3698e6d270e18a90106780820144039bdfa050b7df9c2c41cf6af311a4e03607070566abe4c5f29df2d43da01a37830613951a356d17347f81c19f5e021d45453e1903b55ea9420b50c848fab08ec96c32d3c27d5082793673364628c85ff3b4e00110a00375d796ce5c94c6b7786401427c045833f6d17de566798e0b5c77'", 3) - END
+21/11/2025 18:22:47 - INFO     -        └─> Output: None
+21/11/2025 18:22:47 - INFO     - MenuDriver
+21/11/2025 18:22:49 - INFO     - ChangeProfilDriver
+21/11/2025 18:22:49 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7fc40b74c180>',) - START
+21/11/2025 18:22:49 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7fc40b74c180>',) - END
+21/11/2025 18:22:49 - INFO     -        └─> Output: None
+21/11/2025 18:23:01 - INFO     -     UserRepo.get_by_username('PierreVelo',) - START
+21/11/2025 18:23:01 - INFO     -     UserRepo.get_by_username('PierreVelo',) - END
+21/11/2025 18:23:01 - INFO     -        └─> Output: id=6 user_name='PierreVelo' password='ac8615a0f3127e1885d7de8e6c1246706c90be1a2053ef94a70053410641316c' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='7c3698e6d270e18a90106780820144039bdfa050b7df9c2c41cf6af311a4e03607070566abe4c5f29df2d43da01a37830613951a356d17347f81c19f5e021d45453e1903b55ea9420b50c848fab08ec96c32d3c27d5082793673364628c85ff3b4e00110a00375d796ce5c94c6b7786401427c045833f6d17de566798e0b5c77'
+21/11/2025 18:23:35 - INFO     -     UserRepo.get_by_username('PierreVelo',) - START
+21/11/2025 18:23:35 - INFO     -     UserRepo.get_by_username('PierreVelo',) - END
+21/11/2025 18:23:35 - INFO     -        └─> Output: id=6 user_name='PierreVelo' password='ac8615a0f3127e1885d7de8e6c1246706c90be1a2053ef94a70053410641316c' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='7c3698e6d270e18a90106780820144039bdfa050b7df9c2c41cf6af311a4e03607070566abe4c5f29df2d43da01a37830613951a356d17347f81c19f5e021d45453e1903b55ea9420b50c848fab08ec96c32d3c27d5082793673364628c85ff3b4e00110a00375d796ce5c94c6b7786401427c045833f6d17de566798e0b5c77'
+21/11/2025 18:23:35 - INFO     -     UserService.change_password('PierreVelo', 'PierreVelo0000', 'PierreVelo0000') - START
+21/11/2025 18:23:35 - INFO     -         UserRepo.get_by_username('PierreVelo',) - START
+21/11/2025 18:23:35 - INFO     -         UserRepo.get_by_username('PierreVelo',) - END
+21/11/2025 18:23:35 - INFO     -            └─> Output: id=6 user_name='PierreVelo' password='ac8615a0f3127e1885d7de8e6c1246706c90be1a2053ef94a70053410641316c' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='7c3698e6d270e18a90106780820144039bdfa050b7df9c2c41cf6af311a4e03607070566abe4c5f29df2d43da01a37830613951a356d17347f81c19f5e021d45453e1903b55ea9420b50c848fab08ec96c32d3c27d5082793673364628c85ff3b4e00110a00375d796ce5c94c6b7786401427c045833f6d17de566798e0b5c77'
+21/11/2025 18:23:35 - INFO     -         UserRepo.get_by_username('PierreVelo',) - START
+21/11/2025 18:23:35 - INFO     -         UserRepo.get_by_username('PierreVelo',) - END
+21/11/2025 18:23:35 - INFO     -            └─> Output: id=6 user_name='PierreVelo' password='ac8615a0f3127e1885d7de8e6c1246706c90be1a2053ef94a70053410641316c' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='7c3698e6d270e18a90106780820144039bdfa050b7df9c2c41cf6af311a4e03607070566abe4c5f29df2d43da01a37830613951a356d17347f81c19f5e021d45453e1903b55ea9420b50c848fab08ec96c32d3c27d5082793673364628c85ff3b4e00110a00375d796ce5c94c6b7786401427c045833f6d17de566798e0b5c77'
+21/11/2025 18:23:35 - INFO     -         UserRepo.update_user("id=6 user_name='PierreVelo' password='82e1d02453fa0417bb6fcff404d2ded366e9b21141c30c71da9694f0eb79b28f' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='e6962cef2c9362ae6809ab76fc97b41f5d298869585f2583fc42b888f293be038e4fb445df4de8126c732d46fc8fc854c9101181f3cdb8f1605469c5dc11075d1df2203128f2f8be5eb3473b2e877cd1c8d7f89abba242038f592daf33b9091647ee9e279d8864106a66f186de556789f05288a782c61168e51cadb1f6f1b716'",) - START
+21/11/2025 18:23:35 - INFO     -         UserRepo.update_user("id=6 user_name='PierreVelo' password='82e1d02453fa0417bb6fcff404d2ded366e9b21141c30c71da9694f0eb79b28f' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='e6962cef2c9362ae6809ab76fc97b41f5d298869585f2583fc42b888f293be038e4fb445df4de8126c732d46fc8fc854c9101181f3cdb8f1605469c5dc11075d1df2203128f2f8be5eb3473b2e877cd1c8d7f89abba242038f592daf33b9091647ee9e279d8864106a66f186de556789f05288a782c61168e51cadb1f6f1b716'",) - END
+21/11/2025 18:23:35 - INFO     -            └─> Output: True
+21/11/2025 18:23:35 - INFO     -     UserService.change_password('PierreVelo', 'PierreVelo0000', 'PierreVelo0000') - END
+21/11/2025 18:23:35 - INFO     -        └─> Output: True
+21/11/2025 18:23:35 - INFO     - MenuDriver
+21/11/2025 18:23:37 - INFO     -     Session.logout() - START
+21/11/2025 18:23:37 - INFO     -     Session.logout() - END
+21/11/2025 18:23:37 - INFO     -        └─> Output: None
+21/11/2025 18:23:37 - INFO     - OpeningView
+21/11/2025 18:23:40 - INFO     - End of application
+21/11/2025 18:24:07 - INFO     - --------------------------------------------------
+21/11/2025 18:24:07 - INFO     - Starting Application
+21/11/2025 18:24:07 - INFO     - --------------------------------------------------
+21/11/2025 18:24:07 - INFO     - OpeningView
+21/11/2025 18:24:09 - INFO     - LoginView
+21/11/2025 18:24:09 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7f28361c1bd0>',) - START
+21/11/2025 18:24:09 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7f28361c1bd0>',) - END
+21/11/2025 18:24:09 - INFO     -        └─> Output: None
+21/11/2025 18:24:18 - INFO     -     UserRepo.get_by_username('PierreVelo',) - START
+21/11/2025 18:24:18 - INFO     -     UserRepo.get_by_username('PierreVelo',) - END
+21/11/2025 18:24:18 - INFO     -        └─> Output: id=6 user_name='PierreVelo' password='82e1d02453fa0417bb6fcff404d2ded366e9b21141c30c71da9694f0eb79b28f' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='e6962cef2c9362ae6809ab76fc97b41f5d298869585f2583fc42b888f293be038e4fb445df4de8126c732d46fc8fc854c9101181f3cdb8f1605469c5dc11075d1df2203128f2f8be5eb3473b2e877cd1c8d7f89abba242038f592daf33b9091647ee9e279d8864106a66f186de556789f05288a782c61168e51cadb1f6f1b716'
+21/11/2025 18:24:18 - INFO     -     CustomerDAO.get_id_customer_by_id_user(6,) - START
+21/11/2025 18:24:18 - INFO     -     CustomerDAO.get_id_customer_by_id_user(6,) - END
+21/11/2025 18:24:18 - INFO     -        └─> Output: None
+21/11/2025 18:24:18 - INFO     -     DriverDAO.get_id_driver_by_id_user(6,) - START
+21/11/2025 18:24:18 - INFO     -     DriverDAO.get_id_driver_by_id_user(6,) - END
+21/11/2025 18:24:18 - INFO     -        └─> Output: 3
+21/11/2025 18:24:18 - INFO     -     Session.login("id=6 user_name='PierreVelo' password='82e1d02453fa0417bb6fcff404d2ded366e9b21141c30c71da9694f0eb79b28f' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='e6962cef2c9362ae6809ab76fc97b41f5d298869585f2583fc42b888f293be038e4fb445df4de8126c732d46fc8fc854c9101181f3cdb8f1605469c5dc11075d1df2203128f2f8be5eb3473b2e877cd1c8d7f89abba242038f592daf33b9091647ee9e279d8864106a66f186de556789f05288a782c61168e51cadb1f6f1b716'", 3) - START
+21/11/2025 18:24:18 - INFO     -     Session.login("id=6 user_name='PierreVelo' password='82e1d02453fa0417bb6fcff404d2ded366e9b21141c30c71da9694f0eb79b28f' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='e6962cef2c9362ae6809ab76fc97b41f5d298869585f2583fc42b888f293be038e4fb445df4de8126c732d46fc8fc854c9101181f3cdb8f1605469c5dc11075d1df2203128f2f8be5eb3473b2e877cd1c8d7f89abba242038f592daf33b9091647ee9e279d8864106a66f186de556789f05288a782c61168e51cadb1f6f1b716'", 3) - END
+21/11/2025 18:24:18 - INFO     -        └─> Output: None
+21/11/2025 18:24:18 - INFO     - MenuDriver
+21/11/2025 18:24:21 - INFO     - ChangeProfilDriver
+21/11/2025 18:24:21 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7f2835d50180>',) - START
+21/11/2025 18:24:21 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7f2835d50180>',) - END
+21/11/2025 18:24:21 - INFO     -        └─> Output: None
+21/11/2025 18:24:24 - INFO     -     UserRepo.get_by_username('PierreVelo',) - START
+21/11/2025 18:24:24 - INFO     -     UserRepo.get_by_username('PierreVelo',) - END
+21/11/2025 18:24:24 - INFO     -        └─> Output: id=6 user_name='PierreVelo' password='82e1d02453fa0417bb6fcff404d2ded366e9b21141c30c71da9694f0eb79b28f' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='e6962cef2c9362ae6809ab76fc97b41f5d298869585f2583fc42b888f293be038e4fb445df4de8126c732d46fc8fc854c9101181f3cdb8f1605469c5dc11075d1df2203128f2f8be5eb3473b2e877cd1c8d7f89abba242038f592daf33b9091647ee9e279d8864106a66f186de556789f05288a782c61168e51cadb1f6f1b716'
+21/11/2025 18:24:31 - INFO     -     UserRepo.get_by_username('PierreVelo',) - START
+21/11/2025 18:24:31 - INFO     -     UserRepo.get_by_username('PierreVelo',) - END
+21/11/2025 18:24:31 - INFO     -        └─> Output: id=6 user_name='PierreVelo' password='82e1d02453fa0417bb6fcff404d2ded366e9b21141c30c71da9694f0eb79b28f' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='e6962cef2c9362ae6809ab76fc97b41f5d298869585f2583fc42b888f293be038e4fb445df4de8126c732d46fc8fc854c9101181f3cdb8f1605469c5dc11075d1df2203128f2f8be5eb3473b2e877cd1c8d7f89abba242038f592daf33b9091647ee9e279d8864106a66f186de556789f05288a782c61168e51cadb1f6f1b716'
+21/11/2025 18:24:39 - INFO     -     UserRepo.get_by_username('PierreVelo',) - START
+21/11/2025 18:24:39 - INFO     -     UserRepo.get_by_username('PierreVelo',) - END
+21/11/2025 18:24:39 - INFO     -        └─> Output: id=6 user_name='PierreVelo' password='82e1d02453fa0417bb6fcff404d2ded366e9b21141c30c71da9694f0eb79b28f' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='e6962cef2c9362ae6809ab76fc97b41f5d298869585f2583fc42b888f293be038e4fb445df4de8126c732d46fc8fc854c9101181f3cdb8f1605469c5dc11075d1df2203128f2f8be5eb3473b2e877cd1c8d7f89abba242038f592daf33b9091647ee9e279d8864106a66f186de556789f05288a782c61168e51cadb1f6f1b716'
+21/11/2025 18:24:49 - INFO     -     UserService.change_password('PierreVelo', 'PierreVelo0000', 'PierreVelo0000') - START
+21/11/2025 18:24:49 - INFO     -         UserRepo.get_by_username('PierreVelo',) - START
+21/11/2025 18:24:49 - INFO     -         UserRepo.get_by_username('PierreVelo',) - END
+21/11/2025 18:24:49 - INFO     -            └─> Output: id=6 user_name='PierreVelo' password='82e1d02453fa0417bb6fcff404d2ded366e9b21141c30c71da9694f0eb79b28f' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='e6962cef2c9362ae6809ab76fc97b41f5d298869585f2583fc42b888f293be038e4fb445df4de8126c732d46fc8fc854c9101181f3cdb8f1605469c5dc11075d1df2203128f2f8be5eb3473b2e877cd1c8d7f89abba242038f592daf33b9091647ee9e279d8864106a66f186de556789f05288a782c61168e51cadb1f6f1b716'
+21/11/2025 18:24:49 - INFO     -         UserRepo.get_by_username('PierreVelo',) - START
+21/11/2025 18:24:49 - INFO     -         UserRepo.get_by_username('PierreVelo',) - END
+21/11/2025 18:24:49 - INFO     -            └─> Output: id=6 user_name='PierreVelo' password='82e1d02453fa0417bb6fcff404d2ded366e9b21141c30c71da9694f0eb79b28f' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='e6962cef2c9362ae6809ab76fc97b41f5d298869585f2583fc42b888f293be038e4fb445df4de8126c732d46fc8fc854c9101181f3cdb8f1605469c5dc11075d1df2203128f2f8be5eb3473b2e877cd1c8d7f89abba242038f592daf33b9091647ee9e279d8864106a66f186de556789f05288a782c61168e51cadb1f6f1b716'
+21/11/2025 18:24:49 - INFO     -         UserRepo.update_user("id=6 user_name='PierreVelo' password='4ef332278ceb035597834d8810ba81bc7eebbd9e6958b86a082e2d4874ded718' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='512cdd82c8b66103614565f6dcb30aac21cbd3fa4153c3b4f7a2286748e3eac6f035e92b6a256a1d18bcbe3083a001ee70ffb3e83f59bf2eaf432ea1cd78796498675a62b16e9fb46e23b076fdb6e2238994501dca82346d1b738af41b056cc194c3b4a7c87b045f5bd424a9f4411d8d66847441d4e24e7f42a0dc1582876684'",) - START
+21/11/2025 18:24:49 - INFO     -         UserRepo.update_user("id=6 user_name='PierreVelo' password='4ef332278ceb035597834d8810ba81bc7eebbd9e6958b86a082e2d4874ded718' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='512cdd82c8b66103614565f6dcb30aac21cbd3fa4153c3b4f7a2286748e3eac6f035e92b6a256a1d18bcbe3083a001ee70ffb3e83f59bf2eaf432ea1cd78796498675a62b16e9fb46e23b076fdb6e2238994501dca82346d1b738af41b056cc194c3b4a7c87b045f5bd424a9f4411d8d66847441d4e24e7f42a0dc1582876684'",) - END
+21/11/2025 18:24:49 - INFO     -            └─> Output: True
+21/11/2025 18:24:49 - INFO     -     UserService.change_password('PierreVelo', 'PierreVelo0000', 'PierreVelo0000') - END
+21/11/2025 18:24:49 - INFO     -        └─> Output: True
+21/11/2025 18:24:49 - INFO     - MenuDriver
+21/11/2025 18:24:54 - INFO     - ChangeProfilDriver
+21/11/2025 18:24:54 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7f28355dd7f0>',) - START
+21/11/2025 18:24:54 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7f28355dd7f0>',) - END
+21/11/2025 18:24:54 - INFO     -        └─> Output: None
+21/11/2025 18:24:55 - INFO     -     DriverService.update_driver('PierreVelo', 'Bike') - START
+21/11/2025 18:24:55 - INFO     -         DriverService.get_by_username('PierreVelo',) - START
+21/11/2025 18:24:55 - INFO     -             DriverDAO.list_all() - START
+21/11/2025 18:24:55 - INFO     -             DriverDAO.list_all() - END
+21/11/2025 18:24:55 - INFO     -                └─> Output: ["id=4 user_name='EmmaDriver' password='f11b5649b0e3b97afae7b6db66b48f66407096f4771d599159ea7d0d7cd1d8de' first_name='Emma' last_name='Glorieux' email='emmadriver@project.com' salt='EmmaDriver' mean_of_transport='Car' id_driver=1", "id=5 user_name='PresidentEnsai' password='118adf271202feab0f44fb1a53285c72ab1857e8d49ca2c930cfee09da4555bf' first_name='JF' last_name='Lapitre' email='jf@project.com' salt='PresidentEnsai' mean_of_transport='Car' id_driver=2", "id=6 user_name='PierreVelo' password='4ef332278ceb035597834d8810ba81bc7eebbd9e6958b86a082e2d4874ded718' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='512cdd82c8b66103614565f6dcb30aac21cbd3fa4153c3b4f7a2286748e3eac6f035e92b6a256a1d18bcbe3083a001ee70ffb3e83f59bf2eaf432ea1cd78796498675a62b16e9fb46e23b076fdb6e2238994501dca82346d1b738af41b056cc194c3b4a7c87b045f5bd424a9f4411d8d66847441d4e24e7f42a0dc1582876684' mean_of_transport='Bike' id_driver=3"] ... (3 elements)
+21/11/2025 18:24:55 - INFO     -         DriverService.get_by_username('PierreVelo',) - END
+21/11/2025 18:24:55 - INFO     -            └─> Output: id=6 user_name='PierreVelo' password='4ef332278ceb035597834d8810ba81bc7eebbd9e6958b86a082e2d4874ded718' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='512cdd82c8b66103614565f6dcb30aac21cbd3fa4153c3b4f7a2286748e3eac6f035e92b6a256a1d18bcbe3083a001ee70ffb3e83f59bf2eaf432ea1cd78796498675a62b16e9fb46e23b076fdb6e2238994501dca82346d1b738af41b056cc194c3b4a7c87b045f5bd424a9f4411d8d66847441d4e24e7f42a0dc1582876684' mean_of_transport='Bike' id_driver=3
+21/11/2025 18:24:55 - INFO     -         DriverDAO.update("id=6 user_name='PierreVelo' password='4ef332278ceb035597834d8810ba81bc7eebbd9e6958b86a082e2d4874ded718' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt=None mean_of_transport='Bike' id_driver=3",) - START
+21/11/2025 18:24:55 - INFO     -         DriverDAO.update("id=6 user_name='PierreVelo' password='4ef332278ceb035597834d8810ba81bc7eebbd9e6958b86a082e2d4874ded718' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt=None mean_of_transport='Bike' id_driver=3",) - END
+21/11/2025 18:24:55 - INFO     -            └─> Output: True
+21/11/2025 18:24:55 - INFO     -     DriverService.update_driver('PierreVelo', 'Bike') - END
+21/11/2025 18:24:55 - INFO     -        └─> Output: True
+21/11/2025 18:24:55 - INFO     - MenuDriver
+21/11/2025 18:25:07 - INFO     -     Session.logout() - START
+21/11/2025 18:25:07 - INFO     -     Session.logout() - END
+21/11/2025 18:25:07 - INFO     -        └─> Output: None
+21/11/2025 18:25:07 - INFO     - OpeningView
+21/11/2025 18:25:09 - INFO     - End of application
+21/11/2025 18:26:22 - INFO     - --------------------------------------------------
+21/11/2025 18:26:22 - INFO     - Starting Application
+21/11/2025 18:26:22 - INFO     - --------------------------------------------------
+21/11/2025 18:26:22 - INFO     - OpeningView
+21/11/2025 18:26:24 - INFO     - LoginView
+21/11/2025 18:26:24 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7f8f98fbdbd0>',) - START
+21/11/2025 18:26:24 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7f8f98fbdbd0>',) - END
+21/11/2025 18:26:24 - INFO     -        └─> Output: None
+21/11/2025 18:26:29 - INFO     -     UserRepo.get_by_username('pierre',) - START
+21/11/2025 18:26:29 - INFO     -     UserRepo.get_by_username('pierre',) - END
+21/11/2025 18:26:29 - INFO     -        └─> Output: None
+21/11/2025 18:26:29 - ERROR    - Exception : user with username pierre not found
+Traceback (most recent call last):
+  File "/home/onyxia/work/Projet_Info_2A/src/main_CLI.py", line 22, in <module>
+    current_view = current_view.choose_menu()
+  File "/home/onyxia/work/Projet_Info_2A/src/CLI/opening/loginview.py", line 35, in choose_menu
+    user = validate_username_password(
+        username=username, password=password, user_repo=user_repo
+    )
+  File "/home/onyxia/work/Projet_Info_2A/src/Service/PasswordService.py", line 30, in validate_username_password
+    raise Exception(f"user with username {username} not found")
+Exception: user with username pierre not found
+21/11/2025 18:26:29 - INFO     - OpeningView
+21/11/2025 18:26:41 - INFO     - InscriptionView
+21/11/2025 18:26:43 - INFO     -     UserService.is_username_taken('anais',) - START
+21/11/2025 18:26:43 - INFO     -         UserRepo.is_username_taken('anais',) - START
+21/11/2025 18:26:43 - INFO     -         UserRepo.is_username_taken('anais',) - END
+21/11/2025 18:26:43 - INFO     -            └─> Output: True
+21/11/2025 18:26:43 - INFO     -     UserService.is_username_taken('anais',) - END
+21/11/2025 18:26:43 - INFO     -        └─> Output: True
+21/11/2025 18:26:43 - INFO     - OpeningView
+21/11/2025 18:27:37 - INFO     - End of application
+21/11/2025 18:27:44 - INFO     - --------------------------------------------------
+21/11/2025 18:27:44 - INFO     - Starting Application
+21/11/2025 18:27:44 - INFO     - --------------------------------------------------
+21/11/2025 18:27:44 - INFO     - OpeningView
+21/11/2025 18:27:51 - INFO     - LoginView
+21/11/2025 18:27:51 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7f5f643b9bd0>',) - START
+21/11/2025 18:27:51 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7f5f643b9bd0>',) - END
+21/11/2025 18:27:51 - INFO     -        └─> Output: None
+21/11/2025 18:27:58 - INFO     -     UserRepo.get_by_username('anais',) - START
+21/11/2025 18:27:58 - INFO     -     UserRepo.get_by_username('anais',) - END
+21/11/2025 18:27:58 - INFO     -        └─> Output: id=9 user_name='anais' password='f7deb4f8402b0bab1497f6165ed5a32712c49fd658d5bdb432965948035676c8' first_name='Anais' last_name='Duranceau' email='anais@gmail.com' salt='1afab70586e7848600de02e53ba460cb02ef7445e09617d36a7960d5e6202a6536face5aa5745d1493eaf903725919e9c254cf397ab469aaa5d5085a645b8f977d8645bce1bbb8d1ee75b54ab0c19f48351d36dcd73415e01d56a2a54ae1d7c417a471dd8ca5c7f888a424c4e329a5be6b12351878f02d546436e2be1e5b74d8'
+21/11/2025 18:27:58 - INFO     -     CustomerDAO.get_id_customer_by_id_user(9,) - START
+21/11/2025 18:27:59 - INFO     -     CustomerDAO.get_id_customer_by_id_user(9,) - END
+21/11/2025 18:27:59 - INFO     -        └─> Output: 5
+21/11/2025 18:27:59 - INFO     -     DriverDAO.get_id_driver_by_id_user(9,) - START
+21/11/2025 18:27:59 - INFO     -     DriverDAO.get_id_driver_by_id_user(9,) - END
+21/11/2025 18:27:59 - INFO     -        └─> Output: None
+21/11/2025 18:27:59 - INFO     -     Session.login("id=9 user_name='anais' password='f7deb4f8402b0bab1497f6165ed5a32712c49fd658d5bdb432965948035676c8' first_name='Anais' last_name='Duranceau' email='anais@gmail.com' salt='1afab70586e7848600de02e53ba460cb02ef7445e09617d36a7960d5e6202a6536face5aa5745d1493eaf903725919e9c254cf397ab469aaa5d5085a645b8f977d8645bce1bbb8d1ee75b54ab0c19f48351d36dcd73415e01d56a2a54ae1d7c417a471dd8ca5c7f888a424c4e329a5be6b12351878f02d546436e2be1e5b74d8'", 5) - START
+21/11/2025 18:27:59 - INFO     -     Session.login("id=9 user_name='anais' password='f7deb4f8402b0bab1497f6165ed5a32712c49fd658d5bdb432965948035676c8' first_name='Anais' last_name='Duranceau' email='anais@gmail.com' salt='1afab70586e7848600de02e53ba460cb02ef7445e09617d36a7960d5e6202a6536face5aa5745d1493eaf903725919e9c254cf397ab469aaa5d5085a645b8f977d8645bce1bbb8d1ee75b54ab0c19f48351d36dcd73415e01d56a2a54ae1d7c417a471dd8ca5c7f888a424c4e329a5be6b12351878f02d546436e2be1e5b74d8'", 5) - END
+21/11/2025 18:27:59 - INFO     -        └─> Output: None
+21/11/2025 18:27:59 - INFO     - MenuView
+21/11/2025 18:28:02 - INFO     - ChangeProfileView
+21/11/2025 18:28:06 - INFO     -     UserRepo.get_by_username('anais',) - START
+21/11/2025 18:28:06 - INFO     -     UserRepo.get_by_username('anais',) - END
+21/11/2025 18:28:06 - INFO     -        └─> Output: id=9 user_name='anais' password='f7deb4f8402b0bab1497f6165ed5a32712c49fd658d5bdb432965948035676c8' first_name='Anais' last_name='Duranceau' email='anais@gmail.com' salt='1afab70586e7848600de02e53ba460cb02ef7445e09617d36a7960d5e6202a6536face5aa5745d1493eaf903725919e9c254cf397ab469aaa5d5085a645b8f977d8645bce1bbb8d1ee75b54ab0c19f48351d36dcd73415e01d56a2a54ae1d7c417a471dd8ca5c7f888a424c4e329a5be6b12351878f02d546436e2be1e5b74d8'
+21/11/2025 18:28:12 - INFO     -     UserRepo.get_by_username('anais',) - START
+21/11/2025 18:28:12 - INFO     -     UserRepo.get_by_username('anais',) - END
+21/11/2025 18:28:12 - INFO     -        └─> Output: id=9 user_name='anais' password='f7deb4f8402b0bab1497f6165ed5a32712c49fd658d5bdb432965948035676c8' first_name='Anais' last_name='Duranceau' email='anais@gmail.com' salt='1afab70586e7848600de02e53ba460cb02ef7445e09617d36a7960d5e6202a6536face5aa5745d1493eaf903725919e9c254cf397ab469aaa5d5085a645b8f977d8645bce1bbb8d1ee75b54ab0c19f48351d36dcd73415e01d56a2a54ae1d7c417a471dd8ca5c7f888a424c4e329a5be6b12351878f02d546436e2be1e5b74d8'
+21/11/2025 18:28:20 - INFO     -     UserRepo.get_by_username('anais',) - START
+21/11/2025 18:28:20 - INFO     -     UserRepo.get_by_username('anais',) - END
+21/11/2025 18:28:20 - INFO     -        └─> Output: id=9 user_name='anais' password='f7deb4f8402b0bab1497f6165ed5a32712c49fd658d5bdb432965948035676c8' first_name='Anais' last_name='Duranceau' email='anais@gmail.com' salt='1afab70586e7848600de02e53ba460cb02ef7445e09617d36a7960d5e6202a6536face5aa5745d1493eaf903725919e9c254cf397ab469aaa5d5085a645b8f977d8645bce1bbb8d1ee75b54ab0c19f48351d36dcd73415e01d56a2a54ae1d7c417a471dd8ca5c7f888a424c4e329a5be6b12351878f02d546436e2be1e5b74d8'
+21/11/2025 18:28:24 - INFO     -     UserService.change_password('anais', 'Anais.2003', 'Anais2003') - START
+21/11/2025 18:28:24 - INFO     -         UserRepo.get_by_username('anais',) - START
+21/11/2025 18:28:24 - INFO     -         UserRepo.get_by_username('anais',) - END
+21/11/2025 18:28:24 - INFO     -            └─> Output: id=9 user_name='anais' password='f7deb4f8402b0bab1497f6165ed5a32712c49fd658d5bdb432965948035676c8' first_name='Anais' last_name='Duranceau' email='anais@gmail.com' salt='1afab70586e7848600de02e53ba460cb02ef7445e09617d36a7960d5e6202a6536face5aa5745d1493eaf903725919e9c254cf397ab469aaa5d5085a645b8f977d8645bce1bbb8d1ee75b54ab0c19f48351d36dcd73415e01d56a2a54ae1d7c417a471dd8ca5c7f888a424c4e329a5be6b12351878f02d546436e2be1e5b74d8'
+21/11/2025 18:28:24 - INFO     -         UserRepo.get_by_username('anais',) - START
+21/11/2025 18:28:24 - INFO     -         UserRepo.get_by_username('anais',) - END
+21/11/2025 18:28:24 - INFO     -            └─> Output: id=9 user_name='anais' password='f7deb4f8402b0bab1497f6165ed5a32712c49fd658d5bdb432965948035676c8' first_name='Anais' last_name='Duranceau' email='anais@gmail.com' salt='1afab70586e7848600de02e53ba460cb02ef7445e09617d36a7960d5e6202a6536face5aa5745d1493eaf903725919e9c254cf397ab469aaa5d5085a645b8f977d8645bce1bbb8d1ee75b54ab0c19f48351d36dcd73415e01d56a2a54ae1d7c417a471dd8ca5c7f888a424c4e329a5be6b12351878f02d546436e2be1e5b74d8'
+21/11/2025 18:28:24 - INFO     -         UserRepo.update_user("id=9 user_name='anais' password='75203821c510ee0e087e70b18210a00530cd5631969c54a1b49ff84eba6ba1ca' first_name='Anais' last_name='Duranceau' email='anais@gmail.com' salt='eec4ad4aa957df9b12b934a4a948265645b57b7bab9c4d3225a4f7bccb89d6d6f6b67077cb246430eed6ea81e546674eba23a5886bd87abe1e72df9b6409d2b0ee0ca5a68ae6eb8ec35af1148c57bb9b257abddd8c93e3711459128190fdf84e4b67529edd81f78eae217c11d5dadb8280a1183860789c4d1a98f0e4872c16f3'",) - START
+21/11/2025 18:28:24 - INFO     -         UserRepo.update_user("id=9 user_name='anais' password='75203821c510ee0e087e70b18210a00530cd5631969c54a1b49ff84eba6ba1ca' first_name='Anais' last_name='Duranceau' email='anais@gmail.com' salt='eec4ad4aa957df9b12b934a4a948265645b57b7bab9c4d3225a4f7bccb89d6d6f6b67077cb246430eed6ea81e546674eba23a5886bd87abe1e72df9b6409d2b0ee0ca5a68ae6eb8ec35af1148c57bb9b257abddd8c93e3711459128190fdf84e4b67529edd81f78eae217c11d5dadb8280a1183860789c4d1a98f0e4872c16f3'",) - END
+21/11/2025 18:28:24 - INFO     -            └─> Output: True
+21/11/2025 18:28:24 - INFO     -     UserService.change_password('anais', 'Anais.2003', 'Anais2003') - END
+21/11/2025 18:28:24 - INFO     -        └─> Output: True
+21/11/2025 18:28:24 - INFO     - MenuView
+21/11/2025 18:28:28 - ERROR    - AttributeError : 'Session' object has no attribute 'deconnexion'
+Traceback (most recent call last):
+  File "/home/onyxia/work/Projet_Info_2A/src/main_CLI.py", line 22, in <module>
+    current_view = current_view.choose_menu()
+  File "/home/onyxia/work/Projet_Info_2A/src/CLI/customer/menu_customer.py", line 47, in choose_menu
+    Session().deconnexion()
+    ^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Session' object has no attribute 'deconnexion'
+21/11/2025 18:28:28 - INFO     - OpeningView
+21/11/2025 18:28:30 - INFO     - End of application
+21/11/2025 18:32:25 - INFO     - --------------------------------------------------
+21/11/2025 18:32:25 - INFO     - Starting Application
+21/11/2025 18:32:25 - INFO     - --------------------------------------------------
+21/11/2025 18:32:25 - INFO     - OpeningView
+21/11/2025 18:32:28 - INFO     - LoginView
+21/11/2025 18:32:28 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7f7b715b9bd0>',) - START
+21/11/2025 18:32:28 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7f7b715b9bd0>',) - END
+21/11/2025 18:32:28 - INFO     -        └─> Output: None
+21/11/2025 18:32:34 - INFO     -     UserRepo.get_by_username('aaa',) - START
+21/11/2025 18:32:34 - INFO     -     UserRepo.get_by_username('aaa',) - END
+21/11/2025 18:32:34 - INFO     -        └─> Output: None
+21/11/2025 18:32:34 - ERROR    - Exception : user with username aaa not found
+Traceback (most recent call last):
+  File "/home/onyxia/work/Projet_Info_2A/src/main_CLI.py", line 22, in <module>
+    current_view = current_view.choose_menu()
+  File "/home/onyxia/work/Projet_Info_2A/src/CLI/opening/loginview.py", line 35, in choose_menu
+    user = validate_username_password(
+        username=username, password=password, user_repo=user_repo
+    )
+  File "/home/onyxia/work/Projet_Info_2A/src/Service/PasswordService.py", line 30, in validate_username_password
+    raise Exception(f"user with username {username} not found")
+Exception: user with username aaa not found
+21/11/2025 18:32:34 - INFO     - OpeningView
+21/11/2025 18:33:31 - INFO     - End of application
+21/11/2025 18:33:35 - INFO     - --------------------------------------------------
+21/11/2025 18:33:35 - INFO     - Starting Application
+21/11/2025 18:33:35 - INFO     - --------------------------------------------------
+21/11/2025 18:33:35 - INFO     - OpeningView
+21/11/2025 18:33:36 - INFO     - LoginView
+21/11/2025 18:33:36 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7f77175b9bd0>',) - START
+21/11/2025 18:33:36 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7f77175b9bd0>',) - END
+21/11/2025 18:33:36 - INFO     -        └─> Output: None
+21/11/2025 18:33:40 - INFO     -     UserRepo.get_by_username('aaa',) - START
+21/11/2025 18:33:40 - INFO     -     UserRepo.get_by_username('aaa',) - END
+21/11/2025 18:33:40 - INFO     -        └─> Output: None
+21/11/2025 18:33:55 - INFO     -     UserRepo.get_by_username('anais',) - START
+21/11/2025 18:33:55 - INFO     -     UserRepo.get_by_username('anais',) - END
+21/11/2025 18:33:55 - INFO     -        └─> Output: id=9 user_name='anais' password='75203821c510ee0e087e70b18210a00530cd5631969c54a1b49ff84eba6ba1ca' first_name='Anais' last_name='Duranceau' email='anais@gmail.com' salt='eec4ad4aa957df9b12b934a4a948265645b57b7bab9c4d3225a4f7bccb89d6d6f6b67077cb246430eed6ea81e546674eba23a5886bd87abe1e72df9b6409d2b0ee0ca5a68ae6eb8ec35af1148c57bb9b257abddd8c93e3711459128190fdf84e4b67529edd81f78eae217c11d5dadb8280a1183860789c4d1a98f0e4872c16f3'
+21/11/2025 18:34:08 - INFO     -     UserRepo.get_by_username('anais',) - START
+21/11/2025 18:34:08 - INFO     -     UserRepo.get_by_username('anais',) - END
+21/11/2025 18:34:08 - INFO     -        └─> Output: id=9 user_name='anais' password='75203821c510ee0e087e70b18210a00530cd5631969c54a1b49ff84eba6ba1ca' first_name='Anais' last_name='Duranceau' email='anais@gmail.com' salt='eec4ad4aa957df9b12b934a4a948265645b57b7bab9c4d3225a4f7bccb89d6d6f6b67077cb246430eed6ea81e546674eba23a5886bd87abe1e72df9b6409d2b0ee0ca5a68ae6eb8ec35af1148c57bb9b257abddd8c93e3711459128190fdf84e4b67529edd81f78eae217c11d5dadb8280a1183860789c4d1a98f0e4872c16f3'
+21/11/2025 18:34:08 - INFO     -     CustomerDAO.get_id_customer_by_id_user(9,) - START
+21/11/2025 18:34:08 - INFO     -     CustomerDAO.get_id_customer_by_id_user(9,) - END
+21/11/2025 18:34:08 - INFO     -        └─> Output: 5
+21/11/2025 18:34:08 - INFO     -     DriverDAO.get_id_driver_by_id_user(9,) - START
+21/11/2025 18:34:08 - INFO     -     DriverDAO.get_id_driver_by_id_user(9,) - END
+21/11/2025 18:34:08 - INFO     -        └─> Output: None
+21/11/2025 18:34:08 - INFO     -     Session.login("id=9 user_name='anais' password='75203821c510ee0e087e70b18210a00530cd5631969c54a1b49ff84eba6ba1ca' first_name='Anais' last_name='Duranceau' email='anais@gmail.com' salt='eec4ad4aa957df9b12b934a4a948265645b57b7bab9c4d3225a4f7bccb89d6d6f6b67077cb246430eed6ea81e546674eba23a5886bd87abe1e72df9b6409d2b0ee0ca5a68ae6eb8ec35af1148c57bb9b257abddd8c93e3711459128190fdf84e4b67529edd81f78eae217c11d5dadb8280a1183860789c4d1a98f0e4872c16f3'", 5) - START
+21/11/2025 18:34:08 - INFO     -     Session.login("id=9 user_name='anais' password='75203821c510ee0e087e70b18210a00530cd5631969c54a1b49ff84eba6ba1ca' first_name='Anais' last_name='Duranceau' email='anais@gmail.com' salt='eec4ad4aa957df9b12b934a4a948265645b57b7bab9c4d3225a4f7bccb89d6d6f6b67077cb246430eed6ea81e546674eba23a5886bd87abe1e72df9b6409d2b0ee0ca5a68ae6eb8ec35af1148c57bb9b257abddd8c93e3711459128190fdf84e4b67529edd81f78eae217c11d5dadb8280a1183860789c4d1a98f0e4872c16f3'", 5) - END
+21/11/2025 18:34:08 - INFO     -        └─> Output: None
+21/11/2025 18:34:08 - INFO     - MenuView
+21/11/2025 18:34:11 - ERROR    - AttributeError : 'Session' object has no attribute 'deconnexion'
+Traceback (most recent call last):
+  File "/home/onyxia/work/Projet_Info_2A/src/main_CLI.py", line 22, in <module>
+    current_view = current_view.choose_menu()
+  File "/home/onyxia/work/Projet_Info_2A/src/CLI/customer/menu_customer.py", line 47, in choose_menu
+    Session().deconnexion()
+    ^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Session' object has no attribute 'deconnexion'
+21/11/2025 18:34:11 - INFO     - OpeningView
+21/11/2025 18:34:12 - INFO     - LoginView
+21/11/2025 18:34:12 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7f77169b2450>',) - START
+21/11/2025 18:34:12 - INFO     -     DriverDAO.__init__('<src.DAO.DBConnector.DBConnector object at 0x7f77169b2450>',) - END
+21/11/2025 18:34:12 - INFO     -        └─> Output: None
+21/11/2025 18:34:25 - INFO     -     UserRepo.get_by_username('PierreVelo',) - START
+21/11/2025 18:34:25 - INFO     -     UserRepo.get_by_username('PierreVelo',) - END
+21/11/2025 18:34:25 - INFO     -        └─> Output: id=6 user_name='PierreVelo' password='4ef332278ceb035597834d8810ba81bc7eebbd9e6958b86a082e2d4874ded718' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='512cdd82c8b66103614565f6dcb30aac21cbd3fa4153c3b4f7a2286748e3eac6f035e92b6a256a1d18bcbe3083a001ee70ffb3e83f59bf2eaf432ea1cd78796498675a62b16e9fb46e23b076fdb6e2238994501dca82346d1b738af41b056cc194c3b4a7c87b045f5bd424a9f4411d8d66847441d4e24e7f42a0dc1582876684'
+21/11/2025 18:34:25 - INFO     -     CustomerDAO.get_id_customer_by_id_user(6,) - START
+21/11/2025 18:34:25 - INFO     -     CustomerDAO.get_id_customer_by_id_user(6,) - END
+21/11/2025 18:34:25 - INFO     -        └─> Output: None
+21/11/2025 18:34:25 - INFO     -     DriverDAO.get_id_driver_by_id_user(6,) - START
+21/11/2025 18:34:25 - INFO     -     DriverDAO.get_id_driver_by_id_user(6,) - END
+21/11/2025 18:34:25 - INFO     -        └─> Output: 3
+21/11/2025 18:34:25 - INFO     -     Session.login("id=6 user_name='PierreVelo' password='4ef332278ceb035597834d8810ba81bc7eebbd9e6958b86a082e2d4874ded718' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='512cdd82c8b66103614565f6dcb30aac21cbd3fa4153c3b4f7a2286748e3eac6f035e92b6a256a1d18bcbe3083a001ee70ffb3e83f59bf2eaf432ea1cd78796498675a62b16e9fb46e23b076fdb6e2238994501dca82346d1b738af41b056cc194c3b4a7c87b045f5bd424a9f4411d8d66847441d4e24e7f42a0dc1582876684'", 3) - START
+21/11/2025 18:34:25 - INFO     -     Session.login("id=6 user_name='PierreVelo' password='4ef332278ceb035597834d8810ba81bc7eebbd9e6958b86a082e2d4874ded718' first_name='Pierre' last_name='Cycliste' email='pierre.velo@project.com' salt='512cdd82c8b66103614565f6dcb30aac21cbd3fa4153c3b4f7a2286748e3eac6f035e92b6a256a1d18bcbe3083a001ee70ffb3e83f59bf2eaf432ea1cd78796498675a62b16e9fb46e23b076fdb6e2238994501dca82346d1b738af41b056cc194c3b4a7c87b045f5bd424a9f4411d8d66847441d4e24e7f42a0dc1582876684'", 3) - END
+21/11/2025 18:34:25 - INFO     -        └─> Output: None
+21/11/2025 18:34:25 - INFO     - MenuDriver
+21/11/2025 18:34:30 - INFO     -     Session.logout() - START
+21/11/2025 18:34:30 - INFO     -     Session.logout() - END
+21/11/2025 18:34:30 - INFO     -        └─> Output: None
+21/11/2025 18:34:30 - INFO     - OpeningView
+21/11/2025 18:34:32 - INFO     - End of application
