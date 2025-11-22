@@ -162,3 +162,44 @@ class ProductService:
             The corresponding product ID.
         """
         return self.productdao.get_id_by_productname(product_name)
+
+    @log
+    def update_product(self, product_id: int, name: str, price: float, production_cost: float,
+                       product_type: str, description: str, stock: int) -> Product | None:
+        """
+        Update an existing product.
+
+        Parameters
+        ----------
+        product_id : int
+            ID of the product to update.
+        name : str
+            Updated name.
+        price : float
+            Updated selling price.
+        production_cost : float
+            Updated production cost.
+        product_type : str
+            Updated type of product.
+        description : str
+            Updated description.
+        stock : int
+            Updated stock quantity.
+
+        Returns
+        -------
+        Product or None
+            Updated Product object if successful, else None.
+        """
+        updated_product = Product(
+            id_product=product_id,
+            name=name,
+            price=price,
+            production_cost=production_cost,
+            product_type=product_type,
+            description=description,
+            stock=stock,
+        )
+
+        return self.productdao.update_product(product_id, updated_product)
+

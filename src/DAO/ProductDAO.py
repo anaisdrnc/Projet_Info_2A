@@ -272,3 +272,51 @@ class ProductDAO:
             stock = raw_product['stock']
         )
         return product
+
+    @log
+    def update_product(self, id_product: int, product: Product):
+        """
+        Update an existing product.
+        Returns the updated Product or None if failure.
+        """
+        try:
+            res = self.db_connector.sql_query(
+                """
+                UPDATE product
+                SET name = %(name)s,
+                    price = %(price)s,
+                    production_cost = %(production_cost)s,
+                    description = %(description)s,
+                    product_type = %(product_type)s,
+                    stock = %(stock)s
+                WHERE id_product = %(id_product)s
+                RETURNING id_product, name, price, production_cost, description, product_type, stock;
+                """,
+                {
+                    "id_product": id_product,
+                    "name": product.name,
+                    "price": product.price,
+                    "production_cost": product.production_cost,
+                    "description": product.description,
+                    "product_type": product.product_type,
+                    "stock": product.stock,
+                },
+                "one",
+            )
+
+            if not res:
+                return None
+
+            return Product(
+                id_product=res["id_product"],
+                name=res["name"],
+                price=res["price"],
+                production_cost=res["production_cost"],
+                description=res["description"],
+                product_type=res["product_type"],
+                stock=res["stock"],
+            )
+
+        except Exception as e:
+            logging.info(f"Erreur lors de la mise à jour : {e}")
+            return None

@@ -42,7 +42,6 @@ class TestProductDAO:
         assert creation_ok
         assert product.id_product is not None
 
-
     def test_create_ko(self, dao):
         """Test: DAO should reject creation of a duplicate product"""
 
@@ -68,7 +67,6 @@ class TestProductDAO:
 
         creation_ok = dao.create_product(product_duplicate)
         assert not creation_ok
-
 
     def test_delete_ok(self, dao):
         """Test: Successfully delete a product from the database"""
@@ -101,14 +99,12 @@ class TestProductDAO:
         )
         assert res is None
 
-
     def test_delete_ko(self, dao):
         """Test: Deleting a non-existent product should fail"""
         non_existent_id = 99999
         delete_ok = dao.deleting_product(non_existent_id)
 
         assert not delete_ok
-
 
     def test_get_all_products(self, dao):
         """Test: Retrieve all products from the database"""
@@ -136,7 +132,6 @@ class TestProductDAO:
         names = [p.name for p in all_products]
         assert "Prod1" in names
         assert "Prod2" in names
-
 
     def test_get_all_product_names(self, dao):
         """Test: Verify that all product names are retrieved correctly"""
@@ -166,7 +161,6 @@ class TestProductDAO:
 
         for p in products:
             assert p.name in names_only
-
 
     def test_get_all_product_names_descriptions(self, dao):
         """Test: Verify that all product names and descriptions are retrieved correctly"""
@@ -199,7 +193,6 @@ class TestProductDAO:
         for p in products_to_add:
             assert [p.name, p.description] in result_list
 
-
     def test_decrement_stock(self, dao):
         """Test: Verify that stock decreases correctly and prevents decrement if insufficient"""
         product = Product(
@@ -221,7 +214,6 @@ class TestProductDAO:
         success = dao.decrement_stock(product.id_product, 3)
         assert not success
 
-
     def test_increment_stock(self, dao):
         """Test: Verify that stock increases correctly when incrementing"""
         product = Product(
@@ -239,7 +231,6 @@ class TestProductDAO:
 
         updated = [p for p in dao.get_all_products() if p.id_product == product.id_product][0]
         assert updated.stock == 7
-
 
     def test_get_available_products(self, dao):
         """Test: Only products with stock greater than 0 are returned."""
@@ -267,7 +258,6 @@ class TestProductDAO:
         assert "Disponible" in names
         assert "Indisponible" not in names
 
-
     def test_get_id_by_productname(self, dao):
         """Test: Retrieve the product ID by its name"""
         product = Product(
@@ -281,3 +271,52 @@ class TestProductDAO:
         dao.create_product(product)
         id_product = dao.get_id_by_productname("test_id")
         assert id_product == product.id_product
+
+    def test_update_product_ok(self, dao):
+        """Test: Successfully update a product in the database"""
+
+        product = Product(
+            name="OriginalName",
+            price=1.0,
+            production_cost=0.5,
+            description="Original desc",
+            product_type="drink",
+            stock=5,
+        )
+        assert dao.create_product(product)
+        assert product.id_product is not None
+
+        updated_product = Product(
+            id_product=product.id_product,
+            name="UpdatedName",
+            price=2.0,
+            production_cost=1.0,
+            description="Updated desc",
+            product_type="dessert",
+            stock=10,
+        )
+
+        result = dao.update_product(product.id_product, updated_product)
+        assert result is not None
+        assert result.name == "UpdatedName"
+        assert result.price == 2.0
+        assert result.stock == 10
+
+    def test_update_product_ko(self, dao):
+        """Test: Updating a non-existent product should return None"""
+
+        non_existent_id = 999999
+
+        updated_product = Product(
+            id_product=non_existent_id,
+            name="DoesNotExist",
+            price=2.0,
+            production_cost=1.0,
+            description="desc",
+            product_type="drink",
+            stock=5,
+        )
+
+        result = dao.update_product(non_existent_id, updated_product)
+
+        assert result is None

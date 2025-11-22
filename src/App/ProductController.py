@@ -48,7 +48,7 @@ def create_product(
     production_cost,
     product_type,
     stock,
-    credentials: Annotated[HTTPAuthorizationCredentials, Depends(JWTBearer())],  # admin connecté
+    credentials: Annotated[HTTPAuthorizationCredentials, Depends(JWTBearer())],  # admin connected
 ):
     """Create a new product (admin only)."""
     productdao = ProductDAO(DBConnector(test=False))
@@ -72,7 +72,7 @@ def create_product(
 @product_router.delete("/{product_id}", status_code=status.HTTP_200_OK)
 def delete_product(
     product_id: int,
-    credentials: Annotated[HTTPAuthorizationCredentials, Depends(JWTBearer())],  # admin connecté
+    credentials: Annotated[HTTPAuthorizationCredentials, Depends(JWTBearer())],
 ):
     """Delete a product by ID (admin only)."""
     productdao = ProductDAO(DBConnector(test=False))
@@ -86,54 +86,41 @@ def delete_product(
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Database error: {str(e)}") from e
 
-
 @product_router.put("/{product_id}", response_model=Product, status_code=status.HTTP_200_OK)
 def update_product(
     product_id: int,
     updated_product: Product,
-    credentials: Annotated[HTTPAuthorizationCredentials, Depends(JWTBearer())],  # admin connecté
+    credentials: Annotated[HTTPAuthorizationCredentials, Depends(JWTBearer())],
 ):
     """Update an existing product (admin only)."""
     try:
-        check_query = "SELECT id_product FROM product WHERE id_product = %s;"
-        existing_product = db.sql_query(check_query, (product_id,), return_type="one")
-        if not existing_product:
-            raise HTTPException(status_code=404, detail=f"Product with id [{product_id}] not found")
-        update_query = """
-            UPDATE product
-            SET name = %s,
-                price = %s,
-                production_cost = %s,
-                product_type = %s,
-                description = %s,
-                stock = %s
-            WHERE id_product = %s
-            RETURNING id_product, name, price, production_cost, product_type, description, stock;
-        """
-        data = (
-            updated_product.name,
-            updated_product.price,
-            updated_product.production_cost,
-            updated_product.product_type,
-            updated_product.description,
-            updated_product.stock,
-            product_id,
+        product_service = ProductService(ProductDAO(DBConnector(test=False)))
+
+        result = product_service.update_product(
+            product_id=product_id,
+            name=updated_product.name,
+            price=updated_product.price,
+            production_cost=updated_product.production_cost,
+            product_type=updated_product.product_type,
+            description=updated_product.description,
+            stock=updated_product.stock,
         )
-        updated_data = db.sql_query(update_query, data, return_type="one")
-        if not updated_data:
-            raise HTTPException(status_code=500, detail="Product update failed")
-        return Product(**updated_data)
+
+        if not result:
+            raise HTTPException(status_code=404, detail=f"Product with id [{product_id}] not found")
+
+        return result
+
     except HTTPException:
         raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Database error: {str(e)}") from e
 
-
 @product_router.put("/update_stock/product_id={product_id}&stock_added={stock_added}", status_code=status.HTTP_200_OK)
 def update_stock(
     product_id: int,
     stock_added: int,
-    credentials: Annotated[HTTPAuthorizationCredentials, Depends(JWTBearer())],  # admin connecté
+    credentials: Annotated[HTTPAuthorizationCredentials, Depends(JWTBearer())],
 ):
     """Increase product stock by a given amount (admin only)."""
     productdao = ProductDAO(DBConnector(test=False))
