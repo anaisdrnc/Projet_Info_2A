@@ -41,13 +41,13 @@ class LoginView(AbstractView):
             if id_driver is None and id_customer is not None:
                 message = f"You are logged in to the customer account {user.user_name}"
                 Session().login(user, id_customer)
-                from CLI.customer.menu_customer import MenuView
+                from src.CLI.customer.menu_customer import MenuView
                 return MenuView(message)
 
             elif id_customer is None and id_driver is not None:
                 message = f"You are logged in to the driver account {user.user_name}"
                 Session().login(user, id_driver)
-                from CLI.driver.menu_driver import MenuDriver
+                from src.CLI.driver.menu_driver import MenuDriver
                 return MenuDriver(message)
 
             else:

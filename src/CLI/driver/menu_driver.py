@@ -40,15 +40,15 @@ class MenuDriver(AbstractView):
 
         match choice:
             case "Log out":
-                from CLI.opening.openingview import OpeningView
+                from src.CLI.opening.openingview import OpeningView
 
                 Session().logout()
                 return OpeningView()
 
             case "Manage orders":
-                from CLI.driver.manage_order_view import ManageOrderView
+                from src.CLI.driver.manage_order_view import ManageOrderView
                 return ManageOrderView()
 
             case "Update my information":
-                from CLI.driver.change_profil_driver import ChangeProfilDriver
+                from src.CLI.driver.change_profil_driver import ChangeProfilDriver
                 return ChangeProfilDriver()

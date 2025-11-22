@@ -122,7 +122,7 @@ class ManageOrderView(AbstractView):
             driver = self.driver_dao.get_by_id(self.driver_id)
             if not driver:
                 print("Driver not found")
-                from CLI.driver.menu_driver import MenuDriver
+                from src.CLI.driver.menu_driver import MenuDriver
                 return MenuDriver(message="Driver not found")
 
             # Showing driver's main info
@@ -131,7 +131,7 @@ class ManageOrderView(AbstractView):
 
             if not available_orders:
                 print("No available orders")
-                from CLI.driver.menu_driver import MenuDriver
+                from src.CLI.driver.menu_driver import MenuDriver
                 return MenuDriver(message="No available orders")
 
             # Showing the first order's main info
@@ -150,15 +150,15 @@ class ManageOrderView(AbstractView):
                 return self.accept_delivery(oldest_order)
             elif choice == "Refuse the delivery":
                 print("Order refused")
-                from CLI.driver.menu_driver import MenuDriver
+                from src.CLI.driver.menu_driver import MenuDriver
                 return MenuDriver(message="Order refused")
             else:
-                from CLI.driver.menu_driver import MenuDriver
+                from src.CLI.driver.menu_driver import MenuDriver
                 return MenuDriver()
 
         except Exception as e:
             print(f"Error: {e}")
-            from CLI.driver.menu_driver import MenuDriver
+            from src.CLI.driver.menu_driver import MenuDriver
             return MenuDriver()
 
     def accept_delivery(self, order_data):
@@ -171,7 +171,7 @@ class ManageOrderView(AbstractView):
         if not success:
             message = "Error assigning the order"
             print(message)
-            from CLI.menu_driver import MenuDriver
+            from src.CLI.menu_driver import MenuDriver
             return MenuDriver(message=message)
 
         # Mark as 'on the way'
@@ -225,7 +225,7 @@ class ManageOrderView(AbstractView):
                 return self.choose_menu()
             else:
                 print("Returning to the driver's menu...")
-                from CLI.driver.menu_driver import MenuDriver
+                from src.CLI.driver.menu_driver import MenuDriver
                 return MenuDriver(message=f"Delivery {order_id} completed")
         except Exception as e:
             print(f"Error in accept_delivery: {e}")
